@@ -1,0 +1,5 @@
+rootProject.name = 'qycms'
+
+include 'qycms-core:common'
+include 'qycms-core:system-provider'
+include 'qycms-core:system-console'
