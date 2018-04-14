@@ -51,7 +51,7 @@
     "no-empty-interface": true,
     "no-eval": true,
     "no-inferrable-types": [
-      true,
+      false,
       "ignore-params"
     ],
     "no-misused-new": true,
@@ -73,9 +73,9 @@
       "check-else",
       "check-whitespace"
     ],
-    "prefer-const": true,
+    "prefer-const": false,
     "quotemark": [
-      true,
+      false,
       "single"
     ],
     "radix": true,
@@ -83,7 +83,7 @@
       "always"
     ],
     "triple-equals": [
-      true,
+      false,
       "allow-null-check"
     ],
     "typedef-whitespace": [
@@ -110,24 +110,30 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      [
+        "qy",
+        "app"
+      ],
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      [
+        "qy",
+        "app"
+      ],
       "kebab-case"
     ],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
+    "use-host-property-decorator": false,
     "no-input-rename": true,
     "no-output-rename": true,
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true,
+    "directive-class-suffix": false,
     "no-access-missing-member": true,
     "templates-use-public": true,
     "invoke-injectable": true

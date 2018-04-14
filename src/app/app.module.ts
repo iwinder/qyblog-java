@@ -6,20 +6,26 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { SharedModule } from 'app/shared';
+import { AppRoutingModule } from './app-routing.module';
+import { ContentComponent } from './core/layout/content/content.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ContentComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     FormsModule,
-    HttpClientModule,
+    // HttpClientModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
-    NgZorroAntdModule.forRoot()
+    SharedModule.forRoot()
   ],
+  exports: [ContentComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

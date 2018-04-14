@@ -9,13 +9,25 @@
 <form nz-form>
   <input type="text" name="searchText" [(ngModel)]="searchName" class="form-control" placeholder="请输入名称">
 
-      <nz-select style="width: 100%" name="isPublished" [(ngModel)]="isPublished" [nzPlaceHolder]="'请选择人员'">
+      <nz-select style="width: 100%" name="isPublished" [(ngModel)]="isPublished" [nzPlaceHolder]="'请选择人员'"  [nzShowSearch]="true">
         <nz-option *ngFor="let ls of isPublishedOptions" [nzLabel]="ls.label" [nzValue]="ls.value">
         </nz-option>
       </nz-select>
   <button type="button" class="btn btn-primary" >搜索</button>
   <button type="reset" class="btn ">清空</button>
 </form>
+<nz-select style="width: 200px;"  [(ngModel)]="selectedOptions" nzAllowClear [nzPlaceHolder]="'ffff'">
+  <nz-option *ngFor="let ls of isPublishedOptions" [nzLabel]="ls.label" [nzValue]="ls.value">
+  </nz-option>
+</nz-select>
+
+
+  <nz-select style="width: 200px;" nzAllowClear [nzPlaceHolder]="'Select a person'" [(ngModel)]="selectedOption" [nzShowSearch]="true">
+    <nz-option *ngFor="let option of isPublishedOptions" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled">
+    </nz-option>
+  </nz-select>
+
+
 <ul>
   <li>
     <h2><a target="_blank" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
