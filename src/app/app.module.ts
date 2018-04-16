@@ -9,23 +9,23 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from 'app/shared';
 import { AppRoutingModule } from './app-routing.module';
 import { ContentComponent } from './core/layout/content/content.component';
+import { CoreModule } from './core/core.module';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ContentComponent
+    AppComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     FormsModule,
-    // HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    CoreModule
   ],
-  exports: [ContentComponent],
+  exports: [],
   providers: [],
   bootstrap: [AppComponent]
 })
