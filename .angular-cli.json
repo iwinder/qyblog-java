@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "qy",
       "styles": [
-        "style/themes/bule.scss",
+        "style/themes/yellow.scss",
+        
         "styles.css"
         
       ],
