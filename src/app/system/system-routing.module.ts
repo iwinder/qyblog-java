@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UserListComponent } from './views/user/user-list/user-list.component';
+import { RoleListComponent } from './views/role/role-list/role-list.component';
 
 const routes: Routes = [
     {
@@ -13,6 +14,14 @@ const routes: Routes = [
 
                 ]
             },
+            {
+                path: 'role', children: [
+                    { path: '', component: RoleListComponent },
+                    // { path: 'add', component: UgcExampleCourseEditComponent },
+                    // { path: ':id/edit', component: UgcExampleCourseEditComponent },
+
+                ],
+            }
             // { path: 'banner', component: UgcBannerListComponent },
             // { path: 'notice-box', component: UgcNoticeBoxListComponent }
         ]
@@ -27,5 +36,6 @@ const routes: Routes = [
 export class SystemRoutingModule { }
 
 export const routedComponents = [
-    UserListComponent
+    UserListComponent,
+    RoleListComponent
 ];
