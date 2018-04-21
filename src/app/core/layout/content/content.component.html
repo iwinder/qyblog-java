@@ -11,26 +11,26 @@
             <ul>
                 <li nz-menu-item>
                     <a routerLinkActive="active" [routerLink]="['/'+'system/user']">
-                        <i [ngClass]="'menuicon mr-2 fa '"></i>
-                        <span class="nav-text">用户管理</span>
+                        <i [ngClass]="'anticon anticon-user '"></i>
+                        <span >用户管理</span>
                     </a>
                 </li>
                 <li nz-menu-item>
                     <a routerLinkActive="active" [routerLink]="['/'+'system/role']">
                         <i [ngClass]="'menuicon mr-2 fa '"></i>
-                        <span class="nav-text">角色管理</span>
+                        <span >角色管理</span>
                     </a>
                 </li>
                 <li nz-menu-item>
                     <a routerLinkActive="active" [routerLink]="['/'+'system/user']">
                         <i [ngClass]="'menuicon mr-2 fa '"></i>
-                        <span class="nav-text">菜单管理</span>
+                        <span >菜单管理</span>
                     </a>
                 </li>
                 <li nz-menu-item>
                     <a routerLinkActive="active" [routerLink]="['/'+'system/role']">
                         <i [ngClass]="'menuicon mr-2 fa '"></i>
-                        <span class="nav-text">授权管理</span>
+                        <span >授权管理</span>
                     </a>
                 </li>
             </ul>
@@ -54,7 +54,7 @@
     </ul>
 </nz-sider>
     <nz-layout>
-        <qy-header >
+        <qy-header [isCollapsed]='isCollapsed' (doSubmit)="choseIsCollapsed($event)">
             
         </qy-header>
         <nz-content style="margin:0 16px;">

@@ -13,4 +13,8 @@ export class ContentComponent implements OnInit {
 
     ngOnInit() {
     }
+
+    choseIsCollapsed(isCollapsed) {
+        this.isCollapsed = isCollapsed;
+    }
 }

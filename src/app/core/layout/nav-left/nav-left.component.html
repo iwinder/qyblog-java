@@ -9,13 +9,29 @@
             </span>
             <ul>
                 <li nz-menu-item>
-                    <a  routerLinkActive="active" [routerLink]="['/'+'system']">
+                    <a routerLinkActive="active" [routerLink]="['/'+'system/user']">
                         <i [ngClass]="'menuicon mr-2 fa '"></i>
-                        <span class="nav-text" >用户管理</span>
+                        <span class="nav-text">用户管理</span>
                     </a>
                 </li>
-                <li nz-menu-item>Bill</li>
-                <li nz-menu-item>Alex</li>
+                <li nz-menu-item>
+                    <a routerLinkActive="active" [routerLink]="['/'+'system/role']">
+                        <i [ngClass]="'menuicon mr-2 fa '"></i>
+                        <span class="nav-text">角色管理</span>
+                    </a>
+                </li>
+                <li nz-menu-item>
+                    <a routerLinkActive="active" [routerLink]="['/'+'system/user']">
+                        <i [ngClass]="'menuicon mr-2 fa '"></i>
+                        <span class="nav-text">菜单管理</span>
+                    </a>
+                </li>
+                <li nz-menu-item>
+                    <a routerLinkActive="active" [routerLink]="['/'+'system/role']">
+                        <i [ngClass]="'menuicon mr-2 fa '"></i>
+                        <span class="nav-text">授权管理</span>
+                    </a>
+                </li>
             </ul>
         </li>
         <li nz-submenu>
