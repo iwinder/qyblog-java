@@ -73,7 +73,7 @@ configure(rootProject) {
         buildInfo()
     }
     dependencies {
-//        compile project(":book-mina:mina-consumer")
+       compile project(":qycms-core:system-console")
     }
 
     // 生成war时过滤内嵌tomcat依赖
