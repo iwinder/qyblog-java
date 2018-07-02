@@ -1,6 +1,6 @@
 package com.windcoder.qycms.core.system.entity;
 
-import lombok.Data;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,7 +18,6 @@ import java.util.Date;
  * Date: 2017-12-12
  * Time: 0:15 上午
  */
-@Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Auditable implements Serializable {
@@ -31,4 +30,21 @@ public class Auditable implements Serializable {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(updatable=false)
     protected Date createdDate;
+
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 }

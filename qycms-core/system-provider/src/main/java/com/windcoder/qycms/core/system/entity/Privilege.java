@@ -13,6 +13,9 @@ import java.util.Set;
 @Entity
 @Table(name="sys_privilege")
 public class Privilege extends Auditable{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; //编号
     private String name; //资源名称
     private String url; //资源路径
@@ -26,8 +29,89 @@ public class Privilege extends Auditable{
     @OneToMany(fetch=FetchType.LAZY,mappedBy="parent")
     private Set<Privilege> children = new HashSet<Privilege>();
 
-    private Boolean ishide;//是否隐藏
+    private Boolean isHide;//是否隐藏
 //    private String parentIds; //父编号列表
 
     private Boolean isAvailable; //是否可用,如果不可用将不会添加给用户
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
+    }
+
+    public Privilege getParent() {
+        return parent;
+    }
+
+    public void setParent(Privilege parent) {
+        this.parent = parent;
+    }
+
+    public Set<Privilege> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<Privilege> children) {
+        this.children = children;
+    }
+
+    public Boolean getIsHide() {
+        return isHide;
+    }
+
+    public void setIsHide(Boolean isHide) {
+        this.isHide = isHide;
+    }
+
+    public Boolean getIsAvailable() {
+        return this.isAvailable;
+    }
+
+    public void setIsAvailable(Boolean available) {
+        this.isAvailable = available;
+    }
 }
