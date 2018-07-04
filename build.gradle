@@ -73,7 +73,8 @@ configure(rootProject) {
         buildInfo()
     }
     dependencies {
-       compile project(":qycms-core:system-console")
+        compile project(":qycms-core:system-console")
+        compile project(":qycms-blog:blog-console")
     }
 
     // 生成war时过滤内嵌tomcat依赖
