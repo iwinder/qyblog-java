@@ -6,9 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, CommonModule } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { EditorMdDirective } from './editor/editor-md.directive';
+import { SharedModule } from './shared';
+import { AppRoutingModule } from './app-routing.module';
+import { CoreModule } from './core/core.module';
 
 registerLocaleData(zh);
 
@@ -19,10 +22,14 @@ registerLocaleData(zh);
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
+    CommonModule,
     FormsModule,
     HttpClientModule,
-    NgZorroAntdModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    SharedModule.forRoot(),
+    CoreModule,
+
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
