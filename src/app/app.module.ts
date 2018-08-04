@@ -21,14 +21,15 @@ registerLocaleData(zh);
     EditorMdDirective
   ],
   imports: [
-    BrowserModule,
+    // BrowserModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
-    SharedModule.forRoot(),
     CoreModule,
+    AppRoutingModule,
+    SharedModule.forRoot(),
+
 
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],

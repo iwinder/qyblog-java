@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 // import { EditorConfig } from './editor/model/editor-config';
 
 @Component({
-  selector: 'qy-root',
+  selector: 'app-root',
   // templateUrl: './app.component.html',
   template: '<router-outlet></router-outlet>',
   styleUrls: []
   // styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'qy';
+  // title = 'qy';
 
 
   // conf = new EditorConfig();
