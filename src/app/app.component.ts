@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 // import { EditorConfig } from './editor/model/editor-config';
 
 @Component({
-  selector: 'app-root',
+  selector: 'qy-root',
   // templateUrl: './app.component.html',
   template: '<router-outlet></router-outlet>',
   styleUrls: []
