@@ -1,10 +1,9 @@
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, zh_CN  } from 'ng-zorro-antd';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {  CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -22,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   exports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
     NgZorroAntdModule,
     ReactiveFormsModule,
   ]
@@ -31,7 +31,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: []
+      providers: [{ provide: NZ_I18N, useValue: zh_CN }]
     };
   }
 

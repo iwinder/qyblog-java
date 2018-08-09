@@ -16,7 +16,7 @@ const routes: Routes = [
             },
             {
                 path: 'role', children: [
-                    // { path: '', component: RoleListComponent },
+                    { path: '', component: RoleListComponent },
                     // { path: 'add', component: UgcExampleCourseEditComponent },
                     // { path: ':id/edit', component: UgcExampleCourseEditComponent },
 

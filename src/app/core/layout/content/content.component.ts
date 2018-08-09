@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 
 @Component({
     selector: 'qy-contnet',
@@ -7,12 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContentComponent implements OnInit {
     isCollapsed = false;
+    triggerTemplate = null;
+    @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
     constructor() {
     }
 
     ngOnInit() {
     }
+
+        /** custom trigger can be TemplateRef **/
+        changeTrigger(): void {
+            this.triggerTemplate = this.customTrigger;
+          }
 
     choseIsCollapsed(isCollapsed) {
         this.isCollapsed = isCollapsed;
