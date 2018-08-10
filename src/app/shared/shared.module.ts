@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     FormsModule,
-    NgZorroAntdModule.forRoot(),
+    NgZorroAntdModule,
     ReactiveFormsModule,
 
 
@@ -26,13 +26,4 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
   ]
 })
-export class SharedModule {
-
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: SharedModule,
-      providers: [{ provide: NZ_I18N, useValue: zh_CN }]
-    };
-  }
-
-}
+export class SharedModule {}

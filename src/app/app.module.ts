@@ -28,7 +28,7 @@ registerLocaleData(zh);
     BrowserAnimationsModule,
     CoreModule,
     AppRoutingModule,
-    SharedModule.forRoot(),
+    SharedModule,
 
 
   ],
