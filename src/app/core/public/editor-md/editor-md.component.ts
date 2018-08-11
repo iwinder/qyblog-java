@@ -80,15 +80,17 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
       console.error('UEditor is missing');
       return;
     }
-    this.mdeditor = editormd(this.host.nativeElement, this.editormdConfig); // 创建编辑器
-    this.mdeditor.addListener('ready', () => {
-      if (this.value) {
-          this.mdeditor.setContent(this.value);
-      }
-      this.onReady.emit();
 
-      this.mdeditor.addEvent();
-    });
+    console.log( 'this.host.nativeElement', this.host.nativeElement.id);
+    this.mdeditor = editormd(this.host.nativeElement.id, this.editormdConfig); // 创建编辑器
+    // this.mdeditor.addListener('ready', () => {
+    //   if (this.value) {
+    //       this.mdeditor.setContent(this.value);
+    //   }
+    //   this.onReady.emit();
+
+    //   this.mdeditor.addEvent();
+    // });
 
   }
 

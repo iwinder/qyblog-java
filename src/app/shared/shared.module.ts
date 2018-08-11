@@ -4,6 +4,7 @@ import {  CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CoreModule } from '../core/core.module';
 
 
 @NgModule({
@@ -12,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     NgZorroAntdModule,
     ReactiveFormsModule,
-
+    CoreModule
 
   ],
   declarations: [
@@ -24,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     NgZorroAntdModule,
     ReactiveFormsModule,
+    CoreModule
   ]
 })
 export class SharedModule {}

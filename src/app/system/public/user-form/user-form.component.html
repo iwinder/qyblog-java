@@ -1,4 +1,4 @@
-<form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()">
+<!-- <form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()">
     <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
             <label for="username" nz-form-item-required>用户名</label>
@@ -57,4 +57,92 @@
             <button nz-button [nzSize]="'large'" [nzType]="'primary'">保存</button>
         </div>
     </div>
-</form>
+</form> -->
+
+
+
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event,validateForm.value)">
+        
+    <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>用户名</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzHasFeedback>
+            <input nz-input formControlName="username" placeholder="async validate try to write JasonWood">
+            <nz-form-explain *ngIf="validateForm.get('username').dirty && validateForm.get('username').errors || validateForm.get('username').pending ">
+              <ng-container *ngIf="validateForm.get('username').hasError('required')">
+                Please input your username!
+              </ng-container>
+              <ng-container *ngIf="validateForm.get('username').hasError('duplicated')">
+                The username is redundant!
+              </ng-container>
+              <ng-container *ngIf="validateForm.get('username').pending">
+                Validating...
+              </ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+
+        <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>密码</nz-form-label>
+                <div>
+                  <nz-form-control [nzSpan]="12" nzHasFeedback>
+                    <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()">
+                    <nz-form-explain *ngIf="validateForm.get('password').dirty&&validateForm.get('password').hasError('required')">Please input your password!</nz-form-explain>
+                  </nz-form-control>
+                </div>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>确认密码</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback>
+                  <input nz-input type="password" formControlName="checkPassword" placeholder="confirm your password">
+                  <nz-form-explain *ngIf="validateForm.get('checkPassword').dirty&&validateForm.get('checkPassword').errors">
+                    <ng-container *ngIf="validateForm.get('checkPassword').hasError('required')">
+                      Please confirm your password!
+                    </ng-container>
+                    <ng-container *ngIf="validateForm.get('checkPassword').hasError('confirm')">
+                      Password is inconsistent!
+                    </ng-container>
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+        
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzHasFeedback>
+            <input nz-input formControlName="email" placeholder="email" type="email">
+            <nz-form-explain *ngIf="validateForm.get('email').dirty&&validateForm.get('email').errors">
+              <ng-container *ngIf="validateForm.get('email').hasError('email')">
+                The input is not valid E-mail!
+              </ng-container>
+              <ng-container *ngIf="validateForm.get('email').hasError('required')">
+                Please input your E-mail!
+              </ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+
+
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>昵称</nz-form-label>
+          <nz-form-control [nzSpan]="12" >
+            <textarea formControlName="nickname" nz-input rows="2" placeholder="write any thing"></textarea>
+            <nz-form-explain *ngIf="validateForm.get('nickname').dirty&&validateForm.get('nickname').hasError('required')">Please input your nickname!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>简介</nz-form-label>
+                <nz-form-control [nzSpan]="12" >
+                  <qy-editor-md formControlName="comment" ></qy-editor-md>
+                  <nz-form-explain *ngIf="validateForm.get('comment').dirty&&validateForm.get('comment').hasError('required')">Please input your comment !</nz-form-explain>
+                </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control [nzOffset]="7" [nzSpan]="12">
+            <button nz-button nzType="primary" [disabled]="!validateForm.valid">保存</button>
+            <button nz-button (click)="resetForm($event)">Reset</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
