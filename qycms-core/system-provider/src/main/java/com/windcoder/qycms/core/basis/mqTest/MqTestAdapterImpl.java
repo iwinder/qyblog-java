@@ -13,7 +13,7 @@ public class MqTestAdapterImpl implements MqTestAdapter {
     private JmsTemplate jmsTemplate;
     @Override
     public void process(int i, String str) {
-        Destination destination = new ActiveMQQueue("MqTest,queue");
+        Destination destination = new ActiveMQQueue("MqTest.queue");
         String message = "这是第 " + i + " 条测试信息：" +str;
         jmsTemplate.convertAndSend(destination, message);
     }

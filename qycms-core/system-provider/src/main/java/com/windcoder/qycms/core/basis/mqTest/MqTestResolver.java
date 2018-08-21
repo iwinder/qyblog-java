@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MqTestResolver {
 
-
-    @JmsListener(destination = "MqTest,queue")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @JmsListener(destination = "MqTest.queue")
     public void process(String message){
         System.out.println("------------MQ测试star------------");
         System.out.println(message);
