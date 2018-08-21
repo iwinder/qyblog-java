@@ -3,5 +3,6 @@ apply plugin: 'idea'
 
 dependencies {
     compile project(':qycms-core:common')
-
+    compile 'org.apache.shiro:shiro-spring-boot-web-starter:1.4.0-RC2'
+    compile group: 'org.crazycake', name: 'shiro-redis', version: '3.1.0'
 }
