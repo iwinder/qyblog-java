@@ -16,4 +16,7 @@ dependencies {
 
     compile('org.springframework.boot:spring-boot-starter-activemq')
     compile('org.apache.activemq:activemq-pool')
+    compile group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '1.16'
+//    compile("junit:junit")
+    compile("org.springframework.boot:spring-boot-starter-test")
 }
