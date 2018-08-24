@@ -21,7 +21,7 @@ public class Privilege extends Auditable{
     private String url; //资源路径
     private String type;//类型
     private String description;//界面UI显示字段
-    private String permission; //权限字符串
+    private String identifier; //权限字符串
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Privilege parent;
@@ -75,12 +75,12 @@ public class Privilege extends Auditable{
         this.description = description;
     }
 
-    public String getPermission() {
-        return permission;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setPermission(String permission) {
-        this.permission = permission;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public Privilege getParent() {

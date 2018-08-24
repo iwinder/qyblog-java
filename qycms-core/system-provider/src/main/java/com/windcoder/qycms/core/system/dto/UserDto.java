@@ -1,25 +1,6 @@
-package com.windcoder.qycms.core.system.entity;
+package com.windcoder.qycms.core.system.dto;
 
-
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-/** 系统用户
- * Description:
- * User: WindCoder
- * Date: 2018-04-05
- * Time: 23:16 下午
- */
-
-@Entity
-@Table(name="sys_user")
-public class User extends Auditable{
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue
+public class UserDto {
     private Long id;
     private String username;
     private String password;
@@ -27,11 +8,7 @@ public class User extends Auditable{
     private String email;
     private String avatar;
     private String nickname;
-    /**
-     * 帐号状态:0正常,1禁用
-     */
     private Boolean isDisable;
-
 
     public Long getId() {
         return id;
@@ -89,15 +66,11 @@ public class User extends Auditable{
         this.nickname = nickname;
     }
 
-    public Boolean getIsDisable() {
+    public Boolean getDisable() {
         return isDisable;
     }
 
-    public void setIdDisable(Boolean isDisable) {
-        this.isDisable = isDisable;
-    }
-
-    public String getCredentialsSalt() {
-        return username + salt;
+    public void setDisable(Boolean disable) {
+        isDisable = disable;
     }
 }

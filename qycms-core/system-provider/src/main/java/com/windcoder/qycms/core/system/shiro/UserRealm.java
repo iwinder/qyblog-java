@@ -1,17 +1,39 @@
-package com.windcoder.qycms.core.system.shiro.Realm;
+package com.windcoder.qycms.core.system.shiro;
 
 import com.windcoder.qycms.core.system.entity.User;
+import com.windcoder.qycms.core.system.service.PermissionService;
 import com.windcoder.qycms.core.system.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
 
 public class UserRealm extends AuthorizingRealm{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PermissionService permissionService;
+
+    @Autowired
+    private CacheManager shiroRedisCacheManager;
+
+
+
+    /**
+     * 用于检测密码错误次数
+     */
+    @PostConstruct
+    public void initCredentialsMatcher() {
+        setCredentialsMatcher(new RetryLimitHashedCredentialsMatcher(shiroRedisCacheManager));
+    }
 
     /**
      *  用于授权
@@ -20,6 +42,13 @@ public class UserRealm extends AuthorizingRealm{
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        User user = (User)principals.getPrimaryPrincipal();
+        if (user != null){
+            SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+//            authorizationInfo.addRoles(permissionService.findPermissionRolesOfUser(userToken.getUser()));
+            authorizationInfo.addStringPermissions(permissionService.findPermissionPrivilegesByUser());
+            return authorizationInfo;
+        }
         return null;
     }
 
@@ -49,6 +78,6 @@ public class UserRealm extends AuthorizingRealm{
         }
 
 
-        return null;
+        return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getCredentialsSalt()), getName());
     }
 }

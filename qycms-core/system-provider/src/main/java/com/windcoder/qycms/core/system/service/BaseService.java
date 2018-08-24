@@ -1,9 +1,11 @@
 package com.windcoder.qycms.core.system.service;
 
 import com.windcoder.qycms.core.system.repository.SupportRepository;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+
 
 public class BaseService <T, ID extends Serializable, R extends SupportRepository<T, ID>>  {
     private Class<T> clazz;
