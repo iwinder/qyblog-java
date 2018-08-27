@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
-public class UserRealm extends AuthorizingRealms{
+public class UserRealm extends AuthorizingRealm{
     //
 
     @Autowired

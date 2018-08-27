@@ -3,6 +3,7 @@ package com.windcoder.qycms.core.system.entity;
 
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="sys_user")
+@DynamicInsert
 public class User extends Auditable{
     private static final long serialVersionUID = 1L;
     @Id

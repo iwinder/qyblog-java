@@ -8,7 +8,7 @@ public class UserDto {
     private String email;
     private String avatar;
     private String nickname;
-    private Boolean isDisable;
+    private boolean isDisable;
 
     public Long getId() {
         return id;
@@ -67,11 +67,11 @@ public class UserDto {
     }
 
 
-    public Boolean getIsDisable() {
+    public boolean getIsDisable() {
         return isDisable;
     }
 
-    public void setIsDisable(Boolean isDisable) {
+    public void setIsDisable(boolean isDisable) {
         this.isDisable = isDisable;
     }
 }
