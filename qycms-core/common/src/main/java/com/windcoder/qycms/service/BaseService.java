@@ -1,13 +1,13 @@
-package com.windcoder.qycms.core.system.service;
+package com.windcoder.qycms.service;
 
-import com.windcoder.qycms.core.system.repository.SupportRepository;
-import org.springframework.stereotype.Service;
+import com.windcoder.qycms.repository.SupportRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
 
-public class BaseService <T, ID extends Serializable, R extends SupportRepository<T, ID>>  {
+public class BaseService <T, ID extends Serializable, R extends SupportRepository<T, ID>> {
     private Class<T> clazz;
     protected R repository;
 
@@ -16,6 +16,7 @@ public class BaseService <T, ID extends Serializable, R extends SupportRepositor
         this.clazz = clazz;
     }
 
+    @Autowired
     public <S extends R> void setRepository(S repository) {
         this.repository = repository;
     }

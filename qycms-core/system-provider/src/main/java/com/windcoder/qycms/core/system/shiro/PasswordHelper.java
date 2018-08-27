@@ -2,8 +2,8 @@ package com.windcoder.qycms.core.system.shiro;
 
 import com.windcoder.qycms.core.system.entity.User;
 import com.windcoder.qycms.utils.SecurityUtils;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
+//import org.apache.shiro.crypto.hash.SimpleHash;
+//import org.apache.shiro.util.ByteSource;
 
 public class PasswordHelper {
 
@@ -20,12 +20,12 @@ public class PasswordHelper {
     }
 
     public static String encryptPassword(User user) {
-        String newPassword = new SimpleHash(
-                ALGORITHM,
-                user.getPassword(),
-                ByteSource.Util.bytes(user.getCredentialsSalt()),
-                HASHITERATIONS).toHex();
-        return newPassword;
+//        String newPassword = new SimpleHash(
+//                ALGORITHM,
+//                user.getPassword(),
+//                ByteSource.Util.bytes(user.getCredentialsSalt()),
+//                HASHITERATIONS).toHex();
+        return  user.getPassword();
     }
 
 

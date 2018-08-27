@@ -2,6 +2,8 @@ package com.windcoder.qycms.core.system.entity;
 
 
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -30,6 +32,7 @@ public class User extends Auditable{
     /**
      * 帐号状态:0正常,1禁用
      */
+    @ColumnDefault("0")
     private Boolean isDisable;
 
 
@@ -93,7 +96,7 @@ public class User extends Auditable{
         return isDisable;
     }
 
-    public void setIdDisable(Boolean isDisable) {
+    public void setIsDisable(Boolean isDisable) {
         this.isDisable = isDisable;
     }
 

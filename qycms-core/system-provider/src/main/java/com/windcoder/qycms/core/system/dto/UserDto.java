@@ -66,11 +66,12 @@ public class UserDto {
         this.nickname = nickname;
     }
 
-    public Boolean getDisable() {
+
+    public Boolean getIsDisable() {
         return isDisable;
     }
 
-    public void setDisable(Boolean disable) {
-        isDisable = disable;
+    public void setIsDisable(Boolean isDisable) {
+        this.isDisable = isDisable;
     }
 }
