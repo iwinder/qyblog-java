@@ -10,6 +10,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
@@ -113,6 +114,18 @@ public class ShiroConfiguration {
         redisManager.setPassword(redisProperties.getPassword());
         return redisManager;
     }
+
+    @Bean
+    public SecurityManager securityManager() {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+//        securityManager.setRealm(myShiroRealm());
+        // 自定义session管理 使用redis
+        securityManager.setSessionManager(sessionManager());
+        // 自定义缓存实现 使用redis
+//        securityManager.setCacheManager(cacheManager());
+        return securityManager;
+    }
+
 
 
     //自定义sessionManager
