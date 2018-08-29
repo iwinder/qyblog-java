@@ -9,7 +9,7 @@ public class PasswordHelper {
 
     public static final String ALGORITHM = "SHA-1";
 
-    public static final int HASHITERATIONS = 1024;
+    public static final int HASHITERATIONS = 2;
 
     private static final int SALT_SIZE = 22;
 
@@ -25,7 +25,7 @@ public class PasswordHelper {
                 user.getPassword(),
                 ByteSource.Util.bytes(user.getCredentialsSalt()),
                 HASHITERATIONS).toHex();
-        return  user.getPassword();
+        return  newPassword;
     }
 
 

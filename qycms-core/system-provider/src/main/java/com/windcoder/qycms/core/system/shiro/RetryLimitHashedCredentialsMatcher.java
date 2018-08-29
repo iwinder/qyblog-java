@@ -9,6 +9,9 @@ import org.apache.shiro.cache.CacheManager;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * TODO：目前能存到redis中，但取出数据有问题，导致登录错误计数无效
+ */
 public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher{
 //
     private Cache<String, AtomicInteger> passwordRetryCache;

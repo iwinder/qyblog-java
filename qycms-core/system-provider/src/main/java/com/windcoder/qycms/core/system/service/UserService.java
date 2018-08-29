@@ -13,8 +13,8 @@ public class UserService extends BaseService<User,Long,UserRepository> {
     private void entryptPassword(User user) {
         if (StringUtils.isNotEmpty(user.getPassword())) {
             String salt = PasswordHelper.generateSalt();
-            String password = PasswordHelper.encryptPassword(user);
             user.setSalt(salt);
+            String password = PasswordHelper.encryptPassword(user);
             user.setPassword(password);
         }
     }

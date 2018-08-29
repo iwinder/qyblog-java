@@ -1,6 +1,7 @@
 package com.windcoder.qycms.core.system;
 
 import com.windcoder.qycms.core.system.entity.User;
+import com.windcoder.qycms.utils.ReturnResult;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -17,27 +18,40 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginApiController {
 
     @PostMapping("login")
-    public JSONObject adminLogin(User user){
-        JSONObject result = new JSONObject();
+    public ReturnResult adminLogin(User user){
+        ReturnResult result = new ReturnResult();
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         try {
             subject.login(token);
-            result.put("token",subject.getSession().getId());
-            result.put("msg","登录成功");
-            result.put("code",200);
+            result.setToken(subject.getSession().getId());
+            result.setMsg("登录成功");
+            result.setCode(200);
         }  catch (IncorrectCredentialsException e) {
-            result.put("msg", "密码错误");
-            result.put("code",400);
+            result.setMsg("密码错误");
+            result.setCode(400);
         } catch (LockedAccountException e) {
-            result.put("msg", "登录失败，该用户已被冻结");
-            result.put("code",400);
+            result.setMsg("登录失败，该用户已被冻结");
+            result.setCode(400);
         } catch (AuthenticationException e) {
-            result.put("msg", "该用户不存在");
-            result.put("code",400);
+            result.setMsg("该用户不存在");
+            result.setCode(400);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
+
+    /**
+     * 未登录，shiro应重定向到登录界面，此处返回未登录状态信息由前端控制跳转页面
+     * @return
+     */
+    @RequestMapping(value = "/unauth")
+    public ReturnResult unauth() {
+        ReturnResult result = new ReturnResult();
+        result.setMsg("未登录");
+        result.setCode(400);
+        return result;
+    }
+
 }

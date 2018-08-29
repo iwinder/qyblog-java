@@ -1,7 +1,9 @@
 package com.windcoder.qycms.core.system.shiro;
 
+
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
+
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -10,7 +12,8 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+
+
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
@@ -20,8 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.web.servlet.HandlerExceptionResolver;
+
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
@@ -81,7 +83,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/**", "authc");
         //配置shiro默认登录界面地址，前后端分离中登录界面跳转应由前端路由控制，后台仅返回json数据
-        shiroFilterFactoryBean.setLoginUrl("/unauth");
+        shiroFilterFactoryBean.setLoginUrl("/api/unauth");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -91,21 +93,22 @@ public class ShiroConfiguration {
      * @return
      */
     @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+    public HashedCredentialsMatcher hashedCredentialsMatcher(CacheManager cacheManager) {
+        RetryLimitHashedCredentialsMatcher hashedCredentialsMatcher = new RetryLimitHashedCredentialsMatcher(cacheManager);
         hashedCredentialsMatcher.setHashAlgorithmName(PasswordHelper.ALGORITHM);//散列算法:这里使用SHA-256算法;
         hashedCredentialsMatcher.setHashIterations(PasswordHelper.HASHITERATIONS);//散列的次数，比如散列两次，相当于 SHA-256(SHA-256(""));
         return hashedCredentialsMatcher;
     }
 
     @Bean
-    @DependsOn("lifecycleBeanPostProcessor")
-    public Realm myShiroRealm() {
+//    @DependsOn("lifecycleBeanPostProcessor")
+    public Realm myShiroRealm(HashedCredentialsMatcher hashedCredentialsMatcher) {
         UserRealm myShiroRealm = new UserRealm();
+        myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher);
         return myShiroRealm;
     }
 
-
+    @Bean
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(redisProperties.getHost());
@@ -115,24 +118,25 @@ public class ShiroConfiguration {
         return redisManager;
     }
 
-    @Bean
-    public SecurityManager securityManager() {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-//        securityManager.setRealm(myShiroRealm());
-        // 自定义session管理 使用redis
-        securityManager.setSessionManager(sessionManager());
-        // 自定义缓存实现 使用redis
-//        securityManager.setCacheManager(cacheManager());
-        return securityManager;
-    }
+//    @Bean
+//    public SecurityManager securityManager(Realm myShiroRealm,SessionManager sessionManager,CacheManager cacheManager,Authenticator authenticator) {
+//        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+//        securityManager.setRealm(myShiroRealm);
+//        // 自定义session管理 使用redis
+//        securityManager.setSessionManager(sessionManager);
+//        // 自定义缓存实现 使用redis
+//        securityManager.setCacheManager(cacheManager);
+//        securityManager.setAuthenticator(authenticator);
+//        return securityManager;
+//    }
 
 
 
     //自定义sessionManager
     @Bean
-    public SessionManager sessionManager() {
+    public SessionManager sessionManager(RedisSessionDAO redisSessionDAO) {
         MySessionManager mySessionManager = new MySessionManager();
-        mySessionManager.setSessionDAO(redisSessionDAO());
+        mySessionManager.setSessionDAO(redisSessionDAO);
         return mySessionManager;
     }
 
@@ -142,9 +146,9 @@ public class ShiroConfiguration {
      * 使用的是shiro-redis开源插件
      */
     @Bean
-    public RedisSessionDAO redisSessionDAO() {
+    public RedisSessionDAO redisSessionDAO(RedisManager redisManager) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setRedisManager(redisManager());
+        redisSessionDAO.setRedisManager(redisManager);
         return redisSessionDAO;
     }
 
@@ -152,9 +156,9 @@ public class ShiroConfiguration {
 
 
     @Bean("shiroRedisCacheManager")
-    public CacheManager cacheManager() {
+    public CacheManager cacheManager(RedisManager redisManager) {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
-        redisCacheManager.setRedisManager(redisManager());
+        redisCacheManager.setRedisManager(redisManager);
         return redisCacheManager;
     }
 
