@@ -17,7 +17,8 @@ export class QyUserFormComponent implements OnInit {
     validateForm: FormGroup;
 
     outerCounterValue: String = '测试一下';
-
+    // tslint:disable-next-line:no-inferrable-types
+    disabledValue: boolean = true;
     constructor(private fb: FormBuilder) {
     }
 
@@ -64,12 +65,12 @@ export class QyUserFormComponent implements OnInit {
 
     ngOnInit() {
         this.validateForm = this.fb.group({
-            username: [ '', [ Validators.required ], [ this.userNameAsyncValidator ] ],
+            username: [ { value: '', disabled: this.disabledValue}, [ Validators.required ], [ this.userNameAsyncValidator ] ],
             email: [null, [Validators.email]],
             password: [null, [Validators.required]],
             checkPassword: [null, [Validators.required, this.confirmationValidator]],
             nickname: [null, [Validators.required]],
-            comment: [null, [Validators.required]]
+            comment: [{ value: null, disabled: this.disabledValue}, [Validators.required]]
         });
     }
     markAsDirty() {

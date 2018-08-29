@@ -32,8 +32,6 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
   @ViewChild('host') host;
   private mdeditor: any;
   private value: string;
-  // conf = new EditorConfig();
-  // markdown = '测试语句';
   onChange: Function = () => { };
   onTouched: Function = () => { };
   constructor(
@@ -45,10 +43,6 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
 
   ngAfterViewInit(): void {
     this.init();
-    // 当编辑器内容改变时，触发textarea的change事件
-    // this.editor.on('change', function () {
-    //   out.emit(textarea.val());
-    // });
   }
 
   ngOnDestroy(): void {
@@ -56,13 +50,10 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
   }
   writeValue(value: string): void {
     this.value = value;
-    console.log('this.value 0:', this.value);
+    console.log('value', value);
     if (this.mdeditor) {
-      console.log('this.mdeditor.value 1:', this.value);
-      console.log('this.mdeditor 1:', this.mdeditor);
         this.mdeditor.setMarkdown(this.value);
     }
-    console.log('this.value 2:', this.value);
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -71,7 +62,8 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
     this.onTouched = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
-    this.editormdConfig.readOnly = isDisabled;
+    // this.mdeditor.readOnly = isDisabled;
+    console.log('isDisabled', isDisabled);
     if (isDisabled) {
       this.mdeditor.setDisabled();
     } else {
@@ -86,41 +78,21 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
     }
     this.editormdConfig = new EditorConfig();
     this.editormdConfig.onload = () => {
-      console.log('this.value onload 0:', this.value);
       if (this.value) {
         this.mdeditor.setMarkdown(this.value);
       }
       this.onReady.emit();
     };
     this.editormdConfig.onchange = () => {
-      console.log('this.value onchange 0:', this.value);
-      console.log('this.getMarkdown onchange 0:', this.mdeditor.getMarkdown());
       this.updateValue(this.mdeditor.getMarkdown());
     };
-    console.log( 'this.host.nativeElement', this.host.nativeElement.id);
-    console.log( 'this.editormdConfig', this.editormdConfig);
+
 
     this.mdeditor = editormd(this.host.nativeElement.id, this.editormdConfig); // 创建编辑器
-    // this.mdeditor.render(this.host.nativeElement);
-    // this.mdeditor.editor.onload = () => {
-    // };
-    console.log( 'this.mdeditor', this.mdeditor);
-    console.log( ' this.mdeditor.editor',  this.mdeditor.editor);
-    // this.mdeditor.addListener('onload', () => {
-
-
-    // });
 
   }
 
-  addEvent() {
-    this.mdeditor.editor.addListener('onchange', () => {
-        this.updateValue(this.mdeditor.getMarkdown());
-    });
-    this.mdeditor.editor.addListener('focus', () => {
-        this.onFocus.emit();
-    });
-}
+
 
   updateValue(value: string) {
     this.ngZone.run(() => {

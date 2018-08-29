@@ -66,7 +66,7 @@
     <nz-form-item>
           <nz-form-label [nzSpan]="7" nzRequired>用户名</nz-form-label>
           <nz-form-control [nzSpan]="12" nzHasFeedback>
-            <input nz-input formControlName="username" placeholder="async validate try to write JasonWood">
+            <input nz-input formControlName="username" ng-disabled="disabledValue" placeholder="async validate try to write JasonWood">
             <nz-form-explain *ngIf="validateForm.get('username').dirty && validateForm.get('username').errors || validateForm.get('username').pending ">
               <ng-container *ngIf="validateForm.get('username').hasError('required')">
                 Please input your username!
@@ -134,7 +134,7 @@
         <nz-form-item>
                 <nz-form-label [nzSpan]="7" nzRequired>简介</nz-form-label>
                 <nz-form-control [nzSpan]="12" >
-                  <qy-editor-md formControlName="comment" ></qy-editor-md>
+                  <qy-editor-md formControlName="comment" ng-disabled="disabledValue"></qy-editor-md>
                   <nz-form-explain *ngIf="validateForm.get('comment').dirty&&validateForm.get('comment').hasError('required')">Please input your comment !</nz-form-explain>
                 </nz-form-control>
         </nz-form-item>

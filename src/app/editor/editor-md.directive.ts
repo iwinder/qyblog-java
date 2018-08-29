@@ -8,7 +8,7 @@ declare var $: any;
   selector: '[appEditorMd]'
 })
 export class EditorMdDirective {
-  // implements AfterViewInit 
+  // implements AfterViewInit
   // @Input() editormdConfig: EditorConfig; // 配置选项
   // // tslint:disable-next-line:no-output-on-prefix
   // @Output() onEditorChange: EventEmitter<string> = new EventEmitter<string>(); // 发射器
