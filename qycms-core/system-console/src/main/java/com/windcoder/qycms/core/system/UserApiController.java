@@ -4,8 +4,17 @@ import com.windcoder.qycms.core.system.dto.UserDto;
 import com.windcoder.qycms.core.system.entity.User;
 import com.windcoder.qycms.core.system.service.UserService;
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/users")
@@ -44,5 +53,16 @@ public class UserApiController {
         User user = userService.findOne(userId);
 
         return ModelMapperUtils.map(user, UserDto.class);
+    }
+
+    public Page<User> allActivities(User user,
+                                    @RequestParam(name= "searchText", required=false)String searchText,
+                                    @PageableDefault(direction= Sort.Direction.DESC,sort={"lastModifiedDate"}) Pageable pageable){
+        if(StringUtils.isNotBlank(searchText)) {
+            user.setUsername(searchText);
+        }
+        Page<User> users = userService.findAll(user,pageable);
+        Type type = new TypeToken<List<UserDto>>() {}.getType();
+        return  ModelMapperUtils.map(users,type,pageable);
     }
 }

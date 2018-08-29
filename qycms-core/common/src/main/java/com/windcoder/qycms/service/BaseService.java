@@ -2,6 +2,10 @@ package com.windcoder.qycms.service;
 
 import com.windcoder.qycms.repository.SupportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -28,5 +32,14 @@ public class BaseService <T, ID extends Serializable, R extends SupportRepositor
 
     public T findOne(ID id) {
         return repository.findOne(id);
+    }
+
+    public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable){
+
+        return repository.findAll(Example.of(example.getProbe()), pageable);
+    }
+
+    public Page<T> findAll(Specification<T> spec, Pageable pageable) {
+        return repository.findAll(spec, pageable);
     }
 }
