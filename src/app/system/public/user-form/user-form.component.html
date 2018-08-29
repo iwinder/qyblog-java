@@ -61,7 +61,7 @@
 
 
 
-<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event,validateForm.value)">
+<form nz-form [formGroup]="validateForm" >
         
     <nz-form-item>
           <nz-form-label [nzSpan]="7" nzRequired>用户名</nz-form-label>
@@ -141,7 +141,8 @@
 
         <nz-form-item>
           <nz-form-control [nzOffset]="7" [nzSpan]="12">
-            <button nz-button nzType="primary" [disabled]="!validateForm.valid">保存</button>
+            <!-- [disabled]="!validateForm.valid" -->
+            <button nz-button nzType="primary" (click)="submitForm($event,validateForm.value)" >保存</button>
             <button nz-button (click)="resetForm($event)">Reset</button>
           </nz-form-control>
         </nz-form-item>

@@ -23,4 +23,12 @@ export class EditorConfig {
 
     constructor() {
     }
+
+    /**
+     * name
+     */
+    public onload() {
+    }
+    public onchange() {
+    }
 }

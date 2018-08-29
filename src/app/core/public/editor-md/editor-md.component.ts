@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, AfterViewInit, ElementRef, NgZone, Output, EventEmitter, OnDestroy, forwardRef } from '@angular/core';
-import { EditorConfig } from '../../../editor/model/editor-config';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { EditorConfig } from './editor-config';
 
 declare var editormd: any;
 
@@ -56,9 +56,13 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
   }
   writeValue(value: string): void {
     this.value = value;
+    console.log('this.value 0:', this.value);
     if (this.mdeditor) {
+      console.log('this.mdeditor.value 1:', this.value);
+      console.log('this.mdeditor 1:', this.mdeditor);
         this.mdeditor.setMarkdown(this.value);
     }
+    console.log('this.value 2:', this.value);
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -70,9 +74,9 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
     this.editormdConfig.readOnly = isDisabled;
     if (isDisabled) {
       this.mdeditor.setDisabled();
-  } else {
-      this.mdeditor.setEnabled();
-  }
+    } else {
+        this.mdeditor.setEnabled();
+    }
   }
 
   init() {
@@ -80,25 +84,40 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
       console.error('UEditor is missing');
       return;
     }
-
+    this.editormdConfig = new EditorConfig();
+    this.editormdConfig.onload = () => {
+      console.log('this.value onload 0:', this.value);
+      if (this.value) {
+        this.mdeditor.setMarkdown(this.value);
+      }
+      this.onReady.emit();
+    };
+    this.editormdConfig.onchange = () => {
+      console.log('this.value onchange 0:', this.value);
+      console.log('this.getMarkdown onchange 0:', this.mdeditor.getMarkdown());
+      this.updateValue(this.mdeditor.getMarkdown());
+    };
     console.log( 'this.host.nativeElement', this.host.nativeElement.id);
-    this.mdeditor = editormd(this.host.nativeElement.id, this.editormdConfig); // 创建编辑器
-    // this.mdeditor.addListener('ready', () => {
-    //   if (this.value) {
-    //       this.mdeditor.setContent(this.value);
-    //   }
-    //   this.onReady.emit();
+    console.log( 'this.editormdConfig', this.editormdConfig);
 
-    //   this.mdeditor.addEvent();
+    this.mdeditor = editormd(this.host.nativeElement.id, this.editormdConfig); // 创建编辑器
+    // this.mdeditor.render(this.host.nativeElement);
+    // this.mdeditor.editor.onload = () => {
+    // };
+    console.log( 'this.mdeditor', this.mdeditor);
+    console.log( ' this.mdeditor.editor',  this.mdeditor.editor);
+    // this.mdeditor.addListener('onload', () => {
+
+
     // });
 
   }
 
   addEvent() {
-    this.mdeditor.addListener('onchange', () => {
+    this.mdeditor.editor.addListener('onchange', () => {
         this.updateValue(this.mdeditor.getMarkdown());
     });
-    this.mdeditor.addListener('focus', () => {
+    this.mdeditor.editor.addListener('focus', () => {
         this.onFocus.emit();
     });
 }

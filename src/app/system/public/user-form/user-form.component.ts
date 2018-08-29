@@ -16,7 +16,7 @@ import { Observer, Observable } from 'rxjs';
 export class QyUserFormComponent implements OnInit {
     validateForm: FormGroup;
 
-
+    outerCounterValue: String = '测试一下';
 
     constructor(private fb: FormBuilder) {
     }
@@ -69,12 +69,7 @@ export class QyUserFormComponent implements OnInit {
             password: [null, [Validators.required]],
             checkPassword: [null, [Validators.required, this.confirmationValidator]],
             nickname: [null, [Validators.required]],
-            comment: [null, [Validators.required]],
-            phoneNumberPrefix: ['+86'],
-            phoneNumber: [null, [Validators.required]],
-            website: [null, [Validators.required]],
-            captcha: [null, [Validators.required]],
-            agree: [false]
+            comment: [null, [Validators.required]]
         });
     }
     markAsDirty() {
@@ -82,8 +77,13 @@ export class QyUserFormComponent implements OnInit {
             this.validateForm.controls[key].markAsDirty();
         }
     }
-    _submitForm() {
-
+    submitForm = ($event, value) => {
+        $event.preventDefault();
+        for (let key of Object.keys(this.validateForm.controls)) {
+          this.validateForm.controls[ key ].markAsDirty();
+          this.validateForm.controls[ key ].updateValueAndValidity();
+        }
+        console.log(value);
     }
 
     getFormControl(name) {
