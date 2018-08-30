@@ -38,7 +38,7 @@ public class UserService extends BaseService<User,Long,UserRepository> {
     public Page<User> findAll(User user,Pageable pageable){
         return super.findAll((root, query,  cb) -> {
             Predicate predicate = cb.equal(root.get("isDeleted"), false);
-//            predicate =  cb.and(predicate,cb.equal(root.get("site").get("id"), ugcActivity.getSite().getId()));
+//            Predicate predicate = new Predicate() ;
             if(user.getUsername() != null) {
                 predicate = cb.and(predicate, cb.like( cb.lower(root.get("title")),
                         "%"+StringUtils.trim(user.getUsername()).toLowerCase()+"%" ));

@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -55,7 +56,8 @@ public class UserApiController {
         return ModelMapperUtils.map(user, UserDto.class);
     }
 
-    public Page<User> allActivities(User user,
+    @GetMapping("")
+    public Page<UserDto> allActivities(User user,
                                     @RequestParam(name= "searchText", required=false)String searchText,
                                     @PageableDefault(direction= Sort.Direction.DESC,sort={"lastModifiedDate"}) Pageable pageable){
         if(StringUtils.isNotBlank(searchText)) {
@@ -63,6 +65,7 @@ public class UserApiController {
         }
         Page<User> users = userService.findAll(user,pageable);
         Type type = new TypeToken<List<UserDto>>() {}.getType();
-        return  ModelMapperUtils.map(users,type,pageable);
+        List<UserDto> userDtos = ModelMapperUtils.map(users.getContent(),type);
+        return  new PageImpl<>(userDtos,pageable,users.getTotalElements());
     }
 }

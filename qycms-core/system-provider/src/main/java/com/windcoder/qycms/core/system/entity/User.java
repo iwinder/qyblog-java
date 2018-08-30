@@ -36,6 +36,8 @@ public class User extends Auditable{
      */
     @ColumnDefault("0")
     private Boolean isDisable;
+    @ColumnDefault("0")
+    private Boolean isDeleted;
 
 
     public Long getId() {
@@ -100,6 +102,15 @@ public class User extends Auditable{
 
     public void setIsDisable(Boolean isDisable) {
         this.isDisable = isDisable;
+    }
+
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public String getCredentialsSalt() {

@@ -19,9 +19,9 @@ public class ModelMapperUtils {
         return modelMapper.map(source,destinationType);
     }
 
-    public static <D> Page<D> map(Page<?> source, Type type, Pageable pageable) {
-        List<D> list = map(source.getContent(), type, getTypeMappingName());
-
-        return new PageImpl<D>(list, pageable, source.getTotalElements());
-    }
+//    public static <D> Page<D> map(Page<?> source, Type type, Pageable pageable) {
+//        List<D> list = map(source.getContent(), type, getTypeMappingName());
+//
+//        return new PageImpl<D>(list, pageable, source.getTotalElements());
+//    }
 }

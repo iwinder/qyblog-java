@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 
 import javax.servlet.Filter;
@@ -95,19 +96,36 @@ public class ShiroConfiguration {
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(CacheManager cacheManager) {
         RetryLimitHashedCredentialsMatcher hashedCredentialsMatcher = new RetryLimitHashedCredentialsMatcher(cacheManager);
-        hashedCredentialsMatcher.setHashAlgorithmName(PasswordHelper.ALGORITHM);//散列算法:这里使用SHA-256算法;
-        hashedCredentialsMatcher.setHashIterations(PasswordHelper.HASHITERATIONS);//散列的次数，比如散列两次，相当于 SHA-256(SHA-256(""));
+        hashedCredentialsMatcher.setHashAlgorithmName(PasswordHelper.ALGORITHM);//散列算法:这里使用SHA-1算法;
+        hashedCredentialsMatcher.setHashIterations(PasswordHelper.HASHITERATIONS);//散列的次数，比如散列两次，相当于 SHA-1(SHA-1(""));
         return hashedCredentialsMatcher;
     }
 
+    /**
+     *  自定义Realm，用于设置登录以及授权逻辑。
+     *  spring允许用户通过depends-on属性指定bean前置依赖的bean,前置依赖的bean会在本bean实例化之前创建好
+     *
+     *  Realm：域，Shiro从从Realm获取安全数据（如用户、角色、权限）：
+     *  就是说SecurityManager要验证用户身份，那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法；
+     *  也需要从Realm得到用户相应的角色/权限进行验证用户是否能进行操作；
+     *  可以把Realm看成DataSource，即安全数据源。
+     *  如我们之前的ini配置方式将使用org.apache.shiro.realm.text.IniRealm。
+     * @param hashedCredentialsMatcher
+     * @return
+     */
     @Bean
-//    @DependsOn("lifecycleBeanPostProcessor")
+    @DependsOn("lifecycleBeanPostProcessor")
     public Realm myShiroRealm(HashedCredentialsMatcher hashedCredentialsMatcher) {
         UserRealm myShiroRealm = new UserRealm();
         myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher);
         return myShiroRealm;
     }
 
+    /**
+     * 配置shiro redisManager
+     * redisProperties会自动读取application.properties中关于redis的配置
+     * @return
+     */
     @Bean
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
@@ -131,8 +149,11 @@ public class ShiroConfiguration {
 //    }
 
 
-
-    //自定义sessionManager
+    /**
+     *  自定义sessionManager
+     * @param redisSessionDAO
+     * @return
+     */
     @Bean
     public SessionManager sessionManager(RedisSessionDAO redisSessionDAO) {
         MySessionManager mySessionManager = new MySessionManager();
@@ -153,8 +174,11 @@ public class ShiroConfiguration {
     }
 
 
-
-
+    /**
+     * cacheManager 缓存 redis实现
+     * @param redisManager
+     * @return
+     */
     @Bean("shiroRedisCacheManager")
     public CacheManager cacheManager(RedisManager redisManager) {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
@@ -163,12 +187,22 @@ public class ShiroConfiguration {
     }
 
 
+    /**
+     * 这里使用shiro默认拦截器ShiroFilterChainDefinition
+     *
+     * @return
+     */
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
         return chainDefinition;
     }
 
+    /**
+     * shiro自动代理
+     * DelegatingFilterProxy作用是自动到spring容器查找名字为shiroFilter（filter-name）的bean并把所有Filter的操作委托给它。
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
