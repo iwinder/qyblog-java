@@ -131,13 +131,13 @@
           </nz-form-control>
         </nz-form-item>
 
-        <nz-form-item>
+        <!-- <nz-form-item>
                 <nz-form-label [nzSpan]="7" nzRequired>简介</nz-form-label>
                 <nz-form-control [nzSpan]="12" >
-                  <qy-editor-md formControlName="comment" ng-disabled="disabledValue"></qy-editor-md>
+                  <qy-editor-md formControlName="comment" (getHtmlValue)="getHtmlValue($event)" ></qy-editor-md>
                   <nz-form-explain *ngIf="validateForm.get('comment').dirty&&validateForm.get('comment').hasError('required')">Please input your comment !</nz-form-explain>
                 </nz-form-control>
-        </nz-form-item>
+        </nz-form-item> -->
 
         <nz-form-item>
           <nz-form-control [nzOffset]="7" [nzSpan]="12">

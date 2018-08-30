@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../../service/user-service';
+import { User } from '../../../entity/User';
 
 @Component({
     selector: 'qy-user-list',
@@ -24,9 +26,22 @@ data = [
       address: 'Sidney No. 1 Lake Park',
     }
   ];
-    constructor() {
+  userData: User[];
+    constructor(private userService: UserService) {
     }
 
     ngOnInit() {
+      this.loadData();
+    }
+    loadData() {
+      this.userService.findAll().subscribe(
+        data => {
+          console.log(data);
+          this.userData = data['content'];
+        },
+        error => {
+          console.log(error);
+        }
+      );
     }
 }

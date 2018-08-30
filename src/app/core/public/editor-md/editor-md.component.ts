@@ -29,6 +29,8 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
   // tslint:disable-next-line:no-output-on-prefix
   @Output() onFocus = new EventEmitter();
 
+  @Output() getHtmlValue = new EventEmitter();
+
   @ViewChild('host') host;
   private mdeditor: any;
   private value: string;
@@ -76,7 +78,7 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
       console.error('UEditor is missing');
       return;
     }
-    this.editormdConfig = new EditorConfig();
+    this.editormdConfig = this.editormdConfig != null ? this.editormdConfig : new EditorConfig();
     this.editormdConfig.onload = () => {
       if (this.value) {
         this.mdeditor.setMarkdown(this.value);
@@ -102,6 +104,7 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
         this.onTouched();
 
         this.onValueChange.emit(this.value);
+        this.getHtmlValue.emit({ originalEvent: event, value: this.getHtmlContent() });
     });
  }
 
@@ -122,6 +125,7 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
   }
 
   getHtmlContent(): string {
+    console.log('this.mdeditor.getHTML() 1', this.mdeditor.getHTML());
     return this.mdeditor.getHTML();
   }
 }

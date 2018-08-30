@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserListComponent } from './views/user/user-list/user-list.component';
 import { RoleListComponent } from './views/role/role-list/role-list.component';
 import { UserAddComponent } from './views/user/user-add/user-add.component';
+import { UserService } from './service/user-service';
 
 const routes: Routes = [
     {
@@ -32,7 +33,7 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: []
+    providers: [UserService]
 })
 export class SystemRoutingModule { }
 

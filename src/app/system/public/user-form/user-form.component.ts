@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -14,6 +14,7 @@ import { Observer, Observable } from 'rxjs';
     styleUrls: ['./user-form.component.scss']
 })
 export class QyUserFormComponent implements OnInit {
+    @Output() save: EventEmitter<any> = new EventEmitter();
     validateForm: FormGroup;
 
     outerCounterValue: String = '测试一下';
@@ -65,12 +66,12 @@ export class QyUserFormComponent implements OnInit {
 
     ngOnInit() {
         this.validateForm = this.fb.group({
-            username: [ { value: '', disabled: this.disabledValue}, [ Validators.required ], [ this.userNameAsyncValidator ] ],
+            username: [ '', [ Validators.required ], [ this.userNameAsyncValidator ] ],
             email: [null, [Validators.email]],
             password: [null, [Validators.required]],
             checkPassword: [null, [Validators.required, this.confirmationValidator]],
             nickname: [null, [Validators.required]],
-            comment: [{ value: null, disabled: this.disabledValue}, [Validators.required]]
+            // comment: [null, [Validators.required]]
         });
     }
     markAsDirty() {
@@ -84,10 +85,14 @@ export class QyUserFormComponent implements OnInit {
           this.validateForm.controls[ key ].markAsDirty();
           this.validateForm.controls[ key ].updateValueAndValidity();
         }
+        this.save.emit({ originalEvent: event, value: this.validateForm.value });
         console.log(value);
     }
 
     getFormControl(name) {
         return this.validateForm.controls[name];
+    }
+    getHtmlValue(event) {
+        console.log('getHtmlValue', event.value);
     }
 }
