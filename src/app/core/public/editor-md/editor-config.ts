@@ -22,11 +22,8 @@ export class EditorConfig {
     public imageUploadURL = '';
 
     constructor() {
-    }
+     }
 
-    /**
-     * name
-     */
     public onload() {
     }
     public onchange() {
