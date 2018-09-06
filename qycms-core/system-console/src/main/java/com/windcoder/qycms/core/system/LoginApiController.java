@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("api/")
 public class LoginApiController {
@@ -24,7 +27,11 @@ public class LoginApiController {
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         try {
             subject.login(token);
+            Map<String, Object> rMap = new HashMap<>();
+            rMap.put("isLoggedIn", true);
+            rMap.put("token", subject.getSession().getId());
             result.setToken(subject.getSession().getId());
+            result.setResult(rMap);
             result.setMsg("登录成功");
             result.setCode(200);
         }  catch (IncorrectCredentialsException e) {
