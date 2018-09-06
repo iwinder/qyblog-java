@@ -44,4 +44,15 @@ data = [
         }
       );
     }
+
+    sayHello() {
+      this.userService.sayHello("admin").subscribe(
+        data => {
+          console.log(data);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
 }

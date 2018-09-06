@@ -15,4 +15,16 @@ export class UserService {
     created(user: User, options?: {}): Observable<User>  {
         return this.http.put<User>(`api/users`, user, options);
     }
+
+    sayHello(name) {
+
+
+
+         let options = {
+            params: {
+                name: name
+            }
+        };
+        return this.http.get(`api/test/sayHello`, options);
+    }
 }

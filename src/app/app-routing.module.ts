@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContentComponent } from './core/layout/content/content.component';
+import { AuthGuard } from './core/AuthGuard';
 
 const newLocal = 'app/system/system.module#SystemModule';
 const routes: Routes = [
     {
         path: '', component: ContentComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         children: [
             // { path: '', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
              { path: 'system', loadChildren: 'app/system/system.module#SystemModule' },

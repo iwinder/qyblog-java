@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutModule } from './layout/layout.module';
 import { QyUeditorMdModule } from './public/editor-md/editor-md.module';
+import { AuthModule } from './AuthGuard/auth.module';
 
 const QY_MODULES = [
   QyUeditorMdModule
@@ -12,6 +13,7 @@ const QY_MODULES = [
   imports: [
     CommonModule,
     LayoutModule,
+    AuthModule,
     ...QY_MODULES
   ],
   declarations: [],
