@@ -7,6 +7,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.subject.Subject;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,6 +60,33 @@ public class LoginApiController {
         result.setMsg("未登录");
         result.setCode(400);
         return result;
+    }
+
+    @RequestMapping(value = "/status")
+    public void status(){
+        if(!SecurityUtils.getSubject().isAuthenticated()){
+            throw new UnauthenticatedException();
+        }
+    }
+
+    @RequestMapping(value = "/loginfo")
+    public ReturnResult loginfo() {
+        if(!SecurityUtils.getSubject().isAuthenticated()){
+            throw new UnauthenticatedException();
+        }
+        ReturnResult result = new ReturnResult();
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        Map<String, Object> rMap = new HashMap<>();
+        rMap.put("isLoggedIn", true);
+        rMap.put("token", subject.getSession().getId());
+        rMap.put("username", user.getUsername());
+        result.setToken(subject.getPrincipal());
+        result.setResult(rMap);
+        result.setMsg("登录成功");
+        result.setCode(200);
+        return result;
+//        return modelMapper.map((UserToken)SecurityUtils.getSubject().getPrincipal(), UserTokenDto.class);
     }
 
 }
