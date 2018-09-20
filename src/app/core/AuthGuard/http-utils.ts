@@ -17,7 +17,7 @@ export class HttpUtils {
         return body.data || body || {};
     }
 
-    public static handleError(error: HttpErrorResponse) {
+    public static handleError(error: HttpErrorResponse | any) {
         // In a real world app, you might use a remote logging infrastructure
         let errMsg: string;
         if (error instanceof Response) {
