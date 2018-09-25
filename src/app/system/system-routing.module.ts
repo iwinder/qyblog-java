@@ -10,7 +10,8 @@ const routes: Routes = [
         path: '', children: [
             {
                 path: 'user', children: [
-                    { path: '', component: UserListComponent },
+                    { path: '', redirectTo: 'list', pathMatch: 'full' },
+                    { path: 'list', component: UserListComponent },
                     { path: 'add', component: UserAddComponent },
                     // { path: ':id/edit', component: UgcExampleCourseEditComponent },
 

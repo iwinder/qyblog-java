@@ -2,7 +2,7 @@ import { Http, Response, ConnectionBackend, Request, RequestOptionsArgs } from '
 
 import { Injectable } from '@angular/core';
 import { Router, } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 
@@ -17,7 +17,7 @@ export class HttpUtils {
         return body.data || body || {};
     }
 
-    public static handleError(error: HttpErrorResponse) {
+    public static handleError(error: HttpErrorResponse | any) {
         // In a real world app, you might use a remote logging infrastructure
         let errMsg: string;
         if (error instanceof Response) {
@@ -37,7 +37,7 @@ export class HttpUtils {
         } else {
             errMsg = error.message ? error.message : error.toString();
         }
-        console.error(errMsg);
-        return Observable.throw(errMsg);
+         console.log("handleError", errMsg);
+        return throwError(errMsg);
     }
 }

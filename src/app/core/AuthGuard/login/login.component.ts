@@ -49,6 +49,7 @@ export class QyLoginComponent implements OnInit {
     let passwd = this.getFormControl("password").value;
     this.authService.login(username, passwd).subscribe(
       isLoggedIn => {
+        console.log("isLoggedIn",  isLoggedIn);
         if (isLoggedIn) {
           this.goHome();
         } else {

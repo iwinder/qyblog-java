@@ -2,7 +2,16 @@
 <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzBreakpoint]="'lg'"  [nzCollapsedWidth]="0" [nzTrigger]="triggerTemplate">
     <div class="logo">
     </div>
+
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
+            <li nz-menu-item>
+                    <a routerLinkActive="active" [routerLink]="['/']">
+                    <span>
+                        <i class="anticon anticon-file"></i>
+                        <span class="nav-text">控制面板</span>
+                   
+                    </span> </a>
+                </li>
         <li nz-submenu>
             <span title>
                 <i class="anticon anticon-user"></i>

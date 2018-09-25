@@ -10,7 +10,7 @@ export class AuthService {
   isLoggedIn: boolean = false;
   // store the URL so we can redirect after logging in
   redirectUrl: string;
-
+  userToken: {username: string, token: string};
 
   constructor(private http: HttpClient) {
   }
@@ -29,8 +29,11 @@ export class AuthService {
           // login successful, store username and jwt token in local storage to keep user logged in between page refreshes
           // tslint:disable-next-line:max-line-length
           localStorage.setItem('currentUser', JSON.stringify({username: username, token: response.token}));
+          this.userToken = JSON.parse(localStorage.getItem('currentUser'));
+          return this.isLoggedIn;
+        } else {
+          return HttpUtils.handleError(JSON.stringify(response));
         }
-        return this.isLoggedIn;
       }),
       catchError(HttpUtils.handleError)
     );
@@ -59,6 +62,49 @@ export class AuthService {
     const token: String = this.getToken();
     return token && token.length > 0;
   }
+
+  stats(): Observable<any> {
+    let url = '/api/status';
+
+      // return this.http.options(url)
+      return this.http.get(url).pipe(
+        tap(resp => {
+          this.isLoggedIn = true;
+          console.log("this.userToken", this.userToken);
+          console.log("!this.userToken", !this.userToken);
+          if (!this.userToken) {
+              this.loginfo();
+          }
+          return true;
+      }),
+        catchError(resp => {
+          this.isLoggedIn = false;
+          return HttpUtils.handleError(resp);
+      })
+    );
+  }
+
+  loginfo(): Observable<any> {
+    let url = '/api/loginfo';
+    return this.http.get<any>(url)
+        .pipe(
+          tap(resp => {
+            console.log("loginfo resp", resp);
+            console.log("loginfo resp.token", resp.token);
+            if (resp && resp.token) {
+              this.isLoggedIn = resp['result']['isLoggedIn'];
+              // login successful, store username and jwt token in local storage to keep user logged in between page refreshes
+              // tslint:disable-next-line:max-line-length
+              localStorage.setItem('currentUser', JSON.stringify({username: resp.result.username, token: resp.token}));
+            }
+            let ut = HttpUtils.extractData(resp);
+            console.log("ut", ut);
+            this.userToken =  this.userToken = JSON.parse(localStorage.getItem('currentUser'));
+            return this.userToken;
+        }),
+        catchError(HttpUtils.handleError)
+      );
+}
 
   // hasRole(role: string): boolean {
   //   const currentUser = this.getCurrentUser();

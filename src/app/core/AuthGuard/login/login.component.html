@@ -13,6 +13,7 @@
           <input type="password" nz-input formControlName="password" placeholder="Password">
         </nz-input-group>
         <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Please input your Password!</nz-form-explain>
+        <nz-form-explain *ngIf="error">{{error}}</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
