@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../entity/User';
 import { Page } from '../../core/entity/page';
@@ -16,15 +16,14 @@ export class UserService {
         return this.http.put<User>(`api/users`, user, options);
     }
 
-    sayHello(name) {
+    sayHello(name): Observable<string>  {
+           let param = new HttpParams();
+           param.append("name", name);
 
 
-
-         let options = {
-            params: {
-                name: name
-            }
+         let parameter = {
+            responseType: 'text'
         };
-        return this.http.get(`api/test/sayHello`, options);
+        return this.http.get(`api/test/sayHello`, {responseType: 'text', params: {"name": name}});
     }
 }
