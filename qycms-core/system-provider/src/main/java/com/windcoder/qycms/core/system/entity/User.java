@@ -39,6 +39,11 @@ public class User extends Auditable{
     @ColumnDefault("0")
     private Boolean isDeleted;
 
+    public User(Long id) {
+        this.id = id;
+    }
+    public User() {
+    }
 
     public Long getId() {
         return id;

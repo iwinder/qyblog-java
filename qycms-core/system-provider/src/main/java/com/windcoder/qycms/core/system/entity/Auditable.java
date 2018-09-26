@@ -1,14 +1,14 @@
 package com.windcoder.qycms.core.system.entity;
 
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -31,6 +31,16 @@ public class Auditable implements Serializable {
     @Column(updatable=false)
     protected Date createdDate;
 
+    @CreatedBy
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "created_by", updatable=false, foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
+    protected User createdBy;
+
+    @LastModifiedBy
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "last_modified_by", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
+    protected User lastModifiedBy;
+
 
     public Date getLastModifiedDate() {
         return lastModifiedDate;
@@ -46,5 +56,22 @@ public class Auditable implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public User getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(User lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 }
