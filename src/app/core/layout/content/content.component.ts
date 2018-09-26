@@ -14,6 +14,7 @@ export class ContentComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log('ContentComponent:', 22222);
     }
 
         /** custom trigger can be TemplateRef **/

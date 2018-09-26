@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 // import { EditorConfig } from './editor/model/editor-config';
 
 @Component({
@@ -8,9 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: []
   // styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent  implements OnInit {
   // title = 'qy';
-
+  ngOnInit() {
+    console.log('environment:', 1111);
+  }
 
   // conf = new EditorConfig();
   // markdown = '测试语句';

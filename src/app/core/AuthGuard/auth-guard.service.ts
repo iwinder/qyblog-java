@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from './auth.service';
+import { tap, catchError, map, mergeMap } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
 
 @Injectable()
 export class AuthGuard  implements CanActivate {
@@ -9,24 +11,25 @@ export class AuthGuard  implements CanActivate {
         private router: Router
     ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> |boolean {
     console.log("canActivate.stats data", this.authService.isLoggedIn);
     if (this.authService.isLoggedIn) {
       // logged in so return true
       return true;
     }
-     this.authService.stats().subscribe(
-       data => {
-         console.log("authService.stats data", data);
+    return this.authService.stats().pipe(
+      mergeMap(data => {
+        console.log("authService.stats data", data);
         this.authService.isLoggedIn = data ? data : true ;
         console.log("authService.stats this.authService.isLoggedIn", this.authService.isLoggedIn);
-        return true;
-       },
-       err => {
+        return of(true);
+      }),
+      catchError( err => {
+        alert(err);
         this.router.navigate(['/login']);
-            // not logged in so redirect to login page with the return url and return false
-        return false;
-       }
+        // not logged in so redirect to login page with the return url and return false
+        return of(false);
+     })
      );
 
   }
