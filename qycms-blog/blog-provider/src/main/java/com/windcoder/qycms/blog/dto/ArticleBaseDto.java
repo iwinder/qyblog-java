@@ -1,47 +1,27 @@
-package com.windcoder.qycms.blog.entity;
+package com.windcoder.qycms.blog.dto;
 
-import com.windcoder.qycms.core.system.entity.Auditable;
 import com.windcoder.qycms.core.system.entity.User;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.*;
+import javax.persistence.Lob;
 
-@Entity
-@Table(name="blog_article")
-@DynamicInsert
-public class Article extends Auditable {
+public class ArticleBaseDto {
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue
     private Long id;
     /**
      * 标题
      */
     private String title;
-    /**
-     * 内容-mkdown
-     */
-    @Lob
-    private String content;
-    /**
-     * 内容-html
-     */
-    @Lob
-    private String contentHtml;
+
 
     /**
      * 是否已发布
      */
-    @ColumnDefault("0")
     private Boolean isPublished;
 
     /**
      * 是否已删除
      */
-    @ColumnDefault("0")
     private Boolean isDeleted;
 
     /**
@@ -53,6 +33,7 @@ public class Article extends Auditable {
      * 作者
      */
     private User author;
+
 
     public Long getId() {
         return id;
@@ -70,21 +51,7 @@ public class Article extends Auditable {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
-    }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getContentHtml() {
-        return contentHtml;
-    }
-
-    public void setContentHtml(String contentHtml) {
-        this.contentHtml = contentHtml;
-    }
 
     public Boolean getIsPublished() {
         return isPublished;
@@ -117,4 +84,5 @@ public class Article extends Auditable {
     public void setAuthor(User author) {
         this.author = author;
     }
+
 }
