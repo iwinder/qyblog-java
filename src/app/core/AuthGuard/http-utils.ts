@@ -35,7 +35,7 @@ export class HttpUtils {
                 errMsg = body.message;
             }
         } else {
-            errMsg = error.message ? error.message : error.toString();
+            errMsg = error.msg ? error.msg : error.toString();
         }
          console.log("handleError", errMsg);
         return throwError(errMsg);

@@ -18,8 +18,13 @@ export class AuthGuard  implements CanActivate {
       return true;
     }
     return this.authService.stats().pipe(
-      mergeMap(data => {
+      tap(data => {
         console.log("authService.stats data", data);
+        if (data instanceof Object) {
+          alert(data.msg);
+          this.router.navigate(['/login']);
+          return of(false);
+        }
         this.authService.isLoggedIn = data ? data : true ;
         console.log("authService.stats this.authService.isLoggedIn", this.authService.isLoggedIn);
         return of(true);

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { HttpUtils } from './http-utils';
 import { catchError, retry, tap } from 'rxjs/operators';
 
@@ -24,7 +24,7 @@ export class AuthService {
     return this.http.post<any>(url, data).pipe(
       tap(response => {
         console.log("response", response);
-        if (response && response.token) {
+        if (response && response.token != null) {
           this.isLoggedIn = response['result']['isLoggedIn'];
           // login successful, store username and jwt token in local storage to keep user logged in between page refreshes
           // tslint:disable-next-line:max-line-length
@@ -32,7 +32,9 @@ export class AuthService {
           this.userToken = JSON.parse(localStorage.getItem('currentUser'));
           return this.isLoggedIn;
         } else {
-          return HttpUtils.handleError(JSON.stringify(response));
+          console.log("response 2", response);
+          throwError((JSON.stringify(response)));
+          // return HttpUtils.handleError(JSON.stringify(response));
         }
       }),
       catchError(HttpUtils.handleError)
@@ -70,8 +72,10 @@ export class AuthService {
       return this.http.get(url).pipe(
         tap(resp => {
           this.isLoggedIn = true;
+          console.log("resp", resp);
           console.log("this.userToken", this.userToken);
           console.log("!this.userToken", !this.userToken);
+
           if (!this.userToken) {
               this.loginfo();
           }
