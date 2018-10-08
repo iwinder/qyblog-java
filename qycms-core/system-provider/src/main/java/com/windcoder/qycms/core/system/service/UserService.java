@@ -35,6 +35,9 @@ public class UserService extends BaseService<User,Long,UserRepository> {
         return repository.findByUsername(username);
     }
 
+    public  int countByUsername(String username){
+        return repository.countByUsername(username);
+    };
     public Page<User> findAll(User user,Pageable pageable){
         return super.findAll((root, query,  cb) -> {
             Predicate predicate = cb.equal(root.get("isDeleted"), false);

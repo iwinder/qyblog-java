@@ -1,6 +1,7 @@
 package com.windcoder.qycms.core.system;
 
 import com.windcoder.qycms.core.system.entity.User;
+import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.utils.ReturnResult;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -10,6 +11,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.subject.Subject;
 import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,19 +38,27 @@ public class LoginApiController {
             result.setMsg("登录成功");
             result.setCode(200);
         }  catch (IncorrectCredentialsException e) {
-            result.setMsg("密码错误");
-            result.setCode(400);
+//            result.setMsg("密码错误");
+//            result.setCode(400);
+            throw new BusinessException("密码错误");
         } catch (LockedAccountException e) {
-            result.setMsg("登录失败，该用户已被冻结");
-            result.setCode(400);
+//            result.setMsg("登录失败，该用户已被冻结");
+//            result.setCode(400);
+            throw new BusinessException("登录失败，该用户已被冻结");
         } catch (AuthenticationException e) {
-            result.setMsg("该用户不存在");
-            result.setCode(400);
+//            result.setMsg("该用户不存在");
+//            result.setCode(400);
+            throw new BusinessException("该用户不存在");
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BusinessException(e.toString());
+//            e.printStackTrace();
         }
         return result;
     }
+
+
+
+
 
     /**
      * 未登录，shiro应重定向到登录界面，此处返回未登录状态信息由前端控制跳转页面
@@ -56,10 +66,11 @@ public class LoginApiController {
      */
     @RequestMapping(value = "/unauth")
     public ReturnResult unauth() {
-        ReturnResult result = new ReturnResult();
-        result.setMsg("未登录");
-        result.setCode(400);
-        return result;
+//        ReturnResult result = new ReturnResult();
+//        result.setMsg("未登录");
+//        result.setCode(400);
+//        return result;
+        throw new BusinessException("未登录");
     }
 
     @RequestMapping(value = "/status")
@@ -81,7 +92,7 @@ public class LoginApiController {
         rMap.put("isLoggedIn", true);
         rMap.put("token", subject.getSession().getId());
         rMap.put("username", user.getUsername());
-        result.setToken(subject.getPrincipal());
+        result.setToken(subject.getSession().getId());
         result.setResult(rMap);
         result.setMsg("登录成功");
         result.setCode(200);

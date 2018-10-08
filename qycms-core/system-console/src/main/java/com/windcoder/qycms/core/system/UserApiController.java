@@ -68,4 +68,9 @@ public class UserApiController {
         List<UserDto> userDtos = ModelMapperUtils.map(users.getContent(),type);
         return  new PageImpl<>(userDtos,pageable,users.getTotalElements());
     }
+
+    @GetMapping("checkUser")
+    public int countByUsername( @RequestParam(name = "username", required = true) String username){
+        return userService.countByUsername(username);
+    }
 }
