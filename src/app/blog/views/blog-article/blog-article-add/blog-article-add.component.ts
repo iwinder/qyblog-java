@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../service/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { BlogArticleService } from '../../../service/blog-article.service';
 
 @Component({
-    selector: 'qy-user-add',
-    templateUrl: './user-add.component.html',
-    styleUrls: ['./user-add.component.scss']
+    selector: 'qy-blog-article-add',
+    templateUrl: './blog-article-add.component.html',
+    styleUrls: ['./blog-article-add.component.scss']
 })
-export class UserAddComponent implements OnInit {
+export class BlogArticleAddComponent implements OnInit {
 
-    constructor(private userService: UserService,
+    constructor(private articleService: BlogArticleService,
         private router: Router,
         private route: ActivatedRoute) {
 
@@ -19,7 +19,7 @@ export class UserAddComponent implements OnInit {
     }
 
     save(event) {
-        this.userService.created(event.value).subscribe(
+        this.articleService.created(event.value).subscribe(
             data => {
                 console.log('添加成功');
                 this.toList();

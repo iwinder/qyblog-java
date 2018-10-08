@@ -3,5 +3,8 @@ export class User {
     username: string;
     password: string;
     nickname: string;
+    avatar: string;
     email: string;
+    isDisable: boolean;
+
 }

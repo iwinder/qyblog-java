@@ -110,10 +110,7 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
 
  destroy() {
   if (this.mdeditor) {
-      this.mdeditor.removeListener('ready');
-      this.mdeditor.removeListener('contentChange');
       this.mdeditor.editor.remove();
-      this.mdeditor.destroy();
       this.mdeditor = null;
   }
 

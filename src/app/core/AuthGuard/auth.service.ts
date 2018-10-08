@@ -24,7 +24,7 @@ export class AuthService {
 
     return this.http.post<any>(url, data).pipe(
       tap(response => {
-        console.log("response", response);
+        // console.log("response", response);
         if (response && response.token != null) {
           this.isLoggedIn = response['result']['isLoggedIn'];
           // login successful, store username and jwt token in local storage to keep user logged in between page refreshes
@@ -74,7 +74,7 @@ export class AuthService {
       return this.http.get<boolean>(url).pipe(
         map(resp => {
           this.isLoggedIn = true;
-          console.log("stats data", resp);
+          // console.log("stats data", resp);
           if (!this.userToken) {
               this.loginfo().subscribe();
           }
@@ -92,7 +92,7 @@ export class AuthService {
     let url = '/api/loginfo';
     return this.http.get(url).pipe(
       tap( (resp: Response) => {
-        console.log("loginfo data", resp);
+        // console.log("loginfo data", resp);
             if (resp && resp['token'] ) {
               this.isLoggedIn = resp['result']['isLoggedIn'];
               // login successful, store username and jwt token in local storage to keep user logged in between page refreshes

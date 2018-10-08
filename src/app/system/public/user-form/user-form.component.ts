@@ -3,11 +3,9 @@ import {
     FormBuilder,
     FormGroup,
     Validators,
-    FormControl,
-    ValidationErrors
+    FormControl
 } from '@angular/forms';
-import { Observer, Observable } from 'rxjs';
-import { UserService } from '../../service/user-service';
+import { UserService } from '../../service/user.service';
 import { catchError, map } from 'rxjs/operators';
 
 @Component({
@@ -50,7 +48,6 @@ export class QyUserFormComponent implements OnInit {
         };
         return this.userService.checkUser(control.value).pipe(
                 map( data => {
-                    console.log('checkUser', data);
                     // tslint:disable-next-line:radix
                     if (data && parseInt(data) > 0) {
                         return { error: true, duplicated: true };
@@ -65,31 +62,7 @@ export class QyUserFormComponent implements OnInit {
             );
 
     }
-    //  Observable.create((observer: Observer<ValidationErrors>) => {
-    //
-        // this.userService.checkUser(param).subscribe(
-        //     map( data => {
-        //         console.log('checkUser', data);
-        //         if (data && data > 0) {
-        //             return { error: false, duplicated: true };
-        //         }
-        //         return { error: true, duplicated: true };
-        //     },
-        //     catchError( err => {
-        //         console.log(err);
-        //         return null;
-        //         // return { error: true, duplicated: true };
-        //     }))
-        // );
-        // setTimeout(() => {
-        //   if (control.value === 'JasonWood') {
-        //     observer.next({ error: true, duplicated: true });
-        //   } else {
-        //     observer.next(null);
-        //   }
-        //   observer.complete();
-        // }, 1000);
-    //   )
+
     resetForm(e: MouseEvent): void {
         e.preventDefault();
         this.validateForm.reset();

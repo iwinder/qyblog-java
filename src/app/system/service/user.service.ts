@@ -3,8 +3,6 @@ import { Observable } from 'rxjs';
 import { User } from '../entity/User';
 import { Page } from '../../core/entity/page';
 import { Injectable } from '@angular/core';
-import { tap, catchError } from 'rxjs/operators';
-import { HttpUtils } from '../../core/AuthGuard/http-utils';
 
 @Injectable()
 export class UserService {
@@ -18,18 +16,10 @@ export class UserService {
         return this.http.put<User>(`api/users`, user, options);
     }
     checkUser(username) {
-        console.log('checkUser', username );
         return this.http.get(`api/users/checkUser`, {responseType: 'text', params: {"username": username}});
     }
 
     sayHello(name): Observable<string>  {
-           let param = new HttpParams();
-           param.append("name", name);
-
-
-         let parameter = {
-            responseType: 'text'
-        };
         return this.http.get(`api/test/sayHello`, {responseType: 'text', params: {"name": name}});
     }
 }

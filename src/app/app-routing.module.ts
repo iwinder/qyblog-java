@@ -12,6 +12,7 @@ const routes: Routes = [
             {path: '', redirectTo: 'dashboard', pathMatch: 'prefix'},
             { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
             { path: 'system', loadChildren: 'app/system/system.module#SystemModule' },
+            { path: 'blog', loadChildren: 'app/blog/blog.module#BlogModule' },
         ],
     },
     {path: 'login', component: QyLoginComponent},
