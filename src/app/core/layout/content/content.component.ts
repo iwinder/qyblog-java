@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { MAIN_MENU } from './menu-data';
 
 @Component({
     selector: 'qy-contnet',
@@ -8,6 +9,7 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 export class ContentComponent implements OnInit {
     isCollapsed = false;
     triggerTemplate = null;
+    navItems = MAIN_MENU;
     @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
     constructor() {

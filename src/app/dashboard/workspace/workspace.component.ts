@@ -8,13 +8,14 @@ import { AuthService } from '../../core/AuthGuard';
   styleUrls: ['./workspace.component.scss']
 })
 export class WorkspaceComponent implements OnInit {
-  user: User;
+  user: User = new User();
 
   constructor(
     private authService: AuthService
   ) { }
 
   ngOnInit() {
+    this.user.username = this.authService.userToken ? this.authService.userToken.username : '';
     // this.authService.getCurrentUser().subscribe(user => this.user = user);
   }
 

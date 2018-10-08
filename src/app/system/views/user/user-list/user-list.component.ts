@@ -26,7 +26,7 @@ data = [
       address: 'Sidney No. 1 Lake Park',
     }
   ];
-  userData: User[];
+  userData: User[] = new Array<User>();
     constructor(private userService: UserService) {
     }
 

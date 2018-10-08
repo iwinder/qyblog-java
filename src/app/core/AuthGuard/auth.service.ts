@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable,  throwError } from 'rxjs';
 import { HttpUtils } from './http-utils';
-import { catchError, retry, tap } from 'rxjs/operators';
+import { catchError, tap,  map } from 'rxjs/operators';
+import { Response } from '@angular/http';
 
 @Injectable()
 export class AuthService {
@@ -28,13 +29,14 @@ export class AuthService {
           this.isLoggedIn = response['result']['isLoggedIn'];
           // login successful, store username and jwt token in local storage to keep user logged in between page refreshes
           // tslint:disable-next-line:max-line-length
-          localStorage.setItem('currentUser', JSON.stringify({username: username, token: response.token}));
-          this.userToken = JSON.parse(localStorage.getItem('currentUser'));
+          // localStorage.setItem('currentUser', JSON.stringify({username: username, token: response.token}));
+          // this.userToken = JSON.parse(localStorage.getItem('currentUser'));
+          this.userToken = {username: username, token: response.token};
           return this.isLoggedIn;
         } else {
-          console.log("response 2", response);
-          throwError((JSON.stringify(response)));
-          // return HttpUtils.handleError(JSON.stringify(response));
+          this.isLoggedIn = false;
+           throwError((JSON.stringify(response)));
+          // return  of(false);
         }
       }),
       catchError(HttpUtils.handleError)
@@ -65,45 +67,42 @@ export class AuthService {
     return token && token.length > 0;
   }
 
-  stats(): Observable<any> {
+  stats(): Observable<boolean> {
     let url = '/api/status';
 
       // return this.http.options(url)
-      return this.http.get(url).pipe(
-        tap(resp => {
+      return this.http.get<boolean>(url).pipe(
+        map(resp => {
           this.isLoggedIn = true;
-          console.log("resp", resp);
-          console.log("this.userToken", this.userToken);
-          console.log("!this.userToken", !this.userToken);
-
+          console.log("stats data", resp);
           if (!this.userToken) {
-              this.loginfo();
+              this.loginfo().subscribe();
           }
           return true;
       }),
         catchError(resp => {
           this.isLoggedIn = false;
-          return HttpUtils.handleError(resp);
+         return HttpUtils.handleError(resp);
       })
     );
   }
 
+
   loginfo(): Observable<any> {
     let url = '/api/loginfo';
-    return this.http.get<any>(url)
-        .pipe(
-          tap(resp => {
-            console.log("loginfo resp", resp);
-            console.log("loginfo resp.token", resp.token);
-            if (resp && resp.token) {
+    return this.http.get(url).pipe(
+      tap( (resp: Response) => {
+        console.log("loginfo data", resp);
+            if (resp && resp['token'] ) {
               this.isLoggedIn = resp['result']['isLoggedIn'];
               // login successful, store username and jwt token in local storage to keep user logged in between page refreshes
               // tslint:disable-next-line:max-line-length
-              localStorage.setItem('currentUser', JSON.stringify({username: resp.result.username, token: resp.token}));
+              localStorage.setItem('currentUser', JSON.stringify({username: resp['result']['username'], token: resp['token']}));
             }
-            let ut = HttpUtils.extractData(resp);
-            console.log("ut", ut);
-            this.userToken =  this.userToken = JSON.parse(localStorage.getItem('currentUser'));
+            // let ut =resp;
+            // console.log("ut", ut);
+            // this.userToken =  this.userToken = JSON.parse(localStorage.getItem('currentUser'));
+            this.userToken = {username: resp['result']['username'], token: resp['token']};
             return this.userToken;
         }),
         catchError(HttpUtils.handleError)

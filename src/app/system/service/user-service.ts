@@ -17,6 +17,10 @@ export class UserService {
     created(user: User, options?: {}): Observable<User>  {
         return this.http.put<User>(`api/users`, user, options);
     }
+    checkUser(username) {
+        console.log('checkUser', username );
+        return this.http.get(`api/users/checkUser`, {responseType: 'text', params: {"username": username}});
+    }
 
     sayHello(name): Observable<string>  {
            let param = new HttpParams();

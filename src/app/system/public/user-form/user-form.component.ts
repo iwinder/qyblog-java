@@ -7,6 +7,8 @@ import {
     ValidationErrors
 } from '@angular/forms';
 import { Observer, Observable } from 'rxjs';
+import { UserService } from '../../service/user-service';
+import { catchError, map } from 'rxjs/operators';
 
 @Component({
     selector: 'qy-user-form',
@@ -20,7 +22,8 @@ export class QyUserFormComponent implements OnInit {
     outerCounterValue: String = '测试一下';
     // tslint:disable-next-line:no-inferrable-types
     disabledValue: boolean = true;
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: FormBuilder,
+        private userService: UserService) {
     }
 
     updateConfirmValidator() {
@@ -41,16 +44,52 @@ export class QyUserFormComponent implements OnInit {
             return { confirm: true, error: true };
         }
     }
-    userNameAsyncValidator = (control: FormControl) => Observable.create((observer: Observer<ValidationErrors>) => {
-        setTimeout(() => {
-          if (control.value === 'JasonWood') {
-            observer.next({ error: true, duplicated: true });
-          } else {
-            observer.next(null);
-          }
-          observer.complete();
-        }, 1000);
-      })
+    userNameAsyncValidator = (control: FormControl) => {
+        let param = {
+            username : control.value
+        };
+        return this.userService.checkUser(control.value).pipe(
+                map( data => {
+                    console.log('checkUser', data);
+                    // tslint:disable-next-line:radix
+                    if (data && parseInt(data) > 0) {
+                        return { error: true, duplicated: true };
+                    }
+                    return;
+                },
+                catchError( err => {
+                    console.log(err);
+                    return null;
+                    // return { error: true, duplicated: true };
+                }))
+            );
+
+    }
+    //  Observable.create((observer: Observer<ValidationErrors>) => {
+    //
+        // this.userService.checkUser(param).subscribe(
+        //     map( data => {
+        //         console.log('checkUser', data);
+        //         if (data && data > 0) {
+        //             return { error: false, duplicated: true };
+        //         }
+        //         return { error: true, duplicated: true };
+        //     },
+        //     catchError( err => {
+        //         console.log(err);
+        //         return null;
+        //         // return { error: true, duplicated: true };
+        //     }))
+        // );
+        // setTimeout(() => {
+        //   if (control.value === 'JasonWood') {
+        //     observer.next({ error: true, duplicated: true });
+        //   } else {
+        //     observer.next(null);
+        //   }
+        //   observer.complete();
+        // }, 1000);
+    //   )
     resetForm(e: MouseEvent): void {
         e.preventDefault();
         this.validateForm.reset();

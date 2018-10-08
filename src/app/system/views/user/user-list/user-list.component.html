@@ -1,7 +1,7 @@
 <nz-content>
     <button nz-button nzType="primary" [routerLink]="['../add']">添加</button>
     <button nz-button nzType="primary"(click)="sayHello()" >sayHello</button>
-  <nz-table #nzTable [nzData]="userData" [nzPageSize]="10">
+  <nz-table  #nzTable [nzData]="userData" [nzPageSize]="10">
       <thead nz-thead>
         <tr>
           <th nz-th><span>用户名</span></th>

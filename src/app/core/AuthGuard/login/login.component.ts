@@ -49,20 +49,23 @@ export class QyLoginComponent implements OnInit {
     let passwd = this.getFormControl("password").value;
     this.authService.login(username, passwd).subscribe(
       isLoggedIn => {
-        console.log("isLoggedIn",  isLoggedIn);
+        console.log("isLoggedIn login",  isLoggedIn);
         if (isLoggedIn) {
           this.goHome();
         } else {
           this.error = '登录失败！';
         }
       },
-      error => this.error = error
+      error => {
+        this.error = error;
+      }
     );
   }
 
 
   goHome() {
     // Error let pathFromRoot = this.route.pathFromRoot;
-    this.router.navigateByUrl('/');
+    let url = this.authService.redirectUrl ? this.authService.redirectUrl : "";
+    this.router.navigateByUrl(url);
   }
 }

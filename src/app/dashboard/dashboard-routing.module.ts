@@ -6,7 +6,7 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 
 const routes: Routes = [
   { path: '', component: WorkspaceComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  // { path: 'dashboard', component: DashboardComponent },
 ];
 
 @NgModule({
@@ -14,5 +14,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class DashboardRoutingModule { }
-
-export const routedComponents = [DashboardComponent, WorkspaceComponent];
+export const routedComponents = [WorkspaceComponent];

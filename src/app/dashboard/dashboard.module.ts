@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DashboardRoutingModule } from './dashboard-routing.module';
+import { DashboardRoutingModule, routedComponents } from './dashboard-routing.module';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { SharedModule } from '../shared/shared.module';
 
@@ -10,6 +10,7 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule,
     DashboardRoutingModule,
   ],
-  declarations: [DashboardComponent, WorkspaceComponent]
+  // declarations: [ WorkspaceComponent],
+  declarations: [...routedComponents]
 })
 export class DashboardModule { }

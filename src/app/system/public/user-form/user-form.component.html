@@ -126,7 +126,8 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="7" nzRequired>昵称</nz-form-label>
           <nz-form-control [nzSpan]="12" >
-            <textarea formControlName="nickname" nz-input rows="2" placeholder="write any thing"></textarea>
+              <input nz-input  formControlName="nickname" placeholder="confirm your password">
+            <!-- <textarea formControlName="nickname" nz-input rows="2" placeholder="write any thing"></textarea> -->
             <nz-form-explain *ngIf="validateForm.get('nickname').dirty&&validateForm.get('nickname').hasError('required')">Please input your nickname!</nz-form-explain>
           </nz-form-control>
         </nz-form-item>

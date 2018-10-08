@@ -1,63 +1,28 @@
-<nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzBreakpoint]="'lg'" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
-    <div class="logo">
-    </div>
-    <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
-        <li nz-menu-item>
-              
-            <span>
-                    <a routerLinkActive="active" [routerLink]="['/']">
-                <i class="anticon anticon-file"></i>
-                <span class="nav-text">控制面板</span>
-            </a>
-            </span>
-        </li>
-        <li nz-submenu>
-            <span title>
-                <i class="anticon anticon-user"></i>
-                <span class="nav-text">系统管理</span>
-            </span>
-            <ul>
-                <li nz-menu-item>
-                    <a routerLinkActive="active" [routerLink]="['/'+'system/user']">
-                        <i [ngClass]="'menuicon mr-2 fa '"></i>
-                        <span class="nav-text">用户管理</span>
-                    </a>
-                </li>
-                <li nz-menu-item>
-                    <a routerLinkActive="active" [routerLink]="['/'+'system/role']">
-                        <i [ngClass]="'menuicon mr-2 fa '"></i>
-                        <span class="nav-text">角色管理</span>
-                    </a>
-                </li>
-                <li nz-menu-item>
-                    <a routerLinkActive="active" [routerLink]="['/'+'system/user']">
-                        <i [ngClass]="'menuicon mr-2 fa '"></i>
-                        <span class="nav-text">菜单管理</span>
-                    </a>
-                </li>
-                <li nz-menu-item>
-                    <a routerLinkActive="active" [routerLink]="['/'+'system/role']">
-                        <i [ngClass]="'menuicon mr-2 fa '"></i>
-                        <span class="nav-text">授权管理</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li nz-submenu>
-            <span title>
-                <i class="anticon anticon-team"></i>
-                <span class="nav-text">Team</span>
-            </span>
-            <ul>
-                <li nz-menu-item>Team 1</li>
-                <li nz-menu-item>Team 2</li>
-            </ul>
-        </li>
-        <li nz-menu-item>
-            <span>
-                <i class="anticon anticon-file"></i>
-                <span class="nav-text">File</span>
-            </span>
-        </li>
-    </ul>
-</nz-sider>
+<ng-container *ngFor="let item of navItems">
+
+    <!-- <ng-template> -->
+        <ng-container *ngTemplateOutlet="menuItem; context: {$implicit: item}"></ng-container>
+    <!-- </ng-template> -->
+</ng-container>
+
+<ng-template #menuItem let-item>
+    <li *ngIf="item.children ? item.children.length : item.children" nz-submenu>
+        <span title>
+            <i [ngClass]="'anticon anticon-'+item.icon"></i>
+            <span class="nav-text" [ngClass]="{'nav-text-root': !isSubMenu}">{{item.name}}</span>
+        </span>
+        <ul *ngIf="item.children.length">
+            <qy-nav-left [isCollapsed]="false" [navItems]="item.children" [isSubMenu]="true"></qy-nav-left>
+        </ul>
+    </li>
+    <li *ngIf="item.children ? !item.children.length : !item.children" nz-menu-item>
+        <a *ngIf="item.route" routerLinkActive="active" [routerLink]="['/'+item.route]">
+            <i [ngClass]="'anticon anticon-'+item.icon"></i>
+            <span class="nav-text" [ngClass]="{'nav-text-root': !isSubMenu}">{{item.name}}</span>
+        </a>
+        <span *ngIf="!item.route">
+            <i [ngClass]="'anticon anticon-'+item.icon"></i>
+            <span class="nav-text" [ngClass]="{'nav-text-root': !isSubMenu}">{{item.name}}</span>
+        </span>
+    </li>
+</ng-template>

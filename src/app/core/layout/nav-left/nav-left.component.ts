@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 @Component({
     selector: 'qy-nav-left',
@@ -6,11 +6,20 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
     styleUrls: ['./nav-left.component.scss']
 })
 export class NavLeftComponent implements OnInit {
-    isCollapsed = false;
+    @Input()
+    navItems: any;
+    @Input()
+    isCollapsed: boolean;
+    @Input()
+    isSubMenu = false;
 
     constructor() {
     }
 
     ngOnInit() {
+    }
+
+    hasChildren(item) {
+        return item.children ? item.children.length : item.children;
     }
 }
