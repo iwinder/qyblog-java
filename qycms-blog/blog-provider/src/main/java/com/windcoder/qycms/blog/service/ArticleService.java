@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.util.Date;
 
 @Service
 public class ArticleService extends BaseService<Article,Long, ArticleRepository> {
@@ -34,6 +35,9 @@ public class ArticleService extends BaseService<Article,Long, ArticleRepository>
         if (null == article.getAuthor()){
             User user = (User)  SecurityUtils.getSubject().getPrincipal();
             article.setAuthor(user);
+        }
+        if (article.getIsPublished() &&  null == article.getPublishedDate()){
+            article.setPublishedDate(new Date());
         }
         return super.save(article);
     }

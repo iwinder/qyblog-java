@@ -1,9 +1,11 @@
 package com.windcoder.qycms.blog.dto;
 
+import com.windcoder.qycms.core.system.dto.UserDto;
 import com.windcoder.qycms.core.system.entity.User;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Lob;
+import java.util.Date;
 
 public class ArticleBaseDto {
 
@@ -17,12 +19,12 @@ public class ArticleBaseDto {
     /**
      * 是否已发布
      */
-    private Boolean isPublished;
+    private boolean isPublished;
 
     /**
      * 是否已删除
      */
-    private Boolean isDeleted;
+    private boolean isDeleted;
 
     /**
      * 链接
@@ -30,9 +32,26 @@ public class ArticleBaseDto {
     private String permaLink;
 
     /**
+     * 摘要
+     */
+    private String summary;
+
+
+    /**
+     * 缩略图
+     */
+    private String thumbnail;
+
+    /**
      * 作者
      */
-    private User author;
+    private UserDto author;
+
+
+    /**
+     * 发布日期
+     */
+    private Date publishedDate;
 
 
     public Long getId() {
@@ -53,19 +72,19 @@ public class ArticleBaseDto {
 
 
 
-    public Boolean getIsPublished() {
+    public boolean getIsPublished() {
         return isPublished;
     }
 
-    public void setPublished(Boolean published) {
+    public void setPublished(boolean published) {
         this.isPublished = published;
     }
 
-    public Boolean getIsDeleted() {
+    public boolean getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
+    public void setIsDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 
@@ -77,12 +96,36 @@ public class ArticleBaseDto {
         this.permaLink = permaLink;
     }
 
-    public User getAuthor() {
+    public UserDto getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserDto author) {
         this.author = author;
     }
 
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public Date getPublishedDate() {
+        return publishedDate;
+    }
+
+    public void setPublishedDate(Date publishedDate) {
+        this.publishedDate = publishedDate;
+    }
 }
