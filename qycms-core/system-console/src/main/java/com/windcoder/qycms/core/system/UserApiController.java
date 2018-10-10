@@ -25,7 +25,7 @@ public class UserApiController {
     private UserService userService;
 
     @ModelAttribute(name = "userForUpdate")
-    public User getUser(@RequestParam(name = "id", required = false) Long id) {
+    public User userForUpdate(@RequestParam(name = "id", required = false) Long id) {
         if (null != id) {
             User user = userService.findOne(id);
             return user;
@@ -41,9 +41,8 @@ public class UserApiController {
         return ModelMapperUtils.map(user, UserDto.class);
     }
 
-    @PostMapping("/{userId}")
-    public UserDto update(@PathVariable("userId") Long userId, @ModelAttribute(name = "userForUpdate") User user,
-                          @RequestParam(name = "password", required = false) String password) {
+    @PostMapping("/{id}")
+    public UserDto update(@PathVariable("id") Long userId, @ModelAttribute(name = "userForUpdate") User user) {
         user = userService.update(user);
 
         return ModelMapperUtils.map(user, UserDto.class);
