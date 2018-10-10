@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { catchError, map } from 'rxjs/operators';
+import { UploadFile } from 'ng-zorro-antd';
+import { User } from '../../entity/user';
 
 @Component({
     selector: 'qy-user-form',
@@ -16,15 +18,89 @@ import { catchError, map } from 'rxjs/operators';
 export class QyUserFormComponent implements OnInit {
     @Output() save: EventEmitter<any> = new EventEmitter();
     validateForm: FormGroup;
-
-    outerCounterValue: String = '测试一下';
+    @Input()  user: User;
+    previewImage = '';
+    previewVisible = false;
+    fileList = [];
+    usernameDisabled: boolean = false;
     // tslint:disable-next-line:no-inferrable-types
     disabledValue: boolean = true;
     constructor(private fb: FormBuilder,
         private userService: UserService) {
     }
 
-    updateConfirmValidator() {
+
+
+    ngOnInit() {
+        let obj = this.user || new User();
+        console.log("this.user ", this.user );
+
+        if (!this.user) {
+            this.usernameDisabled = false;
+            this.validateForm = this.fb.group({
+                username: [ obj.username, [ Validators.required ], [ this.userNameAsyncValidator ] ],
+                email: [obj.email, [Validators.email]],
+                password: [obj.password, [Validators.required]],
+                checkPassword: [obj.password, [Validators.required, this.confirmationValidator]],
+                nickname: [obj.nickname, [Validators.required]],
+                avatar: [obj.avatar, []]
+            });
+        } else {
+            this.usernameDisabled = true;
+            this.validateForm = this.fb.group({
+                username: [ obj.username ],
+                email: [obj.email, [Validators.email]],
+                nickname: [obj.nickname, [Validators.required]],
+                avatar: [obj.avatar, []]
+            });
+            if ( this.user.avatar) {
+                this.fileList.push({url: this.user.avatar});
+                this.previewImage = this.user.avatar;
+            }
+        }
+
+
+    }
+    markAsDirty() {
+        for (let key of Object.keys(this.validateForm.controls)) {
+            this.validateForm.controls[key].markAsDirty();
+        }
+    }
+    submitForm = ($event, value) => {
+        $event.preventDefault();
+        for (let key of Object.keys(this.validateForm.controls)) {
+          this.validateForm.controls[ key ].markAsDirty();
+          this.validateForm.controls[ key ].updateValueAndValidity();
+        }
+        let values = this.validateForm.value;
+        if (this.user && this.user.id) {
+            values.id =  this.user.id;
+        }
+        this.save.emit({ originalEvent: event, value: values });
+        console.log(value);
+    }
+
+    getFormControl(name) {
+        return this.validateForm.controls[name];
+    }
+    // getHtmlValue(event) {
+    //     console.log('getHtmlValue', event.value);
+    // }
+
+    uploadChange(event) {
+        if (event.type === 'success') {
+            this.previewImage = event.file.response.relativePath;
+            this.getFormControl('avatar').setValue(this.previewImage);
+        }
+    }
+
+    handlePreview = (file: UploadFile) => {
+        // this.previewImage = file.url || file.thumbUrl;
+        this.previewVisible = true;
+      }
+
+
+      updateConfirmValidator() {
         /** wait for refresh value */
         setTimeout(_ => {
             this.validateForm.controls['checkPassword'].updateValueAndValidity();
@@ -74,37 +150,5 @@ export class QyUserFormComponent implements OnInit {
 
     getCaptcha(e: MouseEvent) {
         e.preventDefault();
-    }
-
-    ngOnInit() {
-        this.validateForm = this.fb.group({
-            username: [ '', [ Validators.required ], [ this.userNameAsyncValidator ] ],
-            email: [null, [Validators.email]],
-            password: [null, [Validators.required]],
-            checkPassword: [null, [Validators.required, this.confirmationValidator]],
-            nickname: [null, [Validators.required]],
-            // comment: [null, [Validators.required]]
-        });
-    }
-    markAsDirty() {
-        for (let key of Object.keys(this.validateForm.controls)) {
-            this.validateForm.controls[key].markAsDirty();
-        }
-    }
-    submitForm = ($event, value) => {
-        $event.preventDefault();
-        for (let key of Object.keys(this.validateForm.controls)) {
-          this.validateForm.controls[ key ].markAsDirty();
-          this.validateForm.controls[ key ].updateValueAndValidity();
-        }
-        this.save.emit({ originalEvent: event, value: this.validateForm.value });
-        console.log(value);
-    }
-
-    getFormControl(name) {
-        return this.validateForm.controls[name];
-    }
-    getHtmlValue(event) {
-        console.log('getHtmlValue', event.value);
     }
 }

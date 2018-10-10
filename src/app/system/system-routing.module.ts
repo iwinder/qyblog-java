@@ -4,6 +4,7 @@ import { UserListComponent } from './views/user/user-list/user-list.component';
 import { RoleListComponent } from './views/role/role-list/role-list.component';
 import { UserAddComponent } from './views/user/user-add/user-add.component';
 import { UserService } from './service/user.service';
+import { UserEditComponent } from './views/user/user-edit/user-edit.component';
 
 const routes: Routes = [
     {
@@ -13,7 +14,7 @@ const routes: Routes = [
                     { path: '', redirectTo: 'list', pathMatch: 'full' },
                     { path: 'list', component: UserListComponent },
                     { path: 'add', component: UserAddComponent },
-                    // { path: ':id/edit', component: UgcExampleCourseEditComponent },
+                    { path: ':userId/edit', component: UserEditComponent }
 
                 ]
             },
@@ -41,5 +42,6 @@ export class SystemRoutingModule { }
 export const routedComponents = [
     UserListComponent,
     RoleListComponent,
-    UserAddComponent
+    UserAddComponent,
+    UserEditComponent
 ];
