@@ -39,7 +39,7 @@
                 </nz-form-item>  
                 <ng-container *ngIf="getFormControl('isPublished').value === true">
                     <nz-form-item>
-                        <!-- <nz-form-label [nzSpan]="6" ></nz-form-label> -->
+                        <nz-form-label [nzSpan]="4" >日期</nz-form-label>
                         <nz-form-control >
                           <nz-date-picker nzPlaceHolder="请选择发布时间" formControlName="publishedDate" nzShowTime></nz-date-picker>
                         </nz-form-control>
