@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BlogArticleListComponent } from './views/blog-article/blog-article-list/blog-article-list.component';
 import { BlogArticleAddComponent } from './views/blog-article/blog-article-add/blog-article-add.component';
 import { BlogArticleService } from './service/blog-article.service';
+import { BlogArticleEditComponent } from './views/blog-article/blog-article-edit/blog-article-edit.component';
 
 const routes: Routes = [
     {
@@ -12,7 +13,7 @@ const routes: Routes = [
                     { path: '', redirectTo: 'list', pathMatch: 'full' },
                     { path: 'list', component: BlogArticleListComponent },
                     { path: 'add', component: BlogArticleAddComponent },
-                    // { path: ':id/edit', component: UgcExampleCourseEditComponent },
+                    { path: ':articleId/edit', component: BlogArticleEditComponent },
 
                 ]
             },
@@ -29,5 +30,6 @@ export class  BlogArticleRoutingModule { }
 
 export const routedComponents = [
     BlogArticleListComponent,
-    BlogArticleAddComponent
+    BlogArticleAddComponent,
+    BlogArticleEditComponent
 ];

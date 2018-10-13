@@ -97,7 +97,7 @@ export class QyUserFormComponent implements OnInit {
     handlePreview = (file: UploadFile) => {
         // this.previewImage = file.url || file.thumbUrl;
         this.previewVisible = true;
-      }
+    }
 
 
       updateConfirmValidator() {

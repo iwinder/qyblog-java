@@ -9,11 +9,11 @@
                 <nz-form-item>
                     <nz-form-control [nzSpan]="24" >
                     <nz-upload
-                    nzAction="https://jsonplaceholder.typicode.com/posts/"
+                    nzAction="/api/upload/file"
                     nzListType="picture-card"
                     [(nzFileList)]="fileList"
                     [nzShowButton]="fileList.length < 1"
-                    [nzPreview]="handlePreview">
+                    [nzPreview]="handlePreview" (nzChange)="uploadChange($event)">
                       <i class="anticon anticon-plus"></i>
                       <div class="ant-upload-text">Upload</div>
                   </nz-upload>
@@ -34,13 +34,13 @@
                 <nz-form-item>
                   <nz-form-label [nzSpan]="4" >发布</nz-form-label>
                   <nz-form-control [nzSpan]="16" >
-                    <nz-switch [nzSize]="'small'" formControlName="isPublished"></nz-switch>
+                    <nz-switch [nzSize]="'small'" formControlName="isPublished" (ngModelChange)="updateStatus($event)"></nz-switch>
                   </nz-form-control>
                 </nz-form-item>  
                 <ng-container *ngIf="getFormControl('isPublished').value === true">
                     <nz-form-item>
                         <nz-form-label [nzSpan]="4" >日期</nz-form-label>
-                        <nz-form-control >
+                        <nz-form-control [nzSpan]="16" >
                           <nz-date-picker nzPlaceHolder="请选择发布时间" formControlName="publishedDate" nzShowTime></nz-date-picker>
                         </nz-form-control>
                       </nz-form-item>

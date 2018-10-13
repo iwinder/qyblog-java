@@ -36,7 +36,7 @@ export class UserEditComponent implements OnInit {
         this.userService.update(event.value).subscribe(
             data => {
                 console.log('更新成功');
-                // this.toList();
+                this.toList();
             },
             err => {
                 console.error(err);

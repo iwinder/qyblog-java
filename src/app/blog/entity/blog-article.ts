@@ -7,6 +7,7 @@ export class BlogArticle {
     contentHtml: string;
     permaLink: string;
     author: User;
+    thumbnail: string;
     publishedDate: Date;
     isPublished: boolean;
     isDeleted: boolean;

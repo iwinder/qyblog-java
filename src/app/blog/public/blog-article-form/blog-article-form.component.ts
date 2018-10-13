@@ -8,6 +8,7 @@ import {
 import { catchError, map } from 'rxjs/operators';
 import { BlogArticleService } from '../../service/blog-article.service';
 import { BlogArticle } from '../../entity/blog-article';
+import { UploadFile } from 'ng-zorro-antd';
 
 @Component({
     selector: 'qy-blog-article-form',
@@ -89,7 +90,8 @@ export class QyBlogArticleFormComponent implements OnInit {
             publishedDate: [obj.publishedDate],
             isPublished: [obj.isPublished ],
             content: [obj.content, [Validators.required]],
-            contentHtml: [obj.contentHtml]
+            contentHtml: [obj.contentHtml],
+            thumbnail: [obj.thumbnail]
         });
     }
     markAsDirty() {
@@ -117,5 +119,27 @@ export class QyBlogArticleFormComponent implements OnInit {
     getHtmlValue(event) {
         // console.log('getHtmlValue', event.value);
         this.validateForm.controls['contentHtml'].setValue(event.value);
+    }
+    uploadChange(event) {
+        if (event.type === 'success') {
+            this.previewImage = event.file.response.relativePath;
+            this.getFormControl('thumbnail').setValue(this.previewImage);
+        }
+    }
+
+    handlePreview = (file: UploadFile) => {
+        // this.previewImage = file.url || file.thumbUrl;
+        this.previewVisible = true;
+    }
+
+    updateStatus(data) {
+        console.log('updateStatus', data);
+        if (data) {
+            if (!this.getFormControl('publishedDate').value) {
+                this.getFormControl('publishedDate').setValue(new Date());
+            }
+        } else {
+            this.getFormControl('publishedDate').setValue(null);
+        }
     }
 }

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Page } from '../../core/entity/page';
 import { Injectable } from '@angular/core';
 import { BlogArticle } from '../entity/blog-article';
+import { FormDataUtil } from '../../core/utils/form-data-util';
 
 @Injectable()
 export class BlogArticleService {
@@ -17,7 +18,8 @@ export class BlogArticleService {
         return this.http.put<BlogArticle>(`${this.url}`, aticle, options);
     }
     update(aticle: BlogArticle, options?: {}) {
-        return this.http.post(`${this.url}/${aticle.id}`, aticle, options);
+        let formData = FormDataUtil.covert(aticle);
+        return this.http.post(`${this.url}/${aticle.id}`, formData);
     }
 
     getOne(aticleId: number): Observable<BlogArticle>  {
