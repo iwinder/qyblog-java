@@ -14,12 +14,14 @@ public class CategoryDto {
     private Long childrenCount;
     private boolean hasChildren;
     private List<CategoryDto> children;
+    private String description;
 
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
+        this.key = String.valueOf(id);
     }
 
     public void setTitle(String title) {
@@ -88,9 +90,13 @@ public class CategoryDto {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+
+
+    public String getDescription() {
+        return description;
     }
 
-
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

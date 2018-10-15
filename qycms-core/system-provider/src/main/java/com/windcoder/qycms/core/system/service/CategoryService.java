@@ -32,7 +32,7 @@ public class CategoryService extends BaseService<Category,Long, CategoryReposito
     public List<Category> getRoots(String searchText, Pageable pageable) {
         return repository.findAll((root,query,cb)->{
             Predicate predicate = cb.isNull(root.get("parent"));
-            predicate = cb.and(predicate, cb.equal(root.get("isDeleted"), false));
+//            predicate = cb.and(predicate, cb.equal(root.get("isDeleted"), false));
             if (StringUtils.isNotBlank(searchText)) {
                 predicate = cb.and(predicate, cb.like(cb.lower(root.get("title")),
                         "%" + StringUtils.trim(searchText).toLowerCase() + "%"));
@@ -51,7 +51,7 @@ public class CategoryService extends BaseService<Category,Long, CategoryReposito
     public List<Category> getChildren(Long parentId,String searchText, Pageable pageable) {
         return repository.findAll((root,query,cb)->{
             Predicate predicate = cb.equal(root.get("parent").get("id"), parentId);
-            predicate = cb.and(predicate, cb.equal(root.get("isDeleted"), false));
+//            predicate = cb.and(predicate, cb.equal(root.get("isDeleted"), false));
             if (StringUtils.isNotBlank(searchText)) {
                 predicate = cb.and(predicate, cb.like(cb.lower(root.get("title")),
                         "%" + StringUtils.trim(searchText).toLowerCase() + "%"));
@@ -185,6 +185,7 @@ public class CategoryService extends BaseService<Category,Long, CategoryReposito
      * @param category
      */
     public void updateChildrenPath(Category category) {
+
         List<Category> children = getChildren(category);
         if(!children.isEmpty()) {
             repository.updatePathChildren(category.getId(), category.getIdPath() + PATH_SEPARATER, category.getTitlePath() + PATH_SEPARATER);
@@ -203,7 +204,7 @@ public class CategoryService extends BaseService<Category,Long, CategoryReposito
     private List<Category> getChildren(Category category) {
         Category sample = new Category();
         sample.setParent(category);
-        return repository.findAll(getPublicSpecification(category));
+        return repository.findAll(getPublicSpecification(sample));
     }
 
     /**
@@ -246,15 +247,22 @@ public class CategoryService extends BaseService<Category,Long, CategoryReposito
 
             @Override
             public Predicate toPredicate(Root<Category> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                    Predicate predicate =  cb.equal(root.get("isDeleted"), false);
+//                    Predicate predicate =  cb.equal(root.get("isDeleted"), false);
+                    Predicate predicate = null;
                     if(category.getParent() != null && category.getParent().getId() != null){
-                        predicate =  cb.and(predicate, cb.equal(root.get("parent").get("id"),  category.getParent().getId()));
+                        predicate =  cb.equal(root.get("parent").get("id"),  category.getParent().getId());
                     }
 
 
                     if (StringUtils.isNotBlank(category.getTitle())) {
-                        predicate = cb.and(predicate, cb.like(cb.lower(root.get("title")),
-                                "%" + StringUtils.trim(category.getTitle()).toLowerCase() + "%"));
+                        if( predicate != null ){
+                            predicate = cb.and(predicate, cb.like(cb.lower(root.get("title")),
+                                    "%" + StringUtils.trim(category.getTitle()).toLowerCase() + "%"));
+                        }else{
+                            predicate = cb.like(cb.lower(root.get("title")),
+                                    "%" + StringUtils.trim(category.getTitle()).toLowerCase() + "%");
+                        }
+
                     }
                     return predicate;
             }

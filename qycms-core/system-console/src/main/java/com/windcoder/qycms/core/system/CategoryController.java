@@ -38,14 +38,12 @@ public class CategoryController {
     /**
      * 查询分类列表
      * @param parentId
-     * @param activityId
      * @param searchText
      * @param pageable
      * @return
      */
     @GetMapping("")
     public List<CategoryDto> findUgcClassifications(@RequestParam(name= "parentId", required=false)Long parentId,
-                                                               @PathVariable("activityId") Long activityId,
                                                                @RequestParam(name= "searchText", required=false)String searchText,
                                                                @PageableDefault(direction=Direction.DESC,sort={"displayOrder"}) Pageable pageable){
         if(parentId==null) {
@@ -72,12 +70,11 @@ public class CategoryController {
 
     /**
      * 创建分类
-     * @param activityId
      * @param ugcCategory
      * @return
      */
     @PutMapping("")
-    public CategoryDto create(@PathVariable("activityId") Long activityId,@RequestBody Category ugcCategory) {
+    public CategoryDto create(@RequestBody Category ugcCategory) {
         ugcCategory = categoryService.saveCategory(ugcCategory);
         return ModelMapperUtils.map(ugcCategory, CategoryDto.class);
     }
@@ -108,14 +105,12 @@ public class CategoryController {
      * 上移
      * @param searchText
      * @param parentId
-     * @param activityId
      * @param id
      * @param pageable
      */
     @PostMapping("/{id}/up")
     public void moveUp(@RequestParam(name= "searchText", required=false) String searchText,
                        @RequestParam(name= "parentId", required=false) Long parentId,
-                       @PathVariable("activityId") Long activityId,
                        @PathVariable("id") Long id,
                        @PageableDefault(direction=Direction.DESC,sort={"displayOrder"}) Pageable pageable) {
         categoryService.moveUp(parentId, id,searchText, pageable);
@@ -125,14 +120,12 @@ public class CategoryController {
      * 下移
      * @param searchText
      * @param parentId
-     * @param activityId
      * @param id
      * @param pageable
      */
     @PostMapping("/{id}/down")
     public void moveDown(@RequestParam(name= "searchText", required=false) String searchText,
                          @RequestParam(name= "parentId", required=false)Long parentId,
-                         @PathVariable("activityId") Long activityId,
                          @PathVariable("id") Long id,
                          @PageableDefault(direction=Direction.DESC,sort={"displayOrder"}) Pageable pageable) {
         categoryService.moveDown(parentId, id,searchText, pageable);

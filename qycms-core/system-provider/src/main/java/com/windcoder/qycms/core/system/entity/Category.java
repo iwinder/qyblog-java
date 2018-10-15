@@ -1,5 +1,6 @@
 package com.windcoder.qycms.core.system.entity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Formula;
 
@@ -63,6 +64,8 @@ public class Category extends Auditable{
     @Transient
     private String key;
 
+    private String description;
+
 
     public Long getId() {
         return id;
@@ -70,6 +73,7 @@ public class Category extends Auditable{
 
     public void setId(Long id) {
         this.id = id;
+        this.key = String.valueOf(id);
     }
 
     public String getTitle() {
@@ -86,7 +90,6 @@ public class Category extends Auditable{
 
     public void setKeyWord(String keyWord) {
         this.keyWord = keyWord;
-        this.key = keyWord;
     }
 
     public String getKey() {
@@ -156,5 +159,21 @@ public class Category extends Auditable{
 
     public void setTitlePath(String titlePath) {
         this.titlePath = titlePath;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setKey(String key) {
+        if(StringUtils.isBlank(key)){
+            this.key = String.valueOf(id);
+        }else {
+            this.key = key;
+        }
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
