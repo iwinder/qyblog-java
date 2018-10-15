@@ -6,6 +6,7 @@ export const MAIN_MENU = [
             {name: '角色管理', icon: 'paper-clip', route: '/system/role'},
             {name: '菜单管理', icon: 'bars', route: '/system/user'},
             {name: '授权管理', icon: 'setting', route: '/system/role'},
+            {name: '分类管理', icon: 'setting', route: '/system/category'},
         ]
     },
     {

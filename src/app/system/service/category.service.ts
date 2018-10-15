@@ -11,8 +11,8 @@ export class CategoryService {
     url: string  = 'api/category';
     constructor(private http: HttpClient) { }
 
-    findAll( options?: {}): Observable<Page<Category>> {
-        return this.http.get<Page<Category>>(`${this.url}`, options);
+    findAll( params?: any): Observable<Category[]> {
+        return this.http.get<Category[]>(`${this.url}`, {params: params});
     }
 
     created(category: Category, options?: {}): Observable<Category>  {

@@ -1,6 +1,6 @@
 <div nz-row>
     <div nz-col [nzSpan]="18" [nzPush]="6">
-        <nz-table #nzTable [nzData]="data">
+        <nz-table #nzTable [nzData]="categoryData">
             <thead>
               <tr>
                 <th nzWidth="40%">Title</th>
@@ -25,7 +25,7 @@
     </div>
 
     <div nz-col [nzSpan]="6" [nzPull]="18">
-        col-6 col-pull-18
+        <qy-category-form (save)="save($event)"></qy-category-form>
     </div>
 </div>
 <nz-content>

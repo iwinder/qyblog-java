@@ -10,55 +10,40 @@ import { catchError, map } from 'rxjs/operators';
 import { UploadFile } from 'ng-zorro-antd';
 import { User } from '../../entity/user';
 import { Category } from '../../entity/Category';
+import { CategoryService } from '../../service/category.service';
 
 @Component({
-    selector: 'qy-category-tree-form',
-    templateUrl: './category-tree-form.component.html',
-    styleUrls: ['./category-tree-form.component.scss']
+    selector: 'qy-category-form',
+    templateUrl: './category-form.component.html',
+    styleUrls: ['./category-form.component.scss']
 })
-export class QyCategoryTreeFormComponent implements OnInit {
+export class QyCategoryFormComponent implements OnInit {
     @Output() save: EventEmitter<any> = new EventEmitter();
     validateForm: FormGroup;
-    @Input()  user: Category;
-    previewImage = '';
-    previewVisible = false;
-    fileList = [];
-    usernameDisabled: boolean = false;
+    @Input()  category: Category;
     // tslint:disable-next-line:no-inferrable-types
     disabledValue: boolean = true;
     constructor(private fb: FormBuilder,
-        private userService: UserService) {
+        private categoryService: CategoryService) {
     }
 
 
 
     ngOnInit() {
-        let obj = this.user || new User();
-        console.log("this.user ", this.user );
+        let obj = this.category || new Category();
+        console.log("this.user ", this.category );
 
-        if (!this.user) {
-            this.usernameDisabled = false;
-            this.validateForm = this.fb.group({
-                username: [ obj.username, [ Validators.required ], [ this.userNameAsyncValidator ] ],
-                email: [obj.email, [Validators.email]],
-                password: [obj.password, [Validators.required]],
-                checkPassword: [obj.password, [Validators.required, this.confirmationValidator]],
-                nickname: [obj.nickname, [Validators.required]],
-                avatar: [obj.avatar, []]
-            });
-        } else {
-            this.usernameDisabled = true;
-            this.validateForm = this.fb.group({
-                username: [ obj.username ],
-                email: [obj.email, [Validators.email]],
-                nickname: [obj.nickname, [Validators.required]],
-                avatar: [obj.avatar, []]
-            });
-            if ( this.user.avatar) {
-                this.fileList.push({url: this.user.avatar});
-                this.previewImage = this.user.avatar;
-            }
-        }
+        this.validateForm = this.fb.group({
+            title: [ obj.title, [ Validators.required ], [  ] ],
+            key: [obj.key],
+            parent: [obj.parent],
+            keyWord: [obj.keyWord, [Validators.required]],
+            description: [obj.description],
+            type: [obj.type],
+            displayOrder: [obj.displayOrder],
+            hasChildren: [obj.hasChildren, []]
+        });
+
 
 
     }
@@ -74,8 +59,8 @@ export class QyCategoryTreeFormComponent implements OnInit {
           this.validateForm.controls[ key ].updateValueAndValidity();
         }
         let values = this.validateForm.value;
-        if (this.user && this.user.id) {
-            values.id =  this.user.id;
+        if (this.category && this.category.id) {
+            values.id =  this.category.id;
         }
         this.save.emit({ originalEvent: event, value: values });
         console.log(value);
@@ -88,16 +73,16 @@ export class QyCategoryTreeFormComponent implements OnInit {
     //     console.log('getHtmlValue', event.value);
     // }
 
-    uploadChange(event) {
-        if (event.type === 'success') {
-            this.previewImage = event.file.response.relativePath;
-            this.getFormControl('avatar').setValue(this.previewImage);
-        }
-    }
+    // uploadChange(event) {
+    //     if (event.type === 'success') {
+    //         this.previewImage = event.file.response.relativePath;
+    //         this.getFormControl('avatar').setValue(this.previewImage);
+    //     }
+    // }
 
     handlePreview = (file: UploadFile) => {
         // this.previewImage = file.url || file.thumbUrl;
-        this.previewVisible = true;
+        // this.previewVisible = true;
     }
 
 
@@ -123,20 +108,20 @@ export class QyCategoryTreeFormComponent implements OnInit {
         let param = {
             username : control.value
         };
-        return this.userService.checkUser(control.value).pipe(
-                map( data => {
-                    // tslint:disable-next-line:radix
-                    if (data && parseInt(data) > 0) {
-                        return { error: true, duplicated: true };
-                    }
-                    return;
-                },
-                catchError( err => {
-                    console.log(err);
-                    return null;
-                    // return { error: true, duplicated: true };
-                }))
-            );
+        // return this.userService.checkUser(control.value).pipe(
+        //         map( data => {
+        //             // tslint:disable-next-line:radix
+        //             if (data && parseInt(data) > 0) {
+        //                 return { error: true, duplicated: true };
+        //             }
+        //             return;
+        //         },
+        //         catchError( err => {
+        //             console.log(err);
+        //             return null;
+        //             // return { error: true, duplicated: true };
+        //         }))
+        //     );
 
     }
 
