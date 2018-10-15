@@ -10,7 +10,7 @@ export class EditorConfig {
     public tex = true;
     public readOnly = false;
     public tocm = true;
-    public watch = true;
+    public watch = false;
     public previewCodeHighlight = true;
     public saveHTMLToTextarea = true;
     public markdown = '';
@@ -19,7 +19,7 @@ export class EditorConfig {
     public sequenceDiagram = true;
     public imageUpload = true;
     public imageFormats = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'];
-    public imageUploadURL = '';
+    public imageUploadURL = 'api/upload/images';
 
     constructor() {
      }

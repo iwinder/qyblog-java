@@ -84,15 +84,20 @@ export class QyBlogArticleFormComponent implements OnInit {
 
     ngOnInit() {
         let obj = this.article || new BlogArticle();
+        console.log("this.article", this.article);
         this.validateForm = this.fb.group({
             title: [ obj.title, [ Validators.required ]],
             // email: [null, [Validators.email]],
-            publishedDate: [obj.publishedDate],
+            publishedDate: [new Date(obj.publishedDate)],
             isPublished: [obj.isPublished ],
             content: [obj.content, [Validators.required]],
             contentHtml: [obj.contentHtml],
             thumbnail: [obj.thumbnail]
         });
+        if ( this.article && this.article.thumbnail) {
+            this.fileList.push({url: this.article.thumbnail});
+            this.previewImage = this.article.thumbnail;
+        }
     }
     markAsDirty() {
         for (let key of Object.keys(this.validateForm.controls)) {

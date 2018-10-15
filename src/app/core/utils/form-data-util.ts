@@ -13,6 +13,7 @@ export class FormDataUtil {
                 this.toArrayFileds(it, obj[it], formData);
             } else {
                 if (obj[it] instanceof Date) {
+                    console.log("obj[it] ", obj[it] );
                     formData.append(it, obj[it].getTime());
                 } else if (obj[it] && Object.keys(obj[it]).findIndex( itx => itx === 'id') > -1) {
                     formData.append(`${it}.id`, obj[it]['id']);

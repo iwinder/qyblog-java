@@ -22,7 +22,7 @@ export class AuthGuard  implements CanActivate {
       mergeMap(data => {
         console.log("canActivate data", data);
         if ( (data != null && data !== true ) || (data === false) ) {
-          alert(data["msg"]);
+          alert("stats:" + data["msg"]);
           this.authService.isLoggedIn = false;
           this.router.navigate(['/login']);
           return of(false);
