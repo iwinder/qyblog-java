@@ -1,10 +1,7 @@
 package com.windcoder.qycms.blog.dto;
 
 import com.windcoder.qycms.core.system.dto.UserDto;
-import com.windcoder.qycms.core.system.entity.User;
-import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.Lob;
 import java.util.Date;
 
 public class ArticleBaseDto {

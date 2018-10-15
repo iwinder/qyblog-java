@@ -115,7 +115,7 @@ public class Article extends Auditable {
         return isPublished;
     }
 
-    public void setPublished(Boolean published) {
+    public void setIsPublished(Boolean published) {
         this.isPublished = published;
     }
 

@@ -1,6 +1,7 @@
 package com.windcoder.qycms.service;
 
 import com.windcoder.qycms.repository.SupportRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class BaseService <T, ID extends Serializable, R extends SupportRepository<T, ID>> {
@@ -42,4 +45,29 @@ public class BaseService <T, ID extends Serializable, R extends SupportRepositor
     public Page<T> findAll(Specification<T> spec, Pageable pageable) {
         return repository.findAll(spec, pageable);
     }
+
+
+//    public void delete(List<ID> ids) {
+//        for (ID id : ids) {
+//            delete(id, false);
+//        }
+//    }
+
+
+//    public void delete(ID[] ids) {
+//        delete(Arrays.asList(ids), false);
+//    }
+//
+//
+//    public void delete(ID id, boolean isPhysical) {
+//        if (!checkDeleteable(id)) {
+//            return;
+//        }
+//
+//        if (isReparable && !isPhysical) {
+//            tagDelete(id);
+//        } else {
+//            repository.delete(id);
+//        }
+//    }
 }
