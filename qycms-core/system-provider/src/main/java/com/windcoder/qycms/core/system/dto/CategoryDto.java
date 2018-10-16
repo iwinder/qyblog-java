@@ -1,5 +1,6 @@
 package com.windcoder.qycms.core.system.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDto {
@@ -15,6 +16,7 @@ public class CategoryDto {
     private boolean hasChildren;
     private List<CategoryDto> children;
     private String description;
+    private String keyWord;
 
     public Long getId() {
         return id;
@@ -56,6 +58,9 @@ public class CategoryDto {
     }
     public void setChildren(List<CategoryDto> children) {
         this.children = children;
+        if(this.children == null){
+            this.children = new ArrayList<CategoryDto>();
+        }
     }
     public String getIdPath() {
         return idPath;
@@ -98,5 +103,13 @@ public class CategoryDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
     }
 }
