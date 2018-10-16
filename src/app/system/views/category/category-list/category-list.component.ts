@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../../service/user.service';
 import { User } from '../../../entity/User';
 import { CategoryService } from '../../../service/category.service';
 import { Category } from '../../../entity/Category';
+import { NzFormatEmitEvent } from 'ng-zorro-antd';
+import { QyCategoryFormComponent } from '../../../public/category-form/category-form.component';
 
 @Component({
     selector: 'qy-category-list',
@@ -14,9 +16,10 @@ data = [
   ];
   expandDataCache = {};
   categoryData: Category[] = new Array<Category>();
+  @ViewChild("cateForm") cateForm: QyCategoryFormComponent;
     constructor(private categoryService: CategoryService) {
     }
-
+    nodes = [];
     ngOnInit() {
       this.loadData();
     }
@@ -39,6 +42,7 @@ data = [
         this.categoryService.created(event.value).subscribe(
             data => {
                 console.log('添加成功');
+                this.cateForm.resetForm();
                 this.loadData();
             },
             err => {

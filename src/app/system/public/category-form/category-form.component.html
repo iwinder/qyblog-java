@@ -19,7 +19,7 @@
       </nz-form-item>
 
 
-      <nz-form-item *ngIf="!user">
+      <nz-form-item >
         <nz-form-label [nzSpan]="7" nzRequired>别名</nz-form-label>
         <div>
           <nz-form-control [nzSpan]="12" nzHasFeedback>
@@ -31,8 +31,17 @@
 
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>父级分类</nz-form-label>
+        <!-- <qy-category-select  formControlName="parent"></qy-category-select> -->
         <nz-form-control [nzSpan]="12" nzHasFeedback>
-        <qy-category-select formControlName="parent"></qy-category-select>
+             <nz-tree-select 
+          nzPlaceHolder="Please select"
+          formControlName="parent"
+          [nzDropdownMatchSelectWidth]="true"
+          [nzDropdownStyle]="{ 'max-height': '300px' }"
+          [nzNodes]="nodes"
+          [nzAsyncData]="true"
+          (nzExpandChange)="onExpandChange($event)">
+        </nz-tree-select>
         </nz-form-control>
       </nz-form-item>
         
@@ -49,7 +58,7 @@
       <nz-form-item>
         <nz-form-control [nzOffset]="7" [nzSpan]="12">
           <button nz-button nzType="primary" (click)="submitForm($event,validateForm.value)" >保存</button>
-          <button nz-button *ngIf="!user" (click)="resetForm($event)">Reset</button>
+          <!-- <button nz-button *ngIf="user" (click)="resetForm($event)">返回</button> -->
         </nz-form-control>
       </nz-form-item>
   </div>         

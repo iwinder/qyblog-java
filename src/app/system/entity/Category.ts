@@ -10,4 +10,8 @@ export class Category {
     hasChildren?: boolean;
     children: Category[];
     expand: boolean;
+
+    getChildren() {
+        return this.children;
+    }
 }

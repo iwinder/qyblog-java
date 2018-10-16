@@ -7,6 +7,7 @@ import { UserService } from './service/user.service';
 import { UserEditComponent } from './views/user/user-edit/user-edit.component';
 import { QyCategoryListComponent } from './views/category/category-list/category-list.component';
 import { CategoryService } from './service/category.service';
+import { QyCategoryEditComponent } from './views/category/category-edit/category-edit.component';
 
 const routes: Routes = [
     {
@@ -31,8 +32,7 @@ const routes: Routes = [
             {
                 path: 'category', children: [
                     { path: '', component: QyCategoryListComponent },
-                    // { path: 'add', component: UgcExampleCourseEditComponent },
-                    // { path: ':id/edit', component: UgcExampleCourseEditComponent },
+                    { path: ':categoryId/edit', component: QyCategoryEditComponent },
 
                 ],
             }
@@ -54,5 +54,6 @@ export const routedComponents = [
     RoleListComponent,
     UserAddComponent,
     UserEditComponent,
-    QyCategoryListComponent
+    QyCategoryListComponent,
+    QyCategoryEditComponent
 ];

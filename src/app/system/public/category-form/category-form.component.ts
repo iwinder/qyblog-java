@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { catchError, map } from 'rxjs/operators';
-import { UploadFile } from 'ng-zorro-antd';
+import { UploadFile, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 import { User } from '../../entity/user';
 import { Category } from '../../entity/Category';
 import { CategoryService } from '../../service/category.service';
@@ -27,25 +27,36 @@ export class QyCategoryFormComponent implements OnInit {
         private categoryService: CategoryService) {
     }
 
-
-
+    expandKeys = [];
+    value;
+    nodes: NzTreeNode[] = [];
+    node: NzTreeNode;
     ngOnInit() {
+        this.loadNode().then(data => {
+            data.forEach( o => {
+                this.node = new NzTreeNode(o);
+                this.nodes.push( this.node);
+            });
+            if (this.category) {
+                console.log("this.category", this.category);
+              this.expandKeys = [this.category.key];
+              this.getFormControl('parent').setValue(this.category.key);
+              console.log("this.getFormControl('parent')", this.getFormControl('parent').value);
+            //   this.value = this.category.key;
+            }
+          });
         let obj = this.category || new Category();
-        console.log("this.user ", this.category );
 
         this.validateForm = this.fb.group({
             title: [ obj.title, [ Validators.required ], [  ] ],
             key: [obj.key],
-            parent: [obj.parent],
+            parent: [obj.parent.key],
             keyWord: [obj.keyWord, [Validators.required]],
             description: [obj.description],
             type: [obj.type],
             displayOrder: [obj.displayOrder],
             hasChildren: [obj.hasChildren, []]
         });
-
-
-
     }
     markAsDirty() {
         for (let key of Object.keys(this.validateForm.controls)) {
@@ -61,6 +72,11 @@ export class QyCategoryFormComponent implements OnInit {
         let values = this.validateForm.value;
         if (this.category && this.category.id) {
             values.id =  this.category.id;
+        }
+        if (this.getFormControl('parent').value != null) {
+            let category = new Category();
+            category.id = this.getFormControl('parent').value;
+            values.parent = category;
         }
         this.save.emit({ originalEvent: event, value: values });
         console.log(value);
@@ -125,8 +141,10 @@ export class QyCategoryFormComponent implements OnInit {
 
     }
 
-    resetForm(e: MouseEvent): void {
-        e.preventDefault();
+    resetForm(e?: MouseEvent): void {
+        if (e) {
+            e.preventDefault();
+        }
         this.validateForm.reset();
         for (let key of Object.keys(this.validateForm.controls)) {
           this.validateForm.controls[ key ].markAsPristine();
@@ -136,5 +154,25 @@ export class QyCategoryFormComponent implements OnInit {
 
     getCaptcha(e: MouseEvent) {
         e.preventDefault();
+    }
+
+
+    onExpandChange(e: NzFormatEmitEvent): void {
+        console.log(" e.node 0",  e.node );
+        // this.onModelChange(e.node);
+        console.log(" e.node ",  e.node );
+        if (e.node && e.node.getChildren().length === 0 && e.node.isExpanded) {
+          this.loadNode({ parentId: e.node.key }).then(data => {
+            e.node.addChildren(data);
+          });
+        }
+      }
+
+      loadNode(params?: any): Promise<Category[]> {
+        return this.categoryService.findAllOfPromise(params);
+      }
+
+      public refresh(e) {
+       this.resetForm(e);
     }
 }

@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { catchError, map } from 'rxjs/operators';
-import { UploadFile, NzFormatEmitEvent } from 'ng-zorro-antd';
+import { UploadFile, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 import { User } from '../../entity/user';
 import { CategoryService } from '../../service/category.service';
 import { Observable } from 'rxjs';
@@ -44,12 +44,12 @@ export class QyCategorySelectComponent implements OnInit, ControlValueAccessor {
 
     nodes = [];
 
-    onModelChange: Function = () => { };
-    onModelTouched: Function = () => { };
+    onChange: Function = () => { };
+    onTouched: Function = () => { };
 
     onExpandChange(e: NzFormatEmitEvent): void {
       console.log(" e.node 0",  e.node );
-      this.onModelChange(e.node);
+      // this.onChange(e.node);
       console.log(" e.node ",  e.node );
       if (e.node.getChildren().length === 0 && e.node.isExpanded) {
         this.loadNode({ parentId: e.node.key }).subscribe(data => {
@@ -68,7 +68,9 @@ export class QyCategorySelectComponent implements OnInit, ControlValueAccessor {
 
       // <!-- [(ngModel)]="value" -->
       this.loadNode().subscribe(data => {
-        this.nodes = data;
+        data.forEach( o => {
+          this.nodes.push(new NzTreeNode(o));
+      });
         console.log(" this.nodes ",  this.nodes );
         if (this.category) {
           console.log(" this.category ",  this.category );
@@ -82,15 +84,16 @@ export class QyCategorySelectComponent implements OnInit, ControlValueAccessor {
       console.log("writeValue e.node obj",  obj );
       if (obj != null) {
         this.value = obj;
+        this.save.emit(this.value);
         this.cd.markForCheck();
       }
 
     }
     registerOnChange(fn: any): void {
-      this.onModelChange = fn;
+      this.onChange = fn;
     }
     registerOnTouched(fn: any): void {
-      this.onModelTouched = fn;
+      this.onTouched = fn;
     }
     setDisabledState?(isDisabled: boolean): void {
       throw new Error("Method not implemented.");

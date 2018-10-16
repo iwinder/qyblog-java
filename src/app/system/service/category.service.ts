@@ -15,6 +15,10 @@ export class CategoryService {
         return this.http.get<Category[]>(`${this.url}`, {params: params});
     }
 
+    findAllOfPromise( params?: any): Promise<Category[]> {
+        return this.http.get<Category[]>(`${this.url}`, {params: params}).toPromise();
+    }
+
     created(category: Category, options?: {}): Observable<Category>  {
         return this.http.put<Category>(`${this.url}`, category, options);
     }
