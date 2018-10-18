@@ -80,6 +80,7 @@ public class ShiroConfiguration {
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/api/login", "anon");
+        filterChainDefinitionMap.put("/api/ldap/**", "anon");
         filterChainDefinitionMap.put("/websocket", "anon");
         filterChainDefinitionMap.put("/websocket2", "anon");
         filterChainDefinitionMap.put("/api/users/**", "anon");
