@@ -12,7 +12,7 @@ public class LdapConfig {
 
     public static final String URL = "ldap://192.168.137.129:389";
     public static final String BASE = "dc=windcoder,dc=com";
-    public static final String USERDN = "root";
+    public static final String USERDN = "cn=admin,dc=windcoder,dc=com";
     public static final String PASSWORD = "123456";
     /*
      * SpringLdap的javaConfig注入方式
@@ -33,7 +33,7 @@ public class LdapConfig {
         ldapContextSource.setBase(BASE);
         ldapContextSource.setUserDn(USERDN);
         ldapContextSource.setPassword(PASSWORD);
-//        ldapContextSource.setReferral("follow");
+        ldapContextSource.setReferral("follow");
         return ldapContextSource;
     }
 

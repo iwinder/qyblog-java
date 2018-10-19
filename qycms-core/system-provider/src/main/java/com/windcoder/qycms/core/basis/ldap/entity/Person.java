@@ -21,7 +21,11 @@ public class Person {
     private String password;
     private String email;
 
+    private String country;
+
     private String company;
+
+    private String phone;
 
     public Name getId() {
         return id;
@@ -79,5 +83,21 @@ public class Person {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

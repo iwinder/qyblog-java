@@ -19,9 +19,15 @@ public class PersonController {
         personService.addPerson(person);
         return "success";
     }
+    @PutMapping("new")
+    public String addNewDnPerson(@RequestBody Person person){
+        personService.addNewDnPerson(person);
+        return "success";
+    }
+
 
     @PostMapping("/{company}/{commonName}")
-    public String updatePerson(@PathVariable("commonName") String commonName, @PathVariable("company") String company, Person person){
+    public String updatePerson(@PathVariable("commonName") String commonName, @PathVariable("company") String company,Person person){
         Person old = personService.findByPrimaryKey(company,commonName);
         getNewPerson(old, person);
         personService.update(old);
@@ -41,24 +47,30 @@ public class PersonController {
 
 
     private void getNewPerson(Person old, Person person){
-        if (!old.getCompany().equals(person.getCompany())){
+        if (null != person.getCompany() && !old.getCompany().equals(person.getCompany())){
             old.setCompany(person.getCompany());
         }
 
-        if (!old.getCommonName().equals(person.getCommonName())){
+        if (null != person.getCommonName() && !old.getCommonName().equals(person.getCommonName())){
             old.setCommonName(person.getCommonName());
         }
 
-        if (!old.getEmail().equals(person.getEmail())){
+        if (null != person.getEmail() && !old.getEmail().equals(person.getEmail())){
             old.setEmail(person.getEmail());
         }
 
-        if (!old.getSuerName().equals(person.getSuerName())){
+        if (null != person.getSuerName() && !old.getSuerName().equals(person.getSuerName())){
             old.setSuerName(person.getSuerName());
         }
 
-        if (!old.getPassword().equals(person.getPassword())){
+        if (null != person.getPassword() && !old.getPassword().equals(person.getPassword())){
             old.setPassword(person.getPassword());
         }
+
+        if (null != person.getPhone() && !old.getPhone().equals(person.getPhone())){
+            old.setPhone(person.getPhone());
+        }
+
+
     }
 }

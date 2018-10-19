@@ -9,6 +9,7 @@ import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 import org.springframework.ldap.support.LdapNameBuilder;
+import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
 
 import javax.naming.Context;
@@ -27,7 +28,14 @@ public class PersonService {
         Name dn = buildDn(person);
         DirContextAdapter ctx = new DirContextAdapter(dn);
         PersonToContext(person,ctx);
-        ldapTemplate.bind(ctx);
+        ldapTemplate.bind(dn,ctx,null);
+    }
+
+    public void addNewDnPerson(Person person){
+        Name dn = buildNewDn(person);
+        DirContextAdapter ctx = new DirContextAdapter(dn);
+        PersonToContext(person,ctx);
+        ldapTemplate.bind(dn,ctx,null);
     }
 
     public void delete(Person person) {
@@ -53,10 +61,17 @@ public class PersonService {
        @Override
        protected Person doMapFromContext(DirContextOperations ctx) {
            Person person = new Person();
+           LdapName dn = LdapUtils.newLdapName(ctx.getDn());
            person.setCommonName(ctx.getStringAttribute("cn"));
            person.setSuerName(ctx.getStringAttribute("sn"));
-           person.setEmail(ctx.getStringAttribute("email"));
-           person.setPassword(ctx.getStringAttribute("password"));
+           person.setCompany(LdapUtils.getStringValue(dn, 0));
+           person.setPhone(ctx.getStringAttribute("telephoneNumber"));
+//           person.setEmail(ctx.getStringAttribute("email"));
+//           if(ctx.getObjectAttribute("userPassword")!=null){
+////               System.out.println("userPassword: "+ctx.getObjectAttribute("userPassword"));
+//               person.setPassword(String.valueOf(ctx.getObjectAttribute("userPassword")));
+//           }
+
            return person;
        }
     };
@@ -68,21 +83,33 @@ public class PersonService {
     }
 
     protected LdapName buildDn(Person p){
-        return buildDn( p.getCompany(), p.getCommonName());
+        return buildDn(p.getCompany(), p.getCommonName());
     }
 
     protected LdapName buildDn(String company, String commpnName){
-        return LdapNameBuilder.newInstance(LdapConfig.BASE)
+//        return LdapNameBuilder.newInstance(LdapConfig.BASE)
+        return LdapNameBuilder.newInstance()
                 .add("ou",company)
                 .add("cn", commpnName)
                 .build();
     }
 
+    protected Name buildNewDn(Person p) {
+        return LdapNameBuilder.newInstance()
+                .add("ou", p.getCompany())
+                .add("cn", p.getCommonName())
+                .build();
+    }
+
+
     private void PersonToContext(Person person, DirContextAdapter ctx){
+        ctx.setAttributeValues("objectclass", new String[] {"top", "person" });
         ctx.setAttributeValue("cn", person.getCommonName());
         ctx.setAttributeValue("sn", person.getSuerName());
-        ctx.setAttributeValue("email",person.getEmail());
-        ctx.setAttributeValue("password", person.getPassword());
+
+        ctx.setAttributeValue("telephoneNumber", person.getPhone());
+//        ctx.setAttributeValue("email",person.getEmail());
+        ctx.setAttributeValue("userPassword", person.getPassword());
 
     }
 
