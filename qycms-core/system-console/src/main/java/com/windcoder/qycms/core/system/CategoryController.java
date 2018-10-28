@@ -1,5 +1,6 @@
 package com.windcoder.qycms.core.system;
 
+import com.windcoder.qycms.core.system.dto.CategoryBaseDto;
 import com.windcoder.qycms.core.system.dto.CategoryDto;
 import com.windcoder.qycms.core.system.entity.Category;
 import com.windcoder.qycms.core.system.service.CategoryService;
@@ -55,6 +56,14 @@ public class CategoryController {
             Type type = new TypeToken<List<CategoryDto>>(){}.getType();
             return ModelMapperUtils.map(categories,type);
         }
+    }
+
+    @GetMapping("tree")
+    public List<CategoryBaseDto> findCategoryTree(){
+        Category category = new Category();
+        List<Category> categories = categoryService.findCategoryTree(category);
+        Type type = new TypeToken<List<CategoryBaseDto>>(){}.getType();
+        return ModelMapperUtils.map(categories,type);
     }
 
     /**

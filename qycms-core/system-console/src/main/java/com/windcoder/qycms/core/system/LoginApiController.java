@@ -9,12 +9,12 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,15 +40,15 @@ public class LoginApiController {
         }  catch (IncorrectCredentialsException e) {
 //            result.setMsg("密码错误");
 //            result.setCode(400);
-            throw new BusinessException("密码错误");
+            throw new IncorrectCredentialsException("密码错误");
         } catch (LockedAccountException e) {
 //            result.setMsg("登录失败，该用户已被冻结");
 //            result.setCode(400);
-            throw new BusinessException("登录失败，该用户已被冻结");
+            throw new LockedAccountException("登录失败，该用户已被冻结");
         } catch (AuthenticationException e) {
 //            result.setMsg("该用户不存在");
 //            result.setCode(400);
-            throw new BusinessException("该用户不存在");
+            throw new AuthenticationException("该用户不存在");
         } catch (Exception e) {
             throw new BusinessException(e.toString());
 //            e.printStackTrace();
@@ -64,13 +64,14 @@ public class LoginApiController {
      * 未登录，shiro应重定向到登录界面，此处返回未登录状态信息由前端控制跳转页面
      * @return
      */
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED,reason="未登录")
     @RequestMapping(value = "/unauth")
-    public ReturnResult unauth() {
+    public void unauth() {
 //        ReturnResult result = new ReturnResult();
 //        result.setMsg("未登录");
 //        result.setCode(400);
 //        return result;
-        throw new BusinessException("未登录");
+//        throw new UnauthorizedException("未登录");
     }
 
     @RequestMapping(value = "/status")

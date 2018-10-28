@@ -1,5 +1,6 @@
 package com.windcoder.qycms.blog.dto;
 
+import com.windcoder.qycms.core.system.dto.CategoryBaseDto;
 import com.windcoder.qycms.core.system.dto.UserDto;
 
 import java.util.Date;
@@ -43,6 +44,8 @@ public class ArticleBaseDto {
      * 作者
      */
     private UserDto author;
+
+    private CategoryBaseDto category;
 
 
     /**
@@ -124,5 +127,13 @@ public class ArticleBaseDto {
 
     public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
+    }
+
+    public CategoryBaseDto getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryBaseDto category) {
+        this.category = category;
     }
 }

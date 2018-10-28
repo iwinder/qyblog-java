@@ -31,6 +31,7 @@ public class ArticleController {
     public Article getArticle(@RequestParam(name = "id", required = false) Long id) {
         if (null != id) {
             Article article = articleService.findOne(id);
+            article.setCategory(null);
             return article;
         } else {
             return new Article();

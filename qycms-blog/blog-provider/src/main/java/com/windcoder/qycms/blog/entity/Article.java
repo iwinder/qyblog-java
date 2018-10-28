@@ -1,6 +1,7 @@
 package com.windcoder.qycms.blog.entity;
 
 import com.windcoder.qycms.core.system.entity.Auditable;
+import com.windcoder.qycms.core.system.entity.Category;
 import com.windcoder.qycms.core.system.entity.User;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -65,6 +66,13 @@ public class Article extends Auditable {
     @ManyToOne
     @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
     private User author;
+
+    /**
+     * 所属分类
+     */
+    @ManyToOne
+    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
+    private Category category;
 
 
     /**
@@ -165,5 +173,13 @@ public class Article extends Auditable {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

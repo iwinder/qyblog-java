@@ -16,8 +16,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CategoryService extends BaseService<Category,Long, CategoryRepository> {
@@ -195,6 +194,11 @@ public class CategoryService extends BaseService<Category,Long, CategoryReposito
         }
     }
 
+    public List<Category>  findCategoryTree(Category sample) {
+        List<Category> categories =  findAllForLearner(sample);
+        return parseCategoryListToTree(categories);
+    }
+
 
     /**
      * 获取子分类
@@ -273,5 +277,37 @@ public class CategoryService extends BaseService<Category,Long, CategoryReposito
         for (Long id: ids){
             repository.delete(id);
         }
+    }
+
+
+    private List<Category> parseCategoryListToTree(List<Category> categories) {
+        List<Category> rootCategories = new ArrayList<>();
+        Map<Long, Category> categoryMap = new HashMap<>();
+        for(Category category : categories){
+            if(category.getParent() == null){
+                rootCategories.add(category);
+            }
+            categoryMap.put(category.getId(), category);
+
+        }
+        if(rootCategories.isEmpty()) {
+            return null;
+        }
+
+        for(Category category: categories){
+            if(category.getParent() == null){
+                continue;
+            } else {
+                Category parent = categoryMap.get(category.getParent().getId());
+                if(parent.getChildren() == null) {
+                    List<Category> childSet = new ArrayList<>();
+                    parent.setChildren(childSet);
+                }
+                parent.getChildren().add(category);
+            }
+
+        }
+
+        return rootCategories;
     }
 }
