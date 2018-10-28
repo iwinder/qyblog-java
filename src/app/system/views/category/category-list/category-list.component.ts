@@ -25,9 +25,10 @@ data = [
     }
 
     loadData() {
-      this.categoryService.findAll().subscribe(
+      this.categoryService.findAllOfTree().subscribe(
         data => {
-            this.categoryData = data;
+          this.categoryData = data;
+          let parma;
           this.categoryData.forEach(item => {
             this.expandDataCache[ item.key ] = this.convertTreeToList(item);
           });
@@ -54,7 +55,7 @@ data = [
 
     collapse(array: Category[], data: Category, $event: boolean): void {
         if ($event === false) {
-          if (data.children) {
+          if (data.hasChildren) {
             data.children.forEach(d => {
               const target = array.find(a => a.key === d.key);
               target.expand = false;
@@ -74,13 +75,13 @@ data = [
         while (stack.length !== 0) {
           const node = stack.pop();
           this.visitNode(node, hashMap, array);
-          if (node.children) {
+          if (node.hasChildren) {
+
             for (let i = node.children.length - 1; i >= 0; i--) {
               stack.push({ ...node.children[ i ], level: node.level + 1, expand: false, parent: node });
             }
           }
         }
-
         return array;
       }
 
@@ -90,6 +91,4 @@ data = [
           array.push(node);
         }
       }
-
-
 }

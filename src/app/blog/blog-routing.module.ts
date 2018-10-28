@@ -4,6 +4,7 @@ import { BlogArticleListComponent } from './views/blog-article/blog-article-list
 import { BlogArticleAddComponent } from './views/blog-article/blog-article-add/blog-article-add.component';
 import { BlogArticleService } from './service/blog-article.service';
 import { BlogArticleEditComponent } from './views/blog-article/blog-article-edit/blog-article-edit.component';
+import { CategoryService } from '../system/service/category.service';
 
 const routes: Routes = [
     {
@@ -17,6 +18,9 @@ const routes: Routes = [
 
                 ]
             },
+            {
+                path: 'category', loadChildren: 'app/system/views/category/category.module#CategoryModule',
+            }
         ]
     },
 ];
@@ -24,7 +28,7 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [BlogArticleService]
+    providers: [BlogArticleService, CategoryService]
 })
 export class  BlogArticleRoutingModule { }
 

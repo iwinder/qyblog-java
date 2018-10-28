@@ -1,4 +1,5 @@
 import { User } from "../../system/entity/user";
+import { Category } from "../../system/entity/Category";
 
 export class BlogArticle {
     id: number;
@@ -6,6 +7,7 @@ export class BlogArticle {
     content: string;
     contentHtml: string;
     permaLink: string;
+    category: Category;
     author: User;
     thumbnail: string;
     publishedDate: Date;

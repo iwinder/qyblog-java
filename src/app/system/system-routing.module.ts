@@ -5,9 +5,6 @@ import { RoleListComponent } from './views/role/role-list/role-list.component';
 import { UserAddComponent } from './views/user/user-add/user-add.component';
 import { UserService } from './service/user.service';
 import { UserEditComponent } from './views/user/user-edit/user-edit.component';
-import { QyCategoryListComponent } from './views/category/category-list/category-list.component';
-import { CategoryService } from './service/category.service';
-import { QyCategoryEditComponent } from './views/category/category-edit/category-edit.component';
 
 const routes: Routes = [
     {
@@ -29,13 +26,9 @@ const routes: Routes = [
 
                 ],
             },
-            {
-                path: 'category', children: [
-                    { path: '', component: QyCategoryListComponent },
-                    { path: ':categoryId/edit', component: QyCategoryEditComponent },
-
-                ],
-            }
+            // {
+            //     path: 'category', loadChildren: 'app/system/views/category/category.module#CategoryModule',
+            // }
             // { path: 'banner', component: UgcBannerListComponent },
             // { path: 'notice-box', component: UgcNoticeBoxListComponent }
         ]
@@ -45,7 +38,7 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [UserService, CategoryService]
+    providers: [UserService]
 })
 export class SystemRoutingModule { }
 
@@ -53,7 +46,5 @@ export const routedComponents = [
     UserListComponent,
     RoleListComponent,
     UserAddComponent,
-    UserEditComponent,
-    QyCategoryListComponent,
-    QyCategoryEditComponent
+    UserEditComponent
 ];

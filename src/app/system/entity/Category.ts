@@ -10,8 +10,9 @@ export class Category {
     hasChildren?: boolean;
     children: Category[];
     expand: boolean;
-
-    getChildren() {
-        return this.children;
-    }
+    idPath: string;
+    isLeaf: boolean = !this.hasChildren;
+    // getChildren() {
+    //     return this.children;
+    // }
 }

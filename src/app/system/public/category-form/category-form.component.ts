@@ -32,31 +32,64 @@ export class QyCategoryFormComponent implements OnInit {
     nodes: NzTreeNode[] = [];
     node: NzTreeNode;
     ngOnInit() {
-        this.loadNode().then(data => {
-            data.forEach( o => {
-                this.node = new NzTreeNode(o);
-                this.nodes.push( this.node);
-            });
-            if (this.category) {
-                console.log("this.category", this.category);
-              this.expandKeys = [this.category.key];
-              this.getFormControl('parent').setValue(this.category.key);
-              console.log("this.getFormControl('parent')", this.getFormControl('parent').value);
-            //   this.value = this.category.key;
-            }
-          });
+
         let obj = this.category || new Category();
 
         this.validateForm = this.fb.group({
-            title: [ obj.title, [ Validators.required ], [  ] ],
+            title: [ obj.title, [ Validators.required ]],
             key: [obj.key],
-            parent: [obj.parent.key],
+            parent: [obj.parent ? obj.parent.key : null],
             keyWord: [obj.keyWord, [Validators.required]],
             description: [obj.description],
             type: [obj.type],
             displayOrder: [obj.displayOrder],
             hasChildren: [obj.hasChildren, []]
         });
+
+        this.loadAllNode().then(data => {
+            data.forEach( o => {
+                this.node = new NzTreeNode(o);
+                this.nodes.push( this.node);
+            });
+            if (this.category) {
+                if (this.category.parent) {
+                    // this.getOne();
+                    this.expandKeys = [this.category.parent.key];
+                    this.getFormControl('parent').setValue(this.category.parent.key);
+                }
+            }
+        });
+
+    }
+
+    getOne() {
+        let ids = this.category.idPath.split(",");
+        const target = this.nodes.find(a => a.key === ids[0]);
+        this.getOne2(0, ids, target);
+    }
+    getOne2(i, ids, target) {
+        if (i < ids.length - 1) {
+            let tmpnodes;
+            let tmpnode;
+            let j = 0;
+            this.loadNode({ parentId: ids[i] }).then(data => {
+                tmpnodes = [];
+                j = 0;
+                data.forEach( o => {
+                    tmpnode = new NzTreeNode(o);
+                    tmpnodes.push(tmpnode);
+                    if (o.key !== ids[i + 1]  ) {
+                        j++;
+                    }
+                });
+                target.children = tmpnodes;
+                i++;
+                this.getOne2(i, ids, target.children[j]);
+            });
+        } else {
+            this.expandKeys = [this.category.parent.key];
+            this.getFormControl('parent').setValue(this.category.parent.key);
+        }
     }
     markAsDirty() {
         for (let key of Object.keys(this.validateForm.controls)) {
@@ -170,6 +203,10 @@ export class QyCategoryFormComponent implements OnInit {
 
       loadNode(params?: any): Promise<Category[]> {
         return this.categoryService.findAllOfPromise(params);
+      }
+
+      loadAllNode(): Promise<Category[]> {
+        return this.categoryService.findAllNodeOfPromise();
       }
 
       public refresh(e) {

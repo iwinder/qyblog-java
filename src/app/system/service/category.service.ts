@@ -14,9 +14,16 @@ export class CategoryService {
     findAll( params?: any): Observable<Category[]> {
         return this.http.get<Category[]>(`${this.url}`, {params: params});
     }
+    findAllOfTree( params?: any): Observable<Category[]> {
+        return this.http.get<Category[]>(`${this.url}/tree`, {params: params});
+    }
 
     findAllOfPromise( params?: any): Promise<Category[]> {
         return this.http.get<Category[]>(`${this.url}`, {params: params}).toPromise();
+    }
+
+    findAllNodeOfPromise( params?: any): Promise<Category[]> {
+        return this.http.get<Category[]>(`${this.url}/tree`, {params: params}).toPromise();
     }
 
     created(category: Category, options?: {}): Observable<Category>  {

@@ -3,10 +3,10 @@ export const MAIN_MENU = [
     {
         name: '系统管理', icon: 'appstore', children: [
             {name: '用户管理', icon: 'user', route: '/system/user'},
-            {name: '角色管理', icon: 'paper-clip', route: '/system/role'},
-            {name: '菜单管理', icon: 'bars', route: '/system/user'},
-            {name: '授权管理', icon: 'setting', route: '/system/role'},
-            {name: '分类管理', icon: 'setting', route: '/system/category'},
+            // {name: '角色管理', icon: 'paper-clip', route: '/system/role'},
+            // {name: '菜单管理', icon: 'bars', route: '/system/user'},
+            // {name: '授权管理', icon: 'setting', route: '/system/role'},
+            // {name: '分类管理', icon: 'setting', route: '/system/category'},
         ]
     },
     {

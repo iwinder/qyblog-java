@@ -1,26 +1,30 @@
-import { HttpRequest, HttpInterceptor, HttpHandler, HttpEvent } from "@angular/common/http";
+import { HttpRequest, HttpInterceptor, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of, throwError } from "rxjs";
+import { mergeMap, catchError } from "rxjs/operators";
 
-// @Injectable()
+@Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const idToken = this.getToken();
-    console.log("intercept");
-    if (idToken) {
-      const cloned = req.clone({
-        headers: req.headers.set('Authorization', idToken)
-      });
-
-      return next.handle(cloned);
-    } else {
-      return next.handle(req);
-    }
+    return next.handle(req).pipe(
+      catchError(this.handleData)
+    );
   }
 
-  getToken(): string {
-    const userStr = localStorage.getItem('currentUser');
-    return userStr ? JSON.parse(userStr).token : '';
+  private handleData(event: HttpResponse<any> | HttpErrorResponse): Observable<any> {
+        // 业务处理：一些通用操作
+        switch (event.status) {
+          case 200:
+            break;
+          case 401: // 未登录状态码
+            // tslint:disable-next-line:max-line-length
+            window['location']['href'] = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + '/login';
+            return throwError('cancelled');
+          case 404:
+          case 500:
+          default:
+          return throwError(event);
+      }
   }
 }

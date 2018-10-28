@@ -8,7 +8,9 @@ import {
 import { catchError, map } from 'rxjs/operators';
 import { BlogArticleService } from '../../service/blog-article.service';
 import { BlogArticle } from '../../entity/blog-article';
-import { UploadFile } from 'ng-zorro-antd';
+import { UploadFile, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
+import { CategoryService } from '../../../system/service/category.service';
+import { Category } from '../../../system/entity/Category';
 
 @Component({
     selector: 'qy-blog-article-form',
@@ -23,10 +25,13 @@ export class QyBlogArticleFormComponent implements OnInit {
     previewImage = '';
     previewVisible = false;
     fileList = [];
+    nodes: NzTreeNode[] = [];
+    node: NzTreeNode;
     // tslint:disable-next-line:no-inferrable-types
     disabledValue: boolean = true;
     constructor(private fb: FormBuilder,
-        private articleService: BlogArticleService) {
+        private articleService: BlogArticleService,
+        private categoryService: CategoryService) {
     }
 
     // updateConfirmValidator() {
@@ -87,7 +92,7 @@ export class QyBlogArticleFormComponent implements OnInit {
         console.log("this.article", this.article);
         this.validateForm = this.fb.group({
             title: [ obj.title, [ Validators.required ]],
-            // email: [null, [Validators.email]],
+            category: [obj.category ? obj.category.key : null],
             publishedDate: [new Date(obj.publishedDate)],
             isPublished: [obj.isPublished ],
             content: [obj.content, [Validators.required]],
@@ -98,6 +103,17 @@ export class QyBlogArticleFormComponent implements OnInit {
             this.fileList.push({url: this.article.thumbnail});
             this.previewImage = this.article.thumbnail;
         }
+
+        this.loadAllNode().then(data => {
+            data.forEach( o => {
+                this.node = new NzTreeNode(o);
+                this.nodes.push( this.node);
+            });
+            if (this.article && this.article.category) {
+                // this.expandKeys = [this.article.category.key];
+                this.getFormControl('category').setValue(this.article.category.key);
+            }
+        });
     }
     markAsDirty() {
         for (let key of Object.keys(this.validateForm.controls)) {
@@ -113,6 +129,11 @@ export class QyBlogArticleFormComponent implements OnInit {
         let values = this.validateForm.value;
         if ( this.article && this.article.id) {
             values['id'] = this.article.id;
+        }
+        if (this.getFormControl('category').value != null) {
+            let category = new Category();
+            category.id = this.getFormControl('category').value;
+            values.category = category;
         }
         this.save.emit({ originalEvent: event, value: values });
         console.log(value);
@@ -147,4 +168,12 @@ export class QyBlogArticleFormComponent implements OnInit {
             this.getFormControl('publishedDate').setValue(null);
         }
     }
+
+
+    loadAllNode(): Promise<Category[]> {
+        return this.categoryService.findAllNodeOfPromise();
+    }
+
+
+
 }

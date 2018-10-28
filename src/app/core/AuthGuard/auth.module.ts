@@ -8,6 +8,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth-guard.service';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { httpInterceptorProviders } from './http-Interceptor-providers';
 
 @NgModule({
   imports: [
@@ -20,6 +21,6 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
   ],
   declarations: [QyLoginComponent],
   exports: [],
-  providers: [AuthService, AuthGuard]
+  providers: [AuthService, AuthGuard, httpInterceptorProviders]
 })
 export class AuthModule { }
