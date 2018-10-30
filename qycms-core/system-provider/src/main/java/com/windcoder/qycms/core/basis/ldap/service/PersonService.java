@@ -47,7 +47,6 @@ public class PersonService {
         DirContextAdapter ctx = (DirContextAdapter) ldapTemplate.lookup(dn);
         PersonToContext(person,ctx);
         ldapTemplate.modifyAttributes(dn,ctx.getModificationItems());
-
     }
 
 
