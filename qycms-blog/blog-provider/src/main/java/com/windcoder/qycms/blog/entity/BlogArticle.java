@@ -8,11 +8,12 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="blog_article")
 @DynamicInsert
-public class Article extends Auditable {
+public class BlogArticle extends Auditable {
 
     private static final long serialVersionUID = 1L;
 
@@ -74,7 +75,10 @@ public class Article extends Auditable {
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
     private Category category;
 
-
+    @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+    @JoinTable(name="blog_article_tag", joinColumns=@JoinColumn(nullable=false,name="article_id",referencedColumnName="id"),
+            inverseJoinColumns=@JoinColumn(name="tag_id", referencedColumnName="id"))
+    private List<BlogTag> tags;
     /**
      * 是否已发布
      */
@@ -86,6 +90,8 @@ public class Article extends Auditable {
      */
     @ColumnDefault("0")
     private Boolean isDeleted;
+    @Transient
+    private List<String> tagStrings;
 
     public Long getId() {
         return id;
@@ -181,5 +187,21 @@ public class Article extends Auditable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<BlogTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<BlogTag> tags) {
+        this.tags = tags;
+    }
+
+    public List<String> getTagStrings() {
+        return tagStrings;
+    }
+
+    public void setTagStrings(List<String> tagStrings) {
+        this.tagStrings = tagStrings;
     }
 }

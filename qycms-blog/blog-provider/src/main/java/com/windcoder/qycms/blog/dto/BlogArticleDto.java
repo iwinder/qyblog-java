@@ -1,6 +1,6 @@
 package com.windcoder.qycms.blog.dto;
 
-public class ArticleDto extends ArticleBaseDto {
+public class BlogArticleDto extends BlogArticleBaseDto {
 
     /**
      * 内容-mkdown

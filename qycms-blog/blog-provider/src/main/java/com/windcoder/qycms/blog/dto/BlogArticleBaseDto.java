@@ -3,9 +3,11 @@ package com.windcoder.qycms.blog.dto;
 import com.windcoder.qycms.core.system.dto.CategoryBaseDto;
 import com.windcoder.qycms.core.system.dto.UserDto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class ArticleBaseDto {
+public class BlogArticleBaseDto {
 
     private Long id;
     /**
@@ -47,7 +49,9 @@ public class ArticleBaseDto {
 
     private CategoryBaseDto category;
 
+    private List<BlogTagDto> tags;
 
+    private List<String> tagStrings;
     /**
      * 发布日期
      */
@@ -135,5 +139,28 @@ public class ArticleBaseDto {
 
     public void setCategory(CategoryBaseDto category) {
         this.category = category;
+    }
+
+    public List<BlogTagDto> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<BlogTagDto> tags) {
+        this.tags = tags;
+        if (tags!=null && tags.size()>0){
+            List<String> tagStr = new ArrayList<String>();
+            tags.forEach( t ->{
+                tagStr.add(t.getName());
+            });
+            this.tagStrings = tagStr;
+        }
+    }
+
+    public List<String> getTagStrings() {
+        return tagStrings;
+    }
+
+    public void setTagStrings(List<String> tagStrings) {
+        this.tagStrings = tagStrings;
     }
 }
