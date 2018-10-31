@@ -13,4 +13,5 @@ export class BlogArticle {
     publishedDate: Date;
     isPublished: boolean;
     isDeleted: boolean;
+    tagStrings: string[];
 }

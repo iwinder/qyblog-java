@@ -7,23 +7,33 @@
           <nz-collapse [nzBordered]="true">
               <nz-collapse-panel  [nzHeader]="'封面图'" [nzActive]="'true'" [nzDisabled]="'false'">
                 <nz-form-item>
-                    <nz-form-control [nzSpan]="24" >
-                    <nz-upload
-                    nzAction="/api/upload/file"
-                    nzListType="picture-card"
-                    [(nzFileList)]="fileList"
-                    [nzShowButton]="fileList.length < 1"
-                    [nzPreview]="handlePreview" (nzChange)="uploadChange($event)">
-                      <i class="anticon anticon-plus"></i>
-                      <div class="ant-upload-text">Upload</div>
-                  </nz-upload>
-                  <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
-                    <ng-template #modalContent>
-                      <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
-                    </ng-template>
-                  </nz-modal>
-                </nz-form-control>
+                    <nz-form-label [nzSpan]="6" >封面图</nz-form-label>
+                    <nz-form-control [nzSpan]="16" >
+                      <nz-upload
+                      nzAction="/api/upload/file"
+                      nzListType="picture-card"
+                      [(nzFileList)]="fileList"
+                      [nzShowButton]="fileList.length < 1"
+                      [nzPreview]="handlePreview" (nzChange)="uploadChange($event)">
+                        <i class="anticon anticon-plus"></i>
+                        <div class="ant-upload-text">Upload</div>
+                    </nz-upload>
+                    <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
+                      <ng-template #modalContent>
+                        <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+                      </ng-template>
+                    </nz-modal>
+                  </nz-form-control>
                 </nz-form-item>  
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="6" >标签</nz-form-label>
+                  <nz-form-control [nzSpan]="16" >
+                      <nz-select nzMode="tags"  style="width: 100%;" nzPlaceHolder="Tag Mode" formControlName="tagStrings">
+                          <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">
+                          </nz-option>
+                        </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
               </nz-collapse-panel>
             </nz-collapse>
       </div>
@@ -65,17 +75,23 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="3" nzRequired>分类</nz-form-label>
-        <!-- <qy-category-select  formControlName="parent"></qy-category-select> -->
-        <nz-form-control [nzSpan]="16" nzHasFeedback>
-             <nz-tree-select 
-          nzPlaceHolder="Please select"
-          formControlName="category"
-          [nzDropdownMatchSelectWidth]="true"
-          [nzDropdownStyle]="{ 'max-height': '300px' }"
-          [nzNodes]="nodes">
-        </nz-tree-select>
-        </nz-form-control>
+        <!-- <div  nz-col  [nzSpan]="6" > -->
+          <nz-form-label [nzSpan]="3" nzRequired>分类</nz-form-label>
+          <!-- <qy-category-select  formControlName="parent"></qy-category-select> -->
+          <nz-form-control [nzSpan]="6" nzHasFeedback>
+              <nz-tree-select 
+            nzPlaceHolder="Please select"
+            formControlName="category"
+            [nzDropdownMatchSelectWidth]="true"
+            [nzDropdownStyle]="{ 'max-height': '300px' }"
+            [nzNodes]="nodes">
+          </nz-tree-select>
+          </nz-form-control>
+        <!-- </div> -->
+        <!-- <div  nz-col  [nzSpan]="18" > -->
+
+
+        <!-- </div> -->
       </nz-form-item>
 
 

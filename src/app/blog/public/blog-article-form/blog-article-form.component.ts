@@ -29,6 +29,7 @@ export class QyBlogArticleFormComponent implements OnInit {
     node: NzTreeNode;
     // tslint:disable-next-line:no-inferrable-types
     disabledValue: boolean = true;
+    listOfOption = [];
     constructor(private fb: FormBuilder,
         private articleService: BlogArticleService,
         private categoryService: CategoryService) {
@@ -97,7 +98,8 @@ export class QyBlogArticleFormComponent implements OnInit {
             isPublished: [obj.isPublished ],
             content: [obj.content, [Validators.required]],
             contentHtml: [obj.contentHtml],
-            thumbnail: [obj.thumbnail]
+            thumbnail: [obj.thumbnail],
+            tagStrings:  [obj.tagStrings]
         });
         if ( this.article && this.article.thumbnail) {
             this.fileList.push({url: this.article.thumbnail});
