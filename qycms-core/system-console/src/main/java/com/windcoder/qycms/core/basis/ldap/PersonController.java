@@ -45,6 +45,21 @@ public class PersonController {
         return "success";
     }
 
+    @PostMapping("/authenticate")
+    public Person authenticate(Person person){
+         Boolean a = personService.authenticate(person.getUid(), person.getPassword());
+         if (a){
+             return personService.findByUid(person.getUid());
+         }
+         return null;
+
+    }
+
+    @PostMapping("/authenticate2")
+    public Boolean authenticate2(Person person){
+        return personService.authenticate(person.getUid(), person.getPassword());
+    }
+
 
     private void getNewPerson(Person old, Person person){
         if (null != person.getCompany() && !old.getCompany().equals(person.getCompany())){

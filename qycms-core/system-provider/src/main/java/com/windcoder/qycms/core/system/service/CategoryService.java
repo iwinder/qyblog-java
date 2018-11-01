@@ -196,7 +196,10 @@ public class CategoryService extends BaseService<Category,Long, CategoryReposito
 
     public List<Category>  findCategoryTree(Category sample) {
         List<Category> categories =  findAllForLearner(sample);
-        return parseCategoryListToTree(categories);
+        if (categories.size()>0) {
+            return parseCategoryListToTree(categories);
+        }
+        return categories;
     }
 
 
