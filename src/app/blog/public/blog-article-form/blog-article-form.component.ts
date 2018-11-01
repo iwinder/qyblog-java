@@ -94,12 +94,13 @@ export class QyBlogArticleFormComponent implements OnInit {
         this.validateForm = this.fb.group({
             title: [ obj.title, [ Validators.required ]],
             category: [obj.category ? obj.category.key : null],
-            publishedDate: [new Date(obj.publishedDate)],
+            publishedDate: [ obj.publishedDate ? new Date(obj.publishedDate) : new Date() ],
             isPublished: [obj.isPublished ],
             content: [obj.content, [Validators.required]],
             contentHtml: [obj.contentHtml],
             thumbnail: [obj.thumbnail],
-            tagStrings:  [obj.tagStrings]
+            tagStrings:  [obj.tagStrings],
+            summary: [obj.summary],
         });
         if ( this.article && this.article.thumbnail) {
             this.fileList.push({url: this.article.thumbnail});
@@ -128,6 +129,9 @@ export class QyBlogArticleFormComponent implements OnInit {
           this.validateForm.controls[ key ].markAsDirty();
           this.validateForm.controls[ key ].updateValueAndValidity();
         }
+        if (this.validateForm.invalid) {
+            return;
+        }
         let values = this.validateForm.value;
         if ( this.article && this.article.id) {
             values['id'] = this.article.id;
@@ -145,8 +149,13 @@ export class QyBlogArticleFormComponent implements OnInit {
         return this.validateForm.controls[name];
     }
     getHtmlValue(event) {
-        // console.log('getHtmlValue', event.value);
+        console.log('getHtmlValue', event.value);
         this.validateForm.controls['contentHtml'].setValue(event.value);
+        // let summary = this.delHtmlTag(event.value);
+        // if (summary.length > 300) {
+        //     summary = summary.substring(0, 300);
+        // }
+        // this.validateForm.controls['summary'].setValue(summary);
     }
     uploadChange(event) {
         if (event.type === 'success') {
@@ -175,7 +184,9 @@ export class QyBlogArticleFormComponent implements OnInit {
     loadAllNode(): Promise<Category[]> {
         return this.categoryService.findAllNodeOfPromise();
     }
-
+    delHtmlTag(str) {
+        return str.replace(/<[^>]+>/g, "");
+    }
 
 
 }

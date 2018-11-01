@@ -6,6 +6,7 @@ export class BlogArticle {
     title: string;
     content: string;
     contentHtml: string;
+    summary: string;
     permaLink: string;
     category: Category;
     author: User;

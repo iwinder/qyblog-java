@@ -86,6 +86,7 @@ export class EditorMdComponent implements AfterViewInit, OnDestroy, ControlValue
       this.onReady.emit();
     };
     this.editormdConfig.onchange = () => {
+      console.log("onchange", this.mdeditor.getMarkdown());
       this.updateValue(this.mdeditor.getMarkdown());
     };
 
