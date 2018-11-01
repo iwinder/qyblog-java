@@ -60,7 +60,8 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
     public void stringToTags(BlogArticle article){
         BlogTag tag = null;
         List<BlogTag> newTags = new ArrayList<BlogTag>();
-g            tag = blogTagService.findByName(tagStr);
+        for (String tagStr: article.getTagStrings()) {
+            tag = blogTagService.findByName(tagStr);
             if (tag == null){
                 tag = new BlogTag();
                 tag.setName(tagStr);
