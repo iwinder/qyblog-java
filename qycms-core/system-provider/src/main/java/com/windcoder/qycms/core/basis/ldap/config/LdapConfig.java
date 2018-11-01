@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 
-@Configuration
+//@Configuration
 public class LdapConfig {
 
     public static final String URL = "ldap://192.168.137.129:389";
-    public static final String BASE = "dc=windcoder,dc=com";
+    public static final String BASE = "ou=User,dc=windcoder,dc=com";
     public static final String USERDN = "cn=admin,dc=windcoder,dc=com";
     public static final String PASSWORD = "123456";
     /*
