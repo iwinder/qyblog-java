@@ -149,13 +149,12 @@ export class QyBlogArticleFormComponent implements OnInit {
         return this.validateForm.controls[name];
     }
     getHtmlValue(event) {
-        console.log('getHtmlValue', event.value);
         this.validateForm.controls['contentHtml'].setValue(event.value);
-        // let summary = this.delHtmlTag(event.value);
-        // if (summary.length > 300) {
-        //     summary = summary.substring(0, 300);
-        // }
-        // this.validateForm.controls['summary'].setValue(summary);
+        let summary = this.delHtmlTag(event.value);
+        if (summary.length > 300) {
+            summary = summary.substring(0, 300);
+        }
+        this.validateForm.controls['summary'].setValue(summary);
     }
     uploadChange(event) {
         if (event.type === 'success') {

@@ -26,6 +26,18 @@
                   </nz-form-control>
                 </nz-form-item>  
                 <nz-form-item>
+                    <nz-form-label [nzSpan]="6" nzRequired>分类</nz-form-label>
+                    <nz-form-control [nzSpan]="16" nzHasFeedback>
+                        <nz-tree-select 
+                      nzPlaceHolder="Please select"
+                      formControlName="category"
+                      [nzDropdownMatchSelectWidth]="true"
+                      [nzDropdownStyle]="{ 'max-height': '300px' }"
+                      [nzNodes]="nodes">
+                    </nz-tree-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
                   <nz-form-label [nzSpan]="6" >标签</nz-form-label>
                   <nz-form-control [nzSpan]="16" >
                       <nz-select nzMode="tags"  style="width: 100%;" nzPlaceHolder="Tag Mode" formControlName="tagStrings">
@@ -34,6 +46,7 @@
                         </nz-select>
                   </nz-form-control>
                 </nz-form-item>
+                
               </nz-collapse-panel>
             </nz-collapse>
       </div>
@@ -74,25 +87,7 @@
         </nz-form-control>
       </nz-form-item>
 
-      <nz-form-item>
-        <!-- <div  nz-col  [nzSpan]="6" > -->
-          <nz-form-label [nzSpan]="3" nzRequired>分类</nz-form-label>
-          <!-- <qy-category-select  formControlName="parent"></qy-category-select> -->
-          <nz-form-control [nzSpan]="6" nzHasFeedback>
-              <nz-tree-select 
-            nzPlaceHolder="Please select"
-            formControlName="category"
-            [nzDropdownMatchSelectWidth]="true"
-            [nzDropdownStyle]="{ 'max-height': '300px' }"
-            [nzNodes]="nodes">
-          </nz-tree-select>
-          </nz-form-control>
-        <!-- </div> -->
-        <!-- <div  nz-col  [nzSpan]="18" > -->
 
-
-        <!-- </div> -->
-      </nz-form-item>
 
 
         <nz-form-item>
