@@ -8,11 +8,12 @@ import java.security.SecureRandom;
 public class SecurityUtils {
     private static final String SHA1 = "SHA-1";
     private static final String MD5 = "MD5";
+    private static final int SALT_SIZE = 22;
 
     private static SecureRandom random = new SecureRandom();
 
     /**
-     * 生成指定为数的随机的Byte[]作为salt.
+     * 生成指定位数的随机的Byte[]作为salt.
      * @param numBytes
      * @return
      */
@@ -27,5 +28,10 @@ public class SecurityUtils {
 
     public static String encodeHex(byte[] input) {
         return new String(Hex.encodeHex(input));
+    }
+
+    public static String generateSalt(){
+        byte[] salt = generateSalt(SALT_SIZE);
+        return encodeHex(salt);
     }
 }
