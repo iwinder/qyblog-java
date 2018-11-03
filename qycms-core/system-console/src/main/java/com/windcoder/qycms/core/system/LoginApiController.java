@@ -1,6 +1,7 @@
 package com.windcoder.qycms.core.system;
 
 import com.windcoder.qycms.core.system.entity.User;
+import com.windcoder.qycms.core.system.service.UserService;
 import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.utils.ReturnResult;
 import org.apache.shiro.SecurityUtils;
@@ -12,6 +13,7 @@ import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/")
 public class LoginApiController {
+    @Autowired
+    private UserService userService;
 
     @PostMapping("login")
     public ReturnResult adminLogin(User user){
@@ -38,16 +42,10 @@ public class LoginApiController {
             result.setMsg("登录成功");
             result.setCode(200);
         }  catch (IncorrectCredentialsException e) {
-//            result.setMsg("密码错误");
-//            result.setCode(400);
             throw new IncorrectCredentialsException("密码错误");
         } catch (LockedAccountException e) {
-//            result.setMsg("登录失败，该用户已被冻结");
-//            result.setCode(400);
             throw new LockedAccountException("登录失败，该用户已被冻结");
         } catch (AuthenticationException e) {
-//            result.setMsg("该用户不存在");
-//            result.setCode(400);
             throw new AuthenticationException("该用户不存在");
         } catch (Exception e) {
             throw new BusinessException(e.toString());
@@ -67,11 +65,6 @@ public class LoginApiController {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED,reason="未登录")
     @RequestMapping(value = "/unauth")
     public void unauth() {
-//        ReturnResult result = new ReturnResult();
-//        result.setMsg("未登录");
-//        result.setCode(400);
-//        return result;
-//        throw new UnauthorizedException("未登录");
     }
 
     @RequestMapping(value = "/status")
@@ -98,7 +91,24 @@ public class LoginApiController {
         result.setMsg("登录成功");
         result.setCode(200);
         return result;
-//        return modelMapper.map((UserToken)SecurityUtils.getSubject().getPrincipal(), UserTokenDto.class);
     }
 
+    @RequestMapping(value = "/currentUser")
+    public ReturnResult currentUser() {
+        if(!SecurityUtils.getSubject().isAuthenticated()){
+            throw new UnauthenticatedException();
+        }
+        ReturnResult result = new ReturnResult();
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        Map<String, Object> rMap = new HashMap<>();
+        User newUser = userService.findByUsername(user.getUsername());
+        rMap.put("username", newUser.getUsername());
+        rMap.put("nickname", newUser.getNickname());
+        rMap.put("avatar", newUser.getAvatar());
+        result.setResult(rMap);
+        result.setMsg("获取成功");
+        result.setCode(200);
+        return result;
+    }
 }

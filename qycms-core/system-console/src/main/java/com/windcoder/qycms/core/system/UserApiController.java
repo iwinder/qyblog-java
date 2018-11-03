@@ -72,4 +72,6 @@ public class UserApiController {
     public int countByUsername( @RequestParam(name = "username", required = true) String username){
         return userService.countByUsername(username);
     }
+
+
 }

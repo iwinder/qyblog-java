@@ -49,7 +49,7 @@ public class BlogArticleBaseDto {
 
     private CategoryBaseDto category;
 
-    private List<BlogTagDto> tags;
+    private List<BlogTagBaseDto> tags;
 
     private List<String> tagStrings;
     /**
@@ -141,11 +141,11 @@ public class BlogArticleBaseDto {
         this.category = category;
     }
 
-    public List<BlogTagDto> getTags() {
+    public List<BlogTagBaseDto> getTags() {
         return tags;
     }
 
-    public void setTags(List<BlogTagDto> tags) {
+    public void setTags(List<BlogTagBaseDto> tags) {
         this.tags = tags;
         if (tags!=null && tags.size()>0){
             List<String> tagStr = new ArrayList<String>();

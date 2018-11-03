@@ -2,27 +2,12 @@ package com.windcoder.qycms.blog.dto;
 
 
 
-public class BlogTagDto {
+public class BlogTagDto extends BlogTagBaseDto{
 
-    private Long id;
-    private String name;
+
     private Long count;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Long getCount() {
         return count;
