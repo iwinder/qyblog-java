@@ -10,8 +10,8 @@ export class BlogArticleService {
     url: string  = 'api/articles';
     constructor(private http: HttpClient) { }
 
-    findAll( options?: {}): Observable<Page<BlogArticle>> {
-        return this.http.get<Page<BlogArticle>>(`${this.url}`, options);
+    findAll( params?): Observable<Page<BlogArticle>> {
+        return this.http.get<Page<BlogArticle>>(`${this.url}`, {params: params});
     }
 
     created(aticle: BlogArticle, options?: {}): Observable<BlogArticle>  {

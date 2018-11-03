@@ -6,6 +6,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { catchError, mergeMap, map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'qy-login',
@@ -15,6 +17,7 @@ import { AuthService } from '../auth.service';
 export class QyLoginComponent implements OnInit {
   validateForm: FormGroup;
   error: string;
+  isShow: boolean = false;
 
   constructor(private fb: FormBuilder,
       private authService: AuthService,
@@ -28,13 +31,28 @@ export class QyLoginComponent implements OnInit {
       password: [ null, [ Validators.required ] ],
       remember: [ true ]
     });
+
+    this.authService.stats().subscribe(
+      data => {
+        if ( (data != null && data === true )  ) {
+          this.isShow = false;
+          this.goHome();
+        } else {
+          this.isShow = true;
+        }
+      },
+      catchError( err => {
+        this.isShow = true;
+        return of(false);
+     })
+     );
   }
 
   markAsDirty() {
     for (let key of Object.keys(this.validateForm.controls)) {
         this.validateForm.controls[key].markAsDirty();
     }
- }
+  }
 
  getFormControl(name) {
   return this.validateForm.controls[name];
