@@ -15,8 +15,14 @@ export class WorkspaceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user.username = this.authService.userToken ? this.authService.userToken.username : '';
-    // this.authService.getCurrentUser().subscribe(user => this.user = user);
+    this.authService.getCurrentUser().subscribe(
+      data => {
+        let userToken = data['result'];
+        this.user.username = userToken ? userToken["username"] : '';
+        this.user.nickname = userToken ? userToken["nickname"] : '';
+        this.user.avatar = userToken ? userToken["avatar"] : '';
+      }
+    );
   }
 
 }

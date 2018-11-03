@@ -1,7 +1,7 @@
 <nz-content>
     <div nz-row class="editable-add-btn">
-    <button nz-button nzType="primary" [routerLink]="['../add']">添加</button>
-    <button nz-button nzType="primary"(click)="sayHello()" >sayHello</button>
+      <button nz-button nzType="primary" [routerLink]="['../add']">添加</button>
+    <!-- <button nz-button nzType="primary"(click)="sayHello()" >sayHello</button> -->
   </div>
   <nz-table  #nzTable  [nzData]="data?.content" [nzPageSize]="data?.size"  [nzLoading]="loading" [nzFrontPagination]="'false'"  [(nzPageIndex)]="pageIndex" [nzTotal]="data?.totalElements" (nzPageIndexChange)="loadData()" >
       <thead nz-thead>

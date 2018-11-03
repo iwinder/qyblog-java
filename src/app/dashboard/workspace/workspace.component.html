@@ -1,20 +1,20 @@
 <div style="background: #fff; padding: 16px 24px;">
   <nz-breadcrumb>
-    <nz-breadcrumb-item>
+    <!-- <nz-breadcrumb-item>
       <a [routerLink]="['/']">首页</a>
     </nz-breadcrumb-item>
     <nz-breadcrumb-item>
       <span>控制面板</span>
-    </nz-breadcrumb-item>
+    </nz-breadcrumb-item> -->
   </nz-breadcrumb>
 
   <div nz-row style="margin-top: 16px;">
     <div nz-col [nzSpan]="16" style="display: flex;">
       <nz-avatar nzIcon="user" [nzSrc]="user?.avatar" style="width: 64px; height: 64px; border-radius: 50%;"></nz-avatar>
       <div style="margin-left: 24px;">
-        <h2 style="line-height: 40px;">你好，{{user?.displayName || user?.firstName}}，祝你开心每一天！</h2>
-        <p><span>用户名：</span>{{user?.username || user?.firstName}} 
-          <span class="ml-5">所属组织：</span> {{user?.userGroup?.namePath?.split(',').join(' / ') || user?.userGroup?.name}}</p>
+        <h2 style="line-height: 40px;">{{user?.nickname || user?.username}}，祝你开心每一天！</h2>
+     
+         
       </div>
     </div>
     <!-- <div nz-col [nzSpan]="8">

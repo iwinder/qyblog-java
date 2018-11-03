@@ -43,29 +43,29 @@ export class AuthService {
     );
   }
 
-  getCurrentUser(): any {
-    const userStr = localStorage.getItem('currentUser');
-    return userStr ? JSON.parse(userStr) : '';
-  }
+  // getCurrentUser(): any {
+  //   const userStr = localStorage.getItem('currentUser');
+  //   return userStr ? JSON.parse(userStr) : '';
+  // }
 
-  getToken(): string {
-    const currentUser = this.getCurrentUser();
-    return currentUser ? currentUser.token : '';
-  }
+  // getToken(): string {
+  //   const currentUser = this.getCurrentUser();
+  //   return currentUser ? currentUser.token : '';
+  // }
 
-  getUsername(): string {
-    const currentUser = this.getCurrentUser();
-    return currentUser ? currentUser.username : '';
-  }
+  // getUsername(): string {
+  //   const currentUser = this.getCurrentUser();
+  //   return currentUser ? currentUser.username : '';
+  // }
 
   logout(): void {
     localStorage.removeItem('currentUser');
   }
 
-  isLogIn(): boolean {
-    const token: String = this.getToken();
-    return token && token.length > 0;
-  }
+  // isLogIn(): boolean {
+  //   const token: String = this.getToken();
+  //   return token && token.length > 0;
+  // }
 
   stats(): Observable<boolean> {
     let url = '/api/status';
@@ -109,12 +109,7 @@ export class AuthService {
       );
 }
 
-  // hasRole(role: string): boolean {
-  //   const currentUser = this.getCurrentUser();
-  //   if (!currentUser) {
-  //   return false;
-  //   }
-  //   const authorities: string[] = currentUser.authorities;
-  //   return authorities.indexOf('ROLE_' + role) != -1;
-  // }
+  getCurrentUser(): Observable<any>  {
+    return  this.http.get('/api/currentUser');
+  }
 }
