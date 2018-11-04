@@ -1,0 +1,30 @@
+body.home {
+    background: #f5f6f8;
+}
+
+@media (min-width: 992px) {
+    .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {
+        float: left;
+    }
+}
+@media (max-width: 767px) {
+    body.home .content .main {
+        padding: 10px 15px;
+    }
+}
+.h1, .h2 h3, .h3, h1, h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+    .media {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+.article img{
+    max-height: 175px;
+    display: block;
+}
