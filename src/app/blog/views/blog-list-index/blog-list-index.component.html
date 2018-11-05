@@ -1,0 +1,37 @@
+<div id="latest-posts" class="block5">
+
+    <aside class="block5-widget">
+        <h2 class="widget-title">近期文章</h2>
+        
+        <ul class="list-unstyled">
+            <li class="media article">
+                <img class="mr-3" [src]="imagSrc" alt="Generic placeholder image">
+                <div class="media-body">
+                <h5 class="mt-0 mb-1">List-based media object</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                </div>
+            </li>
+            <li class="media my-4 article">
+                <img class="mr-3"  [src]="imagSrc" alt="Generic placeholder image">
+                <div class="media-body">
+                <h5 class="mt-0 mb-1">List-based media object</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                </div>
+            </li>
+            <li class="media article">
+                <img class="mr-3"  [src]="imagSrc" alt="Generic placeholder image">
+                <div class="media-body">
+                <h5 class="mt-0 mb-1">List-based media object</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                </div>
+            </li>
+        </ul>
+        
+        <div class="row" style="text-align: center;">
+            <div class="col">
+                <ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="3" [rotate]="true" [directionLinks]="false" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+    </aside>
+
+</div>
