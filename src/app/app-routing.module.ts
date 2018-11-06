@@ -9,10 +9,11 @@ const routes: Routes = [
         path: '', component: ContentComponent,
         // canActivate: [AuthGuard],
         children: [
+            {path: '', redirectTo: 'home', pathMatch: 'full'},
             // {path: '', redirectTo: 'dashboard', pathMatch: 'prefix'},
             // { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
             // { path: 'system', loadChildren: 'app/system/system.module#SystemModule' },
-            { path: 'blog', loadChildren: 'app/blog/blog.module#BlogModule' },
+            { path: 'home', loadChildren: 'app/blog/blog.module#BlogModule' },
         ],
     },
     // {path: 'login', component: QyLoginComponent},

@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { ContentComponent } from './content/content.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HeadertComponent } from './header/header.component';
 
 
 @NgModule({
@@ -14,7 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         RouterModule,
         NgbModule
     ],
-    declarations: [ContentComponent],
+    declarations: [ContentComponent, HeadertComponent],
     exports: [ContentComponent],
     providers: []
 })

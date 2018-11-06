@@ -20,7 +20,6 @@ export class ContentComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('ContentComponent:', 22222);
         this.imagSrc = this.sanitizer.bypassSecurityTrustUrl(this.dangerousVideoUrl);
     }
 
