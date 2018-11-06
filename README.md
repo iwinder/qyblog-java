@@ -28,3 +28,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # qy-web
 qycms前端
+
+
+## 初版部分截图
+![PC端首页主功能区](https://github.com/iwinder/evernote/raw/master/Java/qy/images/1541520721815.png)
+
+
+![移动端首页主功能区](https://github.com/iwinder/evernote/raw/master/Java/qy/images/1541520767244.png)
