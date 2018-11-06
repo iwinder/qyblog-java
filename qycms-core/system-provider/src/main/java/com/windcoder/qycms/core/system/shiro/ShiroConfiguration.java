@@ -81,6 +81,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/api/login", "anon");
         filterChainDefinitionMap.put("/api/ldap/**", "anon");
+        filterChainDefinitionMap.put("/api/web/**", "anon");
         filterChainDefinitionMap.put("/websocket", "anon");
         filterChainDefinitionMap.put("/websocket2", "anon");
         filterChainDefinitionMap.put("/api/users/**", "anon");

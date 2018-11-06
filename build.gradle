@@ -75,6 +75,7 @@ configure(rootProject) {
     dependencies {
         compile project(":qycms-core:system-console")
         compile project(":qycms-blog:blog-console")
+        compile project(":qycms-blog:blog-web")
     }
 
     // 生成war时过滤内嵌tomcat依赖
