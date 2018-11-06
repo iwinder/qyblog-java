@@ -151,8 +151,8 @@ export class QyBlogArticleFormComponent implements OnInit {
     getHtmlValue(event) {
         this.validateForm.controls['contentHtml'].setValue(event.value);
         let summary = this.delHtmlTag(event.value);
-        if (summary.length > 300) {
-            summary = summary.substring(0, 300);
+        if (summary.length > 100) {
+            summary = summary.substring(0, 100);
         }
         this.validateForm.controls['summary'].setValue(summary);
     }
