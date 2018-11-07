@@ -32,21 +32,20 @@ export class QyLoginComponent implements OnInit {
       remember: [ true ]
     });
 
-    // this.authService.stats().subscribe(
-    //   data => {
-    //     if ( (data != null && data === true )  ) {
-    //       this.isShow = false;
-    //       this.goHome();
-    //     } else {
-    //       this.isShow = true;
-    //     }
-    //   },
-    //   catchError( err => {
+    this.authService.stats().subscribe(
+      data => {
+        if ( (data != null && data === true )  ) {
+          this.isShow = false;
+          this.goHome();
+        } else {
+          this.isShow = true;
+        }
+      },
+      err => {
         this.isShow = true;
-    //     console.log("err", err);
-    //     return of(false);
-    //  })
-    //  );
+      }
+
+     );
   }
 
   markAsDirty() {

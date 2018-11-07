@@ -62,16 +62,9 @@ export class AuthService {
     localStorage.removeItem('currentUser');
   }
 
-  // isLogIn(): boolean {
-  //   const token: String = this.getToken();
-  //   return token && token.length > 0;
-  // }
-
   stats(): Observable<boolean> {
     let url = '/api/status';
-
-      // return this.http.options(url)
-      return this.http.get<boolean>(url).pipe(
+    return this.http.get<boolean>(url).pipe(
         map(resp => {
           this.isLoggedIn = true;
           // console.log("stats data", resp);
@@ -85,6 +78,27 @@ export class AuthService {
          return HttpUtils.handleError(resp);
       })
     );
+  }
+
+  statsOfLogIng(): Observable<boolean> {
+    let url = '/api/status';
+    return this.http.get<boolean>(url);
+      // return this.http.options(url)
+    //   return this.http.get<boolean>(url).pipe(
+    //     map(
+    //       resp => {
+    //         this.isLoggedIn = true;
+    //         // console.log("stats data", resp);
+    //         if (!this.userToken) {
+    //             this.loginfo().subscribe();
+    //         }
+    //         return true;
+    //       },
+    //       err => {
+    //         this.isLoggedIn = false;
+    //       }
+    //   )
+    // );
   }
 
 
