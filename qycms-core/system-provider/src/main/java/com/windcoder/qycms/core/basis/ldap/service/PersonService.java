@@ -3,6 +3,8 @@ package com.windcoder.qycms.core.basis.ldap.service;
 import com.windcoder.qycms.core.basis.ldap.config.LdapSettingUtll;
 import com.windcoder.qycms.core.basis.ldap.entity.Person;
 import com.windcoder.qycms.exception.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.ldap.AuthenticationException;
@@ -27,6 +29,8 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 public class PersonService {
     @Autowired
     private LdapTemplate ldapTemplate;
+
+    private static Logger logger = LoggerFactory.getLogger(PersonService.class);
 
     public void addPerson(Person person){
         Name dn = buildDn(person);
@@ -141,6 +145,7 @@ public class PersonService {
     public Boolean authenticate(String uid, String password){
 
         try {
+//            getDnForUser("uid",uid);
             ldapTemplate.authenticate(query().where("uid").is(uid), password);
             return  true;
         } catch (AuthenticationException e){
@@ -172,6 +177,29 @@ public class PersonService {
 //        System.out.println(results.get(0));
 //        return results.get(0);
         return null;
+    }
+
+    private String getDnForUser(String key, String uid) {
+        List<String> result = null;
+        try {
+            result = ldapTemplate.search(
+                    query().where(key).is(uid),
+                    new AbstractContextMapper() {
+                        protected String doMapFromContext(DirContextOperations ctx) {
+                            return ctx.getNameInNamespace();
+                        }
+                    });
+        } catch (AuthenticationException e) {
+//            logger.error(e.getMessage(), e);
+            throw new BusinessException("Ldap配置中账号/密码错误");
+        }
+
+
+        if(result.size() != 1) {
+            throw new BusinessException("用户名未找到或不唯一");
+        }
+
+        return result.get(0);
     }
 
 

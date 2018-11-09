@@ -35,14 +35,14 @@ public class LdapConfig {
     @Bean
     public LdapContextSource contextSourceTarget() {
 //        System.setProperty("javax.net.ssl.trustStore", "G:\\Work\\certs\\ldapserver.crt");
-        System.setProperty("javax.net.ssl.trustStore", "F:\\Java\\Java8\\jdk1.8.0_171\\jre\\lib\\security\\cacerts.jks");
+//        System.setProperty("javax.net.ssl.trustStore", "F:\\Java\\Java8\\jdk1.8.0_171\\jre\\lib\\security\\cacerts.jks");
 
         LdapContextSource ldapContextSource = new LdapContextSource();
 
-        ldapContextSource.setUrl(URL3);
-        ldapContextSource.setBase(BASE);
-        ldapContextSource.setUserDn(USERDN);
-        ldapContextSource.setPassword(PASSWORD);
+        ldapContextSource.setUrl(URL2);
+        ldapContextSource.setBase(BASE2);
+        ldapContextSource.setUserDn(USERDN2);
+        ldapContextSource.setPassword(PASSWORD2);
         ldapContextSource.setReferral("follow");
 
         ldapContextSource.afterPropertiesSet();
