@@ -15,7 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     LayoutModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    BrowserModule.withServerTransition({appId: 'qy-web'}),
   ],
   providers: [],
   bootstrap: [AppComponent]

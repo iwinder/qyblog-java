@@ -31,7 +31,7 @@
         
         <div class="row" style="text-align: center;">
             <div class="col">
-                <ngb-pagination  [collectionSize]="articlesData?.totalElements" [disabled]="loading" [pageSize]="articlesData?.size" [(page)]="pageIndex" [maxSize]="3" [rotate]="true" [directionLinks]="false" [boundaryLinks]="true" (pageChange)="loadData(event) "></ngb-pagination>
+                <ngb-pagination  [collectionSize]="articlesData?.totalElements" [disabled]="loading" [pageSize]="articlesData?.size" [(page)]="pageIndex" [maxSize]="3" [rotate]="true" [directionLinks]="false" [boundaryLinks]="true" (pageChange)="loadData() "></ngb-pagination>
             </div>
         </div>
     </aside>

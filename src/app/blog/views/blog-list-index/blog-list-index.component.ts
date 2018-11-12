@@ -32,8 +32,7 @@ export class BlogListIndexComponent implements OnInit {
         this.loadData();
     }
 
-    loadData(event?) {
-        console.log("loda event", event);
+    loadData() {
         console.log("loda  this.pageIndex",  this.pageIndex);
         if ( this.articlesData) {
           this.articlesData.number = this.pageIndex ? this.pageIndex - 1  : this.articlesData.number;
