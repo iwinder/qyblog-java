@@ -62,6 +62,9 @@ subprojects {
 
 
 configure(rootProject) {
+    description "QY CMS"
+
+    project.ext.baseName = 'qy-cms'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
     apply plugin: 'maven'
@@ -71,6 +74,8 @@ configure(rootProject) {
     springBoot {
         mainClass = "com.windcoder.qycms.QycmsApplication";
         buildInfo()
+        executable = true
+        embeddedLaunchScriptProperties(mode:"service")
     }
     dependencies {
         compile project(":qycms-core:system-console")
