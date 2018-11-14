@@ -4,8 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod -bh /console/ -op dist/qy-console",
+    "build": "node --max_old_space_size=512 ./node_modules/@angular/cli/bin/ng build --prod --base-href /console/  --output-path dist/qy-console",
     "build:jar": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod -bh /console/ -d static/",
+    "build:abc": "node --max_old_space_size=512 ./node_modules/@angular/cli/bin/ng build --prod --base-href /console/  --output-path dist/qy-console",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
