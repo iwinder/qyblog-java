@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer -bh / -op dist/qy-web",
+    "build": "node --max_old_space_size=512 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --base-href /web/ --output-path dist/qy-web",
     "build:jar": "ng build --prod -bh / -d static/",
     "test": "ng test",
     "lint": "ng lint",
