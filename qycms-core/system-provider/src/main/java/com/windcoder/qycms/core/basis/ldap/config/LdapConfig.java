@@ -39,10 +39,15 @@ public class LdapConfig {
 
         LdapContextSource ldapContextSource = new LdapContextSource();
 
-        ldapContextSource.setUrl(URL2);
-        ldapContextSource.setBase(BASE2);
-        ldapContextSource.setUserDn(USERDN2);
-        ldapContextSource.setPassword(PASSWORD2);
+//        ldapContextSource.setUrl(URL2);
+//        ldapContextSource.setBase(BASE2);
+//        ldapContextSource.setUserDn(USERDN2);
+//        ldapContextSource.setPassword(PASSWORD2);
+
+        ldapContextSource.setUrl(URL);
+        ldapContextSource.setBase(BASE);
+        ldapContextSource.setUserDn(USERDN);
+        ldapContextSource.setPassword(PASSWORD);
         ldapContextSource.setReferral("follow");
 
         ldapContextSource.afterPropertiesSet();

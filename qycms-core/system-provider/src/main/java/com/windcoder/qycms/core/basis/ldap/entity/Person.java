@@ -11,7 +11,7 @@ import javax.naming.Name;
 //@Entry()
 public class Person {
 //    @Id
-    private Name id;
+    private String id;
 //    @DnAttribute(value="uid",index = 3)
     private String uid;
 //    @Attribute(name = "cn")
@@ -27,11 +27,11 @@ public class Person {
 
     private String phone;
 
-    public Name getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Name id) {
+    public void setId(String id) {
         this.id = id;
     }
 

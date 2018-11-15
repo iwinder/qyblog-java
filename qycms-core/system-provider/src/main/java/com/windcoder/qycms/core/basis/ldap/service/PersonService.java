@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import javax.naming.Name;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
 import javax.naming.ldap.LdapName;
 import java.util.List;
 
@@ -69,17 +71,23 @@ public class PersonService {
        protected Person doMapFromContext(DirContextOperations ctx) {
            Person person = new Person();
            LdapName dn = LdapUtils.newLdapName(ctx.getDn());
+           person.setId(ctx.getNameInNamespace());
            person.setUid(ctx.getStringAttribute("uid"));
            person.setCommonName(ctx.getStringAttribute("givenName"));
            person.setSuerName(ctx.getStringAttribute("sn"));
            person.setCompany(LdapUtils.getStringValue(dn, 0));
            person.setPhone(ctx.getStringAttribute("telephoneNumber"));
            person.setEmail(ctx.getStringAttribute("mail"));
+           Attributes attrs = ctx.getAttributes();
+           Attribute attr =attrs.get("userPassword");
+           byte[]  bytes = (byte[])ctx.getObjectAttribute("userPassword");
+
+           String passwordValue=new String(bytes);
 //           if(ctx.getObjectAttribute("userPassword")!=null){
-////               System.out.println("userPassword: "+ctx.getObjectAttribute("userPassword"));
+               System.out.println("userPassword: "+passwordValue);
 
 
-//               person.setPassword(new String(String.valueOf(ctx.getObjectAttribute("userPassword"))));
+               person.setPassword(passwordValue);
 
 
 //           }
