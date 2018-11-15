@@ -62,16 +62,19 @@ public class LoginApiController {
      * 未登录，shiro应重定向到登录界面，此处返回未登录状态信息由前端控制跳转页面
      * @return
      */
-    @ResponseStatus(value = HttpStatus.UNAUTHORIZED,reason="未登录")
-    @RequestMapping(value = "/unauth")
-    public void unauth() {
-    }
+//    @ResponseStatus(value = HttpStatus.UNAUTHORIZED,reason="未登录")
+//    @RequestMapping(value = "/unauth")
+//    public void unauth() {
+//    }
+
 
     @RequestMapping(value = "/status")
-    public void status(){
+    public ResponseEntity<?> status(){
         if(!SecurityUtils.getSubject().isAuthenticated()){
-            throw new UnauthenticatedException();
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//            throw new UnauthenticatedException();
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/loginfo")
