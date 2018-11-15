@@ -19,7 +19,7 @@ export class EditorConfig {
     public sequenceDiagram = true;
     public imageUpload = true;
     public imageFormats = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'];
-    public imageUploadURL = 'api/upload/images';
+    public imageUploadURL = '/api/upload/images';
 
     constructor() {
      }

@@ -8,7 +8,7 @@ import { Category } from '../entity/Category';
 @Injectable()
 export class CategoryService {
 
-    url: string  = 'api/category';
+    url: string  = '/api/category';
     constructor(private http: HttpClient) { }
 
     findAll( params?: any): Observable<Category[]> {

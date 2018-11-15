@@ -8,7 +8,7 @@ import { FormDataUtil } from '../../core/utils/form-data-util';
 @Injectable()
 export class UserService {
 
-    url: string  = 'api/users';
+    url: string  = '/api/users';
     constructor(private http: HttpClient) { }
 
     findAll( options?: {}): Observable<Page<User>> {
