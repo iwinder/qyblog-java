@@ -7,7 +7,7 @@ import { FormDataUtil } from '../../core/utils/form-data-util';
 
 @Injectable()
 export class BlogArticleService {
-    url: string  = 'api/web/articles';
+    url: string  = '/api/web/articles';
     constructor(private http: HttpClient) { }
 
     findAll( params?): Observable<Page<BlogArticle>> {
