@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContentComponent } from './core/layout/content/content.component';
+import { PageNotFoundComponent } from './blog/views/page-not-found/page-not-found.component';
 // import { AuthGuard, QyLoginComponent } from './core/AuthGuard';
 
 const newLocal = 'app/system/system.module#SystemModule';
@@ -16,9 +17,15 @@ const routes: Routes = [
             { path: 'home', loadChildren: 'app/blog/blog.module#BlogModule' },
         ],
     },
-    // {path: 'login', component: QyLoginComponent},
-    // { path: 'review', loadChildren: 'app/exam/examination/examination.module#ExaminationModule' },
-    // { path: '**', component: PageNotFoundComponent },
+    {
+        path: "notFound",
+        component: PageNotFoundComponent
+      },
+      {
+        path: "**",
+        redirectTo: "/notFound",
+        pathMatch: "full"
+      },
 ];
 
 @NgModule({
@@ -28,4 +35,9 @@ const routes: Routes = [
         // CanDeactivateGuard
     ]
 })
+
 export class AppRoutingModule { }
+
+export const routedComponents = [
+    PageNotFoundComponent,
+];

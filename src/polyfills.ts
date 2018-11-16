@@ -68,6 +68,7 @@ import 'core-js/es7/reflect';
  */
 // (window as any).__Zone_enable_cross_context_check = true;
 
+// (window as any).global = window;
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
@@ -83,9 +84,9 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  /**
  * Date, currency, decimal and percent pipes.
  * Needed for: All but Chrome, Firefox, Edge, IE11 and Safari 10
- */
-import 'intl';  // Run `npm install --save intl`.
-/**
- * Need to import at least one locale-data with intl.
- */
-import 'intl/locale-data/jsonp/en';
+//  */
+// import 'intl';  // Run `npm install --save intl`.
+// /**
+//  * Need to import at least one locale-data with intl.
+//  */
+// import 'intl/locale-data/jsonp/en';
