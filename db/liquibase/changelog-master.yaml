@@ -1,0 +1,8 @@
+databaseChangeLog:
+- changeSet:
+      id: 2
+      author: windcoder
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test1.sql

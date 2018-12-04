@@ -3,22 +3,29 @@ buildscript {
         springBootVersion = "1.5.8.RELEASE"
     }
     repositories {
+        mavenLocal()
         mavenCentral()
         maven { url "https://repo.spring.io/plugins-release" }
     }
+
+
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "org.liquibase:liquibase-gradle-plugin:2.0.1"
+        // https://mvnrepository.com/artifact/org.liquibase/liquibase-core
+//        classpath group: 'org.liquibase', name: 'liquibase-core', version: '3.6.2'
+
     }
 }
-
 
 allprojects {
     group 'com.windcoder'
     version '1.0-SNAPSHOT'
-
+    apply plugin: 'org.liquibase.gradle'
     apply plugin: 'java'
     apply plugin: 'war'
     apply plugin: 'org.springframework.boot'
+
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -27,6 +34,7 @@ allprojects {
 
     configurations {
         providedRuntime
+        liquibaseRuntime
     }
 
     repositories {
@@ -36,7 +44,11 @@ allprojects {
         mavenCentral()
     }
     dependencies {
+//        compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.2'
         compile fileTree(dir: 'lib', exclude:'', include: '*.jar')
+        liquibaseRuntime 'org.liquibase:liquibase-core:3.6.2'
+        liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:2.0.1'
+        liquibaseRuntime 'mysql:mysql-connector-java:5.1.34'
     }
 
 }
@@ -90,4 +102,36 @@ configure(rootProject) {
         rootSpec.exclude("javax.servlet-api*.jar")
         rootSpec.exclude("org.projectlombok:lombok")
     }
+
+    task createSql() << {
+        File propsFile = new File("${rootProject.projectDir}/qycms-core/common/src/main/resources/application.properties")
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(propsFile))
+
+
+        liquibase {
+            activities {
+                dev {
+                    changeLogFile "${rootProject.projectDir}/db/liquibase/changelog-master.yaml"
+                    driver "${properties.get('spring.datasource.driver-class-name')}"
+                    outputFile "${rootProject.projectDir}/db/test.sql"
+                    url "${properties.get('spring.datasource.url')}"
+                    username "${properties.get('spring.datasource.username')}"
+                    password "${properties.get('spring.datasource.password')}"
+                }
+                runList = "dev" // 这里代表选择哪一个配置 可用参数代替
+            }
+        }
+        updateSQL.execute();
+    }
+
+//    tasks.updateSQL.dependsOn createSql
+
+
+
+
 }
+
+
+
+
