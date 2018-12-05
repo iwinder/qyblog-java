@@ -1,3 +1,3 @@
-INSERT INTO `sys_role` ( `name`, `remark`,display_order,created_date,last_modified_date,created_by, last_modified_by) VALUES ('超级管理员', '管理者',1,now(),now(),2,2);
-INSERT INTO `sys_role` ( `name`, `remark`,display_order,created_date,last_modified_date,created_by, last_modified_by) VALUES ('超级管理员2', '管理者2',2,now(),now(),2,2);
-INSERT INTO `sys_role` ( `name`, `remark`,display_order,created_date,last_modified_date,created_by, last_modified_by) VALUES ('超级管理员22', '管理者4',3,now(),now(),2,2);
+INSERT INTO `sys_role` ( `name`, `remark`,display_order,created_date,last_modified_date,created_by, last_modified_by) VALUES ('超级管理员', '超级管理者',1,now(),now(),2,2);
+INSERT INTO `sys_role` ( `name`, `remark`,display_order,created_date,last_modified_date,created_by, last_modified_by) VALUES ('超级管理员2', '超级管理者2',2,now(),now(),2,2);
+INSERT INTO `sys_role` ( `name`, `remark`,display_order,created_date,last_modified_date,created_by, last_modified_by) VALUES ('超级管理员22', '超级管理者4',3,now(),now(),2,2);

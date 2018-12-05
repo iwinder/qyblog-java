@@ -5,6 +5,7 @@ databaseChangeLog:
       changes:
         - sqlFile:
             encoding: utf8
-            path: db/mysql/test1.sql
-  - include:
-      file: db/liquibase/mysql/changelog-mysql-master.yaml
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql

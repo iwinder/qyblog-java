@@ -34,7 +34,6 @@ allprojects {
 
     configurations {
         providedRuntime
-        liquibaseRuntime
     }
 
     repositories {
@@ -102,27 +101,62 @@ configure(rootProject) {
         rootSpec.exclude("javax.servlet-api*.jar")
         rootSpec.exclude("org.projectlombok:lombok")
     }
-
-    task createSql() << {
-        File propsFile = new File("${rootProject.projectDir}/qycms-core/common/src/main/resources/application.properties")
-        Properties properties = new Properties()
-        properties.load(new FileInputStream(propsFile))
-
-
-        liquibase {
-            activities {
-                dev {
-                    changeLogFile "${rootProject.projectDir}/db/liquibase/changelog-master.yaml"
-                    driver "${properties.get('spring.datasource.driver-class-name')}"
-                    outputFile "${rootProject.projectDir}/db/test.sql"
-                    url "${properties.get('spring.datasource.url')}"
-                    username "${properties.get('spring.datasource.username')}"
-                    password "${properties.get('spring.datasource.password')}"
+    project.ext.liquibaseSQLDir = "${rootProject.projectDir}/db/liquibase"
+    project.ext.liquibaseSQLFilePath = "${liquibaseSQLDir}"
+    project.ext.liquibaseExcludeSQLFile = ['test1.sql']
+    task getMySQLFiles() {
+        doLast {
+            FileTree mySqlFiles = fileTree(dir: '.',include:'db/**/mysql/**/*.sql')
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append("databaseChangeLog:\n  - changeSet:\n      id: initData \n      author: windcoder \n      changes:\n")
+            mySqlFiles.each {File file->
+                def mysqlFileName = file.getName()
+                if (!liquibaseExcludeSQLFile.contains(mysqlFileName)){
+                    def mysqlFilePath = file.getPath()
+                    String mysqlRelativeFilePath = mysqlFilePath.substring(mysqlFilePath.indexOf("db\\")).replace('\\','/')
+                    println mysqlRelativeFilePath + ","
+                    stringBuffer.append("        - sqlFile:\n            encoding: utf8\n            path: "+mysqlRelativeFilePath + "\n")
                 }
-                runList = "dev" // 这里代表选择哪一个配置 可用参数代替
             }
+            def tempDir = "${liquibaseSQLDir}/mysql"
+            liquibaseSQLFilePath = "${tempDir}/changelog-mysql-master.yaml"
+            File propsFile = new File(tempDir)
+            if (propsFile.exists()){
+                delete tempDir
+            }
+            propsFile.mkdir()
+            new File("${liquibaseSQLFilePath}").append(stringBuffer.toString())
         }
-        updateSQL.execute();
+    }
+
+    task createSql()  {
+        doFirst {
+            getMySQLFiles.execute()
+        }
+
+        doLast {
+            File propsFile = new File("${rootProject.projectDir}/qycms-core/common/src/main/resources/application.properties")
+            Properties properties = new Properties()
+            properties.load(new FileInputStream(propsFile))
+
+
+            liquibase {
+                activities {
+                    dev {
+//                        changeLogFile "${liquibaseSQLFilePath}"
+                        changeLogFile "db/liquibase/changelog-master.yaml"
+                        driver "${properties.get('spring.datasource.driver-class-name')}"
+                        outputFile "${rootProject.projectDir}/db/test.sql"
+                        url "${properties.get('spring.datasource.url')}"
+                        username "${properties.get('spring.datasource.username')}"
+                        password "${properties.get('spring.datasource.password')}"
+                    }
+                    runList = "dev" // 这里代表选择哪一个配置 可用参数代替
+                }
+            }
+            updateSQL.execute()
+        }
+
     }
 
 //    tasks.updateSQL.dependsOn createSql

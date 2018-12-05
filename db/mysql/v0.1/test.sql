@@ -1,1 +1,1 @@
-INSERT INTO `sys_role` ( `name`, `remark`,display_order,created_date,last_modified_date,created_by, last_modified_by) VALUES ('管理员', '管理者',2,now(),now(),2,2);
+INSERT INTO `sys_role` ( `name`, `remark`,display_order,created_date,last_modified_date,created_by, last_modified_by) VALUES ('用户', '用户',3,now(),now(),2,2);
