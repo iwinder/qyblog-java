@@ -1,0 +1,581 @@
+databaseChangeLog:
+- changeSet:
+    id: 1544174115562-1
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+            name: id
+            type: BIGINT
+        - column:
+            name: created_date
+            type: datetime
+        - column:
+            name: last_modified_date
+            type: datetime
+        - column:
+            name: content
+            type: LONGTEXT
+        - column:
+            name: content_html
+            type: LONGTEXT
+        - column:
+            defaultValueBoolean: false
+            name: is_deleted
+            type: BIT(1)
+        - column:
+            defaultValueBoolean: false
+            name: is_published
+            type: BIT(1)
+        - column:
+            name: perma_link
+            type: VARCHAR(255)
+        - column:
+            name: published_date
+            type: datetime
+        - column:
+            name: summary
+            type: VARCHAR(255)
+        - column:
+            name: thumbnail
+            type: VARCHAR(255)
+        - column:
+            name: title
+            type: VARCHAR(255)
+        - column:
+            name: created_by
+            type: BIGINT
+        - column:
+            name: last_modified_by
+            type: BIGINT
+        - column:
+            name: author_id
+            type: BIGINT
+        - column:
+            name: category_id
+            type: BIGINT
+        tableName: blog_article
+- changeSet:
+    id: 1544174115562-2
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: article_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: tag_id
+            type: BIGINT
+        tableName: blog_article_tag
+- changeSet:
+    id: 1544174115562-3
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+            name: id
+            type: BIGINT
+        - column:
+            name: created_date
+            type: datetime
+        - column:
+            name: last_modified_date
+            type: datetime
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: created_by
+            type: BIGINT
+        - column:
+            name: last_modified_by
+            type: BIGINT
+        tableName: blog_tag
+- changeSet:
+    id: 1544174115562-4
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+            name: id
+            type: BIGINT
+        - column:
+            name: created_date
+            type: datetime
+        - column:
+            name: last_modified_date
+            type: datetime
+        - column:
+            name: description
+            type: VARCHAR(255)
+        - column:
+            name: display_order
+            type: BIGINT
+        - column:
+            name: id_path
+            type: VARCHAR(1000)
+        - column:
+            name: key_word
+            type: VARCHAR(255)
+        - column:
+            name: title
+            type: VARCHAR(255)
+        - column:
+            name: title_path
+            type: VARCHAR(1000)
+        - column:
+            name: type
+            type: VARCHAR(255)
+        - column:
+            name: created_by
+            type: BIGINT
+        - column:
+            name: last_modified_by
+            type: BIGINT
+        - column:
+            name: parent_id
+            type: BIGINT
+        tableName: sys_category
+- changeSet:
+    id: 1544174115562-5
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+            name: id
+            type: BIGINT
+        - column:
+            name: base_dn
+            type: VARCHAR(255)
+        - column:
+            name: email
+            type: VARCHAR(255)
+        - column:
+            name: first_name
+            type: VARCHAR(255)
+        - column:
+            name: host
+            type: VARCHAR(255)
+        - column:
+            defaultValueBoolean: false
+            name: is_ldaps
+            type: BIT(1)
+        - column:
+            name: last_name
+            type: VARCHAR(255)
+        - column:
+            name: login_name
+            type: VARCHAR(255)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: password
+            type: VARCHAR(255)
+        - column:
+            name: port
+            type: INT
+        - column:
+            name: salt
+            type: VARCHAR(255)
+        - column:
+            name: username
+            type: VARCHAR(255)
+        tableName: sys_ldap_setting
+- changeSet:
+    id: 1544174115562-6
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+            name: id
+            type: BIGINT
+        - column:
+            name: created_date
+            type: datetime
+        - column:
+            name: last_modified_date
+            type: datetime
+        - column:
+            name: description
+            type: VARCHAR(255)
+        - column:
+            name: identifier
+            type: VARCHAR(255)
+        - column:
+            name: is_available
+            type: BIT(1)
+        - column:
+            name: is_hide
+            type: BIT(1)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: type
+            type: VARCHAR(255)
+        - column:
+            name: url
+            type: VARCHAR(255)
+        - column:
+            name: privilege_id
+            type: BIGINT
+        - column:
+            name: role_id
+            type: BIGINT
+        - column:
+            name: user_id
+            type: BIGINT
+        - column:
+            name: parent_id
+            type: BIGINT
+        - column:
+            name: created_by
+            type: BIGINT
+        - column:
+            name: last_modified_by
+            type: BIGINT
+        tableName: sys_privilege
+- changeSet:
+    id: 1544174115562-7
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+            name: id
+            type: BIGINT
+        - column:
+            name: created_date
+            type: datetime
+        - column:
+            name: last_modified_date
+            type: datetime
+        - column:
+            name: display_order
+            type: BIGINT
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: remark
+            type: VARCHAR(255)
+        - column:
+            name: created_by
+            type: BIGINT
+        - column:
+            name: last_modified_by
+            type: BIGINT
+        tableName: sys_role
+- changeSet:
+    id: 1544174115562-8
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+            name: role_id
+            type: BIGINT
+        - column:
+            constraints:
+              primaryKey: true
+            name: privilege_id
+            type: BIGINT
+        tableName: sys_role_privilege
+- changeSet:
+    id: 1544174115562-9
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+            name: id
+            type: BIGINT
+        - column:
+            name: created_date
+            type: datetime
+        - column:
+            name: last_modified_date
+            type: datetime
+        - column:
+            name: avatar
+            type: VARCHAR(255)
+        - column:
+            name: email
+            type: VARCHAR(255)
+        - column:
+            defaultValueBoolean: false
+            name: is_disable
+            type: BIT(1)
+        - column:
+            name: nickname
+            type: VARCHAR(255)
+        - column:
+            name: password
+            type: VARCHAR(255)
+        - column:
+            name: salt
+            type: VARCHAR(255)
+        - column:
+            name: username
+            type: VARCHAR(255)
+        - column:
+            defaultValueBoolean: false
+            name: is_deleted
+            type: BIT(1)
+        - column:
+            name: created_by
+            type: BIGINT
+        - column:
+            name: last_modified_by
+            type: BIGINT
+        tableName: sys_user
+- changeSet:
+    id: 1544174115562-10
+    author: zhangrucong (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: parent_id
+        indexName: FK18qsxukvf40pdippprno5eq5b
+        tableName: sys_category
+- changeSet:
+    id: 1544174115562-11
+    author: zhangrucong (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: user_id
+        indexName: FK1nk6vdhuhcniyse9wik3pp5l7
+        tableName: sys_privilege
+- changeSet:
+    id: 1544174115562-12
+    author: zhangrucong (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: parent_id
+        indexName: FK7h567kbm8i2uteel1pwveyamj
+        tableName: sys_privilege
+- changeSet:
+    id: 1544174115562-13
+    author: zhangrucong (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: role_id
+        indexName: FKhidmju68461bmv7st3pfkrhcu
+        tableName: sys_privilege
+- changeSet:
+    id: 1544174115562-14
+    author: zhangrucong (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: article_id
+        indexName: FKjirukkkkhj5pkpn9i7x0gn83b
+        tableName: blog_article_tag
+- changeSet:
+    id: 1544174115562-15
+    author: zhangrucong (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: privilege_id
+        indexName: FKl0lymq83eg69a9awoqn9sp3pi
+        tableName: sys_privilege
+- changeSet:
+    id: 1544174115562-16
+    author: zhangrucong (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: tag_id
+        indexName: FKrrs2kus3wx0wfxgdn3qrinpt7
+        tableName: blog_article_tag
+- changeSet:
+    id: 1544174115562-17
+    author: zhangrucong (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: privilege_id
+        indexName: FKvf9lt66q9oyjludcg83nfinq
+        tableName: sys_role_privilege
+- changeSet:
+    id: 1544174115562-18
+    author: zhangrucong (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: parent_id
+        baseTableName: sys_category
+        constraintName: FK18qsxukvf40pdippprno5eq5b
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: sys_category
+        validate: true
+- changeSet:
+    id: 1544174115562-19
+    author: zhangrucong (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: sys_privilege
+        constraintName: FK1nk6vdhuhcniyse9wik3pp5l7
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: sys_user
+        validate: true
+- changeSet:
+    id: 1544174115562-20
+    author: zhangrucong (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: parent_id
+        baseTableName: sys_privilege
+        constraintName: FK7h567kbm8i2uteel1pwveyamj
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: sys_privilege
+        validate: true
+- changeSet:
+    id: 1544174115562-21
+    author: zhangrucong (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: role_id
+        baseTableName: sys_privilege
+        constraintName: FKhidmju68461bmv7st3pfkrhcu
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: sys_role
+        validate: true
+- changeSet:
+    id: 1544174115562-22
+    author: zhangrucong (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: article_id
+        baseTableName: blog_article_tag
+        constraintName: FKjirukkkkhj5pkpn9i7x0gn83b
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: blog_article
+        validate: true
+- changeSet:
+    id: 1544174115562-23
+    author: zhangrucong (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: privilege_id
+        baseTableName: sys_privilege
+        constraintName: FKl0lymq83eg69a9awoqn9sp3pi
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: sys_privilege
+        validate: true
+- changeSet:
+    id: 1544174115562-24
+    author: zhangrucong (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: role_id
+        baseTableName: sys_role_privilege
+        constraintName: FKr3sw06rqbrufgrkfq2c8dxhvb
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: sys_role
+        validate: true
+- changeSet:
+    id: 1544174115562-25
+    author: zhangrucong (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: tag_id
+        baseTableName: blog_article_tag
+        constraintName: FKrrs2kus3wx0wfxgdn3qrinpt7
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: blog_tag
+        validate: true
+- changeSet:
+    id: 1544174115562-26
+    author: zhangrucong (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: privilege_id
+        baseTableName: sys_role_privilege
+        constraintName: FKvf9lt66q9oyjludcg83nfinq
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: sys_privilege
+        validate: true
+

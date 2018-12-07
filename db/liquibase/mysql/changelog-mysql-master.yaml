@@ -5,6 +5,9 @@ databaseChangeLog:
       changes:
         - sqlFile:
             encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
             path: db/mysql/test2.sql
         - sqlFile:
             encoding: utf8

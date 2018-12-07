@@ -150,18 +150,26 @@ configure(rootProject) {
                         url "${properties.get('spring.datasource.url')}"
                         username "${properties.get('spring.datasource.username')}"
                         password "${properties.get('spring.datasource.password')}"
+                        changeLogFile "${rootProject.projectDir}/db/test.yml"
+                        referenceDriver "${properties.get('spring.datasource.driver-class-name')}"
+                        referenceUrl "${properties.get('spring.datasource.url')}"
+
+                        referenceUsername  "${properties.get('spring.datasource.username')}"
+                        referencePassword  "${properties.get('spring.datasource.password')}"
+
                     }
                     runList = "dev" // 这里代表选择哪一个配置 可用参数代替
                 }
             }
-            updateSQL.execute()
+//            updateSQL.execute()
+            generateChangelog.execute()
         }
 
     }
 
 //    tasks.updateSQL.dependsOn createSql
-
-
+//    tasks.diff.dependsOn createSql
+//    tasks.generateChangeLog.dependsOn createSql
 
 
 }
