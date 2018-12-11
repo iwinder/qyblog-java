@@ -6,20 +6,23 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 @Component
 public class GenerateDDLApplicationRunner  implements ApplicationRunner {
     private Metadata metadata;
-
+    private static final String SCHEMA_SQL2 = "db/base/create-ddl_%s.sql";
     public GenerateDDLApplicationRunner(Metadata metadata) {
         this.metadata = metadata;
     }
 
     public void run(ApplicationArguments args) throws Exception {
-        File dropAndCreateDdlFile = new File("db/base/create-ddl.sql");
+        File dropAndCreateDdlFile = new File(getOutputFilename());
         deleteFileIfExists(dropAndCreateDdlFile);
 
 
@@ -43,5 +46,13 @@ public class GenerateDDLApplicationRunner  implements ApplicationRunner {
                 throw new IllegalStateException(msg);
             }
         }
+    }
+
+
+    private static String getOutputFilename() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDate = sdf.format(Calendar.getInstance().getTime());
+
+        return String.format(SCHEMA_SQL2, currentDate);
     }
 }

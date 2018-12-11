@@ -4,6 +4,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -12,15 +13,23 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
 
 import javax.persistence.spi.PersistenceUnitInfo;
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 
 @Configuration
+@EntityScan("com.windcoder.qycms.*")
 @AutoConfigureAfter({HibernateJpaAutoConfiguration.class})
 public class HibernateJavaConfig {
+
+    @Autowired
+    LocalContainerEntityManagerFactoryBean fb;
+
+
     @ConditionalOnMissingBean({Metadata.class})
     @Bean
     public Metadata getMetadata(StandardServiceRegistry standardServiceRegistry,
@@ -41,7 +50,9 @@ public class HibernateJavaConfig {
     public StandardServiceRegistry getStandardServiceRegistry(JpaProperties jpaProperties) {
         StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
 
-        Map<String, String> properties = jpaProperties.getProperties();
+//        Map<String, String> properties = jpaProperties.getProperties();
+        Map<String, Object> properties = fb.getJpaPropertyMap();
+//        properties.put("hibernate.dialect",fb.getJpaPropertyMap().get("hibernate.dialect"));
         ssrb.applySettings(properties);
 
         StandardServiceRegistry ssr = ssrb.build();
