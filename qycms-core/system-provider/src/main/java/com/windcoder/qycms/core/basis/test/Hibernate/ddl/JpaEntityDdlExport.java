@@ -41,6 +41,8 @@ public class JpaEntityDdlExport {
      * 域类路径位置（如果范围很宽，则只能找到带有@Entity的类）
      */
     private final static String PATTERN = "classpath*:**/*.class";
+    private final static String PATH = "com.windcoder";
+
 
     /**
      * DB类型生成DDL
@@ -56,7 +58,7 @@ public class JpaEntityDdlExport {
     public static void main(String[] args) {
         Map<String, Object> settings = new HashMap<>();
         settings.put("hibernate.dialect", DIALECT_CLASS);
-        settings.put("hibernate.format_sql", true);
+//        settings.put("hibernate.format_sql", true);
         settings.put("hibernate.physical_naming_strategy","org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
         settings.put("hibernate.implicit_naming_strategy","org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy");
         settings.put("hibernate.id.new_generator_mappings", false);
@@ -70,12 +72,13 @@ public class JpaEntityDdlExport {
         List<Class<?>> classes = getClassesByAnnotation(Entity.class, pattern);
         classes.forEach(metadata::addAnnotatedClass);
         MetadataImplementor metadataImplementor = (MetadataImplementor) metadata.getMetadataBuilder().build();
-        SchemaExport schema = new SchemaExport(metadataImplementor);
+        SchemaExport schemaExport = new SchemaExport(metadataImplementor);
         String outputFile = getOutputFilename(args);
-        schema.setOutputFile(outputFile);
-        schema.create(true, false);
-        appendSemicolon(outputFile);
-        appendMetaData(outputFile, settings);
+        schemaExport.setOutputFile(outputFile);
+        schemaExport.setDelimiter(";");
+        schemaExport.create(true, false);
+//        appendSemicolon(outputFile);
+//        appendMetaData(outputFile, settings);
     }
 
     private static String getPattern(String[] args) {
@@ -151,6 +154,9 @@ public class JpaEntityDdlExport {
 
     private static Class<?> entityClass(MetadataReader mr) {
         String className = mr.getClassMetadata().getClassName();
+//        if (className.indexOf(PATH)<0){
+//            return null;
+//        }
         Class<?> clazz;
         try {
             clazz = Class.forName(className);
