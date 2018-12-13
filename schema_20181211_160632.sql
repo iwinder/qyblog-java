@@ -56,6 +56,7 @@ hibernate.implicit_naming_strategy: org.springframework.boot.orm.jpa.hibernate.S
         key_word varchar(255),
         title varchar(255),
         title_path varchar(1000),
+        title_path2 varchar(1000),
         type varchar(255),
         created_by bigint,
         last_modified_by bigint,

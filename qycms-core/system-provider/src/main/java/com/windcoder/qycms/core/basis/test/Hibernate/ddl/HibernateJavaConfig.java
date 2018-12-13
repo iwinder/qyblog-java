@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
 
@@ -21,14 +22,15 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 
-//@Configuration
-//@EntityScan("com.windcoder.qycms.*")
-//@AutoConfigureAfter({HibernateJpaAutoConfiguration.class})
+@Configuration
+@EntityScan("com.windcoder.qycms.*")
+@AutoConfigureAfter({HibernateJpaAutoConfiguration.class})
 public class HibernateJavaConfig {
 
     @Autowired
     LocalContainerEntityManagerFactoryBean fb;
-
+    @Autowired
+    DataSource dataSource;
 
     @ConditionalOnMissingBean({Metadata.class})
     @Bean
@@ -50,8 +52,14 @@ public class HibernateJavaConfig {
     public StandardServiceRegistry getStandardServiceRegistry(JpaProperties jpaProperties) {
         StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder();
 
-//        Map<String, String> properties = jpaProperties.getProperties();
+        Map<String, String> properties3 = jpaProperties.getHibernateProperties(dataSource);
+        jpaProperties.getHibernate();
+
+        fb.setDataSource(dataSource);
+
+        Map<String, String> properties2 = jpaProperties.getProperties();
         Map<String, Object> properties = fb.getJpaPropertyMap();
+//        properties.putAll(properties3);
 //        properties.put("hibernate.dialect",fb.getJpaPropertyMap().get("hibernate.dialect"));
         ssrb.applySettings(properties);
 

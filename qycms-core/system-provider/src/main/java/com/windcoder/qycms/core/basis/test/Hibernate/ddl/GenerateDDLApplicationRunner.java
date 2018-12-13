@@ -3,6 +3,7 @@ package com.windcoder.qycms.core.basis.test.Hibernate.ddl;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -13,10 +14,12 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-//@Component
+@Component
 public class GenerateDDLApplicationRunner  implements ApplicationRunner {
     private Metadata metadata;
-    private static final String SCHEMA_SQL2 = "db/base/create-ddl_%s.sql";
+//    private static final String SCHEMA_SQL2 = "db/base/create2-ddl_%s.sql";
+
+    private static final String SCHEMA_SQL2 = "db/base/update-2-ddl_%s.sql";
     public GenerateDDLApplicationRunner(Metadata metadata) {
         this.metadata = metadata;
     }
@@ -26,12 +29,15 @@ public class GenerateDDLApplicationRunner  implements ApplicationRunner {
         deleteFileIfExists(dropAndCreateDdlFile);
 
 
-        SchemaExport schemaExport = new SchemaExport((MetadataImplementor) metadata);
+//        SchemaExport schemaExport = new SchemaExport((MetadataImplementor) metadata);
+
+        SchemaUpdate schemaExport = new SchemaUpdate((MetadataImplementor) metadata);
         schemaExport.setDelimiter(";");
         schemaExport.setFormat(false);
         schemaExport.setOutputFile(dropAndCreateDdlFile.getAbsolutePath());
 
-        schemaExport.execute(true, false, false, false);
+//        schemaExport.execute(true, false, false, false);
+        schemaExport.execute(true, false);
     }
 
     private void deleteFileIfExists(File dropAndCreateDdlFile) {
