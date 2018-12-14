@@ -90,6 +90,9 @@ public class BlogArticle extends Auditable {
      */
     @ColumnDefault("0")
     private Boolean isDeleted;
+
+    private String articleType;
+
     @Transient
     private List<String> tagStrings;
 
@@ -203,5 +206,13 @@ public class BlogArticle extends Auditable {
 
     public void setTagStrings(List<String> tagStrings) {
         this.tagStrings = tagStrings;
+    }
+
+    public String getArticleType() {
+        return articleType;
+    }
+
+    public void setArticleType(String articleType) {
+        this.articleType = articleType;
     }
 }

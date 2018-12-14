@@ -1,0 +1,29 @@
+databaseChangeLog:
+- changeSet:
+    id: 1544778711566-1
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            name: name
+            type: VARCHAR(255)
+        tableName: test
+- changeSet:
+    id: 1544778711566-2
+    author: zhangrucong (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: article_type
+            type: VARCHAR(255 BYTE)
+        tableName: blog_article
+- changeSet:
+    id: 1544778711566-3
+    author: zhangrucong (generated)
+    changes:
+    - dropColumn:
+        columnName: remark
+        tableName: sys_role
+

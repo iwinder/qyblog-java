@@ -1,130 +1,123 @@
 databaseChangeLog:
 - changeSet:
-    id: 1544174115562-1
+    id: 1544774593975-1
     author: zhangrucong (generated)
     changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              primaryKey: true
-            name: id
-            type: BIGINT
-        - column:
-            name: created_date
-            type: datetime
-        - column:
-            name: last_modified_date
-            type: datetime
-        - column:
-            name: content
-            type: LONGTEXT
-        - column:
-            name: content_html
-            type: LONGTEXT
-        - column:
-            defaultValueBoolean: false
-            name: is_deleted
-            type: BIT(1)
-        - column:
-            defaultValueBoolean: false
-            name: is_published
-            type: BIT(1)
-        - column:
-            name: perma_link
-            type: VARCHAR(255)
-        - column:
-            name: published_date
-            type: datetime
-        - column:
-            name: summary
-            type: VARCHAR(255)
-        - column:
-            name: thumbnail
-            type: VARCHAR(255)
-        - column:
-            name: title
-            type: VARCHAR(255)
-        - column:
-            name: created_by
-            type: BIGINT
-        - column:
-            name: last_modified_by
-            type: BIGINT
-        - column:
-            name: author_id
-            type: BIGINT
-        - column:
-            name: category_id
-            type: BIGINT
+    - dropForeignKeyConstraint:
+        baseTableName: sys_category
+        constraintName: FK18qsxukvf40pdippprno5eq5b
+- changeSet:
+    id: 1544774593975-2
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_privilege
+        constraintName: FK1nk6vdhuhcniyse9wik3pp5l7
+- changeSet:
+    id: 1544774593975-3
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_privilege
+        constraintName: FK7h567kbm8i2uteel1pwveyamj
+- changeSet:
+    id: 1544774593975-4
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_privilege
+        constraintName: FKhidmju68461bmv7st3pfkrhcu
+- changeSet:
+    id: 1544774593975-5
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: blog_article_tag
+        constraintName: FKjirukkkkhj5pkpn9i7x0gn83b
+- changeSet:
+    id: 1544774593975-6
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_privilege
+        constraintName: FKl0lymq83eg69a9awoqn9sp3pi
+- changeSet:
+    id: 1544774593975-7
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_role_privilege
+        constraintName: FKr3sw06rqbrufgrkfq2c8dxhvb
+- changeSet:
+    id: 1544774593975-8
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: blog_article_tag
+        constraintName: FKrrs2kus3wx0wfxgdn3qrinpt7
+- changeSet:
+    id: 1544774593975-9
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_role_privilege
+        constraintName: FKvf9lt66q9oyjludcg83nfinq
+- changeSet:
+    id: 1544774593975-10
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
         tableName: blog_article
 - changeSet:
-    id: 1544174115562-2
+    id: 1544774593975-11
     author: zhangrucong (generated)
     changes:
-    - createTable:
-        columns:
-        - column:
-            constraints:
-              nullable: false
-            name: article_id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: tag_id
-            type: BIGINT
+    - dropTable:
         tableName: blog_article_tag
 - changeSet:
-    id: 1544174115562-3
+    id: 1544774593975-12
     author: zhangrucong (generated)
     changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              primaryKey: true
-            name: id
-            type: BIGINT
-        - column:
-            name: created_date
-            type: datetime
-        - column:
-            name: last_modified_date
-            type: datetime
-        - column:
-            name: name
-            type: VARCHAR(255)
-        - column:
-            name: created_by
-            type: BIGINT
-        - column:
-            name: last_modified_by
-            type: BIGINT
+    - dropTable:
         tableName: blog_tag
 - changeSet:
-    id: 1544174115562-4
+    id: 1544774593975-13
     author: zhangrucong (generated)
     changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              primaryKey: true
-            name: id
-            type: BIGINT
-        - column:
-            name: created_date
-            type: datetime
-        - column:
-            name: last_modified_date
-            type: datetime
-        - column:
-            name: description
-            type: VARCHAR(255)
+    - dropTable:
+        tableName: sys_category
+- changeSet:
+    id: 1544774593975-14
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_ldap_setting
+- changeSet:
+    id: 1544774593975-15
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_privilege
+- changeSet:
+    id: 1544774593975-16
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_role
+- changeSet:
+    id: 1544774593975-17
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_role_privilege
+- changeSet:
+    id: 1544774593975-18
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_user
+
+(255)
         - column:
             name: display_order
             type: BIGINT

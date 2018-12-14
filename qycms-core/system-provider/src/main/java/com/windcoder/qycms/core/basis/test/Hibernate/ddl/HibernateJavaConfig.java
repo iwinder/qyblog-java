@@ -22,8 +22,8 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 
-@Configuration
-@EntityScan("com.windcoder.qycms.*")
+//@Configuration
+//@EntityScan("com.windcoder.qycms.*")
 @AutoConfigureAfter({HibernateJpaAutoConfiguration.class})
 public class HibernateJavaConfig {
 
@@ -64,6 +64,7 @@ public class HibernateJavaConfig {
         ssrb.applySettings(properties);
 
         StandardServiceRegistry ssr = ssrb.build();
+
         return ssr;
     }
 

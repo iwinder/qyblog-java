@@ -12,3 +12,172 @@ databaseChangeLog:
         - sqlFile:
             encoding: utf8
             path: db/mysql/v0.1/test.sql
+
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/ddl/a.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test2.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/v0.1/test.sql

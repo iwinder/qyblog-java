@@ -7,6 +7,7 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.MySQL5InnoDBDialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.classreading.MetadataReader;
@@ -37,6 +38,7 @@ public class JpaEntityDdlExport {
      * 要创建的文件名
      */
     private static final String SCHEMA_SQL = "schema_%s.sql";
+    private static final String SCHEMA_UPDATE_SQL = "schema-update_%s.sql";
     /**
      * 域类路径位置（如果范围很宽，则只能找到带有@Entity的类）
      */
@@ -56,6 +58,29 @@ public class JpaEntityDdlExport {
     private final static Class<? extends Dialect> DIALECT_CLASS = MySQL5InnoDBDialect.class;
 
     public static void main(String[] args) {
+//        createData(args);
+
+//        File directory = new File("");// 参数为空
+//        String courseFile = null;
+//        try {
+//            courseFile = directory.getCanonicalPath();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(courseFile);
+        String[] argss = args;
+        if (args==null){
+            argss[0]=SCHEMA_UPDATE_SQL;
+        }
+        updatData(args);
+    }
+
+
+    /**
+     * 生成全量SQL脚本
+     * @param args
+     */
+    public static void createData(String[] args){
         Map<String, Object> settings = new HashMap<>();
         settings.put("hibernate.dialect", DIALECT_CLASS);
 //        settings.put("hibernate.format_sql", true);
@@ -77,8 +102,44 @@ public class JpaEntityDdlExport {
         schemaExport.setOutputFile(outputFile);
         schemaExport.setDelimiter(";");
         schemaExport.create(true, false);
-//        appendSemicolon(outputFile);
-//        appendMetaData(outputFile, settings);
+    }
+
+    public static void updatData(String[] args){
+        File propsFile = new File("./qycms-core/common/src/main/resources/application.properties");
+//        File propsFile = new File("classpath:application.properties");
+
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream(propsFile));
+            Map<String, Object> settings = new HashMap<>();
+            settings.put("hibernate.dialect", DIALECT_CLASS);
+            settings.put("hibernate.connection.driver", properties.getProperty("spring.datasource.driver-class-name"));
+            settings.put("hibernate.connection.url", properties.getProperty("spring.datasource.url"));
+            settings.put("hibernate.connection.username", properties.getProperty("spring.datasource.username"));
+            settings.put("hibernate.connection.password", properties.getProperty("spring.datasource.password"));
+            settings.put("hibernate.physical_naming_strategy","org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
+            settings.put("hibernate.implicit_naming_strategy","org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy");
+            settings.put("hibernate.id.new_generator_mappings", false);
+
+            StandardServiceRegistry standardServiceRegistry = new StandardServiceRegistryBuilder()
+                    .applySettings(settings)
+                    .build();
+
+            MetadataSources metadata = new MetadataSources(standardServiceRegistry);
+            String pattern = getPattern(args);
+            List<Class<?>> classes = getClassesByAnnotation(Entity.class, pattern);
+            classes.forEach(metadata::addAnnotatedClass);
+            MetadataImplementor metadataImplementor = (MetadataImplementor) metadata.getMetadataBuilder().build();
+            SchemaUpdate schemaUpdate = new SchemaUpdate(metadataImplementor);
+            String[] argss ={SCHEMA_UPDATE_SQL};
+            schemaUpdate.setOutputFile(getOutputFilename(argss));
+
+            schemaUpdate.setDelimiter(";");
+            schemaUpdate.setFormat(false);
+            schemaUpdate.execute(true, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static String getPattern(String[] args) {

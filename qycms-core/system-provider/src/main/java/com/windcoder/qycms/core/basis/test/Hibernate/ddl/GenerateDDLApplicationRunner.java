@@ -14,7 +14,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-@Component
+//@Component
 public class GenerateDDLApplicationRunner  implements ApplicationRunner {
     private Metadata metadata;
 //    private static final String SCHEMA_SQL2 = "db/base/create2-ddl_%s.sql";

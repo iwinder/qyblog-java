@@ -1,0 +1,22 @@
+databaseChangeLog:
+- changeSet:
+    id: 1544777716314-1
+    author: zhangrucong (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            name: name
+            type: VARCHAR(255)
+        tableName: test
+- changeSet:
+    id: 1544777716314-2
+    author: zhangrucong (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: article_type
+            type: VARCHAR(255 BYTE)
+        tableName: blog_article
+
