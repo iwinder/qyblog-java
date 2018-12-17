@@ -21,11 +21,11 @@ buildscript {
 allprojects {
     group 'com.windcoder'
     version '1.0-SNAPSHOT'
-    apply plugin: 'org.liquibase.gradle'
+//    apply plugin: 'org.liquibase.gradle'
     apply plugin: 'java'
     apply plugin: 'war'
     apply plugin: 'org.springframework.boot'
-
+//    ext.gradleScriptDir = "${rootProject.projectDir}/gradle"
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -45,9 +45,9 @@ allprojects {
     dependencies {
 //        compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.2'
         compile fileTree(dir: 'lib', exclude:'', include: '*.jar')
-        liquibaseRuntime 'org.liquibase:liquibase-core:3.6.2'
-        liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:2.0.1'
-        liquibaseRuntime 'mysql:mysql-connector-java:5.1.34'
+//        liquibaseRuntime 'org.liquibase:liquibase-core:3.6.2'
+//        liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:2.0.1'
+//        liquibaseRuntime 'mysql:mysql-connector-java:5.1.34'
     }
 
 }
@@ -70,11 +70,11 @@ subprojects {
     bootRepackage.enabled=false
 }
 
-def buildTimestamp() {
-    def date = new Date()
-    def formattedDate = date.format('yyyyMMddHHmmss')
-    return formattedDate
-}
+//def buildTimestamp() {
+//    def date = new Date()
+//    def formattedDate = date.format('yyyyMMddHHmmss')
+//    return formattedDate
+//}
 
 configure(rootProject) {
     description "QY CMS"
@@ -83,6 +83,8 @@ configure(rootProject) {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
     apply plugin: 'maven'
+    apply from: "${rootProject.projectDir}/gradle/liquibase.gradle"
+    apply from: "${rootProject.projectDir}/gradle/liquibase2.gradle"
 
     bootRepackage.enabled=true
 
@@ -105,104 +107,104 @@ configure(rootProject) {
         rootSpec.exclude("javax.servlet-api*.jar")
         rootSpec.exclude("org.projectlombok:lombok")
     }
-    project.ext.liquibaseSQLDir = "${rootProject.projectDir}/db/liquibase"
-    project.ext.liquibaseSQLFilePath = "${liquibaseSQLDir}"
-    project.ext.liquibaseExcludeSQLFile = ['test1.sql']
+//    project.ext.liquibaseSQLDir = "${rootProject.projectDir}/db/liquibase"
+//    project.ext.liquibaseSQLFilePath = "${liquibaseSQLDir}"
+//    project.ext.liquibaseExcludeSQLFile = ['test1.sql']
 
-    def changeLogFileUrl = "${liquibaseSQLDir}/mysql/changelog-mysql-master-"+ buildTimestamp()+".yaml"
-    task getMySQLFiles() {
-        doLast {
-            FileTree mySqlFiles = fileTree(dir: '.',include:'db/**/mysql/**/*.sql')
-            StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append("databaseChangeLog:\n  - changeSet:\n      id: initData \n      author: windcoder \n      changes:\n")
-            mySqlFiles.each {File file->
-                def mysqlFileName = file.getName()
-                if (!liquibaseExcludeSQLFile.contains(mysqlFileName)){
-                    def mysqlFilePath = file.getPath()
-                    String mysqlRelativeFilePath = mysqlFilePath.substring(mysqlFilePath.indexOf("db\\")).replace('\\','/')
-                    println mysqlRelativeFilePath + ","
-                    stringBuffer.append("        - sqlFile:\n            encoding: utf8\n            path: "+mysqlRelativeFilePath + "\n")
-                }
-            }
-            def tempDir = "${liquibaseSQLDir}/mysql"
-            liquibaseSQLFilePath = "${tempDir}/changelog-mysql-master.yaml"
-//            liquibaseSQLFilePath = "${changeLogFileUrl}"
-            File propsFile = new File(tempDir)
-//            if (propsFile.exists()){
-//                delete tempDir
+//    def changeLogFileUrl = "${liquibaseSQLDir}/mysql/changelog-mysql-master-"+ buildTimestamp()+".yaml"
+//    task getMySQLFiles() {
+//        doLast {
+//            FileTree mySqlFiles = fileTree(dir: '.',include:'db/**/mysql/**/*.sql')
+//            StringBuffer stringBuffer = new StringBuffer();
+//            stringBuffer.append("databaseChangeLog:\n  - changeSet:\n      id: initData \n      author: windcoder \n      changes:\n")
+//            mySqlFiles.each {File file->
+//                def mysqlFileName = file.getName()
+//                if (!liquibaseExcludeSQLFile.contains(mysqlFileName)){
+//                    def mysqlFilePath = file.getPath()
+//                    String mysqlRelativeFilePath = mysqlFilePath.substring(mysqlFilePath.indexOf("db\\")).replace('\\','/')
+//                    println mysqlRelativeFilePath + ","
+//                    stringBuffer.append("        - sqlFile:\n            encoding: utf8\n            path: "+mysqlRelativeFilePath + "\n")
+//                }
 //            }
-            propsFile.mkdir()
-            new File("${liquibaseSQLFilePath}").append(stringBuffer.toString())
-        }
-    }
-    def lodUrl = "${rootProject.projectDir}/db/test.yml"
-    def changeLogOutPutFileUrl = "${liquibaseSQLDir}/changelog-mysql-master-"+ buildTimestamp()+".yaml"
-    def outputFileURL ="${rootProject.projectDir}/db/test-"+buildTimestamp()+".sql"
-    task createSql()  {
-        doFirst {
-//            getMySQLFiles.execute()
-        }
+//            def tempDir = "${liquibaseSQLDir}/mysql"
+//            liquibaseSQLFilePath = "${tempDir}/changelog-mysql-master.yaml"
+////            liquibaseSQLFilePath = "${changeLogFileUrl}"
+//            File propsFile = new File(tempDir)
+////            if (propsFile.exists()){
+////                delete tempDir
+////            }
+//            propsFile.mkdir()
+//            new File("${liquibaseSQLFilePath}").append(stringBuffer.toString())
+//        }
+//    }
+//    def lodUrl = "${rootProject.projectDir}/db/test.yml"
+//    def changeLogOutPutFileUrl = "${liquibaseSQLDir}/changelog-mysql-master-"+ buildTimestamp()+".yaml"
+//    def outputFileURL ="${rootProject.projectDir}/db/test-"+buildTimestamp()+".sql"
+//    task createSql()  {
+//        doFirst {
+////            getMySQLFiles.execute()
+//        }
+//
+//        doLast {
+//            File propsFile = new File("${rootProject.projectDir}/qycms-core/common/src/main/resources/application.properties")
+//            Properties properties = new Properties()
+//            properties.load(new FileInputStream(propsFile))
+//
+//
+//
+//            liquibase {
+//                activities {
+//                    dev {
+////                        changeLogFile "${liquibaseSQLFilePath}"
+////                        changeLogFile "${changeLogFileUrl}"
+//                        driver "${properties.get('spring.datasource.driver-class-name')}"
+//                        outputFile "${outputFileURL}"
+//                        url "${properties.get('spring.datasource.url')}"
+//                        username "${properties.get('spring.datasource.username')}"
+//                        password "${properties.get('spring.datasource.password')}"
+//                        changeLogFile "${changeLogOutPutFileUrl}"
+//                        referenceDriver "${properties.get('spring.datasource.driver-class-name')}"
+//                        referenceUrl "${properties.get('qy.datasource.referenceUrl')}"
+//
+//                        referenceUsername  "${properties.get('qy.datasource.referenceUsername')}"
+//                        referencePassword  "${properties.get('qy.datasource.referencePassword')}"
+////                        difftypes 'data'
+////                        encoding "UTF-8"
+//                    }
+//                    runList = "dev" // 这里代表选择哪一个配置 可用参数代替
+//                }
+//            }
+////            updateSQL.execute()-----https://github.com/liquibase/liquibase-gradle-plugin/blob/master/src/main/groovy/org/liquibase/gradle/LiquibasePlugin.groovy
+//            diffChangeLog.execute()
+////            updateSQL.execute()
+//        }
+//
+//    }
 
-        doLast {
-            File propsFile = new File("${rootProject.projectDir}/qycms-core/common/src/main/resources/application.properties")
-            Properties properties = new Properties()
-            properties.load(new FileInputStream(propsFile))
-
-
-
-            liquibase {
-                activities {
-                    dev {
-//                        changeLogFile "${liquibaseSQLFilePath}"
+//    task updateSqldddd()  {
+//        doLast {
+//            File propsFile = new File("${rootProject.projectDir}/qycms-core/common/src/main/resources/application.properties")
+//            Properties properties = new Properties()
+//            properties.load(new FileInputStream(propsFile))
+//
+//
+//
+//            liquibase {
+//                activities {
+//                    dev {
 //                        changeLogFile "${changeLogFileUrl}"
-                        driver "${properties.get('spring.datasource.driver-class-name')}"
-                        outputFile "${outputFileURL}"
-                        url "${properties.get('spring.datasource.url')}"
-                        username "${properties.get('spring.datasource.username')}"
-                        password "${properties.get('spring.datasource.password')}"
-                        changeLogFile "${changeLogOutPutFileUrl}"
-                        referenceDriver "${properties.get('spring.datasource.driver-class-name')}"
-                        referenceUrl "${properties.get('qy.datasource.referenceUrl')}"
-
-                        referenceUsername  "${properties.get('qy.datasource.referenceUsername')}"
-                        referencePassword  "${properties.get('qy.datasource.referencePassword')}"
-//                        difftypes 'data'
-//                        encoding "UTF-8"
-                    }
-                    runList = "dev" // 这里代表选择哪一个配置 可用参数代替
-                }
-            }
-//            updateSQL.execute()-----https://github.com/liquibase/liquibase-gradle-plugin/blob/master/src/main/groovy/org/liquibase/gradle/LiquibasePlugin.groovy
-            diffChangeLog.execute()
-            updateSQL.execute()
-        }
-
-    }
-
-    task updateSqldddd()  {
-        doLast {
-            File propsFile = new File("${rootProject.projectDir}/qycms-core/common/src/main/resources/application.properties")
-            Properties properties = new Properties()
-            properties.load(new FileInputStream(propsFile))
-
-
-
-            liquibase {
-                activities {
-                    dev {
-                        changeLogFile "${changeLogFileUrl}"
-                        driver "${properties.get('spring.datasource.driver-class-name')}"
-                        outputFile "${outputFileURL}"
-                        url "${properties.get('spring.datasource.url')}"
-                        username "${properties.get('spring.datasource.username')}"
-                        password "${properties.get('spring.datasource.password')}"
-                    }
-                    runList = "dev" // 这里代表选择哪一个配置 可用参数代替
-                }
-            }
-            updateSQL.execute()
-        }
-    }
+//                        driver "${properties.get('spring.datasource.driver-class-name')}"
+//                        outputFile "${outputFileURL}"
+//                        url "${properties.get('spring.datasource.url')}"
+//                        username "${properties.get('spring.datasource.username')}"
+//                        password "${properties.get('spring.datasource.password')}"
+//                    }
+//                    runList = "dev" // 这里代表选择哪一个配置 可用参数代替
+//                }
+//            }
+//            updateSQL.execute()
+//        }
+//    }
 
 
 
