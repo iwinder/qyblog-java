@@ -40,8 +40,8 @@ import java.util.Map;
  * 参考资料：
  * https://stackoverflow.com/questions/34612019/programmatic-schemaexport-schemaupdate-with-hibernate-5-and-spring-4
  */
-@Component
-@EntityScan("com.windcoder.qycms.*")
+//@Component
+//@EntityScan("com.windcoder.qycms.*")
 //@AutoConfigureAfter({JPASchemaExtractor2.class})
 public class JPASchemaSchemaUpdate implements ApplicationRunner {
     private static final String SCHEMA_SQL2 = "db/base/update-ddl_2_%s.sql";

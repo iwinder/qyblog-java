@@ -23,15 +23,15 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-//@Component
+@Component
 //@EntityScan("com.windcoder.qycms.*")
 public class JPASchemaExtractor2 implements ApplicationRunner {
     private static final String SCHEMA_SQL2 = "db/base/create-ddl_2_%s.sql";
 
     @Autowired
     LocalContainerEntityManagerFactoryBean fb;
-    @Autowired
-    PersistenceUnitInfo persistenceUnitInfo;
+//    @Autowired
+//    PersistenceUnitInfo persistenceUnitInfo;
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
@@ -41,7 +41,8 @@ public class JPASchemaExtractor2 implements ApplicationRunner {
                 .build();
 
         MetadataSources metadata = new MetadataSources(standardServiceRegistry);
-        List<String> managedClassNames = persistenceUnitInfo.getManagedClassNames();
+//        List<String> managedClassNames = persistenceUnitInfo.getManagedClassNames();
+        List<String> managedClassNames = fb.getPersistenceUnitInfo().getManagedClassNames();
         for (String managedClassName : managedClassNames) {
             metadata.addAnnotatedClassName(managedClassName);
         }
@@ -56,20 +57,20 @@ public class JPASchemaExtractor2 implements ApplicationRunner {
     }
 
 
-    @ConditionalOnMissingBean({PersistenceUnitInfo.class})
-    @Bean
-    public PersistenceUnitInfo getPersistenceUnitInfo(EntityScanPackages entityScanPackages) {
-        List<String> packagesToScan = entityScanPackages.getPackageNames();
-
-        DefaultPersistenceUnitManager persistenceUnitManager = new DefaultPersistenceUnitManager();
-
-        String[] packagesToScanArr = (String[]) packagesToScan.toArray(new String[packagesToScan.size()]);
-        persistenceUnitManager.setPackagesToScan(packagesToScanArr);
-        persistenceUnitManager.afterPropertiesSet();
-
-        PersistenceUnitInfo persistenceUnitInfo = persistenceUnitManager.obtainDefaultPersistenceUnitInfo();
-        return persistenceUnitInfo;
-    }
+//    @ConditionalOnMissingBean({PersistenceUnitInfo.class})
+//    @Bean
+//    public PersistenceUnitInfo getPersistenceUnitInfo(EntityScanPackages entityScanPackages) {
+//        List<String> packagesToScan = entityScanPackages.getPackageNames();
+//
+//        DefaultPersistenceUnitManager persistenceUnitManager = new DefaultPersistenceUnitManager();
+//
+//        String[] packagesToScanArr = (String[]) packagesToScan.toArray(new String[packagesToScan.size()]);
+//        persistenceUnitManager.setPackagesToScan(packagesToScanArr);
+//        persistenceUnitManager.afterPropertiesSet();
+//
+//        PersistenceUnitInfo persistenceUnitInfo = persistenceUnitManager.obtainDefaultPersistenceUnitInfo();
+//        return persistenceUnitInfo;
+//    }
 
 
     private static String getOutputFilename() {

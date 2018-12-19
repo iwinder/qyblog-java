@@ -14,6 +14,9 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * http://docs.jboss.org/hibernate/orm/5.0/quickstart/html/
+ */
 //@Component
 public class GenerateDDLApplicationRunner  implements ApplicationRunner {
     private Metadata metadata;

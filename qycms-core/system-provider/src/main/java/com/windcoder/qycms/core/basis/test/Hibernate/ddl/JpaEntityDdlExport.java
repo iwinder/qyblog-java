@@ -42,7 +42,7 @@ public class JpaEntityDdlExport {
     /**
      * 域类路径位置（如果范围很宽，则只能找到带有@Entity的类）
      */
-    private final static String PATTERN = "classpath*:**/*.class";
+    private final static String PATTERN = "classpath*:**/**/entity/.class";
     private final static String PATH = "com.windcoder";
 
 
@@ -58,7 +58,7 @@ public class JpaEntityDdlExport {
     private final static Class<? extends Dialect> DIALECT_CLASS = MySQL5InnoDBDialect.class;
 
     public static void main(String[] args) {
-//        createData(args);
+        createData(args);
 
 //        File directory = new File("");// 参数为空
 //        String courseFile = null;
@@ -68,11 +68,11 @@ public class JpaEntityDdlExport {
 //            e.printStackTrace();
 //        }
 //        System.out.println(courseFile);
-        String[] argss = args;
-        if (args==null){
-            argss[0]=SCHEMA_UPDATE_SQL;
-        }
-        updatData(args);
+//        String[] argss = args;
+//        if (args==null){
+//            argss[0]=SCHEMA_UPDATE_SQL;
+//        }
+//        updatData(args);
     }
 
 
