@@ -15,7 +15,7 @@
 *.ipr
 *.iws
 **/out
-**/gradle
+
 
 #vscode
 .vscode

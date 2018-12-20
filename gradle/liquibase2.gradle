@@ -1,0 +1,123 @@
+// https://github.com/liquibase/liquibase-gradle-plugin/issues/44
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.liquibase:liquibase-gradle-plugin:2.0.1"
+    }
+}
+
+apply plugin: 'org.liquibase.gradle'
+def tmpFiles = fileTree(dir:'.' ,include :'**/entity/*.java').getFiles()
+println '-----'
+//tmpFiles.each {File file ->
+//    println file
+//}
+println '-----'
+dependencies {
+//    runtimeClasspath fileTree(dir:'.').matching {include '**/entity/*.java'}
+    liquibaseRuntime 'org.liquibase:liquibase-core:3.6.2'
+//    liquibaseRuntime 'mysql:mysql-connector-java:5.1.34'
+//    liquibaseRuntime 'org.liquibase:liquibase-core:3.6.2'
+    liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate5:3.6'
+    liquibaseRuntime 'mysql:mysql-connector-java:5.1.46'
+    liquibaseRuntime 'org.springframework.boot:spring-boot:1.5.8.RELEASE'
+    liquibaseRuntime 'org.springframework:spring-orm'
+    liquibaseRuntime('org.springframework.boot:spring-boot-starter-data-jpa')
+    liquibaseRuntime 'commons-logging:commons-logging'
+//    liquibaseRuntime files("${rootProject.projectDir}")
+//    liquibaseRuntime fileTree(dir:'.').matching {include '**/entity/*.java'}
+//    liquibaseRuntime sourceSets.main.runtimeClasspath
+//    liquibaseRuntime sourceSets.main.output
+//    liquibaseRuntime files("src/main")
+    liquibaseRuntime files(tmpFiles)
+//    liquibaseRuntime sourceSets.main.compileClasspath
+//    liquibaseRuntime files(fileTree(dir:'.').matching {include '**/entity/*.java'})
+//    liquibaseRuntime files(fileTree(dir:'.'))
+//    liquibaseRuntime files(fileTree(dir:'${rootProject.projectDir}/**/src/java').matching {include '**/entity/*.java'})
+}
+//sourceSets.setRuntimeClasspath(fileTree(dir:'.' ,include :'**/entity/*.java'))
+//sourceSets.addAll()
+def buildTimestamp() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmmss')
+    return formattedDate
+}
+
+//diff.dependsOn compileJava
+//diffChangeLog.dependsOn compileJava
+//compile {
+//    source = fileTree(dir:'.').matching {include '**/entity/*.java'}
+//}
+task diffMySQL(){
+    doFirst{
+
+        File propsFile = new File("${rootProject.projectDir}/qycms-core/common/src/main/resources/application.properties")
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(propsFile))
+
+        def changeLogOutPutFileURL = "${rootProject.projectDir}/db/liquibase/changelog/changelog-qq-master-2-"+ buildTimestamp()+".yaml"
+        def outputFileURL = "${rootProject.projectDir}/db/liquibase/diffSQL-qq-2-"+buildTimestamp()+".sql"
+
+        println '-----'
+        println ("${properties.contains('parim.datasource.referenceDriver-class-name')}")
+        println "${properties.get('parim.datasource.referenceDriver-class-name')}"
+        println "${properties.get('parim.datasource.referenceDriver-class-name')}"
+        println "${properties.get('spring.datasource.driver-class-name')}"
+        println ("${properties.contains('parim.datasource.referenceDriver-class-name')}" == true ? "${properties.contains('parim.datasource.referenceDriver-class-name')}" : "${properties.get('spring.datasource.driver-class-name')}")
+        println "${rootProject.projectDir}"
+        println files("${rootProject.projectDir}").size()
+        println tmpFiles.size()
+//        println sourceSets.main.runtimeClasspath
+        println sourceSets.main.compileClasspath
+        println sourceSets.main.output.classesDirs
+        println '---d--'
+//        sourceSets.main.compileClasspath.each {File file ->
+//            println file
+//        }
+        println '---d--'
+        println '---d--'
+        sourceSets.main.output.each {File file ->
+            println file
+        }
+
+        println '-----'
+
+        def referenceDriverURL =  "${properties.contains('parim.datasource.referenceDriver-class-name')}" == true ? "${properties.contains('parim.datasource.referenceDriver-class-name')}" : "${properties.get('spring.datasource.driver-class-name')}"
+
+        liquibase {
+//            mainClassName = 'liquibase.ext.commandline.LiquibaseAlternativeMain'
+
+            activities {
+//                logLevel 'debug'
+                diff {
+
+                    driver "${properties.get('spring.datasource.driver-class-name')}"
+                    url "${properties.get('spring.datasource.url')}"
+                    username "${properties.get('spring.datasource.username')}"
+                    password "${properties.get('spring.datasource.password')}"
+//                    files tmpFiles
+                    referenceUrl 'hibernate:spring:com.windcoder' +
+                            '?dialect=org.hibernate.dialect.MySQL5Dialect' +
+                            '&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy' +
+                            '&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
+//                    classpath  "${tmpFiles}"
+                    changeLogFile "${changeLogOutPutFileURL}"
+                    outputFile "${outputFileURL}"
+
+
+                }
+                runList = "diff" // 这里代表选择哪一个配置 可用参数代替
+            }
+        }
+    }
+
+    doLast{
+        diffChangeLog.execute()
+        updateSQL.execute()
+    }
+}
+diffMySQL.dependsOn compileJava
+
