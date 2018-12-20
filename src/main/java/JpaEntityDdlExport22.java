@@ -1,5 +1,3 @@
-package com.windcoder.qycms.core.basis.test.Hibernate.ddl;
-
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -16,7 +14,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
-
 import javax.persistence.Entity;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,17 +29,13 @@ import java.util.stream.Collectors;
  *
  * 生成成功，但DIALECT_CLASS获取不友好。
  * https://gist.github.com/sbcoba/e4264f4b4217746767e682c61f9dc3a6
- *
- * StandardServiceRegistryBuilder用于创建StandardServiceRegistry（标准服务注册中心），这里将注册Hibernate中需要用到的大量服务
- *
- * https://www.cnblogs.com/ArtofDesign/p/7841541.html
  */
-public class JpaEntityDdlExport {
+public class JpaEntityDdlExport22 {
     /**
      * 要创建的文件名
      */
-    private static final String SCHEMA_SQL = "schema_%s.sql";
-    private static final String SCHEMA_UPDATE_SQL = "schema-update_%s.sql";
+    private static final String SCHEMA_SQL = "schema2_%s.sql";
+    private static final String SCHEMA_UPDATE_SQL = "schema-update2_%s.sql";
     /**
      * 域类路径位置（如果范围很宽，则只能找到带有@Entity的类）
      */
