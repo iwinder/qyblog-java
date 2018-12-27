@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContentComponent } from './core/layout/content/content.component';
-import { PageNotFoundComponent } from './blog/views/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './home/views/page-not-found/page-not-found.component';
 import { BlogListIndexComponent } from './blog/views/blog-list-index/blog-list-index.component';
 // import { AuthGuard, QyLoginComponent } from './core/AuthGuard';
 
