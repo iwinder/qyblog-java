@@ -4,8 +4,17 @@ import { BlogArticleService } from '../../service/blog-article.service';
 import { BlogArticle } from '../../entity/blog-article';
 import { Page } from '../../../core/entity/page';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+// import * as hljs from 'highlight.js';
+import * as hljs from 'highlight.js/lib/highlight';
+// import hljs from 'highlight.js/lib/highlight';
+import javascript from 'highlight.js/lib/languages/javascript';
+import java from 'highlight.js/lib/languages/java';
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('java', java);
+// import 'highlight.js/styles/monokai-sublime.css';
+declare var hljs: any;
 
-
+declare var $: any;
 
 @Component({
     selector: 'qy-blog-info',
@@ -45,6 +54,8 @@ export class BlogInfoComponent implements OnInit {
             this.loading = false;
             this.articlesData = data;
             this.thumbnail = data.thumbnail;
+            // hljs.initHighlightingOnLoad();
+
           },
           error => {
             console.log(error);
@@ -72,6 +83,13 @@ export class BlogInfoComponent implements OnInit {
       if (!contentHtml) {
         contentHtml = this.textFiltering;
       }
+      $('pre code').each(function(i, block) {
+        let s = $(block).attr("class");
+        $(block).addClass(s.substr(s.lastIndexOf("-") + 1));
+        $(block).removeClass(s);
+
+        hljs.highlightBlock(block);
+      });
       return this.sanitizer.bypassSecurityTrustHtml(contentHtml);
     }
 
