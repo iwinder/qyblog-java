@@ -6,8 +6,6 @@
                 <h1 class="display-4">{{articlesData.title}}</h1>
             </div>
         </div>
-        <div class="posts-contents"  [innerHtml]="getNewHTML(articlesData?.contentHtml)" >
-        
-        </div>
+        <qy-posts-contents *ngIf="articlesData&&articlesData.contentHtml" [contentHtml]="articlesData.contentHtml" ></qy-posts-contents>
     </aside>
 </div>

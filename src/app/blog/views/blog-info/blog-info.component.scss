@@ -1,15 +1,3 @@
-// @import '~highlight.js/styles/monokai-sublime.css';
-
-// .article {
-//     padding-bottom: 25px;
-//     border-bottom: 1px solid #f5f5f5;
-//     margin-bottom: 25px;
-// }
-
-// ngb-pagination {
-//     display: -webkit-inline-box;
-// }
-
 .container {
     color: #fff;
     margin: 0;
@@ -18,10 +6,9 @@
     width: 100%;
     z-index: 2;
     position: absolute;
-}
-.container,.posts-contents {
     padding: 20px;
 }
+
 
 .jumbotron {
     height: 400px;

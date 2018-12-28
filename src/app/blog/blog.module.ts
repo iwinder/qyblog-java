@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { routedComponents, BlogArticleRoutingModule } from './blog-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BlogArticlePublicModule } from './public/public.module';
 
 
 
@@ -15,6 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         CommonModule,
         BlogArticleRoutingModule,
         NgbModule,
+        BlogArticlePublicModule
     ],
     declarations: [...routedComponents]
 })
