@@ -4,17 +4,6 @@ import { BlogArticleService } from '../../service/blog-article.service';
 import { BlogArticle } from '../../entity/blog-article';
 import { Page } from '../../../core/entity/page';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
-// import * as hljs from 'highlight.js';
-// import * as hljs from 'highlight.js/lib/highlight';
-// import hljs from 'highlight.js/lib/highlight';
-// import javascript from 'highlight.js/lib/languages/javascript';
-// import java from 'highlight.js/lib/languages/java';
-// hljs.registerLanguage('javascript', javascript);
-// hljs.registerLanguage('java', java);
-// import 'highlight.js/styles/monokai-sublime.css';
-// declare var hljs: any;
-
-// declare var $: any;
 
 @Component({
     selector: 'qy-blog-info',
@@ -36,9 +25,9 @@ export class BlogInfoComponent implements OnInit {
     pageIndex = 1;
     loading = false;
     thumbnail;
+
     constructor(private sanitizer: DomSanitizer,
         private articleService: BlogArticleService,
-        // private route: ActivatedRouteSnapshot
         private activeRouter: ActivatedRoute) {
         this.articleId = activeRouter.snapshot.paramMap.get('articleId');
     }
@@ -55,23 +44,13 @@ export class BlogInfoComponent implements OnInit {
             this.loading = false;
             this.articlesData = data;
             this.thumbnail = data.thumbnail;
-            // hljs.initHighlightingOnLoad();
-            // console.log("hljs:", hljs);
-
           },
           error => {
-            console.log(error);
             this.loading = false;
           }
         );
     }
 
-    get getNewUrl() {
-        if (!this.thumbnail) {
-           return this.imagSrc;
-        }
-        return this.sanitizer.bypassSecurityTrustUrl(this.thumbnail);
-    }
 
     getNewUrlStr(urlStrng) {
       if (!urlStrng) {
@@ -85,17 +64,8 @@ export class BlogInfoComponent implements OnInit {
       if (!contentHtml) {
         contentHtml = this.textFiltering;
       }
-      console.log("contentHtml:", contentHtml);
-      // console.log("$('pre code'):", $('pre code'));
-      // $('pre code').each(function(i, block) {
-      //   console.log(i, block);
-      //   let s = $(block).attr("class");
-      //   console.log('class', s.substr(s.lastIndexOf("-") + 1));
-      //   $(block).addClass(s.substr(s.lastIndexOf("-") + 1));
-      //   $(block).removeClass(s);
-      //   console.log(i, block);
-      //   hljs.highlightBlock(block);
-      // });
+      let codes = contentHtml.match(/(<code)([\s\S^(<pre>)]*?)(<\/code>)/g);
+      // console.log("a", a);
       return this.sanitizer.bypassSecurityTrustHtml(contentHtml);
     }
 

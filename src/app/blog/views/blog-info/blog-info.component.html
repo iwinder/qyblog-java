@@ -1,13 +1,13 @@
 <div id="latest-posts" class="block5">
     <aside class="block5-widget" *ngIf="articlesData">
-        <div class="jumbotron jumbotron-fluid" [style]="getNewUrlStr(articlesData.thumbnail)"> 
-            <div class="container">
-                <p>{{articlesData.category.keyWord}}·{{ articlesData.publishedDate | date:'yyyy-MM-dd' }}</p>
+        <div class="jumbotron jumbotron-fluid"  [ngStyle]="{'background-image': 'url(' + articlesData.thumbnail + ')'}" > 
+            <div class="container"  >
+                <p>{{articlesData.category?.title}}·{{ articlesData.publishedDate | date:'yyyy-MM-dd' }}</p>
                 <h1 class="display-4">{{articlesData.title}}</h1>
             </div>
         </div>
-        <div class="posts-contents" [innerHtml]="getNewHTML(articlesData?.contentHtml)">
-             
+        <div class="posts-contents"  [innerHtml]="getNewHTML(articlesData?.contentHtml)" >
+        
         </div>
     </aside>
 </div>
