@@ -1,16 +1,23 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit, AfterContentInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BlogArticleService } from '../../service/blog-article.service';
 import { BlogArticle } from '../../entity/blog-article';
 import { Page } from '../../../core/entity/page';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+import * as hljs from 'highlight.js/lib/highlight';
+import javascript from 'highlight.js/lib/languages/javascript';
+import java from 'highlight.js/lib/languages/java';
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('java', java);
 
+declare var $: any;
 @Component({
     selector: 'qy-blog-info',
     templateUrl: './blog-info.component.html',
     styleUrls: ['./blog-info.component.scss']
 })
-export class BlogInfoComponent implements OnInit {
+export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentInit {
+
 
 
     // tslint:disable-next-line:max-line-length
@@ -51,21 +58,52 @@ export class BlogInfoComponent implements OnInit {
         );
     }
 
-
-    getNewUrlStr(urlStrng) {
-      if (!urlStrng) {
-        urlStrng =  this.imagSrc;
-     }
-
-     return this.sanitizer.bypassSecurityTrustStyle(`background-image:url(${urlStrng}); background-size: cover;`);
+    ngAfterContentInit(): void {
+      console.log("ngAfterContentInit not implemented.");
     }
+    ngAfterViewInit(): void {
+      console.log("ngAfterViewInit not implemented.");
+    }
+    // getNewUrlStr(urlStrng) {
+    //   if (!urlStrng) {
+    //     urlStrng =  this.imagSrc;
+    //  }
+
+    //  return this.sanitizer.bypassSecurityTrustStyle(`background-image:url(${urlStrng}); background-size: cover;`);
+    // }
 
     getNewHTML(contentHtml) {
       if (!contentHtml) {
         contentHtml = this.textFiltering;
       }
+
+      // $('pre code').each(function(i, block) {
+      //   console.log(i, block);
+      //   let s = $(block).attr("class");
+      //   console.log('class', s.substr(s.lastIndexOf("-") + 1));
+      //   $(block).addClass(s.substr(s.lastIndexOf("-") + 1));
+      //   $(block).removeClass(s);
+      //   console.log(i, block);
+      //   hljs.highlightBlock(block);
+      // });
+
+      console.log("contentHtml", this.textFiltering);
       let codes = contentHtml.match(/(<code)([\s\S^(<pre>)]*?)(<\/code>)/g);
-      // console.log("a", a);
+      let newCodes = [];
+      codes.forEach(function(block, i) {
+          console.log(i, block);
+          let targ = $(block);
+          let s = targ.attr("class");
+          console.log('class', s.substr(s.lastIndexOf("-") + 1));
+          targ.addClass(s.substr(s.lastIndexOf("-") + 1));
+          targ.removeClass(s);
+          console.log(i, block);
+          hljs.highlightBlock(targ[0]);
+          console.log("targ", targ);
+          console.log("targ[0]", targ[0]);
+          newCodes.push(targ[0]);
+        });
+      console.log("a", newCodes);
       return this.sanitizer.bypassSecurityTrustHtml(contentHtml);
     }
 
