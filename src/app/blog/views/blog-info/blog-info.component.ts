@@ -52,7 +52,9 @@ export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentIni
           }
         );
     }
-
+    getDateTime(date) {
+      return new Date(date);
+    }
     ngAfterContentInit(): void {
     }
     ngAfterViewInit(): void {
