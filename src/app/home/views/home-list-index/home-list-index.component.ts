@@ -4,7 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Page } from '../../../core/entity/page';
 import { BlogArticle } from '../../../blog/entity/blog-article';
 import { BlogArticleService } from '../../../blog/service/blog-article.service';
-
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -25,7 +25,8 @@ export class HomeListIndexComponent implements OnInit {
     pageIndex = 1;
     loading = false;
     constructor(private sanitizer: DomSanitizer,
-        private articleService: BlogArticleService) {
+        private articleService: BlogArticleService,
+        private titleService: Title) {
     }
 
     ngOnInit() {
@@ -51,6 +52,7 @@ export class HomeListIndexComponent implements OnInit {
           data => {
             this.loading = false;
             this.articlesData = data;
+            this.titleService.setTitle("首页");
           },
           error => {
             console.log(error);

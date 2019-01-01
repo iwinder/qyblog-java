@@ -4,6 +4,7 @@ import { BlogArticleService } from '../../service/blog-article.service';
 import { BlogArticle } from '../../entity/blog-article';
 import { Page } from '../../../core/entity/page';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 declare var $: any;
 @Component({
@@ -30,7 +31,8 @@ export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentIni
 
     constructor(private sanitizer: DomSanitizer,
         private articleService: BlogArticleService,
-        private activeRouter: ActivatedRoute) {
+        private activeRouter: ActivatedRoute,
+        private titleService: Title) {
         this.articleId = activeRouter.snapshot.paramMap.get('articleId');
     }
 
@@ -46,6 +48,7 @@ export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentIni
             this.loading = false;
             this.articlesData = data;
             this.thumbnail = data.thumbnail;
+            this.titleService.setTitle(this.articlesData.title);
           },
           error => {
             this.loading = false;
