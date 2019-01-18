@@ -107,5 +107,10 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
         article.setTags(newTags);
     }
 
+    private void rediesTest(Long articleId){
+        
+        redisTemplate.opsForZSet();
+    }
+
 
 }
