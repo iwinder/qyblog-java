@@ -65,6 +65,7 @@ public class BlogArticleWebController {
         if(StringUtils.isNotBlank(searchText)) {
             article.setTitle(searchText);
         }
+        article.setIsPublished(true);
         Page<BlogArticle> articles = articleService.findAll(article,pageable);
         Type type = new TypeToken<List<BlogArticleBaseDto>>() {}.getType();
         List<BlogArticleBaseDto> articlesDto = ModelMapperUtils.map(articles.getContent(),type);
