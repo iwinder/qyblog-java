@@ -90,6 +90,13 @@ public class BlogArticle extends Auditable {
      */
     @ColumnDefault("0")
     private Boolean isDeleted;
+
+    /**
+     * 浏览人数
+     */
+    @ColumnDefault("0")
+    private Long viewCount;
+
     @Transient
     private List<String> tagStrings;
 
@@ -203,5 +210,13 @@ public class BlogArticle extends Auditable {
 
     public void setTagStrings(List<String> tagStrings) {
         this.tagStrings = tagStrings;
+    }
+
+    public Long getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Long viewCount) {
+        this.viewCount = viewCount;
     }
 }

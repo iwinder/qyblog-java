@@ -11,6 +11,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
@@ -23,7 +24,15 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
 
     @Autowired
     private BlogTagService blogTagService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
+    /**
+     * 查询文章列表-分页
+     * @param article
+     * @param pageable
+     * @return
+     */
     public Page<BlogArticle> findAll(BlogArticle article, Pageable pageable) {
         return super.findAll((root, query,  cb) -> {
             Predicate predicate = cb.equal(root.get("isDeleted"), false);
@@ -39,7 +48,11 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
         },pageable);
     }
 
-
+    /**
+     * 保存
+     * @param article
+     * @return
+     */
     public BlogArticle save(BlogArticle article) {
         if (null == article.getAuthor()){
             User user = (User)  SecurityUtils.getSubject().getPrincipal();
@@ -52,11 +65,30 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
         return super.save(article);
     }
 
+    /**
+     * 更新
+     * @param article
+     * @return
+     */
     public BlogArticle update(BlogArticle article) {
         stringToTags(article);
         return super.save(article);
     }
 
+    /**
+     * 获取文章详情
+     * @param id
+     * @return
+     */
+    public BlogArticle findInfo(Long id){
+        BlogArticle article =  repository.findByIdAndIsDeletedAndIsPublished(id,false,true);
+        return article;
+    }
+
+    /**
+     * 处理Tag
+     * @param article
+     */
     public void stringToTags(BlogArticle article){
         if (article.getTagStrings() == null){
             return;
@@ -73,6 +105,11 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
             newTags.add(tag);
         }
         article.setTags(newTags);
+    }
+
+    private void rediesTest(Long articleId){
+        
+        redisTemplate.opsForZSet();
     }
 
 
