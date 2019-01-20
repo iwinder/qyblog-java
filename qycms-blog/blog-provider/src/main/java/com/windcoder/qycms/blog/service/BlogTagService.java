@@ -1,8 +1,7 @@
 package com.windcoder.qycms.blog.service;
 
-import com.windcoder.qycms.blog.entity.BlogArticle;
 import com.windcoder.qycms.blog.entity.BlogTag;
-import com.windcoder.qycms.blog.repository.BlogTagRepository;
+import com.windcoder.qycms.blog.repository.jpa.BlogTagRepository;
 import com.windcoder.qycms.service.BaseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;

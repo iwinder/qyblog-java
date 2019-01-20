@@ -1,4 +1,4 @@
-package com.windcoder.qycms.blog.repository;
+package com.windcoder.qycms.blog.repository.jpa;
 
 
 import com.windcoder.qycms.blog.entity.BlogTag;
