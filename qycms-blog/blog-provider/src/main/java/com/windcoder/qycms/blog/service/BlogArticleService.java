@@ -17,6 +17,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,6 +85,8 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
      */
     public BlogArticle findInfo(Long id){
         BlogArticle article =  repository.findByIdAndIsDeletedAndIsPublished(id,false,true);
+        Long views = getViews("views",id,article.getViewCount());
+        article.setViewCount(views);
         return article;
     }
 
@@ -109,20 +112,28 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
         article.setTags(newTags);
     }
 
-    private Long getViews(String type, Long articleId){
+    /**
+     * 获取文章浏览量--定时任务同步
+     * @param type
+     * @param articleId
+     * @return
+     */
+    private Long getViews(String type, Long articleId,Long views){
         if (StringUtils.isBlank(type)) {
             throw new BusinessException("获取对应类型的流水号失败，流水号type传递错误");
         }
         RedisLock redisLock = new RedisLock("articleViews",redisTemplate);
         redisLock.lock();
-        Long views = null;
+        // 将日期添加到key值中
+        // String tkey = "test2_" + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String key = "article:"+articleId+":"+type;
+        System.out.println("redisTemplate.opsForValue().get(key):"+redisTemplate.opsForValue().get(key));
         try{
-            if ( !redisTemplate.hasKey("articleViews")
-                    || !(redisTemplate.opsForHash().hasKey("articleViews", type)) ){
-                views = repository.findViewCountById(articleId);
-                redisTemplate.opsForZSet().add("articleViews","articleId:"+articleId,views);
+            if ( !redisTemplate.hasKey(key)
+                    || StringUtils.isBlank(redisTemplate.opsForValue().get(key))){
+                redisTemplate.opsForValue().set(key, String.valueOf(views));
             }else{
-                views = Long.valueOf(String.valueOf(redisTemplate.opsForZSet().incrementScore("articleViews","articleId:"+articleId, 1)));
+                views = redisTemplate.opsForValue().increment(key,1);
             }
         } finally {
             //任何情况下都要释放锁
