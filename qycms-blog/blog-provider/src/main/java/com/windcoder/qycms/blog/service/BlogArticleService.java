@@ -108,7 +108,7 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
     }
 
     private void rediesTest(Long articleId){
-        
+
         redisTemplate.opsForZSet();
     }
 
