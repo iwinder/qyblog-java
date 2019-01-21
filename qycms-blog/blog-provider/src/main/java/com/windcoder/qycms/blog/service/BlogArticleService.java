@@ -3,8 +3,10 @@ package com.windcoder.qycms.blog.service;
 
 import com.windcoder.qycms.blog.entity.BlogArticle;
 import com.windcoder.qycms.blog.entity.BlogTag;
-import com.windcoder.qycms.blog.repository.BlogArticleRepository;
+import com.windcoder.qycms.blog.repository.jpa.BlogArticleRepository;
 import com.windcoder.qycms.core.system.entity.User;
+import com.windcoder.qycms.core.system.utils.RedisLock;
+import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.service.BaseService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -107,9 +109,26 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
         article.setTags(newTags);
     }
 
-    private void rediesTest(Long articleId){
-
-        redisTemplate.opsForZSet();
+    private Long getViews(String type, Long articleId){
+        if (StringUtils.isBlank(type)) {
+            throw new BusinessException("获取对应类型的流水号失败，流水号type传递错误");
+        }
+        RedisLock redisLock = new RedisLock("articleViews",redisTemplate);
+        redisLock.lock();
+        Long views = null;
+        try{
+            if ( !redisTemplate.hasKey("articleViews")
+                    || !(redisTemplate.opsForHash().hasKey("articleViews", type)) ){
+                views = repository.findViewCountById(articleId);
+                redisTemplate.opsForZSet().add("articleViews","articleId:"+articleId,views);
+            }else{
+                views = Long.valueOf(String.valueOf(redisTemplate.opsForZSet().incrementScore("articleViews","articleId:"+articleId, 1)));
+            }
+        } finally {
+            //任何情况下都要释放锁
+            redisLock.unlock();
+        }
+        return views;
     }
 
 
