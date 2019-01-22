@@ -7,4 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SystemCommentSettingService extends BaseService<SystemCommentSetting, Long, SystemCommentSettingRepository> {
+    public SystemCommentSetting findSysForumSetting() {
+        return findOne(1L);
+    }
 }

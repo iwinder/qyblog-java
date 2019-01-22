@@ -1,5 +1,7 @@
 package com.windcoder.qycms.core.basis.comment.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.windcoder.qycms.core.system.entity.Auditable;
 import com.windcoder.qycms.core.system.entity.User;
 import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,10 +14,15 @@ import java.util.Date;
 @Entity
 @Table(name="sns_comment")
 public class Comment {
+
+//    public interface SimpleView extends Auditable.BaseView {};
     @Id
     @GeneratedValue
+//    @JsonView(SimpleView.class)
     private Long id;
+
     @Lob
+//    @JsonView(SimpleView.class)
     private String content;
 
     /**
@@ -88,12 +95,12 @@ public class Comment {
     @CreatedDate
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(updatable=false)
-    protected Date createdDate;
+    private Date createdDate;
 
     @LastModifiedBy
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "last_modified_by", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-    protected User lastModifiedBy;
+    private User lastModifiedBy;
 
     public Long getId() {
         return id;

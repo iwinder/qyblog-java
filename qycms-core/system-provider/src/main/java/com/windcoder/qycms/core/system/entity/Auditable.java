@@ -22,6 +22,10 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class Auditable implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public interface BaseView{};
+
+
     @LastModifiedDate
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     protected Date lastModifiedDate;

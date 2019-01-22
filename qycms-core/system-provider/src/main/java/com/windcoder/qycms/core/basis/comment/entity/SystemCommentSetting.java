@@ -25,11 +25,11 @@ public class SystemCommentSetting {
         this.id = id;
     }
 
-    public Boolean getEnabled() {
+    public Boolean getIsEnabled() {
         return isEnabled;
     }
 
-    public void setEnabled(Boolean enabled) {
-        isEnabled = enabled;
+    public void setIsEnabled(Boolean enabled) {
+        this.isEnabled = enabled;
     }
 }
