@@ -3,6 +3,7 @@ package com.windcoder.qycms.core.basis.comment.service;
 import com.windcoder.qycms.core.basis.comment.entity.Comment;
 import com.windcoder.qycms.core.basis.comment.repository.jpa.CommentRepository;
 import com.windcoder.qycms.service.BaseService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -12,11 +13,20 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Date;
 
 @Service
 public class CommentService extends BaseService<Comment,Long,CommentRepository> {
 
-
+    public Page<Comment> findAlllComments(Comment comment, Pageable pageable){
+        return super.findAll( (root, query,  cb)->{
+            Predicate predicate = cb.equal(root.get("target").get("id"), comment.getTarget().getId());
+            if (StringUtils.isNotBlank(comment.getStatus())){
+                predicate = cb.and(predicate,cb.equal(root.get("status"),comment.getStatus()));
+            }
+            return predicate;
+        }, pageable);
+    }
 
     public Page<Comment> findTopLevelComments(Long targetId, Pageable pageable) {
         return super.findAll(getCommentsSpecification(targetId,null), pageable);
@@ -38,9 +48,14 @@ public class CommentService extends BaseService<Comment,Long,CommentRepository> 
                 }else {
                     predicate = cb.and(predicate, cb.equal(root.get("topParent").get("id"), parentId));
                 }
+                predicate = cb.and(predicate,cb.equal(root.get("status"),"ENROLLED"));
                 return predicate;
             }
         };
         return specification;
+    }
+
+    public void updateStatus(Long commentId, String status) {
+        repository.updateStatus(commentId,status,new Date());
     }
 }
