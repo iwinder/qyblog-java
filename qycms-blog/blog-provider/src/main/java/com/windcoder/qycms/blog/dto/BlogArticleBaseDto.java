@@ -1,5 +1,6 @@
 package com.windcoder.qycms.blog.dto;
 
+import com.windcoder.qycms.core.basis.comment.entity.CommentAgent;
 import com.windcoder.qycms.core.system.dto.CategoryBaseDto;
 import com.windcoder.qycms.core.system.dto.UserDto;
 
@@ -56,6 +57,8 @@ public class BlogArticleBaseDto {
      * 发布日期
      */
     private Date publishedDate;
+
+    private CommentAgent commentAgent;
 
 
     public Long getId() {
@@ -162,5 +165,14 @@ public class BlogArticleBaseDto {
 
     public void setTagStrings(List<String> tagStrings) {
         this.tagStrings = tagStrings;
+    }
+
+
+    public CommentAgent getCommentAgent() {
+        return commentAgent;
+    }
+
+    public void setCommentAgent(CommentAgent commentAgent) {
+        this.commentAgent = commentAgent;
     }
 }

@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/web/comments")
+@RequestMapping("api/web/comments/{agentTargetId}")
 public class CommentWebController {
 
     private static final Logger logger = LoggerFactory.getLogger(CommentWebController.class);
@@ -41,6 +41,7 @@ public class CommentWebController {
     @GetMapping(value = "")
     public Page<CommentDto> list(@PathVariable("agentTargetId") Long agentTargetId,
                               @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable) {
+        checkAndGetCommentAgent(agentTargetId);
         Page<Comment> comments = commentService.findTopLevelComments(agentTargetId, pageable);
         Type type = new TypeToken<List<CommentDto>>() {}.getType();
         List<CommentDto> commentsDto = ModelMapperUtils.map(comments.getContent(),type);
@@ -53,9 +54,9 @@ public class CommentWebController {
             CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
             comment.setTarget(agentTarget);
             comment.setDepth(1);
-//            Date now = new Date();
-//            comment.setCreatedDate(now);
-//            comment.setLastModifiedBy(now);
+            Date now = new Date();
+            comment.setCreatedDate(now);
+            comment.setLastModifiedDate(now);
             comment = commentService.save(comment);
             return ModelMapperUtils.map(comment, CommentDto.class);
         } catch (Exception e) {
@@ -68,6 +69,7 @@ public class CommentWebController {
     public Page<CommentDto> replies(@PathVariable("agentTargetId") Long agentTargetId,
                                  @PathVariable("commentId") Long parentId,
                                  @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable) {
+        checkAndGetCommentAgent(agentTargetId);
         Page<Comment> comments = commentService.findComments(agentTargetId, parentId, pageable);
         Type type = new TypeToken<List<CommentDto>>() {}.getType();
         List<CommentDto> commentsDto = ModelMapperUtils.map(comments.getContent(),type);
@@ -87,7 +89,9 @@ public class CommentWebController {
             comment.setParent(parent);
             comment.setTopParent(topParent);
             comment.setDepth(level);
-
+            Date now = new Date();
+            comment.setCreatedDate(now);
+            comment.setLastModifiedDate(now);
             comment = commentService.save(comment);
 
             return ModelMapperUtils.map(comment, CommentDto.class);
