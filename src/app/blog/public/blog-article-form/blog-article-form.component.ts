@@ -95,7 +95,7 @@ export class QyBlogArticleFormComponent implements OnInit {
             title: [ obj.title, [ Validators.required ]],
             category: [obj.category ? obj.category.key : null],
             publishedDate: [ obj.publishedDate ? new Date(obj.publishedDate) : new Date() ],
-            isPublished: [obj.isPublished ],
+            isPublished: [obj.isPublished || false ],
             content: [obj.content, [Validators.required]],
             contentHtml: [obj.contentHtml],
             thumbnail: [obj.thumbnail],
@@ -136,6 +136,12 @@ export class QyBlogArticleFormComponent implements OnInit {
         if ( this.article && this.article.id) {
             values['id'] = this.article.id;
         }
+        console.log("!this.article.isPublished", !values.isPublished);
+        if ( !values.isPublished ) {
+            values.publishedDate = null;
+            console.log("values1", values);
+        }
+        console.log("values2", values);
         if (this.getFormControl('category').value != null) {
             let category = new Category();
             category.id = this.getFormControl('category').value;
