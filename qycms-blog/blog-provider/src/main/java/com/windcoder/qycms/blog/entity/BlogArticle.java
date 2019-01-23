@@ -1,5 +1,6 @@
 package com.windcoder.qycms.blog.entity;
 
+import com.windcoder.qycms.core.basis.comment.entity.CommentAgent;
 import com.windcoder.qycms.core.system.entity.Auditable;
 import com.windcoder.qycms.core.system.entity.Category;
 import com.windcoder.qycms.core.system.entity.User;
@@ -97,9 +98,25 @@ public class BlogArticle extends Auditable {
     @ColumnDefault("0")
     private Long viewCount;
 
+    /**
+     * 评论
+     */
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    @JoinColumn(name = "comment_agent_id")
+    private CommentAgent commentAgent;
+
     @Transient
     private List<String> tagStrings;
 
+    @PrePersist
+    public void PrePersist() {
+        if (this.commentAgent == null) {
+            CommentAgent commentAgent = new CommentAgent();
+            commentAgent.setTargetId(this.getId());
+            commentAgent.setTargetName(this.getTitle());
+            this.setCommentAgent(commentAgent);
+        }
+    }
     public Long getId() {
         return id;
     }
@@ -218,5 +235,13 @@ public class BlogArticle extends Auditable {
 
     public void setViewCount(Long viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public CommentAgent getCommentAgent() {
+        return commentAgent;
+    }
+
+    public void setCommentAgent(CommentAgent commentAgent) {
+        this.commentAgent = commentAgent;
     }
 }

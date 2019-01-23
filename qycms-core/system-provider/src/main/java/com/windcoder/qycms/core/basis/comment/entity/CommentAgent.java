@@ -1,6 +1,7 @@
 package com.windcoder.qycms.core.basis.comment.entity;
 
 import com.windcoder.qycms.core.system.entity.Auditable;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.Entity;
@@ -32,6 +33,7 @@ public class CommentAgent extends Auditable {
     /**
      * 评论是否可用
      */
+    @ColumnDefault("1")
     private Boolean isEnabled;
 
     public Long getId() {

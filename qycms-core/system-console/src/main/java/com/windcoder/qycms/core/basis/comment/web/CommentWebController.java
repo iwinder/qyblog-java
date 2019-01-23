@@ -22,6 +22,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -52,6 +53,9 @@ public class CommentWebController {
             CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
             comment.setTarget(agentTarget);
             comment.setDepth(1);
+//            Date now = new Date();
+//            comment.setCreatedDate(now);
+//            comment.setLastModifiedBy(now);
             comment = commentService.save(comment);
             return ModelMapperUtils.map(comment, CommentDto.class);
         } catch (Exception e) {

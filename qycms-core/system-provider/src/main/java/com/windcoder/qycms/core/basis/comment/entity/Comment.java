@@ -6,6 +6,7 @@ import com.windcoder.qycms.core.system.entity.User;
 import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -97,10 +98,9 @@ public class Comment {
     @Column(updatable=false)
     private Date createdDate;
 
-    @LastModifiedBy
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "last_modified_by", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-    private User lastModifiedBy;
+    @LastModifiedDate
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    protected Date lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -206,12 +206,12 @@ public class Comment {
         this.createdDate = createdDate;
     }
 
-    public User getLastModifiedBy() {
-        return lastModifiedBy;
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setLastModifiedBy(User lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Integer getDepth() {

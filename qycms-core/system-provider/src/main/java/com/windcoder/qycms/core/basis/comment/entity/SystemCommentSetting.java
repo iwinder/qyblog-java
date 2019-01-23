@@ -1,6 +1,8 @@
 package com.windcoder.qycms.core.basis.comment.entity;
 
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +17,7 @@ public class SystemCommentSetting {
     /**
      * 是否可用
      */
+    @ColumnDefault("1")
     private Boolean isEnabled;
 
     public Long getId() {
