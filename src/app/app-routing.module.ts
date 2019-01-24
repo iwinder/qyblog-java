@@ -13,6 +13,7 @@ const routes: Routes = [
             { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
             { path: 'system', loadChildren: 'app/system/system.module#SystemModule' },
             { path: 'blog', loadChildren: 'app/blog/blog.module#BlogModule' },
+            { path: 'comment', loadChildren: 'app/comment/comment.module#CommentModule' },
         ],
     },
     {path: 'login', component: QyLoginComponent},

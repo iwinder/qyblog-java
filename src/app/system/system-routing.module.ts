@@ -29,7 +29,7 @@ const routes: Routes = [
             // {
             //     path: 'category', loadChildren: 'app/system/views/category/category.module#CategoryModule',
             // }
-            // { path: 'banner', component: UgcBannerListComponent },
+            // { path: 'comment', component: SysCommentListComponent },
             // { path: 'notice-box', component: UgcNoticeBoxListComponent }
         ]
     },

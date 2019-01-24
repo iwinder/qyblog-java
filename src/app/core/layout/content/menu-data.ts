@@ -14,6 +14,12 @@ export const MAIN_MENU = [
             {name: '文章管理', icon: 'form', route: '/blog/article'},
             {name: '分类管理', icon: 'tag', route: '/blog/category'},
         ]
+    },
+    {
+        name: '评论管理', icon: 'file-text', children: [
+            {name: '基础设置', icon: 'form', route: '/comment/sysComment'},
+            {name: '评论列表', icon: 'tag', route: '/comment/list'},
+        ]
     }
 
 ];
