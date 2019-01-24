@@ -54,7 +54,13 @@
       <div ng-row style="margin:16px 0;">
         <nz-collapse>
             <nz-collapse-panel  [nzHeader]="'发布状态'" [nzActive]="'true'" [nzDisabled]="'false'">
-                <nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" >允许评论</nz-form-label>
+                <nz-form-control [nzSpan]="16" >
+                  <nz-switch [nzSize]="'small'" formControlName="commentAgent.isEnabled" (ngModelChange)="updateStatus($event)"></nz-switch>
+                </nz-form-control>
+              </nz-form-item>    
+              <nz-form-item>
                   <nz-form-label [nzSpan]="4" >发布</nz-form-label>
                   <nz-form-control [nzSpan]="16" >
                     <nz-switch [nzSize]="'small'" formControlName="isPublished" (ngModelChange)="updateStatus($event)"></nz-switch>

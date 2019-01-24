@@ -1,5 +1,6 @@
 import { User } from "../../system/entity/user";
 import { Category } from "../../system/entity/Category";
+import { CommentAgent } from "app/comment/entity/comment-agent";
 
 export class BlogArticle {
     id: number;
@@ -15,4 +16,5 @@ export class BlogArticle {
     isPublished: boolean;
     isDeleted: boolean;
     tagStrings: string[];
+    commentAgent: CommentAgent;
 }

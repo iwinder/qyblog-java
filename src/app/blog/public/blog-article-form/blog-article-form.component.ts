@@ -101,6 +101,7 @@ export class QyBlogArticleFormComponent implements OnInit {
             thumbnail: [obj.thumbnail],
             tagStrings:  [obj.tagStrings],
             summary: [obj.summary],
+            "commentAgent.isEnabled": [obj.commentAgent ? obj.commentAgent.isEnabled : true],
         });
         if ( this.article && this.article.thumbnail) {
             this.fileList.push({url: this.article.thumbnail});
@@ -136,12 +137,13 @@ export class QyBlogArticleFormComponent implements OnInit {
         if ( this.article && this.article.id) {
             values['id'] = this.article.id;
         }
-        console.log("!this.article.isPublished", !values.isPublished);
+        if ( this.article && this.article.commentAgent.id) {
+            values['commentAgent.id'] = this.article.commentAgent.id;
+        }
         if ( !values.isPublished ) {
             values.publishedDate = null;
-            console.log("values1", values);
         }
-        console.log("values2", values);
+
         if (this.getFormControl('category').value != null) {
             let category = new Category();
             category.id = this.getFormControl('category').value;
