@@ -20,7 +20,7 @@ public class CommentService extends BaseService<Comment,Long,CommentRepository> 
 
     public Page<Comment> findAlllComments(Comment comment, Pageable pageable){
         return super.findAll( (root, query,  cb)->{
-            Predicate predicate = cb.equal(root.get("target").get("id"), comment.getTarget().getId());
+            Predicate predicate = null;
             if (StringUtils.isNotBlank(comment.getStatus())){
                 predicate = cb.and(predicate,cb.equal(root.get("status"),comment.getStatus()));
             }

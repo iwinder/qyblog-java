@@ -1,5 +1,6 @@
 package com.windcoder.qycms.core.basis.comment.console;
 
+import com.windcoder.qycms.core.basis.comment.dto.CommentAdminDto;
 import com.windcoder.qycms.core.basis.comment.dto.CommentDto;
 import com.windcoder.qycms.core.basis.comment.entity.Comment;
 import com.windcoder.qycms.core.basis.comment.service.CommentService;
@@ -24,11 +25,11 @@ public class CommentController {
     CommentService commentService;
 
     @GetMapping(value = "")
-    public Page<CommentDto> list(Comment comment,
+    public Page<CommentAdminDto> list(Comment comment,
                                  @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Comment> comments = commentService.findAlllComments(comment, pageable);
-        Type type = new TypeToken<List<CommentDto>>() {}.getType();
-        List<CommentDto> commentsDto = ModelMapperUtils.map(comments.getContent(),type);
+        Type type = new TypeToken<List<CommentAdminDto>>() {}.getType();
+        List<CommentAdminDto> commentsDto = ModelMapperUtils.map(comments.getContent(),type);
         return  new PageImpl<>(commentsDto,pageable,comments.getTotalElements());
     }
 

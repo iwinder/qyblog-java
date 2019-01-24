@@ -9,7 +9,7 @@ public class CommentAgentDto {
      * 评论对象id
      */
     private Long targetId;
-
+    private String targetName;
     /**
      * 评论总数
      */
@@ -52,5 +52,13 @@ public class CommentAgentDto {
 
     public void setIsEnabled(Boolean enabled) {
         this.isEnabled = enabled;
+    }
+
+    public String getTargetName() {
+        return targetName;
+    }
+
+    public void setTargetName(String targetName) {
+        this.targetName = targetName;
     }
 }

@@ -7,6 +7,23 @@ public class SystemCommentSettingDto {
     /**
      * 是否可用
      */
-    @ColumnDefault("1")
+
     private Boolean isEnabled;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Boolean enabled) {
+        this.isEnabled = enabled;
+    }
 }

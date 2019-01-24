@@ -10,11 +10,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name="sns_comment")
-public class Comment {
+public class Comment implements Serializable {
 
 //    public interface SimpleView extends Auditable.BaseView {};
     @Id
