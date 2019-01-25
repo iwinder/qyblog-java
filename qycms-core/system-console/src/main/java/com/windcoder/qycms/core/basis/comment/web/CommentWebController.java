@@ -54,6 +54,7 @@ public class CommentWebController {
             CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
             comment.setTarget(agentTarget);
             comment.setDepth(1);
+            checkAndEditStatusIsENROLLED(comment);
             Date now = new Date();
             comment.setCreatedDate(now);
             comment.setLastModifiedDate(now);
@@ -89,6 +90,9 @@ public class CommentWebController {
             comment.setParent(parent);
             comment.setTopParent(topParent);
             comment.setDepth(level);
+
+            checkAndEditStatusIsENROLLED(comment);
+
             Date now = new Date();
             comment.setCreatedDate(now);
             comment.setLastModifiedDate(now);
@@ -111,6 +115,16 @@ public class CommentWebController {
             throw new BusinessException("未开启评论功能，不能进行评论");
         }
         return agentTarget;
+    }
+
+    private void checkAndEditStatusIsENROLLED(Comment comment){
+        Integer countByEmail =commentService.countByEmail(comment.getEmail());
+        if(countByEmail>0){
+            Integer count =commentService.countByEmailAndStatusNotEnrolled(comment.getEmail());
+            if(count==0){
+                comment.setStatus("ENROLLED");
+            }
+        }
     }
 
 }

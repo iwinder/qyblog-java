@@ -14,6 +14,11 @@ public interface CommentRepository extends SupportRepository<Comment, Long> {
     @Transactional
     @Modifying
     @Query(value="update Comment c set c.status = :status, c.lastModifiedDate = :lastModifiedDate where c.id = :commentId")
-    void updateStatus(@Param("commentId")Long commentId, @Param("status")String status,  @Param("lastModifiedDate")Date lastModifiedDate);
+    void updateStatus(@Param("commentId") Long commentId, @Param("status")String status,  @Param("lastModifiedDate")Date lastModifiedDate);
+
+    @Query(value="select  count(c) from Comment c  where c.email =:email and (c.status = 'APPLIED' or c.status = 'REFUSED') ")
+    Integer countByEmailAndStatusNotEnrolled(@Param("email") String email);
+
+    Integer countByEmail(String email);
 }
 

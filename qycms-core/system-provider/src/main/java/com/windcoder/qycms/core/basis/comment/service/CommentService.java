@@ -58,4 +58,12 @@ public class CommentService extends BaseService<Comment,Long,CommentRepository> 
     public void updateStatus(Long commentId, String status) {
         repository.updateStatus(commentId,status,new Date());
     }
+
+    public Integer countByEmailAndStatusNotEnrolled(String email){
+        return repository.countByEmailAndStatusNotEnrolled(email);
+    }
+
+    public Integer countByEmail(String email){
+        return repository.countByEmail(email);
+    }
 }

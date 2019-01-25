@@ -3,6 +3,7 @@ package com.windcoder.qycms.core.basis.comment.entity;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.windcoder.qycms.core.system.entity.Auditable;
 import com.windcoder.qycms.core.system.entity.User;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -53,6 +54,7 @@ public class Comment implements Serializable {
      * ENROLLED 审核通过
      * REFUSED 拒绝---丢入垃圾箱
      */
+    @ColumnDefault("'APPLIED'")
     private String status;
 
     /**
