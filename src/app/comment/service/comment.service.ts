@@ -22,9 +22,9 @@ export class CommentService {
         return this.http.post(`${this.url}/${comment.id}`, formData);
     }
 
-    updateStatus(comment: Comment, options?: {}) {
-        let formData = FormDataUtil.covert(comment);
-        return this.http.post(`${this.url}/${comment.id}/updateStatus`, formData);
+    updateStatus(params: any, options?: {}) {
+        let formData = FormDataUtil.covert(params);
+        return this.http.post(`${this.url}/${params.id}/updateStatus`, formData);
     }
 
     getOne(commentId: number): Observable<Comment>  {

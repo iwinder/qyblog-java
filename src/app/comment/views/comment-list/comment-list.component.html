@@ -1,8 +1,15 @@
 <nz-content>
     <div nz-row class="editable-add-btn">
-      <button nz-button nzType="primary" [routerLink]="['../add']">添加</button>
+      <!-- <button nz-button nzType="primary" [routerLink]="['../add']">添加</button> -->
     <!-- <button nz-button nzType="primary"(click)="sayHello()" >sayHello</button> -->
-  </div>
+      全部(0)
+      <nz-divider nzType="vertical"></nz-divider>
+      待审核(0)
+      <nz-divider nzType="vertical"></nz-divider>
+      已审核(0)
+      <nz-divider nzType="vertical"></nz-divider>
+      垃圾评论(0)
+    </div>
   <nz-table  #nzTable  [nzData]="data?.content" [nzPageSize]="data?.size"  [nzLoading]="loading" [nzFrontPagination]="'false'"  [(nzPageIndex)]="pageIndex" [nzTotal]="data?.totalElements" (nzPageIndexChange)="loadData()" >
       <thead nz-thead>
         <tr>
@@ -18,7 +25,7 @@
             <strong>
             <nz-avatar class="comment-avatar" [nzShape]="'square'" [nzIcon]="'anticon anticon-user'"></nz-avatar>
             {{data.author}}</strong><br>
-            <a>{{data.url}}</a>
+            <a href="{{data.url}}">{{data.url}}</a>
             <a href="#" class="akismet_remove_url" commentid="284" title="移除此URL">x</a>
             <br>
             <a>{{data.email}}</a><br>
@@ -27,11 +34,11 @@
           <td nz-td>
             <p>{{data.content}}</p>
             <div *ngIf="show[i]" >
-              <a *ngIf="data.status=='APPLIED'" class="text-success" href="javascript:;">批准</a>
-              <a *ngIf="data.status=='ENROLLED'" class="text-warning" href="javascript:;" >驳回</a> 
-              <a *ngIf="data.status=='REFUSED'" class="text-success" href="javascript:;">不是垃圾评论</a>
+              <a *ngIf="data.status=='APPLIED'" class="text-success" href="javascript:;" (click)="updateStatus(data.id, 'ENROLLED')">批准</a>
+              <a *ngIf="data.status=='ENROLLED'" class="text-warning" href="javascript:;" (click)="updateStatus(data.id, 'APPLIED')">驳回</a> 
+              <a *ngIf="data.status=='REFUSED'" class="text-success" href="javascript:;" (click)="updateStatus(data.id, 'ENROLLED')" >不是垃圾评论</a>
               <nz-divider nzType="vertical"></nz-divider>
-              <a href="javascript:;" class="text-danger" *ngIf="data.status!='REFUSED'" >垃圾评论</a>
+              <a href="javascript:;" class="text-danger" *ngIf="data.status!='REFUSED'" (click)="updateStatus(data.id, 'REFUSED')" >垃圾评论</a>
               <nz-divider nzType="vertical" *ngIf="data.status!='REFUSED'"></nz-divider>
               <a href="javascript:;" class="text-danger"  >永久删除</a>
             </div>

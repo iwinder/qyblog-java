@@ -48,5 +48,24 @@ export class CommentListComponent implements OnInit {
     );
   }
 
+  updateStatus(id, status) {
+    let params = {
+      id: id,
+      status: status
+    };
+    this.commentService.updateStatus(params).subscribe(
+      data => {
+        // this.loading = false;
+        this.loadData();
+        // this.data = data;
+        // this.commentsData = data['content'];
+      },
+      error => {
+        this.loadData();
+        // this.loading = false;
+      }
+    );
+  }
+
 
 }
