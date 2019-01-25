@@ -7,4 +7,8 @@ export class SysCommentSetting {
      */
 
     isEnabled: Boolean;
+    /**
+     * 是否需要审核
+     */
+    isApproved: Boolean;
 }

@@ -15,16 +15,31 @@
       <tbody nz-tbody>
         <tr nz-tbody-tr *ngFor="let data of nzTable.data; let i = index" (mouseenter)="show[i]=true"  (mouseleave)="show[i]=false">
           <td nz-td>
-            <a>{{data.author}}</a>
-            <a>{{data.email}}</a>
+            <strong>
+            <nz-avatar class="comment-avatar" [nzShape]="'square'" [nzIcon]="'anticon anticon-user'"></nz-avatar>
+            {{data.author}}</strong><br>
             <a>{{data.url}}</a>
+            <a href="#" class="akismet_remove_url" commentid="284" title="移除此URL">x</a>
+            <br>
+            <a>{{data.email}}</a><br>
+            <a>{{data.ip}}</a>
           </td>
-          <td nz-td>{{data.content}}
-            <a *ngIf="show[i]" href="#">show编辑 <span nz-table-divider></span></a>
-          </td>
-          <td nz-td><a href="#">{{data.target?data.target.targetName : ''}}</a></td>
           <td nz-td>
-            <span>{{data.createdDate}}
+            <p>{{data.content}}</p>
+            <div *ngIf="show[i]" >
+              <a *ngIf="data.status=='APPLIED'" class="text-success" href="javascript:;">批准</a>
+              <a *ngIf="data.status=='ENROLLED'" class="text-warning" href="javascript:;" >驳回</a> 
+              <a *ngIf="data.status=='REFUSED'" class="text-success" href="javascript:;">不是垃圾评论</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a href="javascript:;" class="text-danger" *ngIf="data.status!='REFUSED'" >垃圾评论</a>
+              <nz-divider nzType="vertical" *ngIf="data.status!='REFUSED'"></nz-divider>
+              <a href="javascript:;" class="text-danger"  >永久删除</a>
+            </div>
+            
+          </td>
+          <td nz-td><a href="javascript:;" >{{data.target?data.target.targetName : ''}}</a></td>
+          <td nz-td>
+            <span>{{data.createdDate | date:'yyyy-MM-dd HH:mm:ss'}}
             </span>
           </td>
         </tr>

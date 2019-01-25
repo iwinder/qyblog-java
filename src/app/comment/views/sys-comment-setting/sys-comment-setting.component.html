@@ -3,14 +3,22 @@
     <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 8, xl: 8, xxl: 8 }">
   
   
-      <!-- <div  nz-col nzSpan="16" [nzPull]="8"> -->
-          <div  nz-col >
+      <!-- <div  nz-col nzSpan="16" > -->
+        <div  nz-col >
         <nz-form-item>
-          <nz-form-label [nzSpan]="3" nzRequired>开启评论</nz-form-label>
-          <nz-form-control [nzSpan]="16" nzHasFeedback>
-            <nz-switch [nzSize]="'small'" formControlName="isEnabled" ></nz-switch>
+          <nz-form-label [nzSpan]="6" nzRequired>是否开启</nz-form-label>
+          <nz-form-control [nzSpan]="14" >
+            <nz-switch  formControlName="isEnabled" [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate"></nz-switch>
           </nz-form-control>
         </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>是否审核</nz-form-label>
+            <nz-form-control [nzSpan]="14" >
+              <nz-switch  formControlName="isApproved" [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate"></nz-switch>
+              <ng-template #checkedTemplate><i nz-icon type="check"></i></ng-template>
+              <ng-template #unCheckedTemplate><i nz-icon type="close"></i></ng-template>
+            </nz-form-control>
+          </nz-form-item>
 
         <nz-form-item>
           <nz-form-control [nzOffset]="7" [nzSpan]="12">

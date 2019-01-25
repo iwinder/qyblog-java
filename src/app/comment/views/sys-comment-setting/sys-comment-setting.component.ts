@@ -22,7 +22,8 @@ export class SysCommentSettingComponent implements OnInit {
   ngOnInit() {
     let obj = this.sysCommentsData || new SysCommentSetting();
     this.validateForm = this.fb.group({
-      isEnabled: [ obj.isEnabled || true, []]
+      isEnabled: [ obj.isEnabled || true, []],
+      isApproved: [ obj.isApproved || true, []]
     });
     this.loadData();
   }
@@ -35,7 +36,8 @@ export class SysCommentSettingComponent implements OnInit {
         console.log(data);
         this.sysCommentsData = data;
         this.validateForm.setValue({
-          isEnabled: data.isEnabled
+          isEnabled: data.isEnabled,
+          isApproved: true
         });
       },
       error => {
