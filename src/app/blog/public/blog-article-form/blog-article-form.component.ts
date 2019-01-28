@@ -136,8 +136,12 @@ export class QyBlogArticleFormComponent implements OnInit {
         let values = this.validateForm.value;
         if ( this.article && this.article.id) {
             values['id'] = this.article.id;
+            if ( !this.article.commentAgent || !this.article.commentAgent.id) {
+                values['commentAgent.targetId'] = this.article.id;
+                values['commentAgent.targetName'] = this.article.title;
+            }
         }
-        if ( this.article && this.article.commentAgent.id) {
+        if ( this.article && this.article.commentAgent && this.article.commentAgent.id) {
             values['commentAgent.id'] = this.article.commentAgent.id;
         }
         if ( !values.isPublished ) {
