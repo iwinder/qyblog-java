@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.windcoder.qycms.core.system.entity.Auditable;
 import com.windcoder.qycms.core.system.entity.User;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -16,6 +17,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="sns_comment")
+@DynamicInsert
 public class Comment implements Serializable {
 
 //    public interface SimpleView extends Auditable.BaseView {};

@@ -48,8 +48,8 @@ public class CommentWebController {
         return  new PageImpl<>(commentsDto,pageable,comments.getTotalElements());
     }
 
-    @PostMapping(value = "add")
-    public CommentDto add(@PathVariable("agentTargetId") Long agentTargetId, @RequestBody()Comment comment) {
+    @PostMapping(value = "/add")
+    public CommentDto add(@PathVariable("agentTargetId") Long agentTargetId, Comment comment) {
         try {
             CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
             comment.setTarget(agentTarget);
@@ -66,7 +66,7 @@ public class CommentWebController {
         }
     }
 
-    @GetMapping(value = "{commentId}/replies")
+    @GetMapping(value = "/{commentId}/replies")
     public Page<CommentDto> replies(@PathVariable("agentTargetId") Long agentTargetId,
                                  @PathVariable("commentId") Long parentId,
                                  @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable) {
@@ -77,9 +77,9 @@ public class CommentWebController {
         return  new PageImpl<>(commentsDto,pageable,comments.getTotalElements());
     }
 
-    @PostMapping(value = "{commentId}/replies/add")
+    @PostMapping(value = "/{commentId}/replies/add")
     public CommentDto addReply(@PathVariable("agentTargetId") Long agentTargetId,
-                            @PathVariable("commentId") Long parentId,@RequestBody() Comment comment) {
+                            @PathVariable("commentId") Long parentId,Comment comment) {
         try {
             CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
             Comment parent = commentService.findOne(parentId);

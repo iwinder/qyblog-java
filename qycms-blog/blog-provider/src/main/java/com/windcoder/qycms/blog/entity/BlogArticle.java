@@ -102,7 +102,7 @@ public class BlogArticle extends Auditable {
      * 评论
      */
     @ManyToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "comment_agent_id")
+    @JoinColumn(name = "comment_agent_id", updatable=false, foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
     private CommentAgent commentAgent;
 
     @Transient
@@ -110,7 +110,7 @@ public class BlogArticle extends Auditable {
 
     @PrePersist
     public void PrePersist() {
-        if (this.commentAgent == null) {
+        if (this.commentAgent == null || this.commentAgent.getId()==null) {
             CommentAgent commentAgent = new CommentAgent();
             commentAgent.setTargetId(this.getId());
             commentAgent.setTargetName(this.getTitle());
