@@ -1,0 +1,94 @@
+.comment-body {
+    margin-top: 50px;
+    form{
+		width: 100%;
+		padding: 10px;
+		.nickName{
+			padding-right: 0;
+  
+		}
+		.email{
+			padding: 0px;
+		}
+		.url{
+            padding-left: 0px;
+        }
+        input,input:focus{
+            outline: none;
+            box-shadow:none;
+            border-right: 0px;
+            border-top: 0px;
+            border-left: 0px;
+            border-radius: 0;
+        }
+		input{
+          border-bottom: 1px dashed #ced4da;
+        }
+        input[type=text]:focus{
+            border-bottom: 1px solid #7FEAF2;
+         }
+		.comment-content textarea{
+            border: 0px;
+            outline: none;
+            box-shadow:none;
+            resize: none;
+        }
+    }
+    .comment-list {
+        margin-top: 20px;
+    }
+    .comment-list-col{
+        padding: 15px;
+    }
+    .comment-title{
+        color: #333;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border-left: 4px solid #f66;
+        // margin-left: -24px;
+        margin-bottom: 10px;
+        padding-left: 20px;
+    }
+    .comment-avatar{
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+    }
+    .media{
+        border-bottom: 1px dashed #ced4da;
+        padding: 10px;
+    }
+    .pagination-info{
+        text-align: center;
+        margin-top: 30px;
+    }
+    ngb-pagination {
+        display: -webkit-inline-box;
+    }
+
+    @media (max-width: 576px) {
+        body.home .content .main {
+            padding: 10px 15px;
+        }
+        .media {
+            display: flex;
+            align-items: flex-start;
+            flex-direction: inherit;
+        }
+        .entry-thumb {
+            float: none;
+            width: 100%;
+            margin-right: 0;
+        }
+        aside h2, .h2 {
+            margin-top: 2px;
+        }
+        .article .media-body h5{
+            margin-top: 0.35rem !important;
+            margin-bottom: 0.35rem !important;
+        }
+    }
+}
+

@@ -1,5 +1,6 @@
 import { Category } from "../../core/entity/Category";
 import { User } from "../../core/entity/User";
+import { CommentAgent } from "app/common/entity/comment-agent";
 
 
 export class BlogArticle {
@@ -16,4 +17,5 @@ export class BlogArticle {
     isPublished: boolean;
     isDeleted: boolean;
     tagStrings: string[];
+    commentAgent: CommentAgent;
 }

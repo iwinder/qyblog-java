@@ -5,6 +5,7 @@ import { BlogArticle } from '../../entity/blog-article';
 import { Page } from '../../../core/entity/page';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { CommentAgent } from 'app/common/entity/comment-agent';
 
 declare var $: any;
 @Component({
@@ -24,6 +25,7 @@ export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentIni
     textFiltering: string = "暂无";
 
     articlesData: BlogArticle;
+    commentAgent: CommentAgent;
     searchList: any;
     pageIndex = 1;
     loading = false;
@@ -48,6 +50,7 @@ export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentIni
             this.loading = false;
             this.articlesData = data;
             this.thumbnail = data.thumbnail;
+            this.commentAgent = data.commentAgent;
             this.titleService.setTitle(this.articlesData.title);
           },
           error => {

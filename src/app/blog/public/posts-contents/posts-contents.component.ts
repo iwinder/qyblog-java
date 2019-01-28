@@ -1,7 +1,6 @@
 // tslint:disable-next-line:max-line-length
-import { Component, OnInit, OnChanges, AfterViewInit, AfterContentInit, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, AfterContentInit, Input, AfterViewChecked } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { BlogArticleService } from '../../service/blog-article.service';
 import { BlogArticle } from '../../entity/blog-article';
 import { ActivatedRoute } from '@angular/router';
 import {hljsa} from './highlight-config';
@@ -14,7 +13,8 @@ declare var $: any;
     templateUrl: './posts-contents.component.html',
     styleUrls: ['./posts-contents.component.scss']
 })
-export class PostsContentsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentInit {
+export class PostsContentsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentInit, AfterViewChecked {
+
 
     @Input() contentHtml: String = "暂无";
     // tslint:disable-next-line:max-line-length
@@ -41,15 +41,19 @@ export class PostsContentsComponent implements OnInit, OnChanges, AfterViewInit,
 
 
     ngOnChanges() {
-      this.updateComponent();
+      // this.updateComponent();
     }
 
     ngAfterContentInit(): void {
-      this.updateComponent();
+      // this.updateComponent();
     }
     ngAfterViewInit(): void {
+      // this.updateComponent();
+    }
+    ngAfterViewChecked(): void {
       this.updateComponent();
     }
+
 
     getNewHTML(contentHtml) {
       if (!contentHtml) {
@@ -61,6 +65,7 @@ export class PostsContentsComponent implements OnInit, OnChanges, AfterViewInit,
     updateComponent() {
        $('pre code').each(function(i, block) {
         let s = $(block).attr("class");
+        console.log("s", s);
         $(block).addClass(s.substr(s.lastIndexOf("-") + 1));
         $(block).removeClass(s);
         hljsa.highlightBlock(block);
