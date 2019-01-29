@@ -1,39 +1,6 @@
-.comment-body {
+:host ::ng-deep .comment-body {
     margin-top: 50px;
-    form{
-		width: 100%;
-		padding: 10px;
-		.nickName{
-			padding-right: 0;
-  
-		}
-		.email{
-			padding: 0px;
-		}
-		.url{
-            padding-left: 0px;
-        }
-        input,input:focus{
-            outline: none;
-            box-shadow:none;
-            border-right: 0px;
-            border-top: 0px;
-            border-left: 0px;
-            border-radius: 0;
-        }
-		input{
-          border-bottom: 1px dashed #ced4da;
-        }
-        input[type=text]:focus{
-            border-bottom: 1px solid #7FEAF2;
-         }
-		.comment-content textarea{
-            border: 0px;
-            outline: none;
-            box-shadow:none;
-            resize: none;
-        }
-    }
+   
     .comment-list {
         margin-top: 20px;
     }
@@ -59,6 +26,9 @@
     .media{
         border-bottom: 1px dashed #ced4da;
         padding: 10px;
+    }
+    .media span{
+        display: block;
     }
     .pagination-info{
         text-align: center;
@@ -93,5 +63,7 @@
     .comment-reply-a{
         float: right;
     }
+    .replyShow{
+        box-shadow: 5px 5px 5px 5px #888888;
+    }
 }
-

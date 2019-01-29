@@ -1,12 +1,16 @@
-<div class="comment-child-list">
+<div class="comment-child-list" *ngIf="commentData">
 
-    <div class="media mt-3">
+    <div class="media mt-3" *ngFor="let comment of commentData?.content; let i = index" (mouseenter)="show[i]=true;isChidShow=true"  (mouseleave)="show[i]=false;isChidShow=false">
         <a class="pr-3" href="#">
-        <img src="..." alt="Generic placeholder image">
+        <img  class="mr-3 comment-avatar" [src]="getNewUrl(null)" alt="Generic placeholder image">
         </a>
         <div class="media-body">
-        <h5 class="mt-0">Media heading</h5>
-        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+        <h5 class="mt-0">{{comment.author}}</h5>
+        <span>{{comment.content}}</span>
+        <span class="comment-reply-a" *ngIf="show[i]&&!replyCShow[i]"> <a  class="text-success" href="javascript:;" (click)="replyChildShowFun(i)">回复</a></span>
+        <div class="media mt-3" *ngIf="replyCShow[i]&&!parentShowFalg">
+            <qy-reply-form [target]="target" [comment]="null" [parent]="comment" (save)="submitReplyForm($event)"></qy-reply-form>
+        </div>
         </div>
     </div>
 

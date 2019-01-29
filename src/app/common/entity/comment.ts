@@ -6,7 +6,7 @@ export class Comment {
     author: string;
     email: String;
     url: string;
-    replyCount: string;
+    replyActCount: number;
     parent: Comment;
     target: CommentAgent;
     createdDate: Date;
