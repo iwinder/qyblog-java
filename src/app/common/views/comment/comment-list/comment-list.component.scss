@@ -26,9 +26,16 @@
     .media{
         border-bottom: 1px dashed #ced4da;
         padding: 10px;
-    }
-    .media span{
-        display: block;
+        .comment-time{
+            display: inline;
+            font-weight: normal;
+        }
+        span{
+            display: block;
+        }
+        h5{
+            font-size: 1rem;
+        }
     }
     .pagination-info{
         text-align: center;
@@ -45,7 +52,13 @@
         .media {
             display: flex;
             align-items: flex-start;
-            flex-direction: inherit;
+            flex-direction: column;
+            .media-body{
+                width: 100%;
+            }
+        }
+        .replyShow{
+            width: 100%;
         }
         .entry-thumb {
             float: none;
@@ -61,9 +74,20 @@
         }
     }
     .comment-reply-a{
+        // float: right;
         float: right;
+        color: #fff;
+        font-size: 12px;
+        background: #bbb;
+        padding: 3px 6px;
+        line-height: 12px;
+        border-radius: 4px;
+        margin: 6px;
+        transition: all .3s ease-in-out;
     }
     .replyShow{
         box-shadow: 5px 5px 5px 5px #888888;
     }
+     
+
 }

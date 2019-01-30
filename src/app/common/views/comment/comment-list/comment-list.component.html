@@ -6,18 +6,21 @@
         <div class="col comment-list-col" *ngIf="target&&target.commentCount>0">
 
             <h5 class="comment-title">{{target.commentCount}}评论</h5>
-            <div class="media" *ngFor="let comment of commentData?.content; let i = index" (mouseenter)="show[i]=true"  (mouseleave)="show[i]=false">
-                <img class="mr-3 comment-avatar"  [src]="getNewUrl(null)" alt="Generic placeholder image" >
+            <div class="media" *ngFor="let comment of commentData?.content; let i = index" >
+                <img class="mr-3 comment-avatar"  [src]="getNewUrl(null)" alt="Generic placeholder image" (mouseenter)="show[i]=true"  (mouseleave)="show[i]=false">
                 <div class="media-body">
-                    <!-- <div > -->
-                        <h5 class="mt-0">{{comment.author}}</h5>
+                    <div (mouseenter)="show[i]=true"  (mouseleave)="show[i]=false">
+                        <h5 class="mt-0">{{comment.author}} <span class="comment-time text-muted">{{comment.createdDate  | date:'yyyy-MM-dd'}}</span></h5>
                         <span >{{comment.content}}</span>
-                        <span class="comment-reply-a" *ngIf="show[i]&&!replyShow[i]&&(childComment ? !childComment.isChidShow : true)"> <a  class="text-success" href="javascript:;" (click)="childComment.replyCShowInit();replyShowFun(i)">回复</a></span>
+                         <!-- <a   [ngStyle]="{opacity: show[i]&&!replyShow[i]&&(childComment ? !childComment.isChidShow : true) ?1:0}"  class=" comment-reply-a" href="javascript:;" (click)="replyShowFun(i);childComment.replyCShowInit()">回复</a> -->
+                         <!-- <a   *ngIf=" show[i]&&!replyShow[i]&&(childComment ? !childComment.isChidShow : true)"  class=" comment-reply-a" href="javascript:;" (click)="replyShowFun(i);childComment.replyCShowInit()">回复</a> -->
+                         <a   *ngIf="!replyShow[i]"  class=" comment-reply-a" href="javascript:;" (click)="replyShowFun(i);childComment.replyCShowInit()">回复</a>
+                        <!-- <span class="comment-reply-a"> <a  class="text-success" href="javascript:;" (click)="replyShowFun(i);childComment.replyCShowInit()">回复</a></span> -->
                         <div class="media mt-3 replyShow" *ngIf="replyShow[i]&&(childComment ? !childComment.isChidReplyShow : true)">
                             <qy-reply-form  [target]="target" [comment]="null" [parent]="comment" (save)="submitReplyForm($event)"></qy-reply-form>
                         </div>
-                    <!-- </div> -->
-                    <qy-comment-child-list #childComment [parent]="comment" [parentShowFalg]="isReplyShow" [target]="target" (childReply)="childReply($event)" ></qy-comment-child-list>
+                    </div>
+                    <qy-comment-child-list #childComment [parent]="comment" [index]="i" [parentShowFalgs]="isReplyShow" [target]="target" (childReply)="childReply($event)" (save)="submitReplyForm($event)" (clearn)="clearnReplyForm($event)"></qy-comment-child-list>
 
                     <!-- ss:{{childComment?.isChidShow}}
                     <button (click)="childComment.childPrint()"></button> -->
@@ -28,7 +31,7 @@
             </div>
             <div class="row pagination-info" >
                     <div class="col">
-                        <ngb-pagination size="sm" [collectionSize]="commentData?.totalElements" [disabled]="loading" [pageSize]="commentData?.size" [(page)]="pageIndex" [maxSize]="3" [rotate]="true" [directionLinks]="false" [boundaryLinks]="true" (pageChange)="loadData()"></ngb-pagination>
+                        <ngb-pagination  [collectionSize]="commentData?.totalElements" [disabled]="loading" [pageSize]="commentData?.size" [(page)]="pageIndex" [maxSize]="commentData?.size" [rotate]="true" [directionLinks]="false" [boundaryLinks]="true" (pageChange)="loadData()"></ngb-pagination>
                     </div>
             </div>
         </div>

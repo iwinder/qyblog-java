@@ -36,7 +36,7 @@ export class CommentListComponent implements OnInit {
     loading = false;
     thumbnail;
     isShow: false;
-    isReplyShow: boolean = false;
+    isReplyShow: Boolean[] = new  Array<Boolean>(false);
     // showFalg: false;
     constructor(private sanitizer: DomSanitizer,
         private fb: FormBuilder,
@@ -69,6 +69,9 @@ export class CommentListComponent implements OnInit {
 
 
     loadData() {
+        if ( this.commentData) {
+            this.commentData.number = this.pageIndex ? this.pageIndex - 1  : this.commentData.number;
+        }
         let params = {
             ...this.searchList,
             agentTargetId: this.target.id,
@@ -91,11 +94,12 @@ export class CommentListComponent implements OnInit {
     replyShowFun(i) {
         this.replyShow[i] = true;
         let that = this;
-        this.isReplyShow = true;
+        // this.isReplyShow[i] = true;
         this.replyShow.forEach((element, index ) => {
             if (i !== index) {
                 that.replyShow[index] = false;
             }
+            that.isReplyShow[index] = true;
         });
     }
 
@@ -114,6 +118,7 @@ export class CommentListComponent implements OnInit {
         let that = this;
         this.replyShow.forEach((element, index ) => {
                 that.replyShow[index] = false;
+                that.isReplyShow[index] = false;
         });
     }
     submitReplyForm(event) {
@@ -127,5 +132,7 @@ export class CommentListComponent implements OnInit {
             }
         );
     }
-
+    clearnReplyForm(event) {
+        this.childReply(event);
+    }
 }

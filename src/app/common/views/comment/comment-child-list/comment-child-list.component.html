@@ -1,17 +1,26 @@
-<div class="comment-child-list" *ngIf="commentData">
-
-    <div class="media mt-3" *ngFor="let comment of commentData?.content; let i = index" (mouseenter)="show[i]=true;isChidShow=true"  (mouseleave)="show[i]=false;isChidShow=false">
-        <a class="pr-3" href="#">
-        <img  class="mr-3 comment-avatar" [src]="getNewUrl(null)" alt="Generic placeholder image">
-        </a>
-        <div class="media-body">
-        <h5 class="mt-0">{{comment.author}}</h5>
-        <span>{{comment.content}}</span>
-        <span class="comment-reply-a" *ngIf="show[i]&&!replyCShow[i]"> <a  class="text-success" href="javascript:;" (click)="replyChildShowFun(i)">回复</a></span>
-        <div class="media mt-3" *ngIf="replyCShow[i]&&!parentShowFalg">
-            <qy-reply-form [target]="target" [comment]="null" [parent]="comment" (save)="submitReplyForm($event)"></qy-reply-form>
+<div class="comment-child-list" >
+    <div *ngIf="commentData">
+        <div class="media mt-3" *ngFor="let comment of commentData?.content; let i = index" (mouseenter)="show[i]=true;isChidShow=true"  (mouseleave)="show[i]=false;isChidShow=false">
+            <a class="pr-3" href="#">
+            <img  class="mr-3 comment-avatar" [src]="getNewUrl(null)" alt="Generic placeholder image">
+            </a>
+            <div class="media-body">
+            <h5 class="mt-0">{{comment.author}} <span class="comment-time text-muted">{{comment.createdDate | date:'yyyy-MM-dd'}}</span></h5>  
+            <span><a  href="javascript:;">@{{comment.parent.author}}</a> {{comment.content}}</span>
+            <a  *ngIf="!replyCShow[i]" class=" comment-reply-a" href="javascript:;" (click)="replyChildShowFun(i)">回复</a>
+            <!-- <a   [ngStyle]="{opacity: !parentShowFalgs[index] || !replyCShow[i] ?1:0}"  class="comment-reply-a" href="javascript:;" (click)="replyChildShowFun(i)">回复</a> -->
+            <!-- <a   [ngStyle]="{opacity: show[i]&&!replyCShow[i] ?1:0}" class="comment-reply-a" href="javascript:;" (click)="replyChildShowFun(i)">回复</a> -->
+            <!-- <span class="comment-reply-a" *ngIf="show[i]&&!replyCShow[i]"> <a  class="text-success" href="javascript:;" (click)="replyChildShowFun(i)">回复</a></span> -->
+            <span style="margin-top:30px"></span>
+            <div class="media mt-3 replyShow" *ngIf="replyCShow[i]&&!parentShowFalgs[index]">
+                <qy-reply-form [target]="target" [comment]="null" [parent]="comment" (save)="submitReplyForm($event)" (clearn)="clearnReplyForm($event)"></qy-reply-form>
+            </div>
+            </div>
         </div>
+        <div class="row pagination-info" >
+            <div class="col">
+                <ngb-pagination size="sm" *ngIf="commentData?.totalElements>commentData?.size" [collectionSize]="commentData?.totalElements" [disabled]="loading" [pageSize]="commentData?.size" [(page)]="pageIndex" [maxSize]="commentData?.size" [rotate]="true" [directionLinks]="false" [boundaryLinks]="true" (pageChange)="loadData()"></ngb-pagination>
+            </div>
         </div>
     </div>
-
 </div>

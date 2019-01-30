@@ -16,9 +16,14 @@ body.home {
     margin-right: 20px;
 }
 @media (max-width: 576px) {
+    .content,.primary {
+        padding-left:0 !important;
+        padding-right:0 !important; 
+    }
     body.home .content .main {
         padding: 10px 15px;
     }
+
     .media {
         display: flex;
         align-items: flex-start;
@@ -80,4 +85,7 @@ aside h2 {
     background-color: #fff;
     -moz-box-shadow: 0 0 6px 0 rgba(0,0,0,.1);
     box-shadow: 0 0 6px 0 rgba(0,0,0,.1);
+}
+body.home .content .main {
+    padding: 10px 15px;
 }

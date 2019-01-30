@@ -18,6 +18,7 @@ export class ReplyFormComponent implements OnInit {
     @Input() parent: Comment;
     @Input() comment: Comment;
     @Output() save: EventEmitter<any> = new EventEmitter();
+    @Output() clearn: EventEmitter<any> = new EventEmitter();
     validateForm: FormGroup;
     page = 1;
     textFiltering: string = "暂无";
@@ -58,6 +59,10 @@ export class ReplyFormComponent implements OnInit {
             values["parentId"] = this.parent.id;
         }
         this.save.emit({ originalEvent: event, value: values });
+    }
+    clearnForm($event) {
+        this.getFormControl('content').setValue(null);
+        this.clearn.emit({ originalEvent: event});
     }
 
     markAsDirty() {

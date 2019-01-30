@@ -1,5 +1,5 @@
 // tslint:disable-next-line:max-line-length
-import { Component, OnInit, OnChanges, AfterViewInit, AfterContentInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewChecked, AfterContentChecked, DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { CommentAgent } from 'app/common/entity/comment-agent';
@@ -16,10 +16,13 @@ import { Page } from 'app/core/entity/page';
     templateUrl: './comment-child-list.component.html',
     styleUrls: ['./comment-child-list.component.scss']
 })
-export class CommentChildListComponent implements OnInit {
+// tslint:disable-next-line:max-line-length
+export class CommentChildListComponent implements OnInit, DoCheck {
+
 
     @Input() target: CommentAgent;
     @Input()  parent: Comment;
+    @Output() save: EventEmitter<any> = new EventEmitter();
     commentData: Page<Comment>;
     show: Boolean[] = new  Array<Boolean>(false);
     // tslint:disable-next-line:max-line-length
@@ -32,7 +35,10 @@ export class CommentChildListComponent implements OnInit {
     pageIndex = 1;
     loading = false;
     thumbnail;
-    @Input() parentShowFalg: boolean;
+    parentShowFalg: Boolean[] = new  Array<Boolean>(false);
+    parentFalg: Boolean = false;
+    @Input() parentShowFalgs: Boolean[] = new  Array<Boolean>(false);
+    @Input() index;
     @Output() childReply: EventEmitter<any> = new EventEmitter();
 
     isChidShow: false;
@@ -50,6 +56,18 @@ export class CommentChildListComponent implements OnInit {
             this.loadData();
         }
     }
+    ngDoCheck(): void {
+        // let that = this;
+        if (this.parentShowFalgs[this.index]) {
+            this.replyCShowInit();
+        }
+    }
+    // ngAfterViewChecked(): void {
+    //     // let that = this;
+    //     if (this.parentShowFalgs[this.index]) {
+    //         this.replyCShowInit();
+    //     }
+    // }
 
     getNewUrl(urlStrng) {
         if (!urlStrng) {
@@ -59,27 +77,31 @@ export class CommentChildListComponent implements OnInit {
    }
    replyCShowInit() {
     let that = this;
-    this.parentShowFalg = true;
-    console.log("this.replyCShow", this.replyCShow);
     this.replyCShow.forEach((element, index ) => {
             that.replyCShow[index] = false;
     });
-    console.log("this.replyCShow2 ", this.replyCShow);
    }
     replyChildShowFun(i) {
         this.replyCShow[i] = true;
         let that = this;
-        this.parentShowFalg = false;
         this.replyCShow.forEach((element, index ) => {
             if (i !== index) {
                 that.replyCShow[index] = false;
             }
         });
-        // let values ;
-        // values["replyShowFalg"] = true;
+        that.parentFalg = false;
+        this.parentShowFalg.forEach((element, index ) => {
+            that.parentShowFalg[index] = false;
+        });
         this.childReply.emit({ originalEvent: event });
     }
     loadData() {
+        if ( this.commentData) {
+            this.commentData.number = this.pageIndex ? this.pageIndex - 1  : this.commentData.number;
+        }
+        // if (this.parentShowFalgs[this.index]) {
+            this.replyCShowInit();
+        // }
         let params = {
             agentTargetId: this.target.id,
             parentId: this.parent.id,
@@ -98,5 +120,11 @@ export class CommentChildListComponent implements OnInit {
             }
           );
     }
-
+    submitReplyForm(event) {
+        console.log("child submitReplyForm", event);
+        this.save.emit(event);
+    }
+    clearnReplyForm(event) {
+        this.replyCShowInit();
+    }
 }
