@@ -17,10 +17,10 @@
                          <a   *ngIf="!replyShow[i]"  class=" comment-reply-a" href="javascript:;" (click)="replyShowFun(i);childComment.replyCShowInit()">回复</a>
                         <!-- <span class="comment-reply-a"> <a  class="text-success" href="javascript:;" (click)="replyShowFun(i);childComment.replyCShowInit()">回复</a></span> -->
                         <div class="media mt-3 replyShow" *ngIf="replyShow[i]&&(childComment ? !childComment.isChidReplyShow : true)">
-                            <qy-reply-form  [target]="target" [comment]="null" [parent]="comment" (save)="submitReplyForm($event)"></qy-reply-form>
+                            <qy-reply-form  [target]="target" [comment]="null" [parent]="comment" (save)="submitReplyForm($event)" (clearn)="clearnReplyForm($event,i)"></qy-reply-form>
                         </div>
                     </div>
-                    <qy-comment-child-list #childComment [parent]="comment" [index]="i" [parentShowFalgs]="isReplyShow" [target]="target" (childReply)="childReply($event)" (save)="submitReplyForm($event)" (clearn)="clearnReplyForm($event)"></qy-comment-child-list>
+                    <qy-comment-child-list #childComment [parent]="comment" [index]="i" [parentShowFalgs]="isReplyShow" [target]="target" (childReply)="childReply($event)" (save)="submitReplyForm($event)" ></qy-comment-child-list>
 
                     <!-- ss:{{childComment?.isChidShow}}
                     <button (click)="childComment.childPrint()"></button> -->

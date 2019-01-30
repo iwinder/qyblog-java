@@ -124,7 +124,7 @@ export class CommentChildListComponent implements OnInit, DoCheck {
         console.log("child submitReplyForm", event);
         this.save.emit(event);
     }
-    clearnReplyForm(event) {
-        this.replyCShowInit();
+    clearnReplyForm(event, i ) {
+        this.replyCShow[i] = false;
     }
 }

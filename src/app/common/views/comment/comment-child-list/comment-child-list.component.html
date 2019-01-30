@@ -13,7 +13,7 @@
             <!-- <span class="comment-reply-a" *ngIf="show[i]&&!replyCShow[i]"> <a  class="text-success" href="javascript:;" (click)="replyChildShowFun(i)">回复</a></span> -->
             <span style="margin-top:30px"></span>
             <div class="media mt-3 replyShow" *ngIf="replyCShow[i]&&!parentShowFalgs[index]">
-                <qy-reply-form [target]="target" [comment]="null" [parent]="comment" (save)="submitReplyForm($event)" (clearn)="clearnReplyForm($event)"></qy-reply-form>
+                <qy-reply-form [target]="target" [comment]="null" [parent]="comment" (save)="submitReplyForm($event)" (clearn)="clearnReplyForm($event,i)"></qy-reply-form>
             </div>
             </div>
         </div>

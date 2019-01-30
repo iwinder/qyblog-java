@@ -132,7 +132,7 @@ export class CommentListComponent implements OnInit {
             }
         );
     }
-    clearnReplyForm(event) {
-        this.childReply(event);
+    clearnReplyForm(event, i) {
+        this.replyShow[i] = false;
     }
 }
