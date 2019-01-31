@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommentAgent } from 'app/common/entity/comment-agent';
 import { Comment } from 'app/common/entity/comment';
@@ -37,7 +37,15 @@ export class ReplyFormComponent implements OnInit {
             content: [obj.content, [ Validators.required ]]
         });
     }
-
+    getCookieChildComemntAuthor() {
+        console.log("getCookieComemntAuthor");
+        // if (this.validateForm) {
+            this.getFormControl('author').setValue(this.comment.author);
+            this.getFormControl('email').setValue(this.comment.email);
+            this.getFormControl('url').setValue(this.comment.url);
+            console.log("comment", this.comment);
+        // }
+    }
     submitForm($event) {
         $event.preventDefault();
         for (let key of Object.keys(this.validateForm.controls)) {

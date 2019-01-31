@@ -6,6 +6,8 @@ import { Page } from '../../../core/entity/page';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CommentAgent } from 'app/common/entity/comment-agent';
+import { CookieService } from 'ngx-cookie-service';
+import { Comment } from 'app/common/entity/comment';
 
 declare var $: any;
 @Component({
@@ -26,6 +28,7 @@ export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentIni
 
     articlesData: BlogArticle;
     commentAgent: CommentAgent;
+    comment: Comment = new Comment();
     searchList: any;
     pageIndex = 1;
     loading = false;
@@ -34,6 +37,7 @@ export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentIni
     constructor(private sanitizer: DomSanitizer,
         private articleService: BlogArticleService,
         private activeRouter: ActivatedRoute,
+        private cookieService: CookieService,
         private titleService: Title) {
         this.articleId = activeRouter.snapshot.paramMap.get('articleId');
     }
@@ -52,6 +56,7 @@ export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentIni
             this.thumbnail = data.thumbnail;
             this.commentAgent = data.commentAgent;
             this.titleService.setTitle(this.articlesData.title);
+            // this.getCookieComemntAuthor();
           },
           error => {
             this.loading = false;
@@ -66,5 +71,12 @@ export class BlogInfoComponent implements OnInit, AfterViewInit, AfterContentIni
     ngAfterViewInit(): void {
     }
 
-
+    getCookieComemntAuthor() {
+      this.comment.author = this.cookieService.get("comment_remember_author");
+      if (this.comment.author) {
+          this.comment.email =  this.cookieService.get("comment_remember_mail");
+          this.comment.url =   this.cookieService.get("comment_remember_url");
+      }
+      console.log("this.comment", this.comment);
+  }
 }

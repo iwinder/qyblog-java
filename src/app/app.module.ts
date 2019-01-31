@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { LayoutModule } from './core/layout/layout.module';
 import { AppRoutingModule, routedComponents } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -16,9 +17,10 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     LayoutModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
   ],
-  providers: [],
+  providers: [
+    CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

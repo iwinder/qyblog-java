@@ -6,6 +6,7 @@ import { CommentListComponent } from './views/comment/comment-list/comment-list.
 import { CommentChildListComponent } from './views/comment/comment-child-list/comment-child-list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReplyFormComponent } from './views/reply-form/reply-form.component';
+// import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -26,6 +27,7 @@ const PUBLIC_COMPS = [
   declarations: [...PUBLIC_COMPS],
   exports: [...PUBLIC_COMPS],
   entryComponents: [],
-  providers: [CommetsService]
+  providers: [
+    CommetsService]
 })
 export class CommonPublicModule { }
