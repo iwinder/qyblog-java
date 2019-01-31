@@ -22,11 +22,13 @@ public class CommentDto {
      */
     private String url;
 
-    private Integer replyCount;
 
+    private Integer  replyActCount;
     private Date createdDate;
 
-    private CommentParentDto parent;
+
+
+
 
     public Long getId() {
         return id;
@@ -62,13 +64,6 @@ public class CommentDto {
         this.url = url;
     }
 
-    public Integer getReplyCount() {
-        return replyCount;
-    }
-
-    public void setReplyCount(Integer replyCount) {
-        this.replyCount = replyCount;
-    }
 
     public Date getCreatedDate() {
         return createdDate;
@@ -78,11 +73,14 @@ public class CommentDto {
         this.createdDate = createdDate;
     }
 
-    public CommentParentDto getParent() {
-        return parent;
+
+
+
+    public Integer getReplyActCount() {
+        return replyActCount;
     }
 
-    public void setParent(CommentParentDto parent) {
-        this.parent = parent;
+    public void setReplyActCount(Integer replyActCount) {
+        this.replyActCount = replyActCount;
     }
 }

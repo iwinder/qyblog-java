@@ -1,40 +1,16 @@
 package com.windcoder.qycms.core.basis.comment.dto;
 
-public class CommentParentDto {
-    private Long id;
-    /**
-     * 评论者
-     */
-    private String author;
+public class CommentParentDto extends CommentDto {
+    private CommentParentDto parent;
 
-
-
-    /**
-     * 评论者网址
-     */
-    private String url;
-
-    public Long getId() {
-        return id;
+    public CommentParentDto getParent() {
+        if(parent!=null){
+            parent.setParent(null);
+        }
+        return parent;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public void setParent(CommentParentDto parent) {
+        this.parent = parent;
     }
 }

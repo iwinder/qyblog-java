@@ -26,7 +26,7 @@ public class CommentController {
 
     @GetMapping(value = "")
     public Page<CommentAdminDto> list(Comment comment,
-                                 @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+                                 @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Comment> comments = commentService.findAlllComments(comment, pageable);
         Type type = new TypeToken<List<CommentAdminDto>>() {}.getType();
         List<CommentAdminDto> commentsDto = ModelMapperUtils.map(comments.getContent(),type);

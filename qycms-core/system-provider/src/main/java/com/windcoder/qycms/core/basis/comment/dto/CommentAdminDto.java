@@ -2,11 +2,11 @@ package com.windcoder.qycms.core.basis.comment.dto;
 
 
 
-public class CommentAdminDto extends CommentDto {
+public class CommentAdminDto extends CommentParentDto {
     private String email;
     private String ip;
     private String status;
-
+    private Integer replyCount;
     private CommentAgentDto target;
 
     public String getEmail() {
@@ -39,5 +39,13 @@ public class CommentAdminDto extends CommentDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
     }
 }

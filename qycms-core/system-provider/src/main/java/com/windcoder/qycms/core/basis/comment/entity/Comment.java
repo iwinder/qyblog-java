@@ -98,6 +98,10 @@ public class Comment implements Serializable {
 //    @JsonView(SimpleView.class)
     private Integer replyCount;
 
+    @Formula("(select count(scm.id) from sns_comment scm where scm.parent_id = id and scm.status='ENROLLED')")
+//    @JsonView(SimpleView.class)
+    private Integer replyActCount;
+
     @CreatedDate
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(updatable=false)
@@ -225,5 +229,13 @@ public class Comment implements Serializable {
 
     public void setDepth(Integer depth) {
         this.depth = depth;
+    }
+
+    public Integer getReplyActCount() {
+        return replyActCount;
+    }
+
+    public void setReplyActCount(Integer replyActCount) {
+        this.replyActCount = replyActCount;
     }
 }
