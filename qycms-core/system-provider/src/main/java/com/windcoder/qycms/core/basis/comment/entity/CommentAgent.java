@@ -2,6 +2,7 @@ package com.windcoder.qycms.core.basis.comment.entity;
 
 import com.windcoder.qycms.core.system.entity.Auditable;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="sns_comment_agent")
+@DynamicInsert
 public class CommentAgent extends Auditable {
     @Id
     @GeneratedValue
@@ -29,6 +31,12 @@ public class CommentAgent extends Auditable {
      */
     @Formula("(select count(scm.id) from sns_comment scm where scm.target_id = id)")
     private Integer commentCount;
+    /**
+     * 被审核通过的总数
+     */
+    @Formula("(select count(scm.id) from sns_comment scm where scm.target_id = id and scm.status='ENROLLED')")
+//    @JsonView(SimpleView.class)
+    private Integer commentActCount;
 
     /**
      * 评论是否可用
@@ -74,5 +82,13 @@ public class CommentAgent extends Auditable {
 
     public void setIsEnabled(Boolean enabled) {
         this.isEnabled = enabled;
+    }
+
+    public Integer getCommentActCount() {
+        return commentActCount;
+    }
+
+    public void setCommentActCount(Integer commentActCount) {
+        this.commentActCount = commentActCount;
     }
 }

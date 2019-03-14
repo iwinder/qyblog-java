@@ -112,7 +112,7 @@ public class BlogArticle extends Auditable {
     public void PrePersist() {
         if (this.commentAgent == null || this.commentAgent.getId()==null) {
             CommentAgent commentAgent = new CommentAgent();
-            commentAgent.setTargetId(this.getId());
+//            commentAgent.setTargetId(this.getId());
             commentAgent.setTargetName(this.getTitle());
             this.setCommentAgent(commentAgent);
         }

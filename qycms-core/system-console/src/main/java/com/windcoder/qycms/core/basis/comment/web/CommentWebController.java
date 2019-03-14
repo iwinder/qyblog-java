@@ -115,11 +115,11 @@ public class CommentWebController {
 
     private CommentAgent checkAndGetCommentAgent( Long agentTargetId){
         SystemCommentSetting sysCommentSetting= systemCommentSettingService.findSysForumSetting();
-        if(!sysCommentSetting.getIsEnabled()) {
+        if(null == sysCommentSetting.getIsEnabled() || !sysCommentSetting.getIsEnabled() ) {
             throw new BusinessException("未开启评论功能，不能进行评论");
         }
         CommentAgent agentTarget = agentTargetService.findOne(agentTargetId);
-        if(!agentTarget.getIsEnabled()){
+        if(null == agentTarget.getIsEnabled() || !agentTarget.getIsEnabled()){
             throw new BusinessException("未开启评论功能，不能进行评论");
         }
         return agentTarget;

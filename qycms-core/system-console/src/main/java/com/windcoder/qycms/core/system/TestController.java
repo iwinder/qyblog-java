@@ -3,8 +3,10 @@ package com.windcoder.qycms.core.system;
 import com.windcoder.qycms.core.basis.TestService.RediesService;
 import com.windcoder.qycms.core.basis.mqTest.MqTestAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,5 +39,10 @@ public class TestController {
     @RequestMapping("/get")
     public String get(String key){
         return rediesService.getValue(key);
+    }
+
+    @RequestMapping("/parentId")
+    public String getA(@RequestParam("parentId") Integer id){
+        return "parentId: "+id;
     }
 }
