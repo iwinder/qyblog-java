@@ -31,7 +31,9 @@ qycms前端
 
 
 ## 初版部分截图
-![PC端首页主功能区](https://github.com/iwinder/evernote/raw/master/Java/qy/images/1541520721815.png)
+![PC端首页主功能区](https://github.com/iwinder/evernote/raw/master/Java/qy/images/2019-03-14-15-10-12.png)
+
+![PC端文章详情](https://github.com/iwinder/evernote/raw/master/Java/qy/images/2019-03-14-15-10-19.png)
 
 
 ![移动端首页主功能区](https://github.com/iwinder/evernote/raw/master/Java/qy/images/1541520767244.png)
