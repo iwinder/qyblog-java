@@ -1,6 +1,7 @@
 package com.windcoder.qycms.blog.entity;
 
 import com.windcoder.qycms.core.basis.comment.entity.CommentAgent;
+import com.windcoder.qycms.core.basis.comment.entity.SystemCommentSetting;
 import com.windcoder.qycms.core.system.entity.Auditable;
 import com.windcoder.qycms.core.system.entity.Category;
 import com.windcoder.qycms.core.system.entity.User;
@@ -108,13 +109,27 @@ public class BlogArticle extends Auditable {
     @Transient
     private List<String> tagStrings;
 
+    @Transient
+    private SystemCommentSetting systemCommentSetting;
+
     @PrePersist
     public void PrePersist() {
-        if (this.commentAgent == null || this.commentAgent.getId()==null) {
+        if (this.commentAgent == null) {
             CommentAgent commentAgent = new CommentAgent();
-//            commentAgent.setTargetId(this.getId());
             commentAgent.setTargetName(this.getTitle());
             this.setCommentAgent(commentAgent);
+        }
+    }
+
+    @PostPersist
+    public void PostPersist() {
+        if (this.commentAgent == null ) {
+            CommentAgent commentAgent = new CommentAgent();
+            commentAgent.setTargetName(this.getTitle());
+            this.setCommentAgent(commentAgent);
+        }
+        if(null!=this.commentAgent && this.commentAgent.getId()==null){
+            commentAgent.setTargetId(this.getId());
         }
     }
     public Long getId() {
@@ -243,5 +258,13 @@ public class BlogArticle extends Auditable {
 
     public void setCommentAgent(CommentAgent commentAgent) {
         this.commentAgent = commentAgent;
+    }
+
+    public SystemCommentSetting getSystemCommentSetting() {
+        return systemCommentSetting;
+    }
+
+    public void setSystemCommentSetting(SystemCommentSetting systemCommentSetting) {
+        this.systemCommentSetting = systemCommentSetting;
     }
 }

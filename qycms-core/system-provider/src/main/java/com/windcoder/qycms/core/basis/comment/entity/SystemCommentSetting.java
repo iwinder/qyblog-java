@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="sns_system_comment_agent")
+@Table(name="sns_system_comment_setting")
 @DynamicInsert
 public class SystemCommentSetting  extends Auditable {
     @Id

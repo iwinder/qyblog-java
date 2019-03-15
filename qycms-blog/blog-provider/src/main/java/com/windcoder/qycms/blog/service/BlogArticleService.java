@@ -4,6 +4,7 @@ package com.windcoder.qycms.blog.service;
 import com.windcoder.qycms.blog.entity.BlogArticle;
 import com.windcoder.qycms.blog.entity.BlogTag;
 import com.windcoder.qycms.blog.repository.jpa.BlogArticleRepository;
+import com.windcoder.qycms.core.basis.comment.service.SystemCommentSettingService;
 import com.windcoder.qycms.core.system.entity.User;
 import com.windcoder.qycms.core.system.utils.RedisLock;
 import com.windcoder.qycms.exception.BusinessException;
@@ -29,7 +30,8 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
     private BlogTagService blogTagService;
     @Autowired
     private StringRedisTemplate redisTemplate;
-
+    @Autowired
+    private SystemCommentSettingService sysCommentService;
     /**
      * 查询文章列表-分页
      * @param article
@@ -85,10 +87,12 @@ public class BlogArticleService extends BaseService<BlogArticle,Long, BlogArticl
      */
     public BlogArticle findInfo(Long id){
         BlogArticle article =  repository.findByIdAndIsDeletedAndIsPublished(id,false,true);
-        Long views = getViews("views",id,article.getViewCount());
-        article.setViewCount(views);
+        article.setSystemCommentSetting(sysCommentService.findSysForumSetting());
+//        Long views = getViews("views",id,article.getViewCount());
+//        article.setViewCount(views);
         return article;
     }
+
 
     /**
      * 处理Tag

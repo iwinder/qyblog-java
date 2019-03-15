@@ -1,6 +1,7 @@
 package com.windcoder.qycms.core.basis.comment.web;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.windcoder.qycms.core.basis.comment.dto.CommentAgentDto;
 import com.windcoder.qycms.core.basis.comment.dto.CommentDto;
 import com.windcoder.qycms.core.basis.comment.dto.CommentParentDto;
 import com.windcoder.qycms.core.basis.comment.entity.Comment;
@@ -111,6 +112,11 @@ public class CommentWebController {
             logger.error(e.getMessage(), e);
             throw new BusinessException("添加评论失败");
         }
+    }
+    @GetMapping(value = "/agent")
+    public CommentAgentDto findCommentAgent(@PathVariable("agentTargetId")Long agentTargetId){
+        CommentAgent agentTarget = agentTargetService.findOne(agentTargetId);
+        return ModelMapperUtils.map(agentTarget, CommentAgentDto.class);
     }
 
     private CommentAgent checkAndGetCommentAgent( Long agentTargetId){

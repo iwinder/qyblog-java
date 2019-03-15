@@ -53,7 +53,7 @@ public class BlogArticleWebController {
 
     @GetMapping("/{articleId}")
     public BlogArticleDto get(@PathVariable("articleId") Long articleId) {
-        BlogArticle article = articleService.findOne(articleId);
+        BlogArticle article = articleService.findInfo(articleId);
 
         return ModelMapperUtils.map(article, BlogArticleDto.class);
     }

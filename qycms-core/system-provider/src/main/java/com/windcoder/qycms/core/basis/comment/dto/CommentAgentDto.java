@@ -14,7 +14,12 @@ public class CommentAgentDto {
      * 评论总数
      */
 
-    private Integer commentCount;
+//    private Integer commentCount;
+
+    /**
+     * 审核通过的评论总数
+     */
+    private Integer commentActCount;
 
     /**
      * 评论是否可用
@@ -38,12 +43,21 @@ public class CommentAgentDto {
         this.targetId = targetId;
     }
 
-    public Integer getCommentCount() {
-        return commentCount;
+//    public Integer getCommentCount() {
+//        return commentCount;
+//    }
+//
+//    public void setCommentCount(Integer commentCount) {
+//        this.commentCount = commentCount;
+//    }
+
+
+    public Integer getCommentActCount() {
+        return commentActCount;
     }
 
-    public void setCommentCount(Integer commentCount) {
-        this.commentCount = commentCount;
+    public void setCommentActCount(Integer commentActCount) {
+        this.commentActCount = commentActCount;
     }
 
     public Boolean getIsEnabled() {
