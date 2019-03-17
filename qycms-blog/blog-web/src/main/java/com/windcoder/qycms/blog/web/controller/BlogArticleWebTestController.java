@@ -10,6 +10,6 @@ public class BlogArticleWebTestController {
     @RequestMapping("home")
     public String getHome(){
 
-        return "home";
+        return "qycms/index";
     }
 }
