@@ -3,7 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-
+export { AppServerModule } from './app/app.server.module';
 if (environment.production) {
   enableProdMode();
 }

@@ -30,6 +30,12 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 qycms前端
 
 
+```
+npm install --save @angular/platform-server@6.1.0 @nguniversal/module-map-ngfactory-loader@6.1.0 ts-loader webpack-cli
+```
+https://juejin.im/post/5cb831f7f265da038e54a35a
+https://juejin.im/post/5a4ca77b6fb9a0451e40330c
+
 ## 初版部分截图
 ![PC端首页主功能区](https://github.com/iwinder/evernote/raw/master/Java/qy/images/2019-03-14-15-10-12.png)
 
@@ -37,3 +43,5 @@ qycms前端
 
 
 ![移动端首页主功能区](https://github.com/iwinder/evernote/raw/master/Java/qy/images/1541520767244.png)
+
+

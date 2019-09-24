@@ -13,6 +13,8 @@ import { CookieService } from 'ngx-cookie-service';
     AppComponent
   ],
   imports: [
+    // 加上下面这句，appId就是上面提到用于替换的唯一标识
+    BrowserModule.withServerTransition({appId: 'qy-web'}),
     BrowserModule,
     HttpClientModule,
     LayoutModule,
