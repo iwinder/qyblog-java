@@ -6,6 +6,10 @@
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "node --max_old_space_size=512 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --base-href /web/ --output-path dist/qy-web",
     "build:jar": "ng build --prod -bh / -d static/",
+    "build:ssr": "npm run build:client-and-server-bundles && npm run webpack:server",
+    "serve:ssr": "node dist/server.js",
+    "build:client-and-server-bundles": "ng build --prod && ng run qy-web:server",
+    "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
