@@ -1,10 +1,10 @@
 {
     "/api": {
-        "target": "http://localhost:8000",
+        "target": "http://testa.windcoder.com",
         "secure": false
     },
     "/content": {
-        "target": "http://localhost:8000",
+        "target": "http://testa.windcoder.com",
         "secure": false
     }
 }

@@ -3,9 +3,9 @@ import { Component, OnInit, OnChanges, AfterViewInit, AfterContentInit, Input, A
 import { DomSanitizer } from '@angular/platform-browser';
 import { BlogArticle } from '../../entity/blog-article';
 import { ActivatedRoute } from '@angular/router';
-import {hljsa} from './highlight-config';
+// import {hljsa} from './highlight-config';
 
-declare var $: any;
+// declare var $: any;
 
 
 @Component({
@@ -63,13 +63,20 @@ export class PostsContentsComponent implements OnInit, OnChanges, AfterViewInit,
     }
 
     updateComponent() {
-       $('pre code').each(function(i, block) {
-        let s = $(block).attr("class");
-        console.log("s", s);
-        $(block).addClass(s.substr(s.lastIndexOf("-") + 1));
-        $(block).removeClass(s);
-        hljsa.highlightBlock(block);
-      });
+
+      // document.addEventListener('DOMContentLoaded', (event) => {
+      //   let elems =  document.querySelectorAll('pre code');
+      //   [].forEach.call(elems, function(block) {
+      //     hljsa.highlightBlock(block);
+      // });
+      // });
+      //  $('pre code').each(function(i, block) {
+      //   let s = $(block).attr("class");
+      //   console.log("s", s);
+      //   $(block).addClass(s.substr(s.lastIndexOf("-") + 1));
+      //   $(block).removeClass(s);
+      //   hljsa.highlightBlock(block);
+      // });
     }
 
 }

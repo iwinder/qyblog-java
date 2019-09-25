@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Meta } from '@angular/platform-browser';
 
 import { Page } from '../../../core/entity/page';
 import { BlogArticle } from '../../../blog/entity/blog-article';
@@ -26,10 +26,12 @@ export class HomeListIndexComponent implements OnInit {
     loading = false;
     constructor(private sanitizer: DomSanitizer,
         private articleService: BlogArticleService,
-        private titleService: Title) {
+        private titleService: Title,
+        private meta: Meta) {
     }
 
     ngOnInit() {
+      this.appendJQCDN();
         this.imagSrc = this.sanitizer.bypassSecurityTrustUrl(this.dangerousVideoUrl);
         this.loadData();
     }
@@ -37,6 +39,9 @@ export class HomeListIndexComponent implements OnInit {
     loadData(event?) {
         console.log("loda event", event);
         console.log("loda  this.pageIndex",  this.pageIndex);
+        this.titleService.setTitle("首页");
+        this.meta.updateTag({ name: 'description', content: '测试description' });
+        this.meta.updateTag({ name: 'keywords', content: "测试keywords" });
         if ( this.articlesData) {
           this.articlesData.number = this.pageIndex ? this.pageIndex - 1  : this.articlesData.number;
         }
@@ -67,5 +72,13 @@ export class HomeListIndexComponent implements OnInit {
          }
         return this.sanitizer.bypassSecurityTrustUrl(urlStrng);
     }
+
+    appendJQCDN() {
+      let head = document.head || document.getElementsByTagName('head')[0];
+      let script = document.createElement('link');
+      script.setAttribute("rel", "canonical");
+      script.setAttribute("href", "https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js");
+      head.appendChild(script);
+   }
 
 }
