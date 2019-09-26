@@ -17,7 +17,7 @@
                     <a href="jacascript::void(0)" class="badge badge-success" *ngFor="let tag of  articlesData.tags">{{tag.name}}</a>
                 </div>
             </div>
-            <qy-posts-contents *ngIf="articlesData&&articlesData.contentHtml" [contentHtml]="articlesData.contentHtml" ></qy-posts-contents>
+            <qy-posts-contents *ngIf="articlesData&&articlesData.contentHtml" [contentHtml]="articlesData.contentHtml" [contentMd]="articlesData.content" ></qy-posts-contents>
         </div>
     </aside>
     <!-- <qy-comment-list [agent]="articlesData.commentAgent || null" > </qy-comment-list> -->

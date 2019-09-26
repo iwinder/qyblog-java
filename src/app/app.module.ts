@@ -6,7 +6,7 @@ import { LayoutModule } from './core/layout/layout.module';
 import { AppRoutingModule, routedComponents } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
-
+import { MarkdownModule } from 'ngx-markdown';
 @NgModule({
   declarations: [
     ...routedComponents,
@@ -20,6 +20,7 @@ import { CookieService } from 'ngx-cookie-service';
     LayoutModule,
     AppRoutingModule,
     NgbModule,
+    MarkdownModule.forRoot(),
   ],
   providers: [
     CookieService],

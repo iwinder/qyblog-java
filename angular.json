@@ -26,13 +26,18 @@
               "src/styles.css",
               "src/assets/qy-main.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/highlight.js/styles/monokai-sublime.css"
+              "node_modules/prismjs/themes/prism-okaidia.css",
+              "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.slim.js",
               "node_modules/popper.js/dist/umd/popper.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
-              "node_modules/highlight.js/lib/highlight.js"
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-csharp.min.js", 
+              "node_modules/prismjs/components/prism-css.min.js",
+              "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css"
+              
             ]
           },
           "configurations": {

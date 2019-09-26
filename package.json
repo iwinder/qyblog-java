@@ -35,9 +35,12 @@
     "jquery": "^3.3.1",
     "ngx-cookie-service": "^2.1.0",
     "ngx-markdown": "^8.1.0",
+    "npm": "^6.11.3",
     "popper.js": "^1.14.4",
     "rxjs": "^6.0.0",
+    "to": "^0.2.9",
     "ts-loader": "^6.1.2",
+    "update": "^0.7.4",
     "web-animations-js": "^2.3.1",
     "webpack-cli": "^3.3.9",
     "zone.js": "~0.8.26"
