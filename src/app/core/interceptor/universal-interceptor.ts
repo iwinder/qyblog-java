@@ -10,19 +10,19 @@ export class UniversalInterceptor implements HttpInterceptor {
  
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     let serverReq: HttpRequest<any> = req;
-    console.log("this.request 0 0", req.url);
     if (this.request) {
       console.log("this.request", req.url);
       let newUrl = `${this.request.protocol}://${this.request.get('host')}`;
       if (!req.url.startsWith('/')) {
         newUrl += '/';
       }
-      if (req.url.includes("/api/")){
-        newUrl = "http://localhost:8000/"+req.url;
-      }else {
-        newUrl += req.url;
-      }
-      console.log("this.newUrl 0 0", newUrl);
+      newUrl += req.url;
+      // if (req.url.includes("/api/")){
+      //   newUrl = "http://localhost:8000/"+req.url;
+      // }else {
+      //   newUrl += req.url;
+      // }
+      // console.log("this.newUrl 0 0", newUrl);
       serverReq = req.clone({url: newUrl});
     }
     return next.handle(serverReq);

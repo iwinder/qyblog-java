@@ -34,7 +34,7 @@
     "core-js": "^2.5.4",
     "jquery": "^3.3.1",
     "ngx-cookie-service": "^2.1.0",
-    "ngx-markdown": "^8.1.0",
+    "ngx-markdown": "^6.1.0",
     "npm": "^6.11.3",
     "popper.js": "^1.14.4",
     "rxjs": "^6.0.0",
