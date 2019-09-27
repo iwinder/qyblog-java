@@ -7,7 +7,7 @@ import { enableProdMode } from '@angular/core';
 import * as express from 'express';
 import { join } from 'path';
 
-//坑3：报错document not defined，通过引入domino来解决
+// 坑3：报错document not defined，通过引入domino来解决
 const domino = require('domino');
 const fs = require('fs');
 const path = require('path');

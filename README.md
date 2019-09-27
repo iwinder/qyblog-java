@@ -29,12 +29,15 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 # qy-web
 qycms前端
 
-
+https://github.com/angular/angular-cli/wiki/stories-universal-rendering
 ```
-npm install --save @angular/platform-server@6.1.0 @nguniversal/module-map-ngfactory-loader@6.1.0 ts-loader webpack-cli @nguniversal/express-engine@6.1.0
+npm install --save @angular/platform-server@6.1.0 @nguniversal/module-map-ngfactory-loader@6.1.0 ts-loader webpack-cli @nguniversal/express-engine@6.1.0 @nguniversal/common@6.1.0
 ```
 https://juejin.im/post/5cb831f7f265da038e54a35a
 https://juejin.im/post/5a4ca77b6fb9a0451e40330c
+
+http://www.ngui.cc/news/show-1914.html
+https://www.jianshu.com/p/40be228a5ec6
 
 // http://testa.windcoder.com
 // http://localhost:8000
