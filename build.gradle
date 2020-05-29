@@ -55,7 +55,7 @@ subprojects {
             }
         }
     }
-
+    jar.enabled = true
     bootRepackage.enabled=false
 }
 
