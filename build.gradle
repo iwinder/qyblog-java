@@ -1,24 +1,24 @@
-buildscript {
-    ext {
-        springBootVersion = "1.5.8.RELEASE"
-    }
-    repositories {
-        mavenCentral()
-        maven { url "https://repo.spring.io/plugins-release" }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '2.3.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
+
+ext {
+    springBootVersion = "2.3.1.RELEASE"
+}
+
 
 
 allprojects {
     group 'com.windcoder'
-    version '1.0-SNAPSHOT'
+    version '1.1-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'war'
     apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -26,7 +26,10 @@ allprojects {
     [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
 
     configurations {
-        providedRuntime
+        developmentOnly
+        runtimeClasspath {
+            extendsFrom developmentOnly
+        }
     }
 
     repositories {
@@ -37,6 +40,10 @@ allprojects {
     }
     dependencies {
         compile fileTree(dir: 'lib', exclude:'', include: '*.jar')
+//        implementation 'org.springframework.boot:spring-boot-starter'
+//        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+//            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+//        }
     }
 
 }
@@ -56,7 +63,22 @@ subprojects {
         }
     }
 
-    bootRepackage.enabled=false
+    dependencies {
+        annotationProcessor 'org.projectlombok:lombok:1.18.12'
+        compileOnly 'org.projectlombok:lombok:1.18.12'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+        testCompileOnly 'org.projectlombok:lombok:1.18.12'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+//    bootRepackage.enabled=false
+    jar.enabled = true
+    bootJar {
+        enabled = false
+    }
+    bootWar {
+        enabled = false
+    }
 }
 
 
@@ -69,13 +91,13 @@ configure(rootProject) {
     apply plugin: 'idea'
     apply plugin: 'maven'
 
-    bootRepackage.enabled=true
+//    bootRepackage.enabled=true
 
     springBoot {
-        mainClass = "com.windcoder.qycms.QycmsApplication";
+        mainClassName = "com.windcoder.qycms.QycmsApplication";
         buildInfo()
-        executable = true
-        embeddedLaunchScriptProperties(mode:"service")
+//        executable = true
+//        embeddedLaunchScriptProperties(mode:"service")
     }
     dependencies {
         compile project(":qycms-core:system-console")
@@ -83,9 +105,21 @@ configure(rootProject) {
         compile project(":qycms-blog:blog-web")
     }
 
+    ext {
+        //环境区分，默认开发环境dev,  可选环境 prod，test,uat
+        env = System.getProperty("env")?:"dev"
+    }
+
+    def embeddedProperties = [ mode:"service" ]
+    bootWar {
+        enabled = true
+        launchScript {
+            properties embeddedProperties
+        }
+    }
+
     // 生成war时过滤内嵌tomcat依赖
     war {
-
         rootSpec.exclude("tomcat-embed*.jar")
         rootSpec.exclude("javax.servlet-api*.jar")
         rootSpec.exclude("org.projectlombok:lombok")
