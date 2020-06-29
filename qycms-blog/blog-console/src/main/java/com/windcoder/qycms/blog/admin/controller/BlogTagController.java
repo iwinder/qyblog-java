@@ -1,42 +1,65 @@
 package com.windcoder.qycms.blog.admin.controller;
 
-import com.windcoder.qycms.blog.dto.BlogArticleBaseDto;
-import com.windcoder.qycms.blog.dto.BlogTagDto;
+import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
 import com.windcoder.qycms.blog.dto.BlogTagPageDto;
-import com.windcoder.qycms.blog.entity.BlogArticle;
 import com.windcoder.qycms.blog.entity.BlogTag;
-import com.windcoder.qycms.blog.service.BlogArticleService;
-import com.windcoder.qycms.blog.service.BlogTagService;
+import com.windcoder.qycms.blog.dto.BlogTagDto;
+import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.dto.ResponseDto;
-import com.windcoder.qycms.utils.ModelMapperUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.windcoder.qycms.blog.service.BlogTagService;
+import com.windcoder.qycms.utils.ValidatorUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Type;
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/adminn/tags")
+@RequestMapping("/api/admin/blogTags")
+@Slf4j
 public class BlogTagController {
 
-    @Autowired
-    private BlogTagService tagService;
+    @Resource
+    private BlogTagService blogTagService;
 
+    public static final String BUSINESS_NAME = "标签";
+
+    /**
+     * 列表查询
+     * @param pageDto
+     * @return
+     */
     @GetMapping("")
-    public ResponseDto allActivities(BlogTagPageDto tag){
+    public ResponseDto list(BlogTagPageDto pageDto) {
+        blogTagService.list(pageDto);
+        ResponseDto responseDto = new ResponseDto(pageDto);
+        return responseDto;
+    }
 
-        tagService.findAll(tag);
-        ResponseDto responseDto = new ResponseDto(tag);
-        return  responseDto;
+    /**
+     * 保存，id有值时更新，无值时新增
+     * @param blogTagDto
+     * @return
+     */
+    @PostMapping("/save")
+    public ResponseDto save(@RequestBody  BlogTagDto blogTagDto) {
+        // 保存校验
+        ValidatorUtil.length(blogTagDto.getName(), "名称", 1, 255);
+
+        blogTagService.save(blogTagDto);
+        ResponseDto responseDto = new ResponseDto(blogTagDto);
+        return responseDto;
+    }
+
+    /**
+     * 删除
+     * @param ids
+     * @return
+     */
+    @DeleteMapping("/deleted")
+    public ResponseDto delete(@RequestBody Long[] ids) {
+        blogTagService.delete(ids);
+        ResponseDto responseDto = new ResponseDto();
+        return responseDto;
     }
 }

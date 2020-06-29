@@ -56,7 +56,7 @@ CREATE TABLE `blog_tag` (
   `created_date` datetime comment '创建时间',
   `last_modified_date` datetime comment '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment='标签';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment='文章标签';
 
 -- 文章-标签关系表
 drop table if exists `blog_article_tag`;
@@ -69,3 +69,22 @@ CREATE TABLE `blog_article_tag` (
   CONSTRAINT `FKrrs2kus3wx0wfxgdn3qrinpt7` FOREIGN KEY (`tag_id`) REFERENCES `blog_tag` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment='文章-标签关系表';
 
+
+-- 文章分类
+CREATE TABLE `blog_category` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
+  `name` varchar(255) DEFAULT NULL comment '名称',
+  `description` varchar(255) DEFAULT NULL comment '描述',
+  `key_word` varchar(255) DEFAULT NULL comment '关键词',
+  `id_path` varchar(1000) DEFAULT NULL comment ' id路径',
+  `name_path` varchar(1000) DEFAULT NULL comment '名称路径',
+  `display_order` bigint(20) DEFAULT NULL comment '显示顺序',
+  `parent_id` bigint(20) DEFAULT NULL comment '父级分类',
+  `created_by` bigint(20) DEFAULT NULL comment '创建者',
+  `last_modified_by` bigint(20) DEFAULT NULL comment '更新者',
+  `created_date` datetime DEFAULT NULL comment '创建时间',
+  `last_modified_date` datetime DEFAULT NULL comment '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `FK18qsxukvf40pdippprno5eq5b` (`parent_id`),
+  CONSTRAINT `FK18qsxukvf40pdippprno5eq5b` FOREIGN KEY (`parent_id`) REFERENCES `blog_category` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 comment='文章分类';

@@ -1,40 +1,30 @@
-package com.windcoder.qycms.blog.dto;
+package com.windcoder.qycms.blog.entity;
 
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class BlogTagDto {
-
-    /**
-     * id
-     */
+public class BlogCategory {
     private Long id;
 
-    /**
-     * 名称
-     */
     private String name;
 
-    /**
-     * 创建者
-     */
+    private String description;
+
+    private String keyWord;
+
+    private String idPath;
+
+    private String namePath;
+
+    private Long displayOrder;
+
+    private Long parentId;
+
     private Long createdBy;
 
-    /**
-     * 更新者
-     */
     private Long lastModifiedBy;
 
-    /**
-     * 创建时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdDate;
 
-    /**
-     * 更新时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date lastModifiedDate;
 
     public Long getId() {
@@ -51,6 +41,54 @@ public class BlogTagDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
+
+    public String getIdPath() {
+        return idPath;
+    }
+
+    public void setIdPath(String idPath) {
+        this.idPath = idPath;
+    }
+
+    public String getNamePath() {
+        return namePath;
+    }
+
+    public void setNamePath(String namePath) {
+        this.namePath = namePath;
+    }
+
+    public Long getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(Long displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public Long getCreatedBy() {
@@ -85,7 +123,6 @@ public class BlogTagDto {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -94,6 +131,12 @@ public class BlogTagDto {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", description=").append(description);
+        sb.append(", keyWord=").append(keyWord);
+        sb.append(", idPath=").append(idPath);
+        sb.append(", namePath=").append(namePath);
+        sb.append(", displayOrder=").append(displayOrder);
+        sb.append(", parentId=").append(parentId);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);
         sb.append(", createdDate=").append(createdDate);
@@ -101,6 +144,4 @@ public class BlogTagDto {
         sb.append("]");
         return sb.toString();
     }
-
-
 }

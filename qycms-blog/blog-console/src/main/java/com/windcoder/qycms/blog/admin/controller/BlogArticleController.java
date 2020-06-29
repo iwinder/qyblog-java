@@ -22,7 +22,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/admin/articles")
+@RequestMapping("/api/admin/articles")
 public class BlogArticleController {
 
     @Autowired
@@ -68,7 +68,7 @@ public class BlogArticleController {
         return  responseDto;
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/deleted")
     public ResponseDto delete(@RequestBody Long[] ids){
         articleService.delete(ids);
         ResponseDto responseDto = new ResponseDto();
