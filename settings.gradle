@@ -1,8 +1,10 @@
 rootProject.name = 'qycms'
 
 include 'qycms-core:common'
-include 'qycms-core:system-provider'
-include 'qycms-core:system-console'
+//include 'qycms-core:system-provider'
+//include 'qycms-core:system-console'
 include 'qycms-blog:blog-provider'
 include 'qycms-blog:blog-console'
-include 'qycms-blog:blog-web'
+//include 'qycms-blog:blog-web'
+include 'qycms-generator'
+

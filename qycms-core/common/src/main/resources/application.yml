@@ -1,0 +1,84 @@
+server:
+  port: 8000
+  session:
+    timeout: 3600
+    cookie:
+      http-only: true
+
+spring:
+  http:
+    multipart:
+      max-file-size: 10737418244
+      max-request-size: 10737418244
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    driver-class-name:  com.mysql.cj.jdbc.Driver
+    type:  com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false
+    connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;"
+#    username: ENC(Sua21kW9AckGBtpW13LyF03e7aOjC2zE)
+#    password: ENC(f+2+aW4Po3YqeQkXaccinw==)
+    username: winder
+    password: 123456
+#  redis:
+#    host: ENC(rG1SHAuACXH9wyROdhBQ3+9X8V9DfrnF)
+#    password: ENC(r3PQ/cWSpANfTq6l1UobIav/+OLwy1uV)
+#    port: 6380
+#    database: 8
+#    timeout: 300
+#    lettuce:
+#      pool:
+#        max-idle: 30
+#        max-active: 8
+#        max-wait: 300
+#        min-idle: 10
+
+# mybatis
+mybatis:
+  mapper-locations: classpath*:/com/windcoder/**/repository/mybatis/mappers/**/*.xml,classpath*:/mappers/**/*.xml
+  config-locations: classpath:mybatis/mybatis-config.xml
+  configuration:
+    map-underscore-to-camel-case: true
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+#配置数据源加密的密钥
+#jasypt:
+#  encryptor:
+#    password: windcoderAdmin
+#用于控制mybatis打印sql，生产环境应更改为ERROR级别
+logging:
+  level:
+    root: info
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

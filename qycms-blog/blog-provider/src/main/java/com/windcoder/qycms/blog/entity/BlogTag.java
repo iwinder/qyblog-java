@@ -1,23 +1,19 @@
 package com.windcoder.qycms.blog.entity;
 
-import com.windcoder.qycms.core.system.entity.Auditable;
-import org.hibernate.annotations.Formula;
+import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="blog_tag")
-public class BlogTag extends Auditable {
-
-    @Id
-    @GeneratedValue
+public class BlogTag {
     private Long id;
+
     private String name;
-    @Formula("(select count(*)  from blog_article_tag bat  where bat.tag_id = id)")
-    private Long count;
+
+    private Long createdBy;
+
+    private Long lastModifiedBy;
+
+    private Date createdDate;
+
+    private Date lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -35,11 +31,51 @@ public class BlogTag extends Auditable {
         this.name = name;
     }
 
-    public Long getCount() {
-        return count;
+    public Long getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCount(Long count) {
-        this.count = count;
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Long getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(Long lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", lastModifiedBy=").append(lastModifiedBy);
+        sb.append(", createdDate=").append(createdDate);
+        sb.append(", lastModifiedDate=").append(lastModifiedDate);
+        sb.append("]");
+        return sb.toString();
     }
 }

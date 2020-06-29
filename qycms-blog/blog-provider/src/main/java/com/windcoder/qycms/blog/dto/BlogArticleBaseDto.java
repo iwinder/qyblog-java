@@ -1,7 +1,7 @@
 package com.windcoder.qycms.blog.dto;
 
-import com.windcoder.qycms.core.system.dto.CategoryBaseDto;
-import com.windcoder.qycms.core.system.dto.UserDto;
+//import com.windcoder.qycms.core.system.dto.CategoryBaseDto;
+//import com.windcoder.qycms.core.system.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,12 +19,12 @@ public class BlogArticleBaseDto {
     /**
      * 是否已发布
      */
-    private boolean isPublished;
+    private boolean published;
 
     /**
      * 是否已删除
      */
-    private boolean isDeleted;
+    private boolean deleted;
 
     /**
      * 链接
@@ -45,9 +45,9 @@ public class BlogArticleBaseDto {
     /**
      * 作者
      */
-    private UserDto author;
-
-    private CategoryBaseDto category;
+//    private UserDto author;
+//
+//    private CategoryBaseDto category;
 
     private List<BlogTagBaseDto> tags;
 
@@ -77,19 +77,19 @@ public class BlogArticleBaseDto {
 
 
     public boolean getIsPublished() {
-        return isPublished;
+        return published;
     }
 
     public void setPublished(boolean published) {
-        this.isPublished = published;
+        this.published = published;
     }
 
     public boolean getIsDeleted() {
-        return isDeleted;
+        return deleted;
     }
 
     public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
+        this.deleted = isDeleted;
     }
 
     public String getPermaLink() {
@@ -100,13 +100,13 @@ public class BlogArticleBaseDto {
         this.permaLink = permaLink;
     }
 
-    public UserDto getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(UserDto author) {
-        this.author = author;
-    }
+//    public UserDto getAuthor() {
+//        return author;
+//    }
+//
+//    public void setAuthor(UserDto author) {
+//        this.author = author;
+//    }
 
 
     public String getSummary() {
@@ -133,13 +133,13 @@ public class BlogArticleBaseDto {
         this.publishedDate = publishedDate;
     }
 
-    public CategoryBaseDto getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryBaseDto category) {
-        this.category = category;
-    }
+//    public CategoryBaseDto getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(CategoryBaseDto category) {
+//        this.category = category;
+//    }
 
     public List<BlogTagBaseDto> getTags() {
         return tags;

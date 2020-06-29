@@ -3,7 +3,6 @@ package com.windcoder.qycms.core.system.service;
 import com.windcoder.qycms.core.system.entity.Permission;
 import com.windcoder.qycms.core.system.repository.PermissionRepository;
 //import org.apache.shiro.SecurityUtils;
-import com.windcoder.qycms.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -3,7 +3,6 @@ package com.windcoder.qycms.core.system.service;
 import com.windcoder.qycms.core.system.entity.Category;
 import com.windcoder.qycms.core.system.repository.CategoryRepository;
 import com.windcoder.qycms.exception.BusinessException;
-import com.windcoder.qycms.service.BaseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

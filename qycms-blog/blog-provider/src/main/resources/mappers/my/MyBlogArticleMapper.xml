@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper" >
+
+    <select id="list" resultType="com.windcoder.qycms.blog.dto.BlogArticleBaseDto">
+        select ba.id, title,  perma_link, summary, thumbnail, published_date,  deleted, published
+        from `blog_article` ba
+        <where>
+            deleted = false
+            <if test="pageDto.published != null and pageDto.published != ''">
+                    and ba.published = #{pageDto.published}
+            </if>
+            <if test="pageDto.searchText != null and pageDto.searchText != ''">
+                and  lower(ba.title) like  concat('%',lower(#{pageDto.searchText}),'%')
+            </if>
+
+        </where>
+        order by ba.created_date DESC
+
+    </select>
+    <update id="updateDeleted">
+        update blog_article ba set `deleted` = #{deletedStatus}
+        where ba.id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

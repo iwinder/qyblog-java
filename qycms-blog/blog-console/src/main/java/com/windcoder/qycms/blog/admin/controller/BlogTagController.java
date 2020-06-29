@@ -1,11 +1,13 @@
-package com.windcoder.qycms.blog.controller;
+package com.windcoder.qycms.blog.admin.controller;
 
 import com.windcoder.qycms.blog.dto.BlogArticleBaseDto;
 import com.windcoder.qycms.blog.dto.BlogTagDto;
+import com.windcoder.qycms.blog.dto.BlogTagPageDto;
 import com.windcoder.qycms.blog.entity.BlogArticle;
 import com.windcoder.qycms.blog.entity.BlogTag;
 import com.windcoder.qycms.blog.service.BlogArticleService;
 import com.windcoder.qycms.blog.service.BlogTagService;
+import com.windcoder.qycms.dto.ResponseDto;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.TypeToken;
@@ -24,22 +26,17 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/tags")
+@RequestMapping("api/adminn/tags")
 public class BlogTagController {
 
     @Autowired
     private BlogTagService tagService;
 
     @GetMapping("")
-    public Page<BlogTagDto> allActivities(BlogTag tag,
-                                          @RequestParam(name= "searchText", required=false)String searchText,
-                                          @PageableDefault(direction= Sort.Direction.DESC,sort={"lastModifiedDate"}) Pageable pageable){
-        if(StringUtils.isNotBlank(searchText)) {
-            tag.setName(searchText);
-        }
-        Page<BlogTag> tags = tagService.findAll(tag,pageable);
-        Type type = new TypeToken<List<BlogArticleBaseDto>>() {}.getType();
-        List<BlogTagDto> tagsDto = ModelMapperUtils.map(tags.getContent(),type);
-        return  new PageImpl<>(tagsDto,pageable,tags.getTotalElements());
+    public ResponseDto allActivities(BlogTagPageDto tag){
+
+        tagService.findAll(tag);
+        ResponseDto responseDto = new ResponseDto(tag);
+        return  responseDto;
     }
 }

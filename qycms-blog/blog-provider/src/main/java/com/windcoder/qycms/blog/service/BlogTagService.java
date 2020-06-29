@@ -1,33 +1,50 @@
 package com.windcoder.qycms.blog.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.windcoder.qycms.blog.dto.BlogTagPageDto;
 import com.windcoder.qycms.blog.entity.BlogArticle;
+import com.windcoder.qycms.blog.entity.BlogArticleExample;
 import com.windcoder.qycms.blog.entity.BlogTag;
-import com.windcoder.qycms.blog.repository.BlogTagRepository;
-import com.windcoder.qycms.service.BaseService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.windcoder.qycms.blog.entity.BlogTagExample;
+import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
+import com.windcoder.qycms.blog.repository.mybatis.BlogTagMapper;
+import com.windcoder.qycms.dto.PageDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Predicate;
+
+import java.util.List;
 
 @Service
-public class BlogTagService extends BaseService<BlogTag,Long, BlogTagRepository> {
+public class BlogTagService {
 
-    public Page<BlogTag> findAll(BlogTag tag, Pageable pageable) {
-        return super.findAll((root, query,  cb) -> {
-            Predicate predicate = null;
-            if(tag.getName() != null) {
-                predicate = cb.like( cb.lower(root.get("title")),
-                        "%"+ StringUtils.trim(tag.getName()).toLowerCase()+"%" );
-            }
+    @Autowired
+    private BlogTagMapper blogTagMapper;
 
-            return predicate;
+    /**
+     * 列表查询
+     * @param pageDto
+     */
+    public void findAll(BlogTagPageDto pageDto) {
+        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        BlogTagExample tagExample = new BlogTagExample();
+        tagExample.createCriteria().andNameLike(pageDto.getSearchText());
 
-        },pageable);
+        List<BlogTag> tags = blogTagMapper.selectByExample(tagExample);
+        PageInfo<BlogTag> pageInfo = new PageInfo<>(tags);
+        pageDto.setTotal(pageInfo.getTotal());
+        pageDto.setList(tags);
     }
 
+    /**
+     * 根据名称查询
+     * @param name
+     * @return
+     */
     BlogTag findByName(String name){
-        return repository.findByName(name);
+        BlogTagExample tagExample = new BlogTagExample();
+        tagExample.createCriteria().andNameEqualTo(name);
+        return blogTagMapper.selectByExample(tagExample).get(0);
     }
 }

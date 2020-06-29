@@ -100,9 +100,9 @@ configure(rootProject) {
 //        embeddedLaunchScriptProperties(mode:"service")
     }
     dependencies {
-        compile project(":qycms-core:system-console")
+//        compile project(":qycms-core:system-console")
         compile project(":qycms-blog:blog-console")
-        compile project(":qycms-blog:blog-web")
+//        compile project(":qycms-blog:blog-web")
     }
 
     ext {

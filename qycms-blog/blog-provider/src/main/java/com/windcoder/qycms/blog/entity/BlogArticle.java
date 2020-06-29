@@ -1,97 +1,43 @@
 package com.windcoder.qycms.blog.entity;
 
-import com.windcoder.qycms.core.system.entity.Auditable;
-import com.windcoder.qycms.core.system.entity.Category;
-import com.windcoder.qycms.core.system.entity.User;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
-
-import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
-@Entity
-@Table(name="blog_article")
-@DynamicInsert
-public class BlogArticle extends Auditable {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue
+public class BlogArticle {
     private Long id;
-    /**
-     * 标题
-     */
+
     private String title;
-    /**
-     * 内容-mkdown
-     */
-    @Lob
-    private String content;
-    /**
-     * 内容-html
-     */
-    @Lob
-    private String contentHtml;
 
-    /**
-     * 摘要
-     */
-    private String summary;
-
-
-
-    /**
-     * 链接
-     */
     private String permaLink;
 
+    private String summary;
 
-    /**
-     * 缩略图
-     */
     private String thumbnail;
 
+    private Long viewCount;
 
-
-    /**
-     * 发布日期
-     */
     private Date publishedDate;
 
+    private Long authorId;
 
-    /**
-     * 作者
-     */
-    @ManyToOne
-    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-    private User author;
+    private Long categoryId;
 
-    /**
-     * 所属分类
-     */
-    @ManyToOne
-    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
-    private Category category;
+    private Long commentAgentId;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
-    @JoinTable(name="blog_article_tag", joinColumns=@JoinColumn(nullable=false,name="article_id",referencedColumnName="id"),
-            inverseJoinColumns=@JoinColumn(name="tag_id", referencedColumnName="id"))
-    private List<BlogTag> tags;
-    /**
-     * 是否已发布
-     */
-    @ColumnDefault("0")
-    private Boolean isPublished;
+    private Boolean deleted;
 
-    /**
-     * 是否已删除
-     */
-    @ColumnDefault("0")
-    private Boolean isDeleted;
-    @Transient
-    private List<String> tagStrings;
+    private Boolean published;
+
+    private Long createdBy;
+
+    private Long lastModifiedBy;
+
+    private Date createdDate;
+
+    private Date lastModifiedDate;
+
+    private String content;
+
+    private String contentHtml;
 
     public Long getId() {
         return id;
@@ -109,60 +55,12 @@ public class BlogArticle extends Auditable {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getContentHtml() {
-        return contentHtml;
-    }
-
-    public void setContentHtml(String contentHtml) {
-        this.contentHtml = contentHtml;
-    }
-
-    public Boolean getIsPublished() {
-        return isPublished;
-    }
-
-    public void setIsPublished(Boolean published) {
-        this.isPublished = published;
-    }
-
-    public Boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
     public String getPermaLink() {
         return permaLink;
     }
 
     public void setPermaLink(String permaLink) {
         this.permaLink = permaLink;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public Date getPublishedDate() {
-        return publishedDate;
-    }
-
-    public void setPublishedDate(Date publishedDate) {
-        this.publishedDate = publishedDate;
     }
 
     public String getSummary() {
@@ -181,27 +79,135 @@ public class BlogArticle extends Auditable {
         this.thumbnail = thumbnail;
     }
 
-    public Category getCategory() {
-        return category;
+    public Long getViewCount() {
+        return viewCount;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setViewCount(Long viewCount) {
+        this.viewCount = viewCount;
     }
 
-    public List<BlogTag> getTags() {
-        return tags;
+    public Date getPublishedDate() {
+        return publishedDate;
     }
 
-    public void setTags(List<BlogTag> tags) {
-        this.tags = tags;
+    public void setPublishedDate(Date publishedDate) {
+        this.publishedDate = publishedDate;
     }
 
-    public List<String> getTagStrings() {
-        return tagStrings;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public void setTagStrings(List<String> tagStrings) {
-        this.tagStrings = tagStrings;
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Long getCommentAgentId() {
+        return commentAgentId;
+    }
+
+    public void setCommentAgentId(Long commentAgentId) {
+        this.commentAgentId = commentAgentId;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Boolean getPublished() {
+        return published;
+    }
+
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Long getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(Long lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContentHtml() {
+        return contentHtml;
+    }
+
+    public void setContentHtml(String contentHtml) {
+        this.contentHtml = contentHtml;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", title=").append(title);
+        sb.append(", permaLink=").append(permaLink);
+        sb.append(", summary=").append(summary);
+        sb.append(", thumbnail=").append(thumbnail);
+        sb.append(", viewCount=").append(viewCount);
+        sb.append(", publishedDate=").append(publishedDate);
+        sb.append(", authorId=").append(authorId);
+        sb.append(", categoryId=").append(categoryId);
+        sb.append(", commentAgentId=").append(commentAgentId);
+        sb.append(", deleted=").append(deleted);
+        sb.append(", published=").append(published);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", lastModifiedBy=").append(lastModifiedBy);
+        sb.append(", createdDate=").append(createdDate);
+        sb.append(", lastModifiedDate=").append(lastModifiedDate);
+        sb.append(", content=").append(content);
+        sb.append(", contentHtml=").append(contentHtml);
+        sb.append("]");
+        return sb.toString();
     }
 }
