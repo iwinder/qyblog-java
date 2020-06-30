@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/admin/${domain}s")
+@RequestMapping("api/admin/${domain}")
 @Slf4j
 public class ${Domain}Controller {
 

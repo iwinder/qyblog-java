@@ -19,6 +19,8 @@ public class BlogCategory {
 
     private Long parentId;
 
+    private Boolean deleted;
+
     private Long createdBy;
 
     private Long lastModifiedBy;
@@ -91,6 +93,14 @@ public class BlogCategory {
         this.parentId = parentId;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -137,6 +147,7 @@ public class BlogCategory {
         sb.append(", namePath=").append(namePath);
         sb.append(", displayOrder=").append(displayOrder);
         sb.append(", parentId=").append(parentId);
+        sb.append(", deleted=").append(deleted);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);
         sb.append(", createdDate=").append(createdDate);

@@ -9,7 +9,7 @@
                         </a-input>
                     </a-form-model-item>
                     <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
-                        <a-button type="primary"  :loading ="searchLoading"  @click="searchForm('articleForm')">
+                        <a-button type="primary"  :loading ="searchLoading"  @click="searchForm">
                             搜索
                         </a-button>
                     </a-form-model-item>
@@ -40,7 +40,7 @@
         >
 
             <span slot="action" slot-scope="text, record">
-                <nuxt-link :to="{name:'article-id',params:{ id: record.id }}">编辑 </nuxt-link >
+                <nuxt-link :to="{name:'${domain}-id',params:{ id: record.id }}">编辑 </nuxt-link >
                 <a-divider type="vertical" />
 
                      <a  href="javascript:void(0)"  @click="deleted([record.id])" >删除</a>
@@ -140,7 +140,7 @@
             },
             add() {
                 let _this = this;
-                _this.$router.push("/article/add");
+                _this.$router.push("/${domain}/add");
             },
             searchForm() {
                 let _this = this;
@@ -175,7 +175,7 @@
                         title: '确认删除?',
                         onOk() {
                             console.log('OK');
-                            _this.$axios.delete("${domain}s", {data:  ids}).then(res => {
+                            _this.$axios.delete("${domain}", {data:  ids}).then(res => {
                                 console.log("deleted !res", res);
                                 if(res.data.success) {
                                     _this.$message.success("删除成功",5);

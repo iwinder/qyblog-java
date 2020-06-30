@@ -101,19 +101,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.windcoder.qycms.blog.entity.BlogTag">
-    insert into blog_tag (id, `name`, created_by, 
-      last_modified_by, created_date, last_modified_date
-      )
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{createdBy,jdbcType=BIGINT}, 
-      #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}
-      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into blog_tag (`name`, created_by, last_modified_by, 
+      created_date, last_modified_date)
+    values (#{name,jdbcType=VARCHAR}, #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.windcoder.qycms.blog.entity.BlogTag">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into blog_tag
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="name != null">
         `name`,
       </if>
@@ -131,9 +132,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>

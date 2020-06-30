@@ -67,6 +67,11 @@ public class BlogCategoryDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date lastModifiedDate;
 
+
+    private Long childrenCount;
+
+    private Boolean isLeaf;
+
     public Long getId() {
         return id;
     }
@@ -163,7 +168,20 @@ public class BlogCategoryDto {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public Long getChildrenCount() {
+        return childrenCount;
+    }
 
+    public void setChildrenCount(Long childrenCount) {
+        this.childrenCount = childrenCount;
+    }
+
+    public Boolean getIsLeaf() {
+        return this.isLeaf;
+    }
+    public void setIsLeaf(Boolean isLeaf) {
+        this.isLeaf = isLeaf;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

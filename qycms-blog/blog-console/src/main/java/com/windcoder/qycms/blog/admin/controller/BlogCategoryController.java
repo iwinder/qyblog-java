@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,13 +25,18 @@ public class BlogCategoryController {
 
     /**
      * 列表查询
-     * @param pageDto
+     * @param dto
      * @return
      */
     @GetMapping("")
-    public ResponseDto list(PageDto pageDto) {
-        blogCategoryService.list(pageDto);
-        ResponseDto responseDto = new ResponseDto(pageDto);
+    public ResponseDto list(BlogCategoryDto dto) {
+        List<BlogCategoryDto>  categoryDtos= new ArrayList<>();
+        if(dto.getParentId()==null) {
+            categoryDtos =  blogCategoryService.getRoots(dto);
+        } else {
+            categoryDtos =   blogCategoryService.getChildren(dto);
+        }
+        ResponseDto responseDto = new ResponseDto(categoryDtos);
         return responseDto;
     }
 
@@ -43,10 +49,6 @@ public class BlogCategoryController {
     public ResponseDto save(@RequestBody  BlogCategoryDto blogCategoryDto) {
         // 保存校验
         ValidatorUtil.length(blogCategoryDto.getName(), "名称", 1, 255);
-        ValidatorUtil.length(blogCategoryDto.getDescription(), "描述", 1, 255);
-        ValidatorUtil.length(blogCategoryDto.getKeyWord(), "关键词", 1, 255);
-        ValidatorUtil.length(blogCategoryDto.getIdPath(), " id路径", 1, 1000);
-        ValidatorUtil.length(blogCategoryDto.getNamePath(), "名称路径", 1, 1000);
 
         blogCategoryService.save(blogCategoryDto);
         ResponseDto responseDto = new ResponseDto(blogCategoryDto);

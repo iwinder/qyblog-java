@@ -138,27 +138,28 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.windcoder.qycms.blog.entity.BlogArticle">
-    insert into blog_article (id, title, perma_link, 
-      summary, thumbnail, view_count, 
-      published_date, author_id, category_id, 
-      comment_agent_id, deleted, published, 
-      created_by, last_modified_by, created_date, 
-      last_modified_date, content, content_html
-      )
-    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{permaLink,jdbcType=VARCHAR}, 
-      #{summary,jdbcType=VARCHAR}, #{thumbnail,jdbcType=VARCHAR}, #{viewCount,jdbcType=BIGINT}, 
-      #{publishedDate,jdbcType=TIMESTAMP}, #{authorId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, 
-      #{commentAgentId,jdbcType=BIGINT}, #{deleted,jdbcType=BIT}, #{published,jdbcType=BIT}, 
-      #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
-      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}, #{contentHtml,jdbcType=LONGVARCHAR}
-      )
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into blog_article (title, perma_link, summary, 
+      thumbnail, view_count, published_date, 
+      author_id, category_id, comment_agent_id, 
+      deleted, published, created_by, 
+      last_modified_by, created_date, last_modified_date, 
+      content, content_html)
+    values (#{title,jdbcType=VARCHAR}, #{permaLink,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
+      #{thumbnail,jdbcType=VARCHAR}, #{viewCount,jdbcType=BIGINT}, #{publishedDate,jdbcType=TIMESTAMP}, 
+      #{authorId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{commentAgentId,jdbcType=BIGINT}, 
+      #{deleted,jdbcType=BIT}, #{published,jdbcType=BIT}, #{createdBy,jdbcType=BIGINT}, 
+      #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR}, #{contentHtml,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.windcoder.qycms.blog.entity.BlogArticle">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into blog_article
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="title != null">
         title,
       </if>
@@ -212,9 +213,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>

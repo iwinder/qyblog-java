@@ -52,7 +52,7 @@ public class ${Domain}Service {
      */
     public void save(${Domain}Dto ${domain}Dto){
         ${Domain} ${domain} = CopyUtil.copy(${domain}Dto, ${Domain}.class);
-        if (StringUtils.isEmpty(${domain}.getId())) {
+        if (null == ${domain}.getId()) {
             this.inster(${domain});
         } else {
             this.update(${domain});

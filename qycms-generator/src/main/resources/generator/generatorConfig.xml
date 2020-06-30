@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<!DOCTYPE generatorConfiguration-->
-<!--        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"-->
-<!--        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">-->
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
     <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
@@ -43,9 +43,19 @@
                              type="XMLMAPPER" />
 
 
-<!--        <table tableName="blog_article" domainObjectName="BlogArticle"/>-->
-<!--        <table tableName="blog_tag" domainObjectName="BlogTag"/>-->
-<!--        <table tableName="blog_article_tag" domainObjectName="BlogArticleTag"/>-->
-        <table tableName="blog_category" domainObjectName="BlogCategory"/>
+<!--        <table tableName="blog_article" domainObjectName="BlogArticle">-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+
+<!--        <table tableName="blog_tag" domainObjectName="BlogTag">-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="blog_article_tag" domainObjectName="BlogArticleTag" />-->
+
+<!--        <table tableName="blog_category" domainObjectName="BlogCategory">-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="blog_category_tree" domainObjectName="BlogCategoryTree" />-->
+
     </context>
 </generatorConfiguration>

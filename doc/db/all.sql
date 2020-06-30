@@ -71,6 +71,7 @@ CREATE TABLE `blog_article_tag` (
 
 
 -- 文章分类
+drop table if exists `blog_category`;
 CREATE TABLE `blog_category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
   `name` varchar(255) DEFAULT NULL comment '名称',
@@ -80,6 +81,7 @@ CREATE TABLE `blog_category` (
   `name_path` varchar(1000) DEFAULT NULL comment '名称路径',
   `display_order` bigint(20) DEFAULT NULL comment '显示顺序',
   `parent_id` bigint(20) DEFAULT NULL comment '父级分类',
+  `deleted` bit(1) DEFAULT b'0' comment '是否删除：0不删除， 1 删除',
   `created_by` bigint(20) DEFAULT NULL comment '创建者',
   `last_modified_by` bigint(20) DEFAULT NULL comment '更新者',
   `created_date` datetime DEFAULT NULL comment '创建时间',
@@ -88,3 +90,21 @@ CREATE TABLE `blog_category` (
   KEY `FK18qsxukvf40pdippprno5eq5b` (`parent_id`),
   CONSTRAINT `FK18qsxukvf40pdippprno5eq5b` FOREIGN KEY (`parent_id`) REFERENCES `blog_category` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 comment='文章分类';
+
+
+-- 文章分类树
+drop table if exists `blog_category_tree`;
+CREATE TABLE `blog_category_tree` (
+  `parent_id` bigint(20) NOT NULL COMMENT '父级分类id',
+  `child_id` bigint(20) NOT NULL COMMENT '子级分类id',
+  `distance` int(11) NOT NULL COMMENT '层级: 处于第几级分类',
+  `child_count` bigint(20) DEFAULT 0 COMMENT '子分类数',
+  PRIMARY KEY (`parent_id`,`child_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章分类树';
+
+
+
+INSERT INTO blog_category (id,name,description,key_word,id_path,name_path,display_order,parent_id,deleted,created_by,last_modified_by,created_date,last_modified_date) VALUES
+(1,'默认分类',NULL,NULL,'1','默认分类',1,NULL,0,NULL,NULL,'2020-06-30 04:02:17.0','2020-06-30 04:02:17.0');
+INSERT INTO blog_category_tree (parent_id,child_id,distance,child_count) VALUES
+(1,1,0,1);

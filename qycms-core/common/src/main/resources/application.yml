@@ -53,7 +53,7 @@ pagehelper:
 #用于控制mybatis打印sql，生产环境应更改为ERROR级别
 logging:
   level:
-    root: info
+    root: trace
 
 
 
