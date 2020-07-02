@@ -77,7 +77,7 @@ public class BlogTagService {
      */
     private void update(BlogTag blogTag){
         blogTag.setLastModifiedDate(new Date());
-        blogTagMapper.updateByPrimaryKey(blogTag);
+        blogTagMapper.updateByPrimaryKeySelective(blogTag);
     }
 
 }

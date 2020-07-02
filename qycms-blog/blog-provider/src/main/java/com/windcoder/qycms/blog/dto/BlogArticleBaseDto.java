@@ -47,7 +47,7 @@ public class BlogArticleBaseDto {
      */
 //    private UserDto author;
 //
-//    private CategoryBaseDto category;
+    private BlogCategoryDto category;
 
     private List<BlogTagBaseDto> tags;
 
@@ -133,13 +133,13 @@ public class BlogArticleBaseDto {
         this.publishedDate = publishedDate;
     }
 
-//    public CategoryBaseDto getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(CategoryBaseDto category) {
-//        this.category = category;
-//    }
+    public BlogCategoryDto getCategory() {
+        return category;
+    }
+
+    public void setCategory(BlogCategoryDto category) {
+        this.category = category;
+    }
 
     public List<BlogTagBaseDto> getTags() {
         return tags;

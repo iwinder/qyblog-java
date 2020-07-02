@@ -55,7 +55,7 @@
 <!--        <table tableName="blog_category" domainObjectName="BlogCategory">-->
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--        </table>-->
-<!--        <table tableName="blog_category_tree" domainObjectName="BlogCategoryTree" />-->
+        <table tableName="blog_category_tree" domainObjectName="BlogCategoryTree" />
 
     </context>
 </generatorConfiguration>

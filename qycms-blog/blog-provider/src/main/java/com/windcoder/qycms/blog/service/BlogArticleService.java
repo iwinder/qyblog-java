@@ -6,12 +6,15 @@ import com.github.pagehelper.PageInfo;
 import com.windcoder.qycms.blog.dto.BlogArticleBaseDto;
 import com.windcoder.qycms.blog.dto.BlogArticleDto;
 import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
+import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.blog.entity.BlogArticle;
 import com.windcoder.qycms.blog.entity.BlogArticleExample;
+import com.windcoder.qycms.blog.entity.BlogCategory;
 import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
 //import com.windcoder.qycms.core.system.entity.User;
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper;
 import com.windcoder.qycms.dto.PageDto;
+import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.utils.CopyUtil;
 //import org.apache.shiro.SecurityUtils;
 import com.windcoder.qycms.utils.ModelMapperUtils;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 //import javax.persistence.criteria.Predicate;
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -32,6 +36,8 @@ public class BlogArticleService {
     private BlogArticleMapper blogArticleMapper;
     @Autowired
     private MyBlogArticleMapper myBlogArticleMapper;
+    @Resource
+    private BlogCategoryService blogCategoryService;
 
     /**
      * 列表查询
@@ -102,7 +108,7 @@ public class BlogArticleService {
      */
     private void update(BlogArticle article) {
         article.setLastModifiedDate(new Date());
-        blogArticleMapper.updateByPrimaryKey(article);
+        blogArticleMapper.updateByPrimaryKeySelective(article);
     }
 
     public void stringToTags(BlogArticle article){
@@ -131,5 +137,21 @@ public class BlogArticleService {
 
     public void delete(Long[] ids) {
        myBlogArticleMapper.updateDeleted(true,ids);
+    }
+
+    public BlogArticleDto findOneArticleDto(Long articleId) {
+        BlogArticleExample example = new BlogArticleExample();
+        example.createCriteria().andDeletedEqualTo(false).andIdEqualTo(articleId);
+        List<BlogArticle> blogArticles =  blogArticleMapper.selectByExampleWithBLOBs(example);
+        if (blogArticles.isEmpty()) {
+            throw new BusinessException("非法的数据请求");
+        }
+        BlogArticle article = blogArticles.get(0);
+        BlogArticleDto articleDto = ModelMapperUtils.map(article, BlogArticleDto.class);
+        if (article.getCategoryId() != null) {
+            BlogCategoryDto categoryDto =  blogCategoryService.findOneCategoryDto(article.getCategoryId());
+            articleDto.setCategory(categoryDto);
+        }
+        return articleDto;
     }
 }

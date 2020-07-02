@@ -96,7 +96,12 @@ public class BlogCategoryTreeService {
     public BlogCategoryTree findByChildIdAndDistanceEquals(Long childId, Integer distance) {
         BlogCategoryTreeExample blogCategoryTreeExample = new BlogCategoryTreeExample();
         blogCategoryTreeExample.createCriteria().andChildIdEqualTo(childId).andDistanceEqualTo(distance);
-        return blogCategoryTreeMapper.selectByExample(blogCategoryTreeExample).get(0);
+        List<BlogCategoryTree> categorys = blogCategoryTreeMapper.selectByExample(blogCategoryTreeExample);
+        if (categorys.isEmpty()) {
+            return null;
+        }else {
+            return categorys.get(0);
+        }
 
     }
 

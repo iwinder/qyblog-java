@@ -55,7 +55,7 @@ public class BlogArticleController {
 
     @GetMapping("/{articleId}")
     public ResponseDto get(@PathVariable("articleId") Long articleId) {
-        BlogArticle article = articleService.findOne(articleId);
+        BlogArticleDto article = articleService.findOneArticleDto(articleId);
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }

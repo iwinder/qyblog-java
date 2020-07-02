@@ -72,6 +72,8 @@ public class BlogCategoryDto {
 
     private Boolean isLeaf;
 
+    private BlogCategoryDto parent;
+
     public Long getId() {
         return id;
     }
@@ -182,6 +184,15 @@ public class BlogCategoryDto {
     public void setIsLeaf(Boolean isLeaf) {
         this.isLeaf = isLeaf;
     }
+
+    public BlogCategoryDto getParent() {
+        return parent;
+    }
+
+    public void setParent(BlogCategoryDto parent) {
+        this.parent = parent;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

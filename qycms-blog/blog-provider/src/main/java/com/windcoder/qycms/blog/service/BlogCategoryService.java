@@ -69,6 +69,7 @@ public class BlogCategoryService {
             this.checkRecursive(blogCategory);
             // 更新
             this.update(blogCategory);
+            blogCategory = getOne(blogCategory.getId());
             if (blogCategory.getDeleted().equals(false)) {
                 afterUpdate(blogCategory);
             }
@@ -112,7 +113,7 @@ public class BlogCategoryService {
      */
     private void update(BlogCategory blogCategory){
         blogCategory.setLastModifiedDate(new Date());
-        blogCategoryMapper.updateByPrimaryKey(blogCategory);
+        blogCategoryMapper.updateByPrimaryKeySelective(blogCategory);
     }
 
 
@@ -123,7 +124,7 @@ public class BlogCategoryService {
         if (StringUtils.isNotBlank(dto.getName())) {
             criteria.andNameLike(dto.getName());
         }
-        example.setOrderByClause("display_order desc");
+        example.setOrderByClause("display_order ASC");
 
         List<BlogCategory> list =  blogCategoryMapper.selectByExample(example);
 
@@ -137,7 +138,7 @@ public class BlogCategoryService {
         if (StringUtils.isNotBlank(dto.getName())) {
             criteria.andNameLike(dto.getName());
         }
-        example.setOrderByClause("display_order desc");
+        example.setOrderByClause("display_order ASC");
 
         List<BlogCategory> list = blogCategoryMapper.selectByExample(example);
         return blogCategoryListToDto(list);
@@ -334,5 +335,23 @@ public class BlogCategoryService {
     }
 
 
+    public BlogCategoryDto findOneCategoryDto(Long categoryId) {
+        BlogCategoryExample categoryExample  = new BlogCategoryExample();
+        categoryExample.createCriteria()
+                .andDeletedEqualTo(false).andIdEqualTo(categoryId);
+        List<BlogCategory> blogCategorys= blogCategoryMapper.selectByExample(categoryExample);
+        if (blogCategorys.isEmpty()) {
+            throw new BusinessException("非法的数据请求");
+        }
+        BlogCategory blogCategory = blogCategorys.get(0);
+        BlogCategoryDto blogCategoryDto = ModelMapperUtils.map(blogCategory, BlogCategoryDto.class);
+        if(blogCategory.getParentId()!=null) {
+          BlogCategory parent =  blogCategoryMapper.selectByPrimaryKey(blogCategory.getParentId());
+          blogCategoryDto.setParent(ModelMapperUtils.map(parent, BlogCategoryDto.class));
+        }
+        return blogCategoryDto;
 
+
+
+    }
 }

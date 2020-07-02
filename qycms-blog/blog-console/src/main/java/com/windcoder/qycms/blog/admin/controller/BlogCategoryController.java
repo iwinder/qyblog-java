@@ -1,5 +1,6 @@
 package com.windcoder.qycms.blog.admin.controller;
 
+import com.windcoder.qycms.blog.entity.BlogArticle;
 import com.windcoder.qycms.blog.entity.BlogCategory;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.dto.PageDto;
@@ -64,6 +65,13 @@ public class BlogCategoryController {
     public ResponseDto delete(@RequestBody Long[] ids) {
         blogCategoryService.delete(ids);
         ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
+
+    @GetMapping("/{articleId}")
+    public ResponseDto get(@PathVariable("articleId") Long CategoryId) {
+        BlogCategoryDto article = blogCategoryService.findOneCategoryDto (CategoryId);
+        ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }
 }
