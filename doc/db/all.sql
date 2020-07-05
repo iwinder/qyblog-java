@@ -18,7 +18,8 @@ create table `sys_user` (
   unique key `username_unique` (`username`),
   unique key `email_unique` (`email`)
 ) engine=innodb default charset=utf8mb4 comment='用户';
-INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `email`, `deleted`, `disable`, `nickname`, `password`, `salt`, `username`, `created_by`, `last_modified_by`) VALUES (1, '2018-9-7 03:14:53', '2018-11-4 03:58:11', '/content/upload/2018/11/04/e246ba56-81aa-4226-8189-cc2d10ccd56a.jpg', '1@qq.com', 0, 0, '测试', 'e68b0a6751860afed4938951be1ef002ee697d04', 'b8314a417d4037731ad10f92c25dc911fad829094a22', 'admin', 1, 1);
+# INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `email`, `deleted`, `disable`, `nickname`, `password`, `salt`, `username`, `created_by`, `last_modified_by`) VALUES (1, '2018-9-7 03:14:53', '2018-11-4 03:58:11', '/content/upload/2018/11/04/e246ba56-81aa-4226-8189-cc2d10ccd56a.jpg', '1@qq.com', 0, 0, '测试', 'e68b0a6751860afed4938951be1ef002ee697d04', 'b8314a417d4037731ad10f92c25dc911fad829094a22', 'admin', 1, 1);
+INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `email`, `deleted`, `disable`, `nickname`, `password`, `salt`, `username`, `created_by`, `last_modified_by`) VALUES (1, now(), now(), '/content/upload/2018/11/04/e246ba56-81aa-4226-8189-cc2d10ccd56a.jpg', '1@qq.com', 0, 0, '测试', 'e68b0a6751860afed4938951be1ef002ee697d04', 'b8314a417d4037731ad10f92c25dc911fad829094a22', 'admin', 1, 1);
 
 
 -- 文章
@@ -63,6 +64,7 @@ drop table if exists `blog_article_tag`;
 CREATE TABLE `blog_article_tag` (
   `article_id` bigint(20) NOT NULL comment '文章id',
   `tag_id` bigint(20) NOT NULL comment '标签id',
+  PRIMARY KEY ( `article_id`,`tag_id` ),
   KEY `FKrrs2kus3wx0wfxgdn3qrinpt7` (`tag_id`),
   KEY `FKjirukkkkhj5pkpn9i7x0gn83b` (`article_id`),
   CONSTRAINT `FKjirukkkkhj5pkpn9i7x0gn83b` FOREIGN KEY (`article_id`) REFERENCES `blog_article` (`id`),

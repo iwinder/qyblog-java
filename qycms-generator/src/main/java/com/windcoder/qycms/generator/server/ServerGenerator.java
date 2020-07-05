@@ -4,6 +4,7 @@ package com.windcoder.qycms.generator.server;
 import com.windcoder.qycms.generator.utils.DbUtil;
 import com.windcoder.qycms.generator.utils.Field;
 import com.windcoder.qycms.generator.utils.FreeMarkerUtil;
+import com.windcoder.qycms.generator.utils.GeneratorPathUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -15,9 +16,9 @@ import java.util.*;
  *  用于后端代码的生成，包含controller、service、dto
  */
 public class ServerGenerator {
-    static final String MODULE = "blog";
-    static final String projectUrl = "qycms-blog/blog-provider";
-    static final String projectControllerUrl = "qycms-blog/blog-console";
+    static final String MODULE = GeneratorPathUtils.MODULE;
+    static final String projectUrl = GeneratorPathUtils.PROJECT_URL;
+    static final String projectControllerUrl = GeneratorPathUtils.PROJECT_CONSOLE_URL;
 //    static String MODULE = "file";
 //    static String MODULE = "system";
 //    static String MODULE = "resource";

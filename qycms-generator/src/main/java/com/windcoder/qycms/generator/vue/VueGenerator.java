@@ -3,6 +3,7 @@ package com.windcoder.qycms.generator.vue;
 import com.windcoder.qycms.generator.utils.DbUtil;
 import com.windcoder.qycms.generator.utils.Field;
 import com.windcoder.qycms.generator.utils.FreeMarkerUtil;
+import com.windcoder.qycms.generator.utils.GeneratorPathUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -14,11 +15,9 @@ import java.util.*;
  *  用于后端代码的生成，包含controller、service、dto
  */
 public class VueGenerator {
-    static final String MODULE = "category";
+    static final String MODULE = GeneratorPathUtils.VUE_MODULE;
 
-//    static String MODULE = "file";
-//    static String MODULE = "system";
-    static String toVuePath =  "/home/wind/work/Web/qyblog-web/qy-console/pages/" + MODULE + "/";
+    static String toVuePath =  GeneratorPathUtils.TO_VUE_CONSOLE_PROJECT + MODULE + "/";
     static String generatorConfigPath = "qycms-generator/src/main/resources/generator/generatorConfig.xml";
 
     public static void main(String[] args) throws Exception  {
@@ -57,6 +56,10 @@ public class VueGenerator {
         map.put("typeSet", typeSet);
 
         // 生成vue
+        File parentDir = new File(toVuePath);
+        if (!parentDir.exists()){
+            parentDir.mkdirs();
+        }
         FreeMarkerUtil.initConfig("vue.ftl");
 //        FreeMarkerUtil.generator(toVuePath + domain + ".vue", map);
         FreeMarkerUtil.generator(toVuePath  + "index.vue", map);

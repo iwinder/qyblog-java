@@ -1,6 +1,7 @@
 package com.windcoder.qycms.blog.admin.controller;
 
 import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
+import com.windcoder.qycms.blog.dto.BlogTagBaseDto;
 import com.windcoder.qycms.blog.dto.BlogTagPageDto;
 import com.windcoder.qycms.blog.entity.BlogTag;
 import com.windcoder.qycms.blog.dto.BlogTagDto;
@@ -35,19 +36,25 @@ public class BlogTagController {
         ResponseDto responseDto = new ResponseDto(pageDto);
         return responseDto;
     }
+    @GetMapping("search")
+    public ResponseDto search(BlogTagDto tagDto) {
+        List<BlogTagBaseDto> blogTagBaseDtos =  blogTagService.search(tagDto);
+        ResponseDto responseDto = new ResponseDto(blogTagBaseDtos);
+        return responseDto;
+    }
 
     /**
      * 保存，id有值时更新，无值时新增
-     * @param blogTagDto
+     * @param blogTag
      * @return
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody  BlogTagDto blogTagDto) {
+    public ResponseDto save(@RequestBody  BlogTag blogTag) {
         // 保存校验
-        ValidatorUtil.length(blogTagDto.getName(), "名称", 1, 255);
+        ValidatorUtil.length(blogTag.getName(), "名称", 1, 255);
 
-        blogTagService.save(blogTagDto);
-        ResponseDto responseDto = new ResponseDto(blogTagDto);
+        blogTagService.save(blogTag);
+        ResponseDto responseDto = new ResponseDto(blogTag);
         return responseDto;
     }
 

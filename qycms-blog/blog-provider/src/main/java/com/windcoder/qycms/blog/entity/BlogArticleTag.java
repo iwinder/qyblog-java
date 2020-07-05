@@ -5,6 +5,15 @@ public class BlogArticleTag {
 
     private Long tagId;
 
+    public BlogArticleTag() {
+
+    }
+
+    public BlogArticleTag(Long articleId, Long tagId) {
+        this.articleId = articleId;
+        this.tagId = tagId;
+    }
+
     public Long getArticleId() {
         return articleId;
     }

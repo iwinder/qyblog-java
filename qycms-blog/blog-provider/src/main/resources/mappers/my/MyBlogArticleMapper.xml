@@ -2,11 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper" >
 
-    <select id="list" resultType="com.windcoder.qycms.blog.dto.BlogArticleBaseDto">
-        select ba.id, title,  perma_link, summary, thumbnail, published_date,  deleted, published
-        from `blog_article` ba
+    <resultMap type="com.windcoder.qycms.blog.dto.BlogArticleBaseDto" id="BlogArticleBaseDtoMap">
+        <result column="id" property="id"/>
+        <result column="title" property="title" />
+        <result column="published" property="published" />
+        <result column="perma_link" property="permaLink" />
+        <result column="summary" property="summary" />
+        <result column="thumbnail" property="thumbnail" />
+        <result column="published_date" property="publishedDate" />
+        <!--
+            collection定义关联集合类型的属性
+            ofType:指定集合里面元素的类型
+        -->
+        <association property="category" javaType="com.windcoder.qycms.blog.dto.BlogCategoryDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="categoryId" property="id"/>
+            <result column="categoryName" property="name" />
+            <result column="categoryNamePath" property="namePath"/>
+        </association>
+        <collection property="tagStrings"
+                    select="com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleTagMapper.findTagnameListByArticleId"
+                    column="{articleId=id}">
+        </collection>
+    </resultMap>
+
+
+
+
+
+    <select id="list" resultMap="BlogArticleBaseDtoMap">
+        select
+               ba.id, ba.title,  ba.perma_link, ba.summary, ba.thumbnail, ba.published_date,  ba.deleted, ba.published,
+        bc.id categoryId,bc.name categoryName,bc.name_path categoryNamePath
+        from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
         <where>
-            deleted = false
+            ba.deleted = false
             <if test="pageDto.published != null and pageDto.published != ''">
                     and ba.published = #{pageDto.published}
             </if>

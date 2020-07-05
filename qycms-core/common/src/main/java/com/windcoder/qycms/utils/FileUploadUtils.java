@@ -36,7 +36,7 @@ public class FileUploadUtils {
                 FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(target));
             } catch (IOException e) {
 //                System.out.println("保存文件<"+originFileName+">异常");
-                throw new BusinessException("保存文件<"+originFileName+">异常");
+                throw new BusinessException("保存文件<"+originFileName+">异常" + e.getMessage());
             }
             fileUpload = new FileUpload();
             fileUpload.setExtention(ext);

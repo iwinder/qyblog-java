@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-row class="table-operations">
-            <a-col :span="12">
+            <a-col :xs="{span:24}"  :lg="{ span: 12}">
                 <a-form-model layout="inline" :model="searchFrom"    >
                     <a-form-model-item>
                         <a-input v-model="searchFrom.searchText" placeholder="请输入标题">
@@ -16,7 +16,7 @@
                 </a-form-model>
 
             </a-col>
-            <a-col :span="5" :offset="7" style=" margin-top: 5px;">
+            <a-col  :xs="{span:24}"  :lg="{ span: 5, offset: 7 }" style=" margin-top: 5px;">
                 <a-button  type="primary"  @click="add()">
                     新增
                 </a-button>
@@ -34,6 +34,7 @@
                  :data-source="data"
                  :rowKey = "record => record.id"
                  :pagination="pagination"
+                 :scroll = "{ x:  800}"
                  :loading="loading"
                  :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }"
                  @change="handleTableChange"
@@ -64,7 +65,7 @@
         },
         </#list>
         {
-            title: 'Action',
+            title: '操作',
             key: 'action',
             scopedSlots: { customRender: 'action' },
         },
@@ -114,7 +115,7 @@
                 }
 
 
-                _this.$axios.get('${domain}s',{ params: params
+                _this.$axios.get('${domain}',{ params: params
 
                 }).then(res => {
                     let resp  = res.data

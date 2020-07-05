@@ -7,9 +7,7 @@ import com.windcoder.qycms.blog.dto.BlogArticleBaseDto;
 import com.windcoder.qycms.blog.dto.BlogArticleDto;
 import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
-import com.windcoder.qycms.blog.entity.BlogArticle;
-import com.windcoder.qycms.blog.entity.BlogArticleExample;
-import com.windcoder.qycms.blog.entity.BlogCategory;
+import com.windcoder.qycms.blog.entity.*;
 import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
 //import com.windcoder.qycms.core.system.entity.User;
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper;
@@ -38,6 +36,8 @@ public class BlogArticleService {
     private MyBlogArticleMapper myBlogArticleMapper;
     @Resource
     private BlogCategoryService blogCategoryService;
+    @Autowired
+    private BlogTagService blogTagService;
 
     /**
      * 列表查询
@@ -75,6 +75,7 @@ public class BlogArticleService {
     @Transactional
     public void save(BlogArticleDto articleDto) {
 //        BlogArticle article = CopyUtil.copy(articleDto, BlogArticle.class);
+        List<String> tagsString = articleDto.getTagStrings();
         BlogArticle article = ModelMapperUtils.map(articleDto, BlogArticle.class);
 //        if (null == article.getAuthor()){
 //            User user = (User)  SecurityUtils.getSubject().getPrincipal();
@@ -83,12 +84,15 @@ public class BlogArticleService {
         if (article.getPublished() &&  null == article.getPublishedDate()){
             article.setPublishedDate(new Date());
         }
-        stringToTags(article);
+
         if (article.getId() == null) {
             this.inster(article);
         } else {
             this.update(article);
         }
+
+        saveTags(article.getId(), tagsString);
+
     }
 
     /**
@@ -111,22 +115,49 @@ public class BlogArticleService {
         blogArticleMapper.updateByPrimaryKeySelective(article);
     }
 
-    public void stringToTags(BlogArticle article){
-//        if (article.getTagStrings() == null){
-//            return;
-//        }
-//        BlogTag tag = null;
-//        List<BlogTag> newTags = new ArrayList<BlogTag>();
-//        for (String tagStr: article.getTagStrings()) {
-//            tag = blogTagService.findByName(tagStr);
-//            if (tag == null){
-//                tag = new BlogTag();
-//                tag.setName(tagStr);
-//                tag  =  blogTagService.save(tag);
-//            }
-//            newTags.add(tag);
-//        }
-//        article.setTags(newTags);
+    public void saveTags(Long articleId, List<String> tagsString){
+        if(tagsString ==null || tagsString.isEmpty()) {
+            return;
+        }
+        BlogTag tag = null;
+        BlogArticleTag articleTag = null;
+        List<BlogArticleTag> oldArticleTags = blogTagService.findArticleTagByArticleId(articleId);
+        List<BlogArticleTag> newArticleTags = new ArrayList<BlogArticleTag>();
+        List<BlogTag> unchangedTags = new ArrayList<BlogTag>();
+        for (String tagStr: tagsString) {
+            tag = blogTagService.findByName(tagStr);
+            if (tag == null){
+                tag = new BlogTag();
+                tag.setName(tagStr);
+                blogTagService.save(tag);
+            }  else {
+                unchangedTags.add(tag);
+            }
+            articleTag = new BlogArticleTag(articleId, tag.getId());
+            newArticleTags.add(articleTag);
+        }
+        if (!oldArticleTags.isEmpty()) {
+            List<BlogArticleTag> deleedArticleTags = new ArrayList<BlogArticleTag>();
+            Boolean flag = true;
+            for (BlogArticleTag at: oldArticleTags) {
+                flag = true;
+                for (BlogTag ucTag: unchangedTags) {
+                    if(at.getTagId().equals(ucTag.getId())) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    deleedArticleTags.add(at);
+                }
+            }
+            if (!deleedArticleTags.isEmpty()) {
+                blogTagService.deleteBlogArticleTags(deleedArticleTags);
+            }
+
+        }
+        blogTagService.insterBlogArticleTagBatch(newArticleTags);
+
     }
 
 
@@ -152,6 +183,15 @@ public class BlogArticleService {
             BlogCategoryDto categoryDto =  blogCategoryService.findOneCategoryDto(article.getCategoryId());
             articleDto.setCategory(categoryDto);
         }
+        List<String> tagNameList =  blogTagService.findTagnameListByArticleId(articleDto.getId());
+        articleDto.setTagStrings(tagNameList);
         return articleDto;
     }
+
+//    private  void articleBaseDtoTofill(List<BlogArticleBaseDto> baseDtos) {
+//        for (BlogArticleBaseDto baseDto: baseDtos) {
+//            List<String> tagNameList =  blogTagService.findTagnameListByArticleId(baseDto.getId());
+//            baseDto.setTagStrings(tagNameList);
+//        }
+//    }
 }

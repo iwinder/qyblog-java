@@ -3,16 +3,24 @@ package com.windcoder.qycms.blog.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.blog.dto.BlogCategoryDto;
+import com.windcoder.qycms.blog.dto.BlogTagBaseDto;
+import com.windcoder.qycms.blog.entity.BlogArticleTag;
 import com.windcoder.qycms.blog.entity.BlogTag;
 import com.windcoder.qycms.blog.entity.BlogTagExample;
 import com.windcoder.qycms.blog.dto.BlogTagDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.blog.repository.mybatis.BlogTagMapper;
 import com.windcoder.qycms.utils.CopyUtil;
+import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+
 
 import javax.annotation.Resource;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
@@ -21,6 +29,8 @@ import java.util.Date;
 public class BlogTagService {
     @Resource
     private BlogTagMapper blogTagMapper;
+    @Autowired
+    private BlogArticleTagService blogArticleTagService;
 
     /**
      * 列表查询
@@ -39,11 +49,10 @@ public class BlogTagService {
 
     /**
      * 保存，id有值时更新，无值时新增
-     * @param blogTagDto
+     * @param blogTag
      */
-    public void save(BlogTagDto blogTagDto){
-        BlogTag blogTag = CopyUtil.copy(blogTagDto, BlogTag.class);
-        if (StringUtils.isEmpty(blogTag.getId())) {
+    public void save(BlogTag blogTag){
+        if (blogTag.getId()==null) {
             this.inster(blogTag);
         } else {
             this.update(blogTag);
@@ -52,7 +61,7 @@ public class BlogTagService {
 
     /**
      * 删除
-     * @param id
+     * @param ids
      */
     public void delete(Long[] ids) {
         BlogTagExample blogTagExample = new BlogTagExample();
@@ -80,4 +89,42 @@ public class BlogTagService {
         blogTagMapper.updateByPrimaryKeySelective(blogTag);
     }
 
+    public List<BlogTagBaseDto> search(BlogTagDto tagDto) {
+        BlogTagExample example = new BlogTagExample();
+        if(tagDto!=null && StringUtils.isNotBlank(tagDto.getName())) {
+            example.createCriteria().andNameLike("%"+tagDto.getName() + "%");
+        }
+        List<BlogTag> blogTags = blogTagMapper.selectByExample(example);
+        Type type = new TypeToken<List<BlogTagBaseDto>>() {}.getType();
+        return ModelMapperUtils.map(blogTags,type);
+    }
+
+    public BlogTag findByName(String tagStr) {
+        BlogTagExample example = new BlogTagExample();
+        example.createCriteria().andNameEqualTo(tagStr);
+        List<BlogTag> blogTags = blogTagMapper.selectByExample(example);
+        if(!blogTags.isEmpty()) {
+          return blogTags.get(0);
+        }
+        return null;
+    }
+
+    public List<BlogArticleTag>  findArticleTagByArticleId(Long articleId) {
+        return blogArticleTagService.findByArticleId(articleId);
+    }
+
+    public List<BlogArticleTag>  findArticleTagBytagId(Long tagId) {
+        return blogArticleTagService.findByTagId(tagId);
+    }
+
+    public void deleteBlogArticleTags(List<BlogArticleTag> deleedArticleTags) {
+        blogArticleTagService.deleteBatch(deleedArticleTags);
+    }
+    public void insterBlogArticleTagBatch(List<BlogArticleTag> articleTags) {
+        blogArticleTagService.insterBatch(articleTags);
+    }
+
+    public List<String> findTagnameListByArticleId(Long articleId) {
+        return blogArticleTagService.findTagnameListByArticleId(articleId);
+    }
 }

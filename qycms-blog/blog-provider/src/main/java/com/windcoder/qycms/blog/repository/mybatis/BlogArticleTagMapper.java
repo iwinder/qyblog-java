@@ -10,6 +10,8 @@ public interface BlogArticleTagMapper {
 
     int deleteByExample(BlogArticleTagExample example);
 
+    int deleteByPrimaryKey(@Param("articleId") Long articleId, @Param("tagId") Long tagId);
+
     int insert(BlogArticleTag record);
 
     int insertSelective(BlogArticleTag record);

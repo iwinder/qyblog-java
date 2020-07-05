@@ -49,7 +49,6 @@ public class BlogArticleBaseDto {
 //
     private BlogCategoryDto category;
 
-    private List<BlogTagBaseDto> tags;
 
     private List<String> tagStrings;
     /**
@@ -75,20 +74,20 @@ public class BlogArticleBaseDto {
     }
 
 
-
-    public boolean getIsPublished() {
+    public boolean getPublished() {
         return published;
     }
+
 
     public void setPublished(boolean published) {
         this.published = published;
     }
 
-    public boolean getIsDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
-    public void setIsDeleted(boolean isDeleted) {
+    public void setDeleted(boolean isDeleted) {
         this.deleted = isDeleted;
     }
 
@@ -141,20 +140,7 @@ public class BlogArticleBaseDto {
         this.category = category;
     }
 
-    public List<BlogTagBaseDto> getTags() {
-        return tags;
-    }
 
-    public void setTags(List<BlogTagBaseDto> tags) {
-        this.tags = tags;
-        if (tags!=null && tags.size()>0){
-            List<String> tagStr = new ArrayList<String>();
-            tags.forEach( t ->{
-                tagStr.add(t.getName());
-            });
-            this.tagStrings = tagStr;
-        }
-    }
 
     public List<String> getTagStrings() {
         return tagStrings;
