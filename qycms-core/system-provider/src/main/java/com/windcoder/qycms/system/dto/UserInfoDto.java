@@ -1,10 +1,10 @@
 package com.windcoder.qycms.system.dto;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class UserDto {
+import java.util.Date;
 
+public class UserInfoDto {
     /**
      * id
      */
@@ -20,15 +20,7 @@ public class UserDto {
      */
     private String nickname;
 
-    /**
-     * 密码
-     */
-    private String password;
 
-    /**
-     * 盐值
-     */
-    private String salt;
 
     /**
      * 邮箱
@@ -45,10 +37,7 @@ public class UserDto {
      */
     private Boolean disable;
 
-    /**
-     * 是否删除：0不删除， 1 删除
-     */
-    private Boolean deleted;
+
 
     /**
      * 创建者
@@ -96,21 +85,6 @@ public class UserDto {
         this.nickname = nickname;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
 
     public String getEmail() {
         return email;
@@ -136,13 +110,6 @@ public class UserDto {
         this.disable = disable;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
 
     public Long getCreatedBy() {
         return createdBy;
@@ -186,12 +153,9 @@ public class UserDto {
         sb.append(", id=").append(id);
         sb.append(", username=").append(username);
         sb.append(", nickname=").append(nickname);
-        sb.append(", password=").append(password);
-        sb.append(", salt=").append(salt);
         sb.append(", email=").append(email);
         sb.append(", avatar=").append(avatar);
         sb.append(", disable=").append(disable);
-        sb.append(", deleted=").append(deleted);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);
         sb.append(", createdDate=").append(createdDate);
@@ -199,6 +163,5 @@ public class UserDto {
         sb.append("]");
         return sb.toString();
     }
-
 
 }

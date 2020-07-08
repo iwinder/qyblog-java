@@ -1,5 +1,6 @@
 package com.windcoder.qycms.system.admin.controller;
 
+import com.windcoder.qycms.system.dto.UserInfoDto;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.dto.UserDto;
 import com.windcoder.qycms.dto.PageDto;
@@ -45,10 +46,10 @@ public class UserController {
         ValidatorUtil.require(userDto.getUsername(), "用户名");
         ValidatorUtil.length(userDto.getUsername(), "用户名", 1, 50);
         ValidatorUtil.length(userDto.getNickname(), "昵称", 1, 50);
-        ValidatorUtil.require(userDto.getPassword(), "密码");
-        ValidatorUtil.length(userDto.getPassword(), "密码", 1, 255);
-        ValidatorUtil.length(userDto.getSalt(), "盐值", 1, 50);
-        ValidatorUtil.length(userDto.getEmail(), "邮箱", 1, 255);
+        if (userDto!=null && userDto.getId() == null) {
+            ValidatorUtil.require(userDto.getPassword(), "密码");
+            ValidatorUtil.length(userDto.getPassword(), "密码", 1, 255);
+        }
         ValidatorUtil.length(userDto.getAvatar(), "用户头像", 1, 255);
 
         userService.save(userDto);
@@ -65,6 +66,15 @@ public class UserController {
     public ResponseDto delete(@RequestBody Long[] ids) {
         userService.delete(ids);
         ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
+
+
+
+    @GetMapping("/{userId}")
+    public ResponseDto get(@PathVariable("userId") Long userId) {
+        UserInfoDto article = userService.findOneUserDto(userId);
+        ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }
 }

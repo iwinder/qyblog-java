@@ -3,12 +3,14 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.system.dto.UserInfoDto;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.entity.UserExample;
 import com.windcoder.qycms.system.dto.UserDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.system.repository.mybatis.UserMapper;
 import com.windcoder.qycms.utils.CopyUtil;
+import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -32,7 +34,7 @@ public class UserService {
         List<User> users = userMapper.selectByExample(userExample);
         PageInfo<User> pageInfo = new PageInfo<>(users);
         pageDto.setTotal(pageInfo.getTotal());
-        List<UserDto> userDtoList = CopyUtil.copyList(users, UserDto.class);
+        List<UserInfoDto> userDtoList = CopyUtil.copyList(users, UserInfoDto.class);
         pageDto.setList(userDtoList);
     }
 
@@ -77,7 +79,11 @@ public class UserService {
      */
     private void update(User user){
         user.setLastModifiedDate(new Date());
-        userMapper.updateByPrimaryKey(user);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
+    public UserInfoDto findOneUserDto(Long userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        return ModelMapperUtils.map(user, UserInfoDto.class);
+    }
 }
