@@ -8,8 +8,9 @@ import com.windcoder.qycms.${module}.entity.${Domain}Example;
 import com.windcoder.qycms.${module}.dto.${Domain}Dto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.${module}.repository.mybatis.${Domain}Mapper;
-import com.windcoder.qycms.utils.CopyUtil;
+
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 

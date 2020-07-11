@@ -1,24 +1,55 @@
-package com.windcoder.qycms.system.entity;
+package com.windcoder.qycms.system.dto;
 
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class CommentAgent {
+public class CommentAgentDto {
+
+    /**
+     * id
+     */
     private Long id;
 
+    /**
+     * 评论对象id
+     */
     private Long targetId;
 
+    /**
+     * 评论对象类型
+     */
     private String targetType;
 
+    /**
+     * 评论对象名称
+     */
     private String targetName;
 
-    private Boolean enabled;
+    /**
+     * 是否开启：0不开启， 1开启
+     */
+    private String enabled;
 
+    /**
+     * 创建者
+     */
     private Long createdBy;
 
+    /**
+     * 更新者
+     */
     private Long lastModifiedBy;
 
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdDate;
 
+    /**
+     * 更新时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date lastModifiedDate;
 
     public Long getId() {
@@ -53,11 +84,11 @@ public class CommentAgent {
         this.targetName = targetName;
     }
 
-    public Boolean getEnabled() {
+    public String getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(String enabled) {
         this.enabled = enabled;
     }
 
@@ -93,6 +124,7 @@ public class CommentAgent {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -111,4 +143,6 @@ public class CommentAgent {
         sb.append("]");
         return sb.toString();
     }
+
+
 }

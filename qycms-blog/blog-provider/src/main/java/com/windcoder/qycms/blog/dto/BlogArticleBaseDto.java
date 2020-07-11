@@ -56,6 +56,8 @@ public class BlogArticleBaseDto {
      */
     private Date publishedDate;
 
+    private Long commentAgentId;
+
 
     public Long getId() {
         return id;
@@ -148,5 +150,13 @@ public class BlogArticleBaseDto {
 
     public void setTagStrings(List<String> tagStrings) {
         this.tagStrings = tagStrings;
+    }
+
+    public Long getCommentAgentId() {
+        return commentAgentId;
+    }
+
+    public void setCommentAgentId(Long commentAgentId) {
+        this.commentAgentId = commentAgentId;
     }
 }

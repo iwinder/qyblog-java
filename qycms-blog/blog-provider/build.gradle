@@ -2,6 +2,6 @@ apply plugin: 'eclipse-wtp'
 apply plugin: 'idea'
 
 dependencies {
-//    compile project(':qycms-core:system-provider')
-    compile project(':qycms-core:common')
+    compile project(':qycms-core:system-provider')
+//    compile project(':qycms-core:common')
 }

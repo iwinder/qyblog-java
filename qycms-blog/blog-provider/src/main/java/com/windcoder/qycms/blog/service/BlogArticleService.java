@@ -9,18 +9,20 @@ import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.blog.entity.*;
 import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
-//import com.windcoder.qycms.core.system.entity.User;
+
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper;
-import com.windcoder.qycms.dto.PageDto;
+
 import com.windcoder.qycms.exception.BusinessException;
-import com.windcoder.qycms.utils.CopyUtil;
-//import org.apache.shiro.SecurityUtils;
+import com.windcoder.qycms.system.entity.CommentAgent;
+import com.windcoder.qycms.system.enums.CommenttTargetType;
+import com.windcoder.qycms.system.service.CommentAgentService;
+
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-//import javax.persistence.criteria.Predicate;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +40,8 @@ public class BlogArticleService {
     private BlogCategoryService blogCategoryService;
     @Autowired
     private BlogTagService blogTagService;
+    @Autowired
+    private CommentAgentService commentAgentService;
 
     /**
      * 列表查询
@@ -45,27 +49,10 @@ public class BlogArticleService {
      */
     public void findAll(BlogArticlePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
-//        BlogArticleExample articleExample = new BlogArticleExample();
         List<BlogArticleBaseDto> articles = myBlogArticleMapper.list(pageDto);
         PageInfo<BlogArticleBaseDto> pageInfo = new PageInfo<>(articles);
         pageDto.setTotal(pageInfo.getTotal());
-//        List<BlogArticleBaseDto> userDtoList = CopyUtil.copyList(articles, BlogArticleBaseDto.class);
         pageDto.setList(articles);
-
-
-
-//        return super.findAll((root, query,  cb) -> {
-//            Predicate predicate = cb.equal(root.get("isDeleted"), false);
-//            if(article.getTitle() != null) {
-//                predicate = cb.and(predicate, cb.like( cb.lower(root.get("title")),
-//                        "%"+ StringUtils.trim(article.getTitle()).toLowerCase()+"%" ));
-//            }
-//            if(article.getIsPublished() != null) {
-//                predicate  = cb.and(predicate, cb.equal(root.get("isPublished"),article.getIsPublished()));
-//            }
-//            return predicate;
-//
-//        },pageable);
     }
 
     /**
@@ -77,15 +64,17 @@ public class BlogArticleService {
 //        BlogArticle article = CopyUtil.copy(articleDto, BlogArticle.class);
         List<String> tagsString = articleDto.getTagStrings();
         BlogArticle article = ModelMapperUtils.map(articleDto, BlogArticle.class);
-//        if (null == article.getAuthor()){
+//        if (null == article.getAuthorId()){
 //            User user = (User)  SecurityUtils.getSubject().getPrincipal();
-//            article.setAuthor(user);
-//        }BlogArticle
+//            article.setAuthorId(user);
+//        }
         if (article.getPublished() &&  null == article.getPublishedDate()){
             article.setPublishedDate(new Date());
         }
 
         if (article.getId() == null) {
+            CommentAgent agent = initCommentAgent(article);
+            article.setCommentAgentId(agent.getId());
             this.inster(article);
         } else {
             this.update(article);
@@ -114,7 +103,18 @@ public class BlogArticleService {
         article.setLastModifiedDate(new Date());
         blogArticleMapper.updateByPrimaryKeySelective(article);
     }
+    public CommentAgent initCommentAgent(BlogArticle article) {
+        CommentAgent agent = new CommentAgent();
+        agent.setEnabled(true);
+        agent.setTargetType(CommenttTargetType.ARTICLE.name());
+        agent.setTargetName(article.getTitle());
+        if (article.getId()!=null) {
+            agent.setTargetId(article.getId());
+        }
+        commentAgentService.save(agent);
+        return agent;
 
+    }
     public void saveTags(Long articleId, List<String> tagsString){
         if(tagsString ==null || tagsString.isEmpty()) {
             return;
