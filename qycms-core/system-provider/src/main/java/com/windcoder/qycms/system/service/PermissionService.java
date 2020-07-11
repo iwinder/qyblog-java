@@ -1,32 +1,129 @@
 package com.windcoder.qycms.system.service;
 
-//import org.apache.shiro.SecurityUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import com.windcoder.qycms.system.dto.RoleDto;
+import com.windcoder.qycms.system.entity.Permission;
+import com.windcoder.qycms.system.entity.PermissionExample;
+import com.windcoder.qycms.system.dto.PermissionDto;
+import com.windcoder.qycms.dto.PageDto;
+import com.windcoder.qycms.system.repository.mybatis.MyPermissionMapper;
+import com.windcoder.qycms.system.repository.mybatis.PermissionMapper;
+import com.windcoder.qycms.utils.CopyUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Date;
+
+@Service
+public class PermissionService {
+    @Resource
+    private PermissionMapper permissionMapper;
+    @Autowired
+    private MyPermissionMapper myPermissionMapper;
+
+    /**
+     * 列表查询
+     * @param pageDto
+     */
+    public void list(PageDto pageDto) {
+        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        PermissionExample permissionExample = new PermissionExample();
+        List<PermissionDto> permissions = myPermissionMapper.list();
+        PageInfo<PermissionDto> pageInfo = new PageInfo<>(permissions);
+        pageDto.setTotal(pageInfo.getTotal());
+//        List<PermissionDto> permissionDtoList = CopyUtil.copyList(permissions, PermissionDto.class);
+        pageDto.setList(permissions);
+    }
 
 
-//@Service
-public class PermissionService  {
-//
-//    @Autowired
-//    private RoleService roleService;
-//
-//    public Set<String> findPermissionPrivilegesByUser() {
-////        User user = (User) SecurityUtils.getSubject().getPrincipal();
-////        List<Permission> permissions = this.repository.findByUserId(user.getId());
-//        Set<String> privilegeSet = new HashSet<String>();
-////        if (permissions != null) {
-////            for (Permission permission : permissions) {
-////                if (permission.getRole() != null) {
-////                    Role role = roleService.findOne(permission.getRole().getId());
-////                    if (role != null && role.getPrivileges() != null) {
-////                        role.getPrivileges().forEach(p -> privilegeSet.add(p.getIdentifier()));
-////                    }
-////                } else {
-////                    if (permission.getPrivilege() != null) {
-////                        privilegeSet.add(permission.getPrivilege().getIdentifier());
-////                    }
-////                }
-////            }
-////        }
-//        return privilegeSet;
-//    }
+    /**
+     * 保存，id有值时更新，无值时新增
+     * @param permission
+     */
+    public void save(Permission permission){
+        if (null == permission.getId()) {
+            this.inster(permission);
+        } else {
+            this.update(permission);
+        }
+    }
+
+    /**
+     * 删除
+     * @param ids
+     */
+    public void delete(Long[] ids) {
+        PermissionExample permissionExample = new PermissionExample();
+        permissionExample.createCriteria().andIdIn(Arrays.asList(ids));
+        permissionMapper.deleteByExample(permissionExample);
+    }
+
+    /**
+     * 新增
+     * @param permission
+     */
+    private void inster(Permission permission){
+        Date now = new Date();
+        permission.setCreatedDate(now);
+        permission.setLastModifiedDate(now);
+        permissionMapper.insert(permission);
+    }
+
+    /**
+     * 更新
+     * @param permission
+     */
+    private void update(Permission permission){
+        permission.setLastModifiedDate(new Date());
+        permissionMapper.updateByPrimaryKeySelective(permission);
+    }
+
+    public RoleDto selectRoleByUserId(Long userId) {
+        return myPermissionMapper.selectRoleByUserId(userId);
+    }
+
+
+    public Long selectRoleIdByUserId(Long userId) {
+        PermissionExample permissionExample = new PermissionExample();
+        permissionExample.createCriteria().andUserIdEqualTo(userId).andRoleIdIsNotNull();
+        List<Permission> permissions = permissionMapper.selectByExample(permissionExample);
+        if (permissions.isEmpty()) {
+            return null;
+        }
+
+        return permissions.get(0).getRoleId();
+
+    }
+
+    public List<Permission> selectByUserId(Long userId) {
+        PermissionExample permissionExample = new PermissionExample();
+        permissionExample.createCriteria().andUserIdEqualTo(userId);
+        return permissionMapper.selectByExample(permissionExample);
+    }
+
+    public void updateUserRole(Long userId, Long roleId) {
+        List<Permission> permissions = selectByUserId(userId);
+        if (!permissions.isEmpty()) {
+            Permission oldPermission = permissions.get(0);
+            if (oldPermission.getRoleId().equals(roleId)) {
+                return;
+            }
+            Long[] ids = {oldPermission.getId()};
+            delete(ids);
+        }
+        Permission permission = new Permission();
+        permission.setUserId(userId);
+        permission.setRoleId(roleId);
+        save(permission);
+    }
+
+    public void save(PermissionDto permissionDto) {
+    }
 }

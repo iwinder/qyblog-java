@@ -176,7 +176,7 @@
                         title: '确认删除?',
                         onOk() {
                             console.log('OK');
-                            _this.$axios.delete("${domain}", {data:  ids}).then(res => {
+                            _this.$axios.delete("${domain}/deleted", {data:  ids}).then(res => {
                                 console.log("deleted !res", res);
                                 if(res.data.success) {
                                     _this.$message.success("删除成功",5);

@@ -3,7 +3,9 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.system.dto.RoleDto;
 import com.windcoder.qycms.system.dto.UserInfoDto;
+import com.windcoder.qycms.system.entity.Permission;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.entity.UserExample;
 import com.windcoder.qycms.system.dto.UserDto;
@@ -11,7 +13,9 @@ import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.system.repository.mybatis.UserMapper;
 import com.windcoder.qycms.utils.CopyUtil;
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -23,6 +27,8 @@ import java.util.Date;
 public class UserService {
     @Resource
     private UserMapper userMapper;
+    @Autowired
+    private PermissionService permissionService;
 
     /**
      * 列表查询
@@ -43,13 +49,19 @@ public class UserService {
      * 保存，id有值时更新，无值时新增
      * @param userDto
      */
+    @Transactional
     public void save(UserDto userDto){
-        User user = CopyUtil.copy(userDto, User.class);
+        Long roleId = userDto.getRoleId();
+        User user = ModelMapperUtils.map(userDto, User.class);
         if (null == user.getId()) {
             this.inster(user);
         } else {
             this.update(user);
         }
+        if(roleId!=null) {
+            permissionService.updateUserRole(user.getId(),roleId);
+        }
+
     }
 
     /**
@@ -84,6 +96,9 @@ public class UserService {
 
     public UserInfoDto findOneUserDto(Long userId) {
         User user = userMapper.selectByPrimaryKey(userId);
-        return ModelMapperUtils.map(user, UserInfoDto.class);
+        UserInfoDto userInfo =  ModelMapperUtils.map(user, UserInfoDto.class);
+        Long roleId =  permissionService.selectRoleIdByUserId(userInfo.getId());
+        userInfo.setRoleId(roleId);
+        return userInfo;
     }
 }

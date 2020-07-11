@@ -17,6 +17,8 @@ public class User {
 
     private String avatar;
 
+    private Date disableDate;
+
     private Boolean disable;
 
     private Boolean deleted;
@@ -85,6 +87,14 @@ public class User {
         this.avatar = avatar;
     }
 
+    public Date getDisableDate() {
+        return disableDate;
+    }
+
+    public void setDisableDate(Date disableDate) {
+        this.disableDate = disableDate;
+    }
+
     public Boolean getDisable() {
         return disable;
     }
@@ -146,6 +156,7 @@ public class User {
         sb.append(", salt=").append(salt);
         sb.append(", email=").append(email);
         sb.append(", avatar=").append(avatar);
+        sb.append(", disableDate=").append(disableDate);
         sb.append(", disable=").append(disable);
         sb.append(", deleted=").append(deleted);
         sb.append(", createdBy=").append(createdBy);

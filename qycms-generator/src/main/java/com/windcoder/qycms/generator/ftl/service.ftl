@@ -9,10 +9,12 @@ import com.windcoder.qycms.${module}.dto.${Domain}Dto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.${module}.repository.mybatis.${Domain}Mapper;
 import com.windcoder.qycms.utils.CopyUtil;
+import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 <#list typeSet as type>
@@ -41,7 +43,8 @@ public class ${Domain}Service {
         List<${Domain}> ${domain}s = ${domain}Mapper.selectByExample(${domain}Example);
         PageInfo<${Domain}> pageInfo = new PageInfo<>(${domain}s);
         pageDto.setTotal(pageInfo.getTotal());
-        List<${Domain}Dto> ${domain}DtoList = CopyUtil.copyList(${domain}s, ${Domain}Dto.class);
+        Type type = new TypeToken<List<${Domain}>>() {}.getType();
+        List<${Domain}Dto> ${domain}DtoList = ModelMapperUtils.map(${domain}s, type);
         pageDto.setList(${domain}DtoList);
     }
 
@@ -51,7 +54,7 @@ public class ${Domain}Service {
      * @param ${domain}Dto
      */
     public void save(${Domain}Dto ${domain}Dto){
-        ${Domain} ${domain} = CopyUtil.copy(${domain}Dto, ${Domain}.class);
+        ${Domain} ${domain} = ModelMapperUtils.map(${domain}Dto, ${Domain}.class);
         if (null == ${domain}.getId()) {
             this.inster(${domain});
         } else {
@@ -100,7 +103,7 @@ public class ${Domain}Service {
         ${domain}.setLastModifiedDate(new Date());
             </#if>
         </#list>
-        ${domain}Mapper.updateByPrimaryKey(${domain});
+        ${domain}Mapper.updateByPrimaryKeySelective(${domain});
     }
 
 }

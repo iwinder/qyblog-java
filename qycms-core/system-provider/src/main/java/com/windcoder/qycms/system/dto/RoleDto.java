@@ -1,22 +1,50 @@
-package com.windcoder.qycms.system.entity;
+package com.windcoder.qycms.system.dto;
 
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class Role {
+public class RoleDto {
+
+    /**
+     * id
+     */
     private Long id;
 
+    /**
+     * 名称
+     */
     private String name;
 
+    /**
+     * 角色类型
+     */
     private String roleType;
 
+    /**
+     * 备注
+     */
     private String remark;
 
+    /**
+     * 创建者
+     */
     private Long createdBy;
 
+    /**
+     * 更新者
+     */
     private Long lastModifiedBy;
 
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdDate;
 
+    /**
+     * 更新时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date lastModifiedDate;
 
     public Long getId() {
@@ -83,6 +111,7 @@ public class Role {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -100,4 +129,6 @@ public class Role {
         sb.append("]");
         return sb.toString();
     }
+
+
 }

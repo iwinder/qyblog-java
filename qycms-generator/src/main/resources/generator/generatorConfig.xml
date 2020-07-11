@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--<!DOCTYPE generatorConfiguration-->
-<!--        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"-->
-<!--        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">-->
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
     <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
@@ -18,9 +18,10 @@
         <!-- 生成的实体类添加toString()方法 -->
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
 
-        <!-- 不生成注释 -->
+
         <commentGenerator>
-            <property name="suppressAllComments" value="true"/>
+            <!-- 不生成注释 -->
+<!--            <property name="suppressAllComments" value="true"/>-->
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
@@ -44,12 +45,23 @@
 
 
 
-<!--                <table tableName="sys_user" domainObjectName="User">-->
-<!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
-<!--                </table>      -->
-            <table tableName="sys_privilege" domainObjectName="Privilege">
+                <table tableName="sns_comment_agent" domainObjectName="CommentAgent">
                     <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
                 </table>
+<!--                <table tableName="sys_user" domainObjectName="User">-->
+<!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--                </table>-->
+<!--            <table tableName="sys_privilege" domainObjectName="Privilege">-->
+<!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--            </table> -->
+<!--            <table tableName="sys_role" domainObjectName="Role">-->
+<!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--            </table>    -->
+<!--            <table tableName="sys_role_privilege" domainObjectName="RolePrivilege">-->
+<!--            </table>-->
+<!--            <table tableName="sys_permission" domainObjectName="Permission">-->
+<!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--            </table>-->
         <!--   Blog模块     -->
 <!--        <table tableName="blog_article" domainObjectName="BlogArticle">-->
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->

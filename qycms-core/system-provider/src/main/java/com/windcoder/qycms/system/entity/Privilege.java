@@ -1,32 +1,33 @@
 package com.windcoder.qycms.system.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
-/**
- * Description: 权限
- * User: WindCoder
- * Date: 2018-04-15
- * Time: 18:36 下午
- */
+public class Privilege {
+    private Long id;
 
-public class Privilege extends Auditable{
+    private String name;
 
-    private Long id; //编号
-    private String name; //资源名称
-    private String url; //资源路径
-    private String type;//类型
-    private String description;//界面UI显示字段
-    private String identifier; //权限字符串
-    private Privilege parent;
+    private String url;
 
-    private Set<Privilege> children = new HashSet<Privilege>();
+    private String description;
 
-    private Boolean isHide;//是否隐藏
-//    private String parentIds; //父编号列表
+    private String identifier;
 
-    private Boolean isAvailable; //是否可用,如果不可用将不会添加给用户
+    private Boolean availabled;
 
+    private Boolean hided;
+
+    private Long parentId;
+
+    private String type;
+
+    private Long createdBy;
+
+    private Long lastModifiedBy;
+
+    private Date createdDate;
+
+    private Date lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -52,14 +53,6 @@ public class Privilege extends Auditable{
         this.url = url;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -76,35 +69,90 @@ public class Privilege extends Auditable{
         this.identifier = identifier;
     }
 
-    public Privilege getParent() {
-        return parent;
+    public Boolean getAvailabled() {
+        return availabled;
     }
 
-    public void setParent(Privilege parent) {
-        this.parent = parent;
+    public void setAvailabled(Boolean availabled) {
+        this.availabled = availabled;
     }
 
-    public Set<Privilege> getChildren() {
-        return children;
+    public Boolean getHided() {
+        return hided;
     }
 
-    public void setChildren(Set<Privilege> children) {
-        this.children = children;
+    public void setHided(Boolean hided) {
+        this.hided = hided;
     }
 
-    public Boolean getIsHide() {
-        return isHide;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setIsHide(Boolean isHide) {
-        this.isHide = isHide;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
-    public Boolean getIsAvailable() {
-        return this.isAvailable;
+    public String getType() {
+        return type;
     }
 
-    public void setIsAvailable(Boolean available) {
-        this.isAvailable = available;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Long getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(Long lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", url=").append(url);
+        sb.append(", description=").append(description);
+        sb.append(", identifier=").append(identifier);
+        sb.append(", availabled=").append(availabled);
+        sb.append(", hided=").append(hided);
+        sb.append(", parentId=").append(parentId);
+        sb.append(", type=").append(type);
+        sb.append(", createdBy=").append(createdBy);
+        sb.append(", lastModifiedBy=").append(lastModifiedBy);
+        sb.append(", createdDate=").append(createdDate);
+        sb.append(", lastModifiedDate=").append(lastModifiedDate);
+        sb.append("]");
+        return sb.toString();
     }
 }

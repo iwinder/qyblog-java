@@ -1,43 +1,54 @@
 package com.windcoder.qycms.system.dto;
 
+import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Date;
+public class PrivilegeDto {
 
-public class UserInfoDto {
     /**
      * id
      */
     private Long id;
 
     /**
-     * 用户名
+     * 资源名称
      */
-    private String username;
+    private String name;
 
     /**
-     * 昵称
+     * 资源路径
      */
-    private String nickname;
-
-
+    private String url;
 
     /**
-     * 邮箱
+     * 描述，界面UI显示字段
      */
-    private String email;
+    private String description;
 
     /**
-     * 用户头像
+     * 权限字符串
      */
-    private String avatar;
+    private String identifier;
 
     /**
-     * 是否禁用：0不禁用， 1 禁用
+     * 是否可用,如果不可用将不会添加给用户 0 不可用，1 可用
      */
-    private Boolean disable;
+    private String availabled;
 
+    /**
+     * 是否隐藏, 0 不隐藏，1 隐藏
+     */
+    private String hided;
 
+    /**
+     * 父级 id
+     */
+    private Long parentId;
+
+    /**
+     * 类型
+     */
+    private String type;
 
     /**
      * 创建者
@@ -61,9 +72,6 @@ public class UserInfoDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date lastModifiedDate;
 
-    private RoleDto role;
-    private Long roleId;
-
     public Long getId() {
         return id;
     }
@@ -72,47 +80,69 @@ public class UserInfoDto {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getUrl() {
+        return url;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-
-    public String getEmail() {
-        return email;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
-    public Boolean getDisable() {
-        return disable;
+    public String getAvailabled() {
+        return availabled;
     }
 
-    public void setDisable(Boolean disable) {
-        this.disable = disable;
+    public void setAvailabled(String availabled) {
+        this.availabled = availabled;
     }
 
+    public String getHided() {
+        return hided;
+    }
+
+    public void setHided(String hided) {
+        this.hided = hided;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public Long getCreatedBy() {
         return createdBy;
@@ -146,21 +176,6 @@ public class UserInfoDto {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public RoleDto getRole() {
-        return role;
-    }
-
-    public void setRole(RoleDto role) {
-        this.role = role;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
 
     @Override
     public String toString() {
@@ -169,11 +184,14 @@ public class UserInfoDto {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", username=").append(username);
-        sb.append(", nickname=").append(nickname);
-        sb.append(", email=").append(email);
-        sb.append(", avatar=").append(avatar);
-        sb.append(", disable=").append(disable);
+        sb.append(", name=").append(name);
+        sb.append(", url=").append(url);
+        sb.append(", description=").append(description);
+        sb.append(", identifier=").append(identifier);
+        sb.append(", availabled=").append(availabled);
+        sb.append(", hided=").append(hided);
+        sb.append(", parentId=").append(parentId);
+        sb.append(", type=").append(type);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);
         sb.append(", createdDate=").append(createdDate);
@@ -181,5 +199,6 @@ public class UserInfoDto {
         sb.append("]");
         return sb.toString();
     }
+
 
 }

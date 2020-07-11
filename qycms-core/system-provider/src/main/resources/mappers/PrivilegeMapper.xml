@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.windcoder.qycms.system.repository.mybatis.UserMapper">
-  <resultMap id="BaseResultMap" type="com.windcoder.qycms.system.entity.User">
+<mapper namespace="com.windcoder.qycms.system.repository.mybatis.PrivilegeMapper">
+  <resultMap id="BaseResultMap" type="com.windcoder.qycms.system.entity.Privilege">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="salt" jdbcType="VARCHAR" property="salt" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-    <result column="disable_date" jdbcType="TIMESTAMP" property="disableDate" />
-    <result column="disable" jdbcType="BIT" property="disable" />
-    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="identifier" jdbcType="VARCHAR" property="identifier" />
+    <result column="availabled" jdbcType="BIT" property="availabled" />
+    <result column="hided" jdbcType="BIT" property="hided" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="created_by" jdbcType="BIGINT" property="createdBy" />
     <result column="last_modified_by" jdbcType="BIGINT" property="lastModifiedBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
@@ -76,16 +75,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username, nickname, `password`, salt, email, avatar, disable_date, `disable`, 
-    deleted, created_by, last_modified_by, created_date, last_modified_date
+    id, `name`, url, description, identifier, availabled, hided, parent_id, `type`, created_by, 
+    last_modified_by, created_date, last_modified_date
   </sql>
-  <select id="selectByExample" parameterType="com.windcoder.qycms.system.entity.UserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.windcoder.qycms.system.entity.PrivilegeExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from sys_user
+    from sys_privilege
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -96,66 +95,63 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from sys_user
+    from sys_privilege
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from sys_user
+    delete from sys_privilege
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.windcoder.qycms.system.entity.UserExample">
-    delete from sys_user
+  <delete id="deleteByExample" parameterType="com.windcoder.qycms.system.entity.PrivilegeExample">
+    delete from sys_privilege
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.windcoder.qycms.system.entity.User">
+  <insert id="insert" parameterType="com.windcoder.qycms.system.entity.Privilege">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sys_user (username, nickname, `password`, 
-      salt, email, avatar, 
-      disable_date, `disable`, deleted, 
-      created_by, last_modified_by, created_date, 
-      last_modified_date)
-    values (#{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{salt,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
-      #{disableDate,jdbcType=TIMESTAMP}, #{disable,jdbcType=BIT}, #{deleted,jdbcType=BIT}, 
-      #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
-      #{lastModifiedDate,jdbcType=TIMESTAMP})
+    insert into sys_privilege (`name`, url, description, 
+      identifier, availabled, hided, 
+      parent_id, `type`, created_by, 
+      last_modified_by, created_date, last_modified_date
+      )
+    values (#{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{identifier,jdbcType=VARCHAR}, #{availabled,jdbcType=BIT}, #{hided,jdbcType=BIT}, 
+      #{parentId,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{createdBy,jdbcType=BIGINT}, 
+      #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.windcoder.qycms.system.entity.User">
+  <insert id="insertSelective" parameterType="com.windcoder.qycms.system.entity.Privilege">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sys_user
+    insert into sys_privilege
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="username != null">
-        username,
+      <if test="name != null">
+        `name`,
       </if>
-      <if test="nickname != null">
-        nickname,
+      <if test="url != null">
+        url,
       </if>
-      <if test="password != null">
-        `password`,
+      <if test="description != null">
+        description,
       </if>
-      <if test="salt != null">
-        salt,
+      <if test="identifier != null">
+        identifier,
       </if>
-      <if test="email != null">
-        email,
+      <if test="availabled != null">
+        availabled,
       </if>
-      <if test="avatar != null">
-        avatar,
+      <if test="hided != null">
+        hided,
       </if>
-      <if test="disableDate != null">
-        disable_date,
+      <if test="parentId != null">
+        parent_id,
       </if>
-      <if test="disable != null">
-        `disable`,
-      </if>
-      <if test="deleted != null">
-        deleted,
+      <if test="type != null">
+        `type`,
       </if>
       <if test="createdBy != null">
         created_by,
@@ -171,32 +167,29 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
-        #{nickname,jdbcType=VARCHAR},
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
       </if>
-      <if test="salt != null">
-        #{salt,jdbcType=VARCHAR},
+      <if test="identifier != null">
+        #{identifier,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
+      <if test="availabled != null">
+        #{availabled,jdbcType=BIT},
       </if>
-      <if test="avatar != null">
-        #{avatar,jdbcType=VARCHAR},
+      <if test="hided != null">
+        #{hided,jdbcType=BIT},
       </if>
-      <if test="disableDate != null">
-        #{disableDate,jdbcType=TIMESTAMP},
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="disable != null">
-        #{disable,jdbcType=BIT},
-      </if>
-      <if test="deleted != null">
-        #{deleted,jdbcType=BIT},
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         #{createdBy,jdbcType=BIGINT},
@@ -212,44 +205,41 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.windcoder.qycms.system.entity.UserExample" resultType="java.lang.Long">
-    select count(*) from sys_user
+  <select id="countByExample" parameterType="com.windcoder.qycms.system.entity.PrivilegeExample" resultType="java.lang.Long">
+    select count(*) from sys_privilege
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update sys_user
+    update sys_privilege
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.username != null">
-        username = #{record.username,jdbcType=VARCHAR},
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.nickname != null">
-        nickname = #{record.nickname,jdbcType=VARCHAR},
+      <if test="record.url != null">
+        url = #{record.url,jdbcType=VARCHAR},
       </if>
-      <if test="record.password != null">
-        `password` = #{record.password,jdbcType=VARCHAR},
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.salt != null">
-        salt = #{record.salt,jdbcType=VARCHAR},
+      <if test="record.identifier != null">
+        identifier = #{record.identifier,jdbcType=VARCHAR},
       </if>
-      <if test="record.email != null">
-        email = #{record.email,jdbcType=VARCHAR},
+      <if test="record.availabled != null">
+        availabled = #{record.availabled,jdbcType=BIT},
       </if>
-      <if test="record.avatar != null">
-        avatar = #{record.avatar,jdbcType=VARCHAR},
+      <if test="record.hided != null">
+        hided = #{record.hided,jdbcType=BIT},
       </if>
-      <if test="record.disableDate != null">
-        disable_date = #{record.disableDate,jdbcType=TIMESTAMP},
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=BIGINT},
       </if>
-      <if test="record.disable != null">
-        `disable` = #{record.disable,jdbcType=BIT},
-      </if>
-      <if test="record.deleted != null">
-        deleted = #{record.deleted,jdbcType=BIT},
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.createdBy != null">
         created_by = #{record.createdBy,jdbcType=BIGINT},
@@ -269,17 +259,16 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update sys_user
+    update sys_privilege
     set id = #{record.id,jdbcType=BIGINT},
-      username = #{record.username,jdbcType=VARCHAR},
-      nickname = #{record.nickname,jdbcType=VARCHAR},
-      `password` = #{record.password,jdbcType=VARCHAR},
-      salt = #{record.salt,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR},
-      avatar = #{record.avatar,jdbcType=VARCHAR},
-      disable_date = #{record.disableDate,jdbcType=TIMESTAMP},
-      `disable` = #{record.disable,jdbcType=BIT},
-      deleted = #{record.deleted,jdbcType=BIT},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      identifier = #{record.identifier,jdbcType=VARCHAR},
+      availabled = #{record.availabled,jdbcType=BIT},
+      hided = #{record.hided,jdbcType=BIT},
+      parent_id = #{record.parentId,jdbcType=BIGINT},
+      `type` = #{record.type,jdbcType=VARCHAR},
       created_by = #{record.createdBy,jdbcType=BIGINT},
       last_modified_by = #{record.lastModifiedBy,jdbcType=BIGINT},
       created_date = #{record.createdDate,jdbcType=TIMESTAMP},
@@ -288,35 +277,32 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.windcoder.qycms.system.entity.User">
-    update sys_user
+  <update id="updateByPrimaryKeySelective" parameterType="com.windcoder.qycms.system.entity.Privilege">
+    update sys_privilege
     <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
-        nickname = #{nickname,jdbcType=VARCHAR},
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        `password` = #{password,jdbcType=VARCHAR},
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
       </if>
-      <if test="salt != null">
-        salt = #{salt,jdbcType=VARCHAR},
+      <if test="identifier != null">
+        identifier = #{identifier,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
+      <if test="availabled != null">
+        availabled = #{availabled,jdbcType=BIT},
       </if>
-      <if test="avatar != null">
-        avatar = #{avatar,jdbcType=VARCHAR},
+      <if test="hided != null">
+        hided = #{hided,jdbcType=BIT},
       </if>
-      <if test="disableDate != null">
-        disable_date = #{disableDate,jdbcType=TIMESTAMP},
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="disable != null">
-        `disable` = #{disable,jdbcType=BIT},
-      </if>
-      <if test="deleted != null">
-        deleted = #{deleted,jdbcType=BIT},
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=BIGINT},
@@ -333,17 +319,16 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.windcoder.qycms.system.entity.User">
-    update sys_user
-    set username = #{username,jdbcType=VARCHAR},
-      nickname = #{nickname,jdbcType=VARCHAR},
-      `password` = #{password,jdbcType=VARCHAR},
-      salt = #{salt,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      avatar = #{avatar,jdbcType=VARCHAR},
-      disable_date = #{disableDate,jdbcType=TIMESTAMP},
-      `disable` = #{disable,jdbcType=BIT},
-      deleted = #{deleted,jdbcType=BIT},
+  <update id="updateByPrimaryKey" parameterType="com.windcoder.qycms.system.entity.Privilege">
+    update sys_privilege
+    set `name` = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      identifier = #{identifier,jdbcType=VARCHAR},
+      availabled = #{availabled,jdbcType=BIT},
+      hided = #{hided,jdbcType=BIT},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=BIGINT},
       last_modified_by = #{lastModifiedBy,jdbcType=BIGINT},
       created_date = #{createdDate,jdbcType=TIMESTAMP},

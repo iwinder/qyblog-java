@@ -41,14 +41,20 @@ public class UserDto {
     private String avatar;
 
     /**
+     * 禁用时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date disableDate;
+
+    /**
      * 是否禁用：0不禁用， 1 禁用
      */
-    private Boolean disable;
+    private String disable;
 
     /**
      * 是否删除：0不删除， 1 删除
      */
-    private Boolean deleted;
+    private String deleted;
 
     /**
      * 创建者
@@ -71,6 +77,8 @@ public class UserDto {
      */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date lastModifiedDate;
+
+    private Long roleId;
 
     public Long getId() {
         return id;
@@ -128,19 +136,27 @@ public class UserDto {
         this.avatar = avatar;
     }
 
-    public Boolean getDisable() {
+    public Date getDisableDate() {
+        return disableDate;
+    }
+
+    public void setDisableDate(Date disableDate) {
+        this.disableDate = disableDate;
+    }
+
+    public String getDisable() {
         return disable;
     }
 
-    public void setDisable(Boolean disable) {
+    public void setDisable(String disable) {
         this.disable = disable;
     }
 
-    public Boolean getDeleted() {
+    public String getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(String deleted) {
         this.deleted = deleted;
     }
 
@@ -176,6 +192,13 @@ public class UserDto {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
 
     @Override
     public String toString() {
@@ -190,12 +213,14 @@ public class UserDto {
         sb.append(", salt=").append(salt);
         sb.append(", email=").append(email);
         sb.append(", avatar=").append(avatar);
+        sb.append(", disableDate=").append(disableDate);
         sb.append(", disable=").append(disable);
         sb.append(", deleted=").append(deleted);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);
         sb.append(", createdDate=").append(createdDate);
         sb.append(", lastModifiedDate=").append(lastModifiedDate);
+        sb.append(", roleId=").append(roleId);
         sb.append("]");
         return sb.toString();
     }

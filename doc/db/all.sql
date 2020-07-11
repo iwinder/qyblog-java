@@ -1,3 +1,6 @@
+
+SET FOREIGN_KEY_CHECKS = 0;
+SET AUTOCOMMIT = 0;
 -- 用户
 drop table if exists `sys_user`;
 create table `sys_user` (
@@ -8,6 +11,7 @@ create table `sys_user` (
   `salt` varchar(50) comment '盐值',
   `email` varchar(255) comment '邮箱',
   `avatar` varchar(255) comment '用户头像',
+  `disable_date` datetime DEFAULT null comment '禁用时间',
   `disable` bit(1) DEFAULT b'0' comment '是否禁用：0不禁用， 1 禁用',
   `deleted` bit(1) DEFAULT b'0' comment '是否删除：0不删除， 1 删除',
   `created_by` bigint(20)   comment '创建者',
@@ -20,6 +24,9 @@ create table `sys_user` (
 ) engine=innodb default charset=utf8mb4 comment='用户';
 # INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `email`, `deleted`, `disable`, `nickname`, `password`, `salt`, `username`, `created_by`, `last_modified_by`) VALUES (1, '2018-9-7 03:14:53', '2018-11-4 03:58:11', '/content/upload/2018/11/04/e246ba56-81aa-4226-8189-cc2d10ccd56a.jpg', '1@qq.com', 0, 0, '测试', 'e68b0a6751860afed4938951be1ef002ee697d04', 'b8314a417d4037731ad10f92c25dc911fad829094a22', 'admin', 1, 1);
 INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `email`, `deleted`, `disable`, `nickname`, `password`, `salt`, `username`, `created_by`, `last_modified_by`) VALUES (1, now(), now(), '/content/upload/2018/11/04/e246ba56-81aa-4226-8189-cc2d10ccd56a.jpg', '1@qq.com', 0, 0, '测试', 'e68b0a6751860afed4938951be1ef002ee697d04', 'b8314a417d4037731ad10f92c25dc911fad829094a22', 'admin', 1, 1);
+
+
+
 
 select min(id) into @v_system_user_id from sys_user;
 
@@ -186,7 +193,7 @@ Insert into sys_privilege (IDENTIFIER,NAME,description,PARENT_ID) values ('BLOG:
 
 
 
--- qycmsdev.sys_role definition
+-- 角色
 drop table if exists `sys_role`;
 CREATE TABLE `sys_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
@@ -204,7 +211,7 @@ CREATE TABLE `sys_role` (
 Insert into sys_role (ID,NAME,ROLE_TYPE,CREATED_BY,LAST_MODIFIED_BY) values (@v_superuser_role_id,'超级管理员','SYSTEM',@v_system_user_id,@v_system_user_id);
 
 
--- qycmsdev.sys_role_privilege definition
+-- 角色-权限
 drop table if exists `sys_role_privilege`;
 CREATE TABLE `sys_role_privilege` (
   `role_id` bigint(20) NOT NULL comment '角色id',
@@ -220,10 +227,10 @@ insert into sys_role_privilege (role_id, privilege_id)
 select @v_superuser_role_id as role_id, p.id as privilege_id from sys_privilege p;
 
 
--- qycmsdev.sys_privilege definition
+-- 授权
 drop table if exists `sys_permission`;
 CREATE TABLE `sys_permission` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT  comment 'id',
   `user_id` bigint(20) DEFAULT NULL comment '用户',
   `role_id` bigint(20) DEFAULT NULL comment '角色',
   `privilege_id` bigint(20) DEFAULT NULL comment '权限',
@@ -241,3 +248,55 @@ CREATE TABLE `sys_permission` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='授权表';
 # select min(id) into @v_system_user_id from sys_user;
 Insert into sys_permission (CREATED_BY,LAST_MODIFIED_BY,PRIVILEGE_ID,ROLE_ID,USER_ID) values (@v_system_user_id,@v_system_user_id,null,@v_superuser_role_id,@v_system_user_id);
+
+
+-- qycmsdev.sns_comment_agent definition
+drop table if exists `sns_comment_agent`;
+CREATE TABLE `sns_comment_agent` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
+  `target_id` bigint(20) DEFAULT NULL comment '评论对象id',
+  `target_type` varchar(255) DEFAULT NULL comment '评论对象类型',
+  `target_name` varchar(255) DEFAULT NULL comment '评论对象名称',
+   `enabled` bit(1) DEFAULT b'1' comment '是否开启：0不开启， 1开启',
+  `created_by` bigint(20) DEFAULT null comment '创建者',
+  `last_modified_by` bigint(20) DEFAULT NULL comment '更新者',
+  `created_date` datetime DEFAULT now() comment '创建时间',
+  `last_modified_date` datetime DEFAULT now() comment '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sns_comment_agent_UN` (`target_id`,`target_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='评论包装表';
+
+
+
+-- qycmsdev.sns_comment definition
+drop table if exists `sns_comment`;
+CREATE TABLE `sns_comment` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
+  `agent` varchar(255) DEFAULT NULL comment '评论者客户端',
+  `author_name` varchar(255) DEFAULT NULL  comment '评论者用户名',
+  `author_email` varchar(255) DEFAULT NULL comment '评论者邮箱',
+  `author_ip` varchar(255) DEFAULT NULL comment '评论者ip',
+  `author_url` varchar(255) DEFAULT NULL comment '评论者网址',
+  `content` longtext  comment '内容',
+  `status` varchar(255) DEFAULT 'APPLIED'  comment '评论状态',
+  `target_id` bigint(20) DEFAULT NULL comment '评论代理',
+  `depth` int(11) DEFAULT NULL comment '评论层级',
+  `parent_id` bigint(20) DEFAULT NULL comment '父评论',
+  `user_id` bigint(20) DEFAULT 0 comment '用户id, 0 游客',
+  `top_parent_id` bigint(20) DEFAULT NULL comment '根回复',
+  `created_date` datetime DEFAULT now() comment '创建时间',
+  `last_modified_date` datetime DEFAULT now() comment '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `FKhx4nrk2kessc0qfc7i3n9kt5u` (`parent_id`),
+  KEY `FK5fdxbmdylnf81xn1iu12ac9i2` (`target_id`),
+  KEY `FKdjdspxwjo7efjfxqrryds8phs` (`top_parent_id`),
+  CONSTRAINT `FK5fdxbmdylnf81xn1iu12ac9i2` FOREIGN KEY (`target_id`) REFERENCES `sns_comment_agent` (`id`),
+  CONSTRAINT `FKdjdspxwjo7efjfxqrryds8phs` FOREIGN KEY (`top_parent_id`) REFERENCES `sns_comment` (`id`),
+  CONSTRAINT `FKhx4nrk2kessc0qfc7i3n9kt5u` FOREIGN KEY (`parent_id`) REFERENCES `sns_comment` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
+
+commit;
+-- end;
+
+SET FOREIGN_KEY_CHECKS = 1;
+SET AUTOCOMMIT = 1;

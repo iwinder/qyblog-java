@@ -19,9 +19,9 @@ public class GeneratorPathUtils {
     // VUE
     static final String TO_VUE_BASE_PATH = "/home/wind/work/Web/qyblog-web/";
 //    public static  String VUE_MODULE = "category";
-//    static final String TO_VUE_CONSOLE_PROJECT = TO_VUE_BASE_PATH +"qy-console/pages/";
-
     public static  String VUE_MODULE = "user";
+//    public static  String VUE_MODULE = "role";
+//    public static  String VUE_MODULE = "permission";
     public static final String TO_VUE_CONSOLE_PROJECT = TO_VUE_BASE_PATH +"qy-console/pages/";
 
 
