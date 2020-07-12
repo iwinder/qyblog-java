@@ -167,6 +167,7 @@ public class ShiroConfiguration {
      * redisProperties会自动读取application.properties中关于redis的配置
      * @return
      */
+    @Bean
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(redisProperties.getHost() +":" + redisProperties.getPort());
@@ -181,9 +182,9 @@ public class ShiroConfiguration {
      * @return
      */
     @Bean("shiroRedisCacheManager")
-    public CacheManager cacheManager() {
+    public CacheManager cacheManager(RedisManager redisManager) {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
-        redisCacheManager.setRedisManager(redisManager());
+        redisCacheManager.setRedisManager(redisManager);
         return redisCacheManager;
     }
 
