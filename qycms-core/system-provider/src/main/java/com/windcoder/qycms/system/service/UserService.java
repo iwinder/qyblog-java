@@ -101,4 +101,15 @@ public class UserService {
         userInfo.setRoleId(roleId);
         return userInfo;
     }
+
+    public User findByUsername(String username) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUsernameEqualTo(username);
+        List<User> users = userMapper.selectByExample(userExample);
+        if (users.isEmpty()) {
+            return null;
+        }
+        return users.get(0);
+
+    }
 }

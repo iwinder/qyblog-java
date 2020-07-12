@@ -9,4 +9,5 @@ import java.util.List;
 public interface MyPermissionMapper {
     List<PermissionDto> list();
     RoleDto selectRoleByUserId(@Param("userId") Long userId);
+    List<String> selectRoleNamesByUserId(@Param("userId") Long userId);
 }

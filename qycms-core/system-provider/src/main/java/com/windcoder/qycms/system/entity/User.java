@@ -166,4 +166,8 @@ public class User {
         sb.append("]");
         return sb.toString();
     }
+
+    public String getCredentialsSalt() {
+        return username + salt;
+    }
 }

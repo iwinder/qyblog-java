@@ -80,4 +80,7 @@ public class PrivilegeService {
         privilegeMapper.updateByPrimaryKeySelective(privilege);
     }
 
+    public Privilege getOne(Long privilegeId) {
+        return privilegeMapper.selectByPrimaryKey(privilegeId);
+    }
 }

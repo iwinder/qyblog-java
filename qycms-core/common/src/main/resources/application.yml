@@ -22,18 +22,18 @@ spring:
 #    password: ENC(f+2+aW4Po3YqeQkXaccinw==)
     username: winder
     password: 123456
-#  redis:
-#    host: ENC(rG1SHAuACXH9wyROdhBQ3+9X8V9DfrnF)
-#    password: ENC(r3PQ/cWSpANfTq6l1UobIav/+OLwy1uV)
-#    port: 6380
-#    database: 8
-#    timeout: 300
-#    lettuce:
-#      pool:
-#        max-idle: 30
-#        max-active: 8
-#        max-wait: 300
-#        min-idle: 10
+  redis:
+    host: ENC(e/prl+7EXAa9PmwCfoE1a0TP8LrSrfaCSgjwFMQreEYczuxSBdMuEsHtXDgCjSzL)
+    password: ENC(j6n3ISryjfYIBLhG9SWIb6Vah2jySJ4zwypGVE2dl0ilm36KwUzpQqiwf/ST6BJ3)
+    port: 6380
+    database: 8
+    timeout: 300
+    lettuce:
+      pool:
+        max-idle: 30
+        max-active: 8
+        max-wait: 300
+        min-idle: 10
 
 # mybatis
 mybatis:
@@ -47,9 +47,9 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 #配置数据源加密的密钥
-#jasypt:
-#  encryptor:
-#    password: windcoderAdmin
+jasypt:
+  encryptor:
+    password: windcoderAdmin
 #用于控制mybatis打印sql，生产环境应更改为ERROR级别
 logging:
   level:

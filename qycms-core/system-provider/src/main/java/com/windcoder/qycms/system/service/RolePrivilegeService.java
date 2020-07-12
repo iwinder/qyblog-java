@@ -7,19 +7,25 @@ import com.windcoder.qycms.system.entity.RolePrivilege;
 import com.windcoder.qycms.system.entity.RolePrivilegeExample;
 import com.windcoder.qycms.system.dto.RolePrivilegeDto;
 import com.windcoder.qycms.dto.PageDto;
+import com.windcoder.qycms.system.repository.mybatis.MyRolePrivilegeMapper;
 import com.windcoder.qycms.system.repository.mybatis.RolePrivilegeMapper;
 import com.windcoder.qycms.utils.CopyUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RolePrivilegeService {
     @Resource
     private RolePrivilegeMapper rolePrivilegeMapper;
+    @Autowired
+    private MyRolePrivilegeMapper myRolePrivilegeMapper;
+
 
     /**
      * 列表查询
@@ -73,6 +79,11 @@ public class RolePrivilegeService {
      */
     private void update(RolePrivilege rolePrivilege){
 //        rolePrivilegeMapper.updateByPrimaryKey(rolePrivilege);
+    }
+
+
+    public Set<String> selectPrivilegeIdentifierListByRoleId(Long roleId) {
+        return myRolePrivilegeMapper.selectPrivilegeIdentifierListByRoleId(roleId);
     }
 
 }

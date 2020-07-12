@@ -8,6 +8,8 @@ import com.windcoder.qycms.system.entity.Permission;
 import com.windcoder.qycms.system.entity.PermissionExample;
 import com.windcoder.qycms.system.dto.PermissionDto;
 import com.windcoder.qycms.dto.PageDto;
+import com.windcoder.qycms.system.entity.Privilege;
+import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.repository.mybatis.MyPermissionMapper;
 import com.windcoder.qycms.system.repository.mybatis.PermissionMapper;
 import com.windcoder.qycms.utils.CopyUtil;
@@ -16,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class PermissionService {
@@ -27,6 +26,10 @@ public class PermissionService {
     private PermissionMapper permissionMapper;
     @Autowired
     private MyPermissionMapper myPermissionMapper;
+    @Autowired
+    private RolePrivilegeService rolePrivilegeService;
+    @Autowired
+    private PrivilegeService privilegeService;
 
     /**
      * 列表查询
@@ -125,5 +128,31 @@ public class PermissionService {
     }
 
     public void save(PermissionDto permissionDto) {
+    }
+
+    public Set<String> findPermissionPrivilegesByUser(User user) {
+        List<Permission> permissions = selectByUserId(user.getId());
+        Set<String> privilegeSet = new HashSet<String>();
+        Set<String> tmpSet = new HashSet<String>();
+        Privilege privilege = new Privilege();
+        if (permissions != null) {
+            for (Permission permission : permissions) {
+                if (permission.getRoleId() != null) {
+                    tmpSet = rolePrivilegeService.selectPrivilegeIdentifierListByRoleId(permission.getRoleId());
+                    tmpSet.forEach(p -> privilegeSet.add(p));
+                } else {
+
+                    if (permission.getPrivilegeId() != null) {
+                        privilege =  privilegeService.getOne(permission.getPrivilegeId());
+                        privilegeSet.add(privilege.getIdentifier());
+                    }
+                }
+            }
+        }
+        return privilegeSet;
+    }
+
+    public List<String> findPermissionRolesOfUser(User user) {
+        return myPermissionMapper.selectRoleNamesByUserId(user.getId());
     }
 }
