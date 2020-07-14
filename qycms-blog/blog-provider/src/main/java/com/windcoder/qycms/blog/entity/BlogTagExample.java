@@ -235,6 +235,76 @@ public class BlogTagExample {
             return (Criteria) this;
         }
 
+        public Criteria andIdentifierIsNull() {
+            addCriterion("identifier is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierIsNotNull() {
+            addCriterion("identifier is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierEqualTo(String value) {
+            addCriterion("identifier =", value, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierNotEqualTo(String value) {
+            addCriterion("identifier <>", value, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierGreaterThan(String value) {
+            addCriterion("identifier >", value, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierGreaterThanOrEqualTo(String value) {
+            addCriterion("identifier >=", value, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierLessThan(String value) {
+            addCriterion("identifier <", value, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierLessThanOrEqualTo(String value) {
+            addCriterion("identifier <=", value, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierLike(String value) {
+            addCriterion("identifier like", value, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierNotLike(String value) {
+            addCriterion("identifier not like", value, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierIn(List<String> values) {
+            addCriterion("identifier in", values, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierNotIn(List<String> values) {
+            addCriterion("identifier not in", values, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierBetween(String value1, String value2) {
+            addCriterion("identifier between", value1, value2, "identifier");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentifierNotBetween(String value1, String value2) {
+            addCriterion("identifier not between", value1, value2, "identifier");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatedByIsNull() {
             addCriterion("created_by is null");
             return (Criteria) this;

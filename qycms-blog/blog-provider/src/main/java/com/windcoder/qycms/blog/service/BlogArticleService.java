@@ -3,6 +3,7 @@ package com.windcoder.qycms.blog.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.windcoder.qycms.basis.utils.PinyinUtilZ;
 import com.windcoder.qycms.blog.dto.BlogArticleBaseDto;
 import com.windcoder.qycms.blog.dto.BlogArticleDto;
 import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
@@ -18,6 +19,8 @@ import com.windcoder.qycms.system.enums.CommenttTargetType;
 import com.windcoder.qycms.system.service.CommentAgentService;
 
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import com.windcoder.qycms.utils.StringUtilZ;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,6 +78,10 @@ public class BlogArticleService {
         if (article.getId() == null) {
             CommentAgent agent = initCommentAgent(article);
             article.setCommentAgentId(agent.getId());
+            if(StringUtils.isBlank(article.getPermaLink())) {
+                article.setPermaLink(PinyinUtilZ.toHanYuPinyinString(article.getTitle()));
+            }
+            article.setSummary(StringUtilZ.removeHtmlAndSubstring(article.getContentHtml()));
             this.inster(article);
         } else {
             this.update(article);

@@ -7,6 +7,8 @@ public class BlogTag {
 
     private String name;
 
+    private String identifier;
+
     private Long createdBy;
 
     private Long lastModifiedBy;
@@ -29,6 +31,14 @@ public class BlogTag {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public Long getCreatedBy() {
@@ -71,6 +81,7 @@ public class BlogTag {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", identifier=").append(identifier);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);
         sb.append(", createdDate=").append(createdDate);

@@ -6,4 +6,5 @@ import lombok.Data;
 @Data
 public class BlogTagPageDto extends PageDto {
     private String searchText;
+    private String identifier;
 }

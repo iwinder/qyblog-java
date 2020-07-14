@@ -60,6 +60,7 @@ drop table if exists `blog_tag`;
 CREATE TABLE `blog_tag` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
   `name` varchar(255) DEFAULT NULL comment '名称',
+  `identifier` varchar(255) DEFAULT NULL comment '别名',
   `created_by` bigint(20) comment '创建者',
   `last_modified_by` bigint(20) comment '更新者',
   `created_date` datetime comment '创建时间',
@@ -72,11 +73,7 @@ drop table if exists `blog_article_tag`;
 CREATE TABLE `blog_article_tag` (
   `article_id` bigint(20) NOT NULL comment '文章id',
   `tag_id` bigint(20) NOT NULL comment '标签id',
-  PRIMARY KEY ( `article_id`,`tag_id` ),
-  KEY `FKrrs2kus3wx0wfxgdn3qrinpt7` (`tag_id`),
-  KEY `FKjirukkkkhj5pkpn9i7x0gn83b` (`article_id`),
-  CONSTRAINT `FKjirukkkkhj5pkpn9i7x0gn83b` FOREIGN KEY (`article_id`) REFERENCES `blog_article` (`id`),
-  CONSTRAINT `FKrrs2kus3wx0wfxgdn3qrinpt7` FOREIGN KEY (`tag_id`) REFERENCES `blog_tag` (`id`)
+  PRIMARY KEY ( `article_id`,`tag_id` )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment='文章-标签关系表';
 
 
@@ -86,7 +83,7 @@ CREATE TABLE `blog_category` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
   `name` varchar(255) DEFAULT NULL comment '名称',
   `description` varchar(255) DEFAULT NULL comment '描述',
-  `key_word` varchar(255) DEFAULT NULL comment '关键词',
+  `identifier` varchar(255) DEFAULT NULL comment '别名',
   `id_path` varchar(1000) DEFAULT NULL comment ' id路径',
   `name_path` varchar(1000) DEFAULT NULL comment '名称路径',
   `display_order` bigint(20) DEFAULT NULL comment '显示顺序',
@@ -114,8 +111,8 @@ CREATE TABLE `blog_category_tree` (
 
 
 
-INSERT INTO blog_category (id,name,description,key_word,id_path,name_path,display_order,parent_id,deleted,created_by,last_modified_by,created_date,last_modified_date) VALUES
-(1,'默认分类',NULL,NULL,'1','默认分类',1,NULL,0,NULL,NULL,'2020-06-30 04:02:17.0','2020-06-30 04:02:17.0');
+INSERT INTO blog_category (id,name,description,identifier,id_path,name_path,display_order,parent_id,deleted,created_by,last_modified_by,created_date,last_modified_date) VALUES
+(1,'默认分类',NULL,'default','1','默认分类',1,NULL,0,NULL,NULL,'2020-06-30 04:02:17.0','2020-06-30 04:02:17.0');
 INSERT INTO blog_category_tree (parent_id,child_id,distance,child_count) VALUES
 (1,1,0,1);
 
@@ -290,7 +287,6 @@ CREATE TABLE `sns_comment` (
   KEY `FKhx4nrk2kessc0qfc7i3n9kt5u` (`parent_id`),
   KEY `FK5fdxbmdylnf81xn1iu12ac9i2` (`target_id`),
   KEY `FKdjdspxwjo7efjfxqrryds8phs` (`top_parent_id`),
-  CONSTRAINT `FK5fdxbmdylnf81xn1iu12ac9i2` FOREIGN KEY (`target_id`) REFERENCES `sns_comment_agent` (`id`),
   CONSTRAINT `FKdjdspxwjo7efjfxqrryds8phs` FOREIGN KEY (`top_parent_id`) REFERENCES `sns_comment` (`id`),
   CONSTRAINT `FKhx4nrk2kessc0qfc7i3n9kt5u` FOREIGN KEY (`parent_id`) REFERENCES `sns_comment` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='评论表';

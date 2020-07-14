@@ -305,73 +305,73 @@ public class BlogCategoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordIsNull() {
-            addCriterion("key_word is null");
+        public Criteria andIdentifierIsNull() {
+            addCriterion("identifier is null");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordIsNotNull() {
-            addCriterion("key_word is not null");
+        public Criteria andIdentifierIsNotNull() {
+            addCriterion("identifier is not null");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordEqualTo(String value) {
-            addCriterion("key_word =", value, "keyWord");
+        public Criteria andIdentifierEqualTo(String value) {
+            addCriterion("identifier =", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordNotEqualTo(String value) {
-            addCriterion("key_word <>", value, "keyWord");
+        public Criteria andIdentifierNotEqualTo(String value) {
+            addCriterion("identifier <>", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordGreaterThan(String value) {
-            addCriterion("key_word >", value, "keyWord");
+        public Criteria andIdentifierGreaterThan(String value) {
+            addCriterion("identifier >", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordGreaterThanOrEqualTo(String value) {
-            addCriterion("key_word >=", value, "keyWord");
+        public Criteria andIdentifierGreaterThanOrEqualTo(String value) {
+            addCriterion("identifier >=", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordLessThan(String value) {
-            addCriterion("key_word <", value, "keyWord");
+        public Criteria andIdentifierLessThan(String value) {
+            addCriterion("identifier <", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordLessThanOrEqualTo(String value) {
-            addCriterion("key_word <=", value, "keyWord");
+        public Criteria andIdentifierLessThanOrEqualTo(String value) {
+            addCriterion("identifier <=", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordLike(String value) {
-            addCriterion("key_word like", value, "keyWord");
+        public Criteria andIdentifierLike(String value) {
+            addCriterion("identifier like", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordNotLike(String value) {
-            addCriterion("key_word not like", value, "keyWord");
+        public Criteria andIdentifierNotLike(String value) {
+            addCriterion("identifier not like", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordIn(List<String> values) {
-            addCriterion("key_word in", values, "keyWord");
+        public Criteria andIdentifierIn(List<String> values) {
+            addCriterion("identifier in", values, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordNotIn(List<String> values) {
-            addCriterion("key_word not in", values, "keyWord");
+        public Criteria andIdentifierNotIn(List<String> values) {
+            addCriterion("identifier not in", values, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordBetween(String value1, String value2) {
-            addCriterion("key_word between", value1, value2, "keyWord");
+        public Criteria andIdentifierBetween(String value1, String value2) {
+            addCriterion("identifier between", value1, value2, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andKeyWordNotBetween(String value1, String value2) {
-            addCriterion("key_word not between", value1, value2, "keyWord");
+        public Criteria andIdentifierNotBetween(String value1, String value2) {
+            addCriterion("identifier not between", value1, value2, "identifier");
             return (Criteria) this;
         }
 

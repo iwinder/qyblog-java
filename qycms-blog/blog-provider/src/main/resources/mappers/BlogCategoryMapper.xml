@@ -5,7 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="key_word" jdbcType="VARCHAR" property="keyWord" />
+    <result column="identifier" jdbcType="VARCHAR" property="identifier" />
     <result column="id_path" jdbcType="VARCHAR" property="idPath" />
     <result column="name_path" jdbcType="VARCHAR" property="namePath" />
     <result column="display_order" jdbcType="BIGINT" property="displayOrder" />
@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, description, key_word, id_path, name_path, display_order, parent_id, 
+    id, `name`, description, identifier, id_path, name_path, display_order, parent_id, 
     deleted, created_by, last_modified_by, created_date, last_modified_date
   </sql>
   <select id="selectByExample" parameterType="com.windcoder.qycms.blog.entity.BlogCategoryExample" resultMap="BaseResultMap">
@@ -112,12 +112,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into blog_category (`name`, description, key_word, 
+    insert into blog_category (`name`, description, identifier, 
       id_path, name_path, display_order, 
       parent_id, deleted, created_by, 
       last_modified_by, created_date, last_modified_date
       )
-    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{keyWord,jdbcType=VARCHAR}, 
+    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{identifier,jdbcType=VARCHAR}, 
       #{idPath,jdbcType=VARCHAR}, #{namePath,jdbcType=VARCHAR}, #{displayOrder,jdbcType=BIGINT}, 
       #{parentId,jdbcType=BIGINT}, #{deleted,jdbcType=BIT}, #{createdBy,jdbcType=BIGINT}, 
       #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}
@@ -135,8 +135,8 @@
       <if test="description != null">
         description,
       </if>
-      <if test="keyWord != null">
-        key_word,
+      <if test="identifier != null">
+        identifier,
       </if>
       <if test="idPath != null">
         id_path,
@@ -173,8 +173,8 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="keyWord != null">
-        #{keyWord,jdbcType=VARCHAR},
+      <if test="identifier != null">
+        #{identifier,jdbcType=VARCHAR},
       </if>
       <if test="idPath != null">
         #{idPath,jdbcType=VARCHAR},
@@ -223,8 +223,8 @@
       <if test="record.description != null">
         description = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.keyWord != null">
-        key_word = #{record.keyWord,jdbcType=VARCHAR},
+      <if test="record.identifier != null">
+        identifier = #{record.identifier,jdbcType=VARCHAR},
       </if>
       <if test="record.idPath != null">
         id_path = #{record.idPath,jdbcType=VARCHAR},
@@ -263,7 +263,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       `name` = #{record.name,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=VARCHAR},
-      key_word = #{record.keyWord,jdbcType=VARCHAR},
+      identifier = #{record.identifier,jdbcType=VARCHAR},
       id_path = #{record.idPath,jdbcType=VARCHAR},
       name_path = #{record.namePath,jdbcType=VARCHAR},
       display_order = #{record.displayOrder,jdbcType=BIGINT},
@@ -286,8 +286,8 @@
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
       </if>
-      <if test="keyWord != null">
-        key_word = #{keyWord,jdbcType=VARCHAR},
+      <if test="identifier != null">
+        identifier = #{identifier,jdbcType=VARCHAR},
       </if>
       <if test="idPath != null">
         id_path = #{idPath,jdbcType=VARCHAR},
@@ -323,7 +323,7 @@
     update blog_category
     set `name` = #{name,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
-      key_word = #{keyWord,jdbcType=VARCHAR},
+      identifier = #{identifier,jdbcType=VARCHAR},
       id_path = #{idPath,jdbcType=VARCHAR},
       name_path = #{namePath,jdbcType=VARCHAR},
       display_order = #{displayOrder,jdbcType=BIGINT},

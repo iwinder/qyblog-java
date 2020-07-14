@@ -9,7 +9,7 @@ public class BlogCategory {
 
     private String description;
 
-    private String keyWord;
+    private String identifier;
 
     private String idPath;
 
@@ -53,12 +53,12 @@ public class BlogCategory {
         this.description = description;
     }
 
-    public String getKeyWord() {
-        return keyWord;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setKeyWord(String keyWord) {
-        this.keyWord = keyWord;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public String getIdPath() {
@@ -142,7 +142,7 @@ public class BlogCategory {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", description=").append(description);
-        sb.append(", keyWord=").append(keyWord);
+        sb.append(", identifier=").append(identifier);
         sb.append(", idPath=").append(idPath);
         sb.append(", namePath=").append(namePath);
         sb.append(", displayOrder=").append(displayOrder);

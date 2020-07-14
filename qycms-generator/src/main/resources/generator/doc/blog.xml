@@ -13,3 +13,17 @@
                      targetPackage="com.windcoder.qycms.blog.repository.mybatis"
                      type="XMLMAPPER" />
 
+
+
+<javaModelGenerator targetProject="../qycms-core/system-provider/src/main/java"
+                    targetPackage="com.windcoder.qycms.system.entity"/>
+
+        <!-- mapper xml的位置 -->
+<sqlMapGenerator targetProject="../qycms-core/system-provider/src/main/resources"
+                 targetPackage="mappers"/>
+
+        <!-- mapper类的位置 -->
+<javaClientGenerator targetProject="../qycms-core/system-provider/src/main/java"
+                     targetPackage="com.windcoder.qycms.system.repository.mybatis"
+                     type="XMLMAPPER" />
+

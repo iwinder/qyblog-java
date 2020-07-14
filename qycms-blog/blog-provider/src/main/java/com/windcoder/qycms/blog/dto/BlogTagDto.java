@@ -14,6 +14,7 @@ public class BlogTagDto {
      * 名称
      */
     private String name;
+    private String identifier;
 
     /**
      * 创建者
@@ -85,6 +86,13 @@ public class BlogTagDto {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
     @Override
     public String toString() {
@@ -94,6 +102,7 @@ public class BlogTagDto {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", identifier=").append(identifier);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);
         sb.append(", createdDate=").append(createdDate);

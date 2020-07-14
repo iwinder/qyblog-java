@@ -3,6 +3,7 @@ package com.windcoder.qycms.blog.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.basis.utils.PinyinUtilZ;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.blog.dto.BlogTagBaseDto;
 import com.windcoder.qycms.blog.entity.BlogArticleTag;
@@ -53,6 +54,9 @@ public class BlogTagService {
      */
     public void save(BlogTag blogTag){
         if (blogTag.getId()==null) {
+            if(StringUtils.isBlank(blogTag.getIdentifier())) {
+                blogTag.setIdentifier(PinyinUtilZ.toHanYuPinyinString(blogTag.getName()));
+            }
             this.inster(blogTag);
         } else {
             this.update(blogTag);

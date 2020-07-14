@@ -3,6 +3,7 @@ package com.windcoder.qycms.blog.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.basis.utils.PinyinUtilZ;
 import com.windcoder.qycms.blog.entity.BlogCategory;
 import com.windcoder.qycms.blog.entity.BlogCategoryExample;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
@@ -62,6 +63,9 @@ public class BlogCategoryService {
             Long order = countFirstChildNum(blogCategory.getParentId()) + 1;
             blogCategory.setDisplayOrder(order);
             blogCategory.setDeleted(false);
+            if(StringUtils.isBlank(blogCategory.getIdentifier())) {
+                blogCategory.setIdentifier(PinyinUtilZ.toHanYuPinyinString(blogCategory.getName()));
+            }
             this.inster(blogCategory);
             afterInsert(blogCategory);
         } else {
