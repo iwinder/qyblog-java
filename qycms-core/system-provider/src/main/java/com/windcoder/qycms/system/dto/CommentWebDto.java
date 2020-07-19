@@ -1,19 +1,16 @@
 package com.windcoder.qycms.system.dto;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class CommentDto {
+import java.util.Date;
 
+public class CommentWebDto {
     /**
      * id
      */
     private Long id;
 
-    /**
-     * 评论者客户端
-     */
-    private String agent;
+
 
     /**
      * 评论者用户名
@@ -25,10 +22,7 @@ public class CommentDto {
      */
     private String authorEmail;
 
-    /**
-     * 评论者ip
-     */
-    private String authorIp;
+
 
     /**
      * 评论者网址
@@ -58,7 +52,8 @@ public class CommentDto {
     /**
      * 父评论
      */
-    private Long parentId;
+
+    private CommentWebDto parent;
 
     /**
      * 用户id, 0 游客
@@ -77,13 +72,8 @@ public class CommentDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdDate;
 
-    /**
-     * 更新时间
-     */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date lastModifiedDate;
+    private Integer replyCount;
 
-    private String targetName;
 
     public Long getId() {
         return id;
@@ -93,13 +83,6 @@ public class CommentDto {
         this.id = id;
     }
 
-    public String getAgent() {
-        return agent;
-    }
-
-    public void setAgent(String agent) {
-        this.agent = agent;
-    }
 
     public String getAuthorName() {
         return authorName;
@@ -117,13 +100,6 @@ public class CommentDto {
         this.authorEmail = authorEmail;
     }
 
-    public String getAuthorIp() {
-        return authorIp;
-    }
-
-    public void setAuthorIp(String authorIp) {
-        this.authorIp = authorIp;
-    }
 
     public String getAuthorUrl() {
         return authorUrl;
@@ -165,13 +141,6 @@ public class CommentDto {
         this.depth = depth;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
 
 
     public Long getTopParentId() {
@@ -190,13 +159,6 @@ public class CommentDto {
         this.createdDate = createdDate;
     }
 
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
 
     public UserWebDto getUser() {
         return user;
@@ -206,12 +168,20 @@ public class CommentDto {
         this.user = user;
     }
 
-    public String getTargetName() {
-        return targetName;
+    public CommentWebDto getParent() {
+        return parent;
     }
 
-    public void setTargetName(String targetName) {
-        this.targetName = targetName;
+    public void setParent(CommentWebDto parent) {
+        this.parent = parent;
+    }
+
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
     }
 
     @Override
@@ -221,24 +191,19 @@ public class CommentDto {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", agent=").append(agent);
         sb.append(", authorName=").append(authorName);
         sb.append(", authorEmail=").append(authorEmail);
-        sb.append(", authorIp=").append(authorIp);
         sb.append(", authorUrl=").append(authorUrl);
         sb.append(", content=").append(content);
         sb.append(", status=").append(status);
         sb.append(", targetId=").append(targetId);
-        sb.append(", targetName=").append(targetName);
         sb.append(", depth=").append(depth);
-        sb.append(", parentId=").append(parentId);
+        sb.append(", parent=").append(parent);
         sb.append(", user=").append(user);
         sb.append(", topParentId=").append(topParentId);
+        sb.append(", replyCount=").append(replyCount);
         sb.append(", createdDate=").append(createdDate);
-        sb.append(", lastModifiedDate=").append(lastModifiedDate);
         sb.append("]");
         return sb.toString();
     }
-
-
 }

@@ -83,4 +83,12 @@ public class CommentAgentService {
         commentAgentMapper.updateByPrimaryKeySelective(commentAgent);
     }
 
+    /**
+     * 根据id获取评论代理
+     * @param agentTargetId
+     * @return
+     */
+    public CommentAgent findOne(Long agentTargetId) {
+        return commentAgentMapper.selectByPrimaryKey(agentTargetId);
+    }
 }

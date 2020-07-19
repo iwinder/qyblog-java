@@ -19,12 +19,12 @@ public class BlogArticleBaseDto {
     /**
      * 是否已发布
      */
-    private boolean published;
+    private Boolean published;
 
     /**
      * 是否已删除
      */
-    private boolean deleted;
+    private Boolean deleted;
 
     /**
      * 链接
@@ -76,20 +76,20 @@ public class BlogArticleBaseDto {
     }
 
 
-    public boolean getPublished() {
+    public Boolean getPublished() {
         return published;
     }
 
 
-    public void setPublished(boolean published) {
+    public void setPublished(Boolean published) {
         this.published = published;
     }
 
-    public boolean getDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(boolean isDeleted) {
+    public void setDeleted(Boolean isDeleted) {
         this.deleted = isDeleted;
     }
 

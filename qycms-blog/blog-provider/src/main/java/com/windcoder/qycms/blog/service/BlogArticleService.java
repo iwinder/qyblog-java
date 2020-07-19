@@ -177,9 +177,19 @@ public class BlogArticleService {
        myBlogArticleMapper.updateDeleted(true,ids);
     }
 
-    public BlogArticleDto findOneArticleDto(Long articleId) {
+    public BlogArticleDto findOneArticleDto(BlogArticleDto blogArticleDto) {
         BlogArticleExample example = new BlogArticleExample();
-        example.createCriteria().andDeletedEqualTo(false).andIdEqualTo(articleId);
+        BlogArticleExample.Criteria criteria = example.createCriteria();
+        criteria.andDeletedEqualTo(false);
+        if(blogArticleDto.getId()!=null) {
+            criteria.andIdEqualTo(blogArticleDto.getId());
+        }
+        if (blogArticleDto.getPublished()!=null) {
+            criteria.andPublishedEqualTo(blogArticleDto.getPublished());
+        }
+        if (StringUtils.isNotBlank(blogArticleDto.getPermaLink())) {
+            criteria.andPermaLinkEqualTo(blogArticleDto.getPermaLink());
+        }
         List<BlogArticle> blogArticles =  blogArticleMapper.selectByExampleWithBLOBs(example);
         if (blogArticles.isEmpty()) {
             throw new BusinessException("非法的数据请求");
@@ -194,6 +204,7 @@ public class BlogArticleService {
         articleDto.setTagStrings(tagNameList);
         return articleDto;
     }
+
 
 //    private  void articleBaseDtoTofill(List<BlogArticleBaseDto> baseDtos) {
 //        for (BlogArticleBaseDto baseDto: baseDtos) {

@@ -3,27 +3,46 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.system.dto.CommentPageDto;
+import com.windcoder.qycms.system.dto.CommentWebDto;
+import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.entity.Comment;
+import com.windcoder.qycms.system.entity.CommentAgent;
 import com.windcoder.qycms.system.entity.CommentExample;
 import com.windcoder.qycms.system.dto.CommentDto;
 import com.windcoder.qycms.dto.PageDto;
+import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.repository.mybatis.CommentMapper;
 
+import com.windcoder.qycms.utils.CookieUtils;
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 
 @Service
+@Slf4j
 public class CommentService {
     @Resource
     private CommentMapper commentMapper;
+    @Autowired
+    private CommentAgentService agentTargetService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 列表查询
@@ -45,14 +64,17 @@ public class CommentService {
      * 保存，id有值时更新，无值时新增
      * @param commentDto
      */
-    public void save(CommentDto commentDto){
+    public Comment save(CommentDto commentDto){
         Comment comment = ModelMapperUtils.map(commentDto, Comment.class);
         if (null == comment.getId()) {
             this.inster(comment);
         } else {
             this.update(comment);
         }
+        return comment;
     }
+
+
 
     /**
      * 删除
@@ -84,4 +106,182 @@ public class CommentService {
         commentMapper.updateByPrimaryKeySelective(comment);
     }
 
+
+
+
+    private CommentAgent checkAndGetCommentAgent( Long agentTargetId){
+//        SystemCommentSetting sysCommentSetting= systemCommentSettingService.findSysForumSetting();
+//        if(null == sysCommentSetting.getIsEnabled() || !sysCommentSetting.getIsEnabled() ) {
+//            throw new BusinessException("未开启评论功能，不能进行评论");
+//        }
+        CommentAgent agentTarget = agentTargetService.findOne(agentTargetId);
+        if(null == agentTarget.getEnabled() || !agentTarget.getEnabled()){
+            throw new BusinessException("未开启评论功能，不能进行评论");
+        }
+        return agentTarget;
+    }
+
+    public void findTopLevelComments(Long agentTargetId, CommentPageDto pageDto) {
+        checkAndGetCommentAgent(agentTargetId);
+        findWebComments(agentTargetId, pageDto);
+    }
+
+    public void findReplies(Long agentTargetId,Long parentId, CommentPageDto pageDto) {
+        checkAndGetCommentAgent(agentTargetId);
+        pageDto.setParentId(parentId);
+        findWebComments(agentTargetId, pageDto);
+
+    }
+
+    public void findWebComments(Long agentTargetId, CommentPageDto pageDto) {
+        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        CommentExample example = new CommentExample();
+        CommentExample.Criteria criteria = example.createCriteria();
+        criteria.andTargetIdEqualTo(agentTargetId);
+        if (pageDto.getParentId() == null) {
+            criteria.andParentIdIsNull().andDepthEqualTo(1);
+            example.setOrderByClause("created_date DESC");
+        } else {
+            criteria.andTopParentIdEqualTo(pageDto.getParentId());
+            example.setOrderByClause("created_date ASC");
+        }
+        criteria.andStatusNotEqualTo("APPLIED");
+        List<Comment> comments = commentMapper.selectByExampleWithBLOBs(example);
+        Type type = new TypeToken<List<CommentWebDto>>() {}.getType();
+        List<CommentWebDto> commentsDto = ModelMapperUtils.map(comments,type);
+        User user = null;
+        UserWebDto userDto = null;
+        Comment parent = null;
+        CommentWebDto parentDto = null;
+        Long replyCount = null;
+        PageInfo<Comment> pageInfo = new PageInfo<>(comments);
+        pageDto.setTotal(pageInfo.getTotal());
+        for (CommentWebDto commentWebDto : commentsDto) {
+//            if (commentWebDto.getUserId()!=null && !commentWebDto.getUserId().equals(0)) {
+//                user = userService.findOne(commentWebDto.getUserId());
+//                userDto = new UserWebDto(user.getId(), user.getNickname(), user.getAvatar());
+//                commentWebDto.setUser(userDto);
+//            }
+            if (commentWebDto.getStatus().equalsIgnoreCase("REFUSED")) {
+                commentWebDto.setContent("该评论已被删除");
+            }
+            if (commentWebDto.getParent()!=null && commentWebDto.getParent().getId() !=null) {
+                parent = findOne(commentWebDto.getParent().getId());
+                parentDto = new CommentWebDto();
+                parentDto.setId(parent.getId());
+                parentDto.setAuthorName(parent.getAuthorName());
+                parentDto.setAuthorUrl(parent.getAuthorUrl());
+            } else  {
+                replyCount =  countByTopParentId(commentWebDto.getId());
+                commentWebDto.setReplyCount(replyCount.intValue());
+            }
+            commentWebDto.setAuthorEmail(null);
+        }
+
+        pageDto.setList(commentsDto);
+    }
+
+    private Comment findOne(Long id) {
+        return commentMapper.selectByPrimaryKey(id);
+    }
+
+
+
+    public CommentWebDto addTopLevelComment(Long agentTargetId, CommentDto commentDto, HttpServletResponse response) {
+        CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
+        commentDto.setTargetId(agentTarget.getId());
+        commentDto.setDepth(1);
+        String targetName = commentDto.getTargetName();
+        checkAndEditStatusIsENROLLED(commentDto);
+        Date now = new Date();
+        commentDto.setCreatedDate(now);
+        commentDto.setLastModifiedDate(now);
+        Comment comment =  save(commentDto);
+        CommentWebDto commentwebDto = ModelMapperUtils.map(comment,CommentWebDto.class);
+        checkAndEditCommentAgentName(targetName,agentTarget);
+        setCommentAuthorIntoCookie(response,commentDto.getAuthorName(),commentDto.getAuthorEmail(),commentDto.getAuthorUrl());
+        return commentwebDto;
+    }
+
+    public CommentWebDto addReply(Long agentTargetId,Long parentId, CommentDto commentDto, HttpServletResponse response) {
+        CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
+        Comment parent = findOne(parentId);
+        Long topParentId = (null == parent.getTopParentId()) ? parent.getId() : parent.getTopParentId();
+        Integer level = parent.getDepth() + 1;
+
+        commentDto.setTargetId(agentTarget.getId());
+        commentDto.setParentId(parent.getId());
+        commentDto.setTopParentId(topParentId);
+        commentDto.setDepth(level);
+
+        checkAndEditStatusIsENROLLED(commentDto);
+
+        Date now = new Date();
+        commentDto.setCreatedDate(now);
+        commentDto.setLastModifiedDate(now);
+        Comment comment =  save(commentDto);
+        CommentWebDto commentwebDto = ModelMapperUtils.map(comment,CommentWebDto.class);
+        setCommentAuthorIntoCookie(response,commentDto.getAuthorName(),commentDto.getAuthorEmail(),commentDto.getAuthorUrl());
+        return commentwebDto;
+    }
+
+
+
+
+    private Long countByEmailAndStatusEnrolled(String authorEmail) {
+        CommentExample example = new CommentExample();
+        example.createCriteria().andAuthorEmailEqualTo(authorEmail).andStatusEqualTo("ENROLLED");
+        return commentMapper.countByExample(example);
+    }
+
+    private Long countByEmail(String authorEmail) {
+        CommentExample example = new CommentExample();
+        example.createCriteria().andAuthorEmailEqualTo(authorEmail);
+        return commentMapper.countByExample(example);
+    }
+    private Long countByTopParentId(Long parentId) {
+        CommentExample example = new CommentExample();
+        example.createCriteria().andTopParentIdEqualTo(parentId);
+        return commentMapper.countByExample(example);
+    }
+
+
+    @Async
+    public void setCommentAuthorIntoCookie(HttpServletResponse response, String author, String email, String url)  {
+        try {
+            CookieUtils.setCookie(response,"comment_remember_author", URLEncoder.encode(author, "UTF-8"), CookieUtils.DEFAULTMAXAGE);
+            CookieUtils.setCookie(response,"comment_remember_mail", URLDecoder.decode(email, "UTF-8"),  CookieUtils.DEFAULTMAXAGE);
+            if (StringUtils.isNotBlank(url)) {
+                CookieUtils.setCookie(response,"comment_remember_url", URLEncoder.encode(url, "UTF-8"),  CookieUtils.DEFAULTMAXAGE);
+            }
+        } catch (UnsupportedEncodingException e) {
+            log.error(e.getMessage());
+            new BusinessException("Url解码失败");
+        }
+    }
+
+    @Async
+    public void checkAndEditCommentAgentName(String targetName,CommentAgent agentTarget ) {
+        if (StringUtils.isNotBlank(targetName) &&
+                ( StringUtils.isBlank(agentTarget.getTargetName()) ||
+                        !targetName.equalsIgnoreCase(agentTarget.getTargetName()))) {
+            agentTarget.setTargetName(targetName);
+            agentTargetService.save(agentTarget);
+        }
+    }
+
+    private void checkAndEditStatusIsENROLLED(CommentDto comment){
+        Long countByEmail = countByEmail(comment.getAuthorEmail());
+        if(countByEmail.longValue()>0){
+            Long count = countByEmailAndStatusEnrolled(comment.getAuthorEmail());
+            if(count.longValue()>0){
+                comment.setStatus("ENROLLED");
+            } else {
+                comment.setStatus("APPLIED");
+            }
+        } else {
+            comment.setStatus("APPLIED");
+        }
+
+    }
 }

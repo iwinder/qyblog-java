@@ -1,10 +1,12 @@
 package com.windcoder.qycms.blog.web;
 
+import com.windcoder.qycms.blog.dto.BlogArticleDto;
 import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
 import com.windcoder.qycms.blog.service.BlogArticleService;
 import com.windcoder.qycms.dto.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +22,27 @@ public class BlogArticleWebController {
         articleService.findAll(article);
         ResponseDto responseDto = new ResponseDto(article);
         return  responseDto;
+    }
+
+
+
+    @GetMapping("/{articleId}")
+    public ResponseDto get(@PathVariable("articleId") Long articleId) {
+        BlogArticleDto articleDto = new BlogArticleDto();
+        articleDto.setId(articleId);
+        articleDto.setPublished(true);
+        BlogArticleDto article = articleService.findOneArticleDto(articleDto);
+        ResponseDto responseDto = new ResponseDto(article);
+        return responseDto;
+    }
+
+    @GetMapping("/name/{articleName}")
+    public ResponseDto getByName(@PathVariable("articleName") String articleName) {
+        BlogArticleDto articleDto = new BlogArticleDto();
+        articleDto.setPermaLink(articleName);
+        articleDto.setPublished(true);
+        BlogArticleDto article = articleService.findOneArticleDto(articleDto);
+        ResponseDto responseDto = new ResponseDto(article);
+        return responseDto;
     }
 }

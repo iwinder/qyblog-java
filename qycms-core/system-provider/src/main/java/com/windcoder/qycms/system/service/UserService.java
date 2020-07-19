@@ -93,9 +93,12 @@ public class UserService {
         user.setLastModifiedDate(new Date());
         userMapper.updateByPrimaryKeySelective(user);
     }
+    public User findOne(Long userId) {
+       return userMapper.selectByPrimaryKey(userId);
+    }
 
     public UserInfoDto findOneUserDto(Long userId) {
-        User user = userMapper.selectByPrimaryKey(userId);
+        User user = findOne(userId);
         UserInfoDto userInfo =  ModelMapperUtils.map(user, UserInfoDto.class);
         Long roleId =  permissionService.selectRoleIdByUserId(userInfo.getId());
         userInfo.setRoleId(roleId);
