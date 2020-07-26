@@ -8,6 +8,7 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.crazycake.shiro.RedisCacheManager;
@@ -84,6 +85,8 @@ public class ShiroConfiguration {
 //        ApiAuthenticationFilter apiAuthenticationFilter = new ApiAuthenticationFilter();
 //        apiAuthenticationFilter.setLoginUrl("/api/login");
 //        filters.put("autha", apiAuthenticationFilter);
+        FormAuthenticationFilter shiroLoginFilter = new ShiroLoginFilter();
+        filters.put("authc", shiroLoginFilter);
         shiroFilterFactoryBean.setFilters(filters);
 
 
@@ -91,6 +94,7 @@ public class ShiroConfiguration {
         //注意过滤器配置顺序 不能颠倒
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了，登出后跳转配置的loginUrl
         filterChainDefinitionMap.put("/logout", "logout");
+        filterChainDefinitionMap.put("/login", "authc");
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/api/admin/login", "anon");
@@ -108,7 +112,10 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/**", "anon" +
                 "");
         //配置shiro默认登录界面地址，前后端分离中登录界面跳转应由前端路由控制，后台仅返回json数据
-        shiroFilterFactoryBean.setLoginUrl("/api/admin/unauth");
+//        shiroFilterFactoryBean.setLoginUrl("/api/admin/unauth");
+//        shiroFilterFactoryBean.setLoginUrl("/login");
+//        shiroFilterFactoryBean.setSuccessUrl("/");
+//        shiroFilterFactoryBean.setUnauthorizedUrl("/api/admin/unauth");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -161,6 +168,29 @@ public class ShiroConfiguration {
     }
 
 
+    /**
+     *  自定义sessionManager
+     * @param redisSessionDAO
+     * @return
+     */
+    @Bean
+    public SessionManager sessionManager(RedisSessionDAO redisSessionDAO) {
+        MySessionManager mySessionManager = new MySessionManager();
+        mySessionManager.setSessionDAO(redisSessionDAO);
+        return mySessionManager;
+    }
+
+    /**
+     * RedisSessionDAO shiro sessionDao层的实现 通过redis
+     * <p>
+     * 使用的是shiro-redis开源插件
+     */
+    @Bean
+    public RedisSessionDAO redisSessionDAO(RedisManager redisManager) {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager);
+        return redisSessionDAO;
+    }
 
     /**
      * 配置shiro redisManager

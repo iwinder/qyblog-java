@@ -44,7 +44,7 @@ public class ${Domain}Service {
         List<${Domain}> ${domain}s = ${domain}Mapper.selectByExample(${domain}Example);
         PageInfo<${Domain}> pageInfo = new PageInfo<>(${domain}s);
         pageDto.setTotal(pageInfo.getTotal());
-        Type type = new TypeToken<List<${Domain}>>() {}.getType();
+        Type type = new TypeToken<List<${Domain}Dto>>() {}.getType();
         List<${Domain}Dto> ${domain}DtoList = ModelMapperUtils.map(${domain}s, type);
         pageDto.setList(${domain}DtoList);
     }

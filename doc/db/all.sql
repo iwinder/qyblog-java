@@ -291,6 +291,70 @@ CREATE TABLE `sns_comment` (
   CONSTRAINT `FKhx4nrk2kessc0qfc7i3n9kt5u` FOREIGN KEY (`parent_id`) REFERENCES `sns_comment` (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
 
+
+drop table if exists `sys_site_config`;
+CREATE TABLE `sys_site_config` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
+  `config_key` varchar(255) DEFAULT NULL comment '站点设置key',
+  `config_value` longtext DEFAULT NULL comment '站点设置value',
+  `config_name` varchar(255) DEFAULT NULL comment '站点设置名称',
+  `config_tip` varchar(255) DEFAULT NULL comment '站点设置提示',
+  `type` int(11) DEFAULT NULL comment '配置类型',
+  `created_by` bigint(20) DEFAULT null comment '创建者',
+  `last_modified_by` bigint(20) DEFAULT NULL comment '更新者',
+  `created_date` datetime DEFAULT now() comment '创建时间',
+  `last_modified_date` datetime DEFAULT now() comment '更新时间',
+   PRIMARY KEY (`id`),
+  UNIQUE KEY (config_key),
+  KEY sys_site_config_type_IDX (`type`)  USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='站点配置表';
+
+select min(id) into @v_system_user_id from sys_user;
+Insert into sys_site_config (config_key,config_value,config_name,type,created_by,last_modified_by)
+values('site_name','青语博客','站点名称',1,@v_system_user_id,@v_system_user_id) ;
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_key','Java,Web','关键词','主页关键词元信息，SEO友好(多个关键词以英文逗号分隔)',1,@v_system_user_id,@v_system_user_id) ;
+Insert into sys_site_config (config_key,config_value,config_name,config_tip, type,created_by,last_modified_by)
+values('site_description','这是一个springboot的博客','站点描述','主页描述元信息，SEO友好',1,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_icon','https://windcoder.com/wp-content/uploads/2015/08/favicon-1.gif','Favicon','站点 ICON 图标',1,@v_system_user_id,@v_system_user_id) ;
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_logo','https://windcoder.com/wp-content/uploads/2017/02/logo_vift.png','网站Logo','请上传PNG图片作为网站Logo',1,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_small_logo','https://windcoder.com/wp-content/uploads/2017/02/logo_vif_small.png','网站小Logo','请上传PNG图片作为网站小Logo',1,@v_system_user_id,@v_system_user_id);
+
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_beian','','页脚备案文字','工信部域名备案号码',1,@v_system_user_id,@v_system_user_id) ;
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_open_date','2013-07-17','建站日期','网站开放的日期, 使用`YYYY-mm-dd`格式',1,@v_system_user_id,@v_system_user_id) ;
+
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_home_undisplay_cats','','不显示的分类ID列表','分类ID数字之间用英文逗号分隔, 如果留空将展示所有分类到文章',2,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_head_code','','页头自定义代码','页面头部加载的自定义代码，位于head标签结束前',2,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_foot_code','','页脚自定义代码','页面底部加载的自定义代码，位于body标签结束前',2,@v_system_user_id,@v_system_user_id);
+
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_qq','','网站QQ','站点服务专属QQ号码',3,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_qq_group','','网站QQ群 ID Key','站点专属服务QQ群加群链接的ID Key, 非群号, 至`http://shang.qq.com`获取',3,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_weibo','','网站微博名','站点服务专属微博用户名',3,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_weixin_qr','','网站微信','站点服务专属微信号的二维码图片(可以是公众号二维码)',3,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_mailme_id','','QQ邮我按钮ID','QQ邮我链接内的ID字段, 访问`http://open.mail.qq.com`获取',3,@v_system_user_id,@v_system_user_id);
+
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_pay_flag','','启用赞赏','赞赏开关，开启后展示收款二维码',4,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_weixin_pay_qr','','网站微信收款二维码','用于网站收集打赏等的微信收款二维码图片(赞助站长小工具等使用)',4,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_alipay_pay_qr','','网站支付宝收款二维码','用于网站收集打赏等的支付宝收款二维码图片(赞助站长小工具等使用)',4,@v_system_user_id,@v_system_user_id);
+
+
+
 commit;
 -- end;
 

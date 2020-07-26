@@ -1,8 +1,11 @@
 package com.windcoder.qycms.system.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
-public class User {
+@Data
+public class User extends Auditable{
     private Long id;
 
     private String username;
@@ -23,13 +26,7 @@ public class User {
 
     private Boolean deleted;
 
-    private Long createdBy;
 
-    private Long lastModifiedBy;
-
-    private Date createdDate;
-
-    private Date lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -111,61 +108,7 @@ public class User {
         this.deleted = deleted;
     }
 
-    public Long getCreatedBy() {
-        return createdBy;
-    }
 
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Long getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(Long lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", username=").append(username);
-        sb.append(", nickname=").append(nickname);
-        sb.append(", password=").append(password);
-        sb.append(", salt=").append(salt);
-        sb.append(", email=").append(email);
-        sb.append(", avatar=").append(avatar);
-        sb.append(", disableDate=").append(disableDate);
-        sb.append(", disable=").append(disable);
-        sb.append(", deleted=").append(deleted);
-        sb.append(", createdBy=").append(createdBy);
-        sb.append(", lastModifiedBy=").append(lastModifiedBy);
-        sb.append(", createdDate=").append(createdDate);
-        sb.append(", lastModifiedDate=").append(lastModifiedDate);
-        sb.append("]");
-        return sb.toString();
-    }
 
     public String getCredentialsSalt() {
         return username + salt;

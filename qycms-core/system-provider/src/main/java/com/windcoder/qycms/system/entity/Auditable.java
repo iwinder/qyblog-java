@@ -20,20 +20,22 @@ import java.util.Date;
 
 public class Auditable implements Serializable {
     private static final long serialVersionUID = 1L;
-    @LastModifiedDate
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    protected Date lastModifiedDate;
+
 
     @CreatedDate
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date createdDate;
+    @LastModifiedDate
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date lastModifiedDate;
 
-    protected Date createdDate;
+
 
     @CreatedBy
-    protected User createdBy;
+    private Long createdBy;
 
     @LastModifiedBy
-    protected User lastModifiedBy;
+    private Long lastModifiedBy;
 
 
     public Date getLastModifiedDate() {
@@ -53,19 +55,19 @@ public class Auditable implements Serializable {
     }
 
 
-    public User getCreatedBy() {
+    public Long getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(User createdBy) {
+    public void setCreatedBy(Long createdBy) {
         this.createdBy = createdBy;
     }
 
-    public User getLastModifiedBy() {
+    public Long getLastModifiedBy() {
         return lastModifiedBy;
     }
 
-    public void setLastModifiedBy(User lastModifiedBy) {
+    public void setLastModifiedBy(Long lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 }

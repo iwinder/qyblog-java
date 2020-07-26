@@ -9,7 +9,8 @@ public class GeneratorPathUtils {
 
     static final String SYSTEM_MODULE = "system";
     static final String SYSTEM_SERVICE_URL = "qycms-core/system-provider";
-    static final String SYSTEM_CONSOLE_URL = "qycms-core/system-console";
+//    static final String SYSTEM_CONSOLE_URL = "qycms-core/system-console";
+    static final String SYSTEM_CONSOLE_URL = "qycms-core/system-web";
 
 
     public static  String MODULE =  SYSTEM_MODULE;
