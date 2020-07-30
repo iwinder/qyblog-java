@@ -21,10 +21,13 @@ public class GeneratorPathUtils {
     static final String TO_VUE_BASE_PATH = "/home/wind/work/Web/qyblog-web/";
 //    public static  String VUE_MODULE = "category";
 //    public static  String VUE_MODULE = "user";
-    public static  String VUE_MODULE = "comment";
+//    public static  String VUE_MODULE = "comment";
+//    public static  String VUE_MODULE = "menus";
+    public static  String VUE_MODULE = "short-link";
+//    public static  String VUE_MODULE = "link";
 //    public static  String VUE_MODULE = "role";
 //    public static  String VUE_MODULE = "permission";
-    public static final String TO_VUE_CONSOLE_PROJECT = TO_VUE_BASE_PATH +"qy-console/pages/";
+    public static final String TO_VUE_CONSOLE_PROJECT = TO_VUE_BASE_PATH +"qy-console/src/views/admin/";
 
 
 }

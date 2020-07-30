@@ -19,6 +19,7 @@ mybatisGenerator {
         mybatisGenerator 'org.postgresql:postgresql:42.2.6'
         mybatisGenerator  // Here add your mariadb dependencies or else
 
+
     }
 //    ant.properties['generator.project.root'] = "/home/wind/work/Java/IdeaProjects/qycms/qycms-blog/blog-provider"
 //    ant.properties['generator.project.module'] = "blog"
@@ -33,6 +34,7 @@ repositories {
 
 dependencies {
     compile project(':qycms-core:common')
+//    compile project(':qycms-core:system-provider')
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.30'
     implementation group: 'org.dom4j', name: 'dom4j', version: '2.1.3'
 

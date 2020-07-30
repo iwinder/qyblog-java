@@ -44,14 +44,29 @@
                              type="XMLMAPPER" />
 
 
+<!--        <table tableName="sys_short_link" domainObjectName="ShortLink">-->
+<!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="sys_link" domainObjectName="Link">-->
+<!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
 
+        <table tableName="sys_menus" domainObjectName="Menus">
+            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+<!--        <table tableName="sys_menus_agent" domainObjectName="MenusAgent">-->
+<!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
 <!--                <table tableName="sns_comment_agent" domainObjectName="CommentAgent">-->
 <!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--                </table>-->
-                <table tableName="sys_site_config" domainObjectName="SiteConfig">
-                    <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>
-<!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
-                </table>
+<!--                <table tableName="sys_site_config" domainObjectName="SiteConfig">-->
+<!--                    <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
+<!--                </table>-->
 <!--                <table tableName="sns_comment" domainObjectName="Comment">-->
 <!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--                </table>-->
