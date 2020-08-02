@@ -30,6 +30,12 @@ INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `e
 
 select min(id) into @v_system_user_id from sys_user;
 
+
+
+
+
+
+
 -- 文章
 drop table if exists `blog_article`;
 CREATE TABLE `blog_article` (
@@ -40,6 +46,7 @@ CREATE TABLE `blog_article` (
   `perma_link` varchar(255) DEFAULT NULL comment '链接',
   `summary` varchar(255) DEFAULT NULL comment '摘要',
   `thumbnail` varchar(255) DEFAULT NULL comment '缩略图',
+  `type` int(11) DEFAULT 1 comment '类型：1：文章，2：页面',
   `view_count` bigint(20) DEFAULT '0' comment '浏览人数',
   `published_date` datetime DEFAULT NULL comment '发布日期',
   `author_id` bigint(20) DEFAULT NULL comment '作者id',
@@ -51,7 +58,9 @@ CREATE TABLE `blog_article` (
   `last_modified_by` bigint(20) comment '更新者',
   `created_date` datetime comment '创建时间',
   `last_modified_date` datetime comment '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `blog_article_author_id_IDX` (`author_id`),
+  KEY `blog_article_type_and_category_id_IDX` (`type`,`category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 comment='文章';
 
 

@@ -64,7 +64,7 @@ public class BlogArticleController {
 
     @GetMapping("")
     public ResponseDto allActivities(BlogArticlePageDto article){
-
+        article.setType(1);
         articleService.findAll(article);
         ResponseDto responseDto = new ResponseDto(article);
         return  responseDto;

@@ -11,7 +11,8 @@ public class StringUtilZ {
     }
 
     public static String removeHtmlAndSubstring(String html) {
-        return removeHtml(html).substring(0,100);
+        String content = removeHtml(html);
+        return content.substring(0,Math.min(100, content.length()));
 
     }
 

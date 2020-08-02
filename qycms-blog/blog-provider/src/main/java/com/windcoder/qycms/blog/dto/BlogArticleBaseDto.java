@@ -58,6 +58,8 @@ public class BlogArticleBaseDto {
 
     private Long commentAgentId;
 
+    private Integer type;
+
 
     public Long getId() {
         return id;
@@ -158,5 +160,13 @@ public class BlogArticleBaseDto {
 
     public void setCommentAgentId(Long commentAgentId) {
         this.commentAgentId = commentAgentId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

@@ -1,8 +1,9 @@
 package com.windcoder.qycms.blog.entity;
 
+import com.windcoder.qycms.system.entity.Auditable;
 import java.util.Date;
 
-public class BlogArticle {
+public class BlogArticle extends Auditable {
     private Long id;
 
     private String title;
@@ -12,6 +13,8 @@ public class BlogArticle {
     private String summary;
 
     private String thumbnail;
+
+    private Integer type;
 
     private Long viewCount;
 
@@ -27,13 +30,6 @@ public class BlogArticle {
 
     private Boolean published;
 
-    private Long createdBy;
-
-    private Long lastModifiedBy;
-
-    private Date createdDate;
-
-    private Date lastModifiedDate;
 
     private String content;
 
@@ -77,6 +73,14 @@ public class BlogArticle {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Long getViewCount() {
@@ -135,37 +139,7 @@ public class BlogArticle {
         this.published = published;
     }
 
-    public Long getCreatedBy() {
-        return createdBy;
-    }
 
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Long getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(Long lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
 
     public String getContent() {
         return content;
@@ -194,6 +168,7 @@ public class BlogArticle {
         sb.append(", permaLink=").append(permaLink);
         sb.append(", summary=").append(summary);
         sb.append(", thumbnail=").append(thumbnail);
+        sb.append(", type=").append(type);
         sb.append(", viewCount=").append(viewCount);
         sb.append(", publishedDate=").append(publishedDate);
         sb.append(", authorId=").append(authorId);
@@ -201,10 +176,10 @@ public class BlogArticle {
         sb.append(", commentAgentId=").append(commentAgentId);
         sb.append(", deleted=").append(deleted);
         sb.append(", published=").append(published);
-        sb.append(", createdBy=").append(createdBy);
-        sb.append(", lastModifiedBy=").append(lastModifiedBy);
-        sb.append(", createdDate=").append(createdDate);
-        sb.append(", lastModifiedDate=").append(lastModifiedDate);
+        sb.append(", createdBy=").append(super.getCreatedBy());
+        sb.append(", lastModifiedBy=").append(super.getLastModifiedBy());
+        sb.append(", createdDate=").append(super.getCreatedDate());
+        sb.append(", lastModifiedDate=").append(super.getLastModifiedDate());
         sb.append(", content=").append(content);
         sb.append(", contentHtml=").append(contentHtml);
         sb.append("]");

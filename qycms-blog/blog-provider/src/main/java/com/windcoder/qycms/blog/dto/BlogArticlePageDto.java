@@ -7,4 +7,5 @@ import lombok.Data;
 public class BlogArticlePageDto extends PageDto {
     private String searchText;
     private Boolean published;
+    private Integer type;
 }

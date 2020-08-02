@@ -7,6 +7,7 @@
     <result column="perma_link" jdbcType="VARCHAR" property="permaLink" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
     <result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="view_count" jdbcType="BIGINT" property="viewCount" />
     <result column="published_date" jdbcType="TIMESTAMP" property="publishedDate" />
     <result column="author_id" jdbcType="BIGINT" property="authorId" />
@@ -82,7 +83,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, title, perma_link, summary, thumbnail, view_count, published_date, author_id, 
+    id, title, perma_link, summary, thumbnail, `type`, view_count, published_date, author_id, 
     category_id, comment_agent_id, deleted, published, created_by, last_modified_by, 
     created_date, last_modified_date
   </sql>
@@ -142,17 +143,19 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into blog_article (title, perma_link, summary, 
-      thumbnail, view_count, published_date, 
-      author_id, category_id, comment_agent_id, 
-      deleted, published, created_by, 
-      last_modified_by, created_date, last_modified_date, 
-      content, content_html)
+      thumbnail, `type`, view_count, 
+      published_date, author_id, category_id, 
+      comment_agent_id, deleted, published, 
+      created_by, last_modified_by, created_date, 
+      last_modified_date, content, content_html
+      )
     values (#{title,jdbcType=VARCHAR}, #{permaLink,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, 
-      #{thumbnail,jdbcType=VARCHAR}, #{viewCount,jdbcType=BIGINT}, #{publishedDate,jdbcType=TIMESTAMP}, 
-      #{authorId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{commentAgentId,jdbcType=BIGINT}, 
-      #{deleted,jdbcType=BIT}, #{published,jdbcType=BIT}, #{createdBy,jdbcType=BIGINT}, 
-      #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, 
-      #{content,jdbcType=LONGVARCHAR}, #{contentHtml,jdbcType=LONGVARCHAR})
+      #{thumbnail,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{viewCount,jdbcType=BIGINT}, 
+      #{publishedDate,jdbcType=TIMESTAMP}, #{authorId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, 
+      #{commentAgentId,jdbcType=BIGINT}, #{deleted,jdbcType=BIT}, #{published,jdbcType=BIT}, 
+      #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}, #{contentHtml,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.windcoder.qycms.blog.entity.BlogArticle">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -171,6 +174,9 @@
       </if>
       <if test="thumbnail != null">
         thumbnail,
+      </if>
+      <if test="type != null">
+        `type`,
       </if>
       <if test="viewCount != null">
         view_count,
@@ -224,6 +230,9 @@
       </if>
       <if test="thumbnail != null">
         #{thumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="viewCount != null">
         #{viewCount,jdbcType=BIGINT},
@@ -290,6 +299,9 @@
       <if test="record.thumbnail != null">
         thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.viewCount != null">
         view_count = #{record.viewCount,jdbcType=BIGINT},
       </if>
@@ -341,6 +353,7 @@
       perma_link = #{record.permaLink,jdbcType=VARCHAR},
       summary = #{record.summary,jdbcType=VARCHAR},
       thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
+      `type` = #{record.type,jdbcType=INTEGER},
       view_count = #{record.viewCount,jdbcType=BIGINT},
       published_date = #{record.publishedDate,jdbcType=TIMESTAMP},
       author_id = #{record.authorId,jdbcType=BIGINT},
@@ -365,6 +378,7 @@
       perma_link = #{record.permaLink,jdbcType=VARCHAR},
       summary = #{record.summary,jdbcType=VARCHAR},
       thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
+      `type` = #{record.type,jdbcType=INTEGER},
       view_count = #{record.viewCount,jdbcType=BIGINT},
       published_date = #{record.publishedDate,jdbcType=TIMESTAMP},
       author_id = #{record.authorId,jdbcType=BIGINT},
@@ -394,6 +408,9 @@
       </if>
       <if test="thumbnail != null">
         thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
       </if>
       <if test="viewCount != null">
         view_count = #{viewCount,jdbcType=BIGINT},
@@ -443,6 +460,7 @@
       perma_link = #{permaLink,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
       thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
       view_count = #{viewCount,jdbcType=BIGINT},
       published_date = #{publishedDate,jdbcType=TIMESTAMP},
       author_id = #{authorId,jdbcType=BIGINT},
@@ -464,6 +482,7 @@
       perma_link = #{permaLink,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
       thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
       view_count = #{viewCount,jdbcType=BIGINT},
       published_date = #{publishedDate,jdbcType=TIMESTAMP},
       author_id = #{authorId,jdbcType=BIGINT},
