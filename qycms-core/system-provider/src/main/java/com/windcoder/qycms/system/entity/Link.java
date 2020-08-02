@@ -11,6 +11,7 @@ public class Link extends Auditable {
 
     private Boolean showIndex;
 
+    private String description;
 
 
     public Long getId() {
@@ -45,6 +46,14 @@ public class Link extends Auditable {
         this.showIndex = showIndex;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 
     @Override
     public String toString() {
@@ -56,6 +65,7 @@ public class Link extends Auditable {
         sb.append(", name=").append(name);
         sb.append(", url=").append(url);
         sb.append(", showIndex=").append(showIndex);
+        sb.append(", description=").append(description);
         sb.append(", createdBy=").append(super.getCreatedBy());
         sb.append(", lastModifiedBy=").append(super.getLastModifiedBy());
         sb.append(", createdDate=").append(super.getCreatedDate());

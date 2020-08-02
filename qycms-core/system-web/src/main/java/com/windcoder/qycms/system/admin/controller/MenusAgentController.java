@@ -1,5 +1,6 @@
 package com.windcoder.qycms.system.admin.controller;
 
+import com.windcoder.qycms.system.dto.UserInfoDto;
 import com.windcoder.qycms.system.entity.MenusAgent;
 import com.windcoder.qycms.system.dto.MenusAgentDto;
 import com.windcoder.qycms.dto.PageDto;
@@ -58,6 +59,13 @@ public class MenusAgentController {
     public ResponseDto delete(@RequestBody Long[] ids) {
         menusAgentService.delete(ids);
         ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
+
+    @GetMapping("/{agentId}")
+    public ResponseDto get(@PathVariable("agentId") Long agentId) {
+        MenusAgentDto menusAgentDto = menusAgentService.findOneMenusAgentDto(agentId);
+        ResponseDto responseDto = new ResponseDto(menusAgentDto);
         return responseDto;
     }
 }

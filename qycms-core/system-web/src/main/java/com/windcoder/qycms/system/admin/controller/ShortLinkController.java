@@ -43,7 +43,7 @@ public class ShortLinkController {
     public ResponseDto save(@RequestBody  ShortLinkDto shortLinkDto) {
         // 保存校验
         ValidatorUtil.length(shortLinkDto.getIdentifier(), "短链接", 1, 255);
-        ValidatorUtil.length(shortLinkDto.getUrl(), "链接地址", 1, 255);
+        ValidatorUtil.length(shortLinkDto.getUrl(), "链接地址", 1, 2048);
         ValidatorUtil.length(shortLinkDto.getDescription(), "描述", 1, 255);
 
         shortLinkService.save(shortLinkDto);

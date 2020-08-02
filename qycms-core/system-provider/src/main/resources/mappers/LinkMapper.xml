@@ -6,6 +6,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="show_index" jdbcType="BIT" property="showIndex" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="created_by" jdbcType="BIGINT" property="createdBy" />
     <result column="last_modified_by" jdbcType="BIGINT" property="lastModifiedBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, url, show_index, created_by, last_modified_by, created_date, last_modified_date
+    id, `name`, url, show_index, description, created_by, last_modified_by, created_date, 
+    last_modified_date
   </sql>
   <select id="selectByExample" parameterType="com.windcoder.qycms.system.entity.LinkExample" resultMap="BaseResultMap">
     select
@@ -107,11 +109,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into sys_link (`name`, url, show_index, 
-      created_by, last_modified_by, created_date, 
-      last_modified_date)
+      description, created_by, last_modified_by, 
+      created_date, last_modified_date)
     values (#{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{showIndex,jdbcType=BIT}, 
-      #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
-      #{lastModifiedDate,jdbcType=TIMESTAMP})
+      #{description,jdbcType=VARCHAR}, #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.windcoder.qycms.system.entity.Link">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -127,6 +129,9 @@
       </if>
       <if test="showIndex != null">
         show_index,
+      </if>
+      <if test="description != null">
+        description,
       </if>
       <if test="createdBy != null">
         created_by,
@@ -150,6 +155,9 @@
       </if>
       <if test="showIndex != null">
         #{showIndex,jdbcType=BIT},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         #{createdBy,jdbcType=BIGINT},
@@ -186,6 +194,9 @@
       <if test="record.showIndex != null">
         show_index = #{record.showIndex,jdbcType=BIT},
       </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
       <if test="record.createdBy != null">
         created_by = #{record.createdBy,jdbcType=BIGINT},
       </if>
@@ -209,6 +220,7 @@
       `name` = #{record.name,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
       show_index = #{record.showIndex,jdbcType=BIT},
+      description = #{record.description,jdbcType=VARCHAR},
       created_by = #{record.createdBy,jdbcType=BIGINT},
       last_modified_by = #{record.lastModifiedBy,jdbcType=BIGINT},
       created_date = #{record.createdDate,jdbcType=TIMESTAMP},
@@ -228,6 +240,9 @@
       </if>
       <if test="showIndex != null">
         show_index = #{showIndex,jdbcType=BIT},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=BIGINT},
@@ -249,6 +264,7 @@
     set `name` = #{name,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       show_index = #{showIndex,jdbcType=BIT},
+      description = #{description,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=BIGINT},
       last_modified_by = #{lastModifiedBy,jdbcType=BIGINT},
       created_date = #{createdDate,jdbcType=TIMESTAMP},

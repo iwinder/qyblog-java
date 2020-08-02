@@ -1,5 +1,7 @@
 package com.windcoder.qycms.system.admin.controller;
 
+import com.windcoder.qycms.system.dto.MenusAgentDto;
+import com.windcoder.qycms.system.dto.MenusPageDto;
 import com.windcoder.qycms.system.entity.Menus;
 import com.windcoder.qycms.system.dto.MenusDto;
 import com.windcoder.qycms.dto.PageDto;
@@ -28,8 +30,9 @@ public class MenusController {
      * @return
      */
     @GetMapping("")
-    public ResponseDto list(PageDto pageDto) {
-        menusService.list(pageDto);
+    public ResponseDto list(MenusPageDto pageDto) {
+        ValidatorUtil.require(pageDto.getTargetId(),"关键参数");
+        menusService.listWithChildren(pageDto);
         ResponseDto responseDto = new ResponseDto(pageDto);
         return responseDto;
     }
@@ -59,6 +62,23 @@ public class MenusController {
     public ResponseDto delete(@RequestBody Long[] ids) {
         menusService.delete(ids);
         ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
+
+
+    @GetMapping("/{menusId}")
+    public ResponseDto get(@PathVariable("menusId") Long menusId) {
+        MenusDto menusDto = menusService.findOneMenusAgentDto(menusId);
+        ResponseDto responseDto = new ResponseDto(menusDto);
+        return responseDto;
+    }
+
+
+    @GetMapping("/parent")
+    public ResponseDto getParentList(MenusPageDto pageDto) {
+        ValidatorUtil.require(pageDto.getTargetId(),"关键参数");
+        List<MenusDto> menusDto = menusService.findParentList(pageDto.getTargetId());
+        ResponseDto responseDto = new ResponseDto(menusDto);
         return responseDto;
     }
 }

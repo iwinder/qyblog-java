@@ -7,6 +7,7 @@ import com.windcoder.qycms.system.entity.MenusAgent;
 import com.windcoder.qycms.system.entity.MenusAgentExample;
 import com.windcoder.qycms.system.dto.MenusAgentDto;
 import com.windcoder.qycms.dto.PageDto;
+import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.repository.mybatis.MenusAgentMapper;
 
 import com.windcoder.qycms.utils.ModelMapperUtils;
@@ -84,4 +85,17 @@ public class MenusAgentService {
         menusAgentMapper.updateByPrimaryKeySelective(menusAgent);
     }
 
+
+    public MenusAgent findOne(Long agentId) {
+        return menusAgentMapper.selectByPrimaryKey(agentId);
+    }
+
+    public MenusAgentDto findOneMenusAgentDto(Long agentId) {
+        MenusAgent menusAgent = findOne(agentId);
+        if (menusAgent == null) {
+            return null;
+        }
+        MenusAgentDto dto = ModelMapperUtils.map(menusAgent, MenusAgentDto.class);
+        return dto;
+    }
 }

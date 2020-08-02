@@ -305,6 +305,66 @@ public class MenusExample {
             return (Criteria) this;
         }
 
+        public Criteria andBlankedIsNull() {
+            addCriterion("blanked is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedIsNotNull() {
+            addCriterion("blanked is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedEqualTo(Boolean value) {
+            addCriterion("blanked =", value, "blanked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedNotEqualTo(Boolean value) {
+            addCriterion("blanked <>", value, "blanked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedGreaterThan(Boolean value) {
+            addCriterion("blanked >", value, "blanked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("blanked >=", value, "blanked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedLessThan(Boolean value) {
+            addCriterion("blanked <", value, "blanked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedLessThanOrEqualTo(Boolean value) {
+            addCriterion("blanked <=", value, "blanked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedIn(List<Boolean> values) {
+            addCriterion("blanked in", values, "blanked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedNotIn(List<Boolean> values) {
+            addCriterion("blanked not in", values, "blanked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedBetween(Boolean value1, Boolean value2) {
+            addCriterion("blanked between", value1, value2, "blanked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlankedNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("blanked not between", value1, value2, "blanked");
+            return (Criteria) this;
+        }
+
         public Criteria andParentIdIsNull() {
             addCriterion("parent_id is null");
             return (Criteria) this;

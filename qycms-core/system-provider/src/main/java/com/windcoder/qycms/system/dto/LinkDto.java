@@ -23,7 +23,12 @@ public class LinkDto {
     /**
      * 是否首页外链：0不是， 1是
      */
-    private String showIndex;
+    private Boolean showIndex;
+
+    /**
+     * 描述
+     */
+    private String description;
 
     /**
      * 创建者
@@ -71,11 +76,11 @@ public class LinkDto {
         this.url = url;
     }
 
-    public String getShowIndex() {
+    public Boolean getShowIndex() {
         return showIndex;
     }
 
-    public void setShowIndex(String showIndex) {
+    public void setShowIndex(Boolean showIndex) {
         this.showIndex = showIndex;
     }
 
@@ -111,6 +116,13 @@ public class LinkDto {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public String toString() {
@@ -122,6 +134,7 @@ public class LinkDto {
         sb.append(", name=").append(name);
         sb.append(", url=").append(url);
         sb.append(", showIndex=").append(showIndex);
+        sb.append(", description=").append(description);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);
         sb.append(", createdDate=").append(createdDate);

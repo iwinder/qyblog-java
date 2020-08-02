@@ -1,6 +1,8 @@
 package com.windcoder.qycms.system.dto;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MenusDto {
@@ -19,11 +21,17 @@ public class MenusDto {
      * 菜单地址
      */
     private String url;
+    /**
+     * 是否新窗口打开
+     */
+    private Boolean blanked;
 
     /**
      * 父级菜单
      */
     private Long parentId;
+
+    private List<MenusDto> children;
 
     /**
      * 菜单代理
@@ -124,6 +132,21 @@ public class MenusDto {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public Boolean getBlanked() {
+        return blanked;
+    }
+
+    public void setBlanked(Boolean blanked) {
+        this.blanked = blanked;
+    }
+
+    public List<MenusDto> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MenusDto> children) {
+        this.children = children;
+    }
 
     @Override
     public String toString() {
@@ -134,6 +157,7 @@ public class MenusDto {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", url=").append(url);
+        sb.append(", blanked=").append(blanked);
         sb.append(", parentId=").append(parentId);
         sb.append(", targetId=").append(targetId);
         sb.append(", createdBy=").append(createdBy);

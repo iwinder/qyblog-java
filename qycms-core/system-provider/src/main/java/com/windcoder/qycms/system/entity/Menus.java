@@ -9,10 +9,11 @@ public class Menus extends Auditable {
 
     private String url;
 
+    private Boolean blanked;
+
     private Long parentId;
 
     private Long targetId;
-
 
 
     public Long getId() {
@@ -37,6 +38,14 @@ public class Menus extends Auditable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Boolean getBlanked() {
+        return blanked;
+    }
+
+    public void setBlanked(Boolean blanked) {
+        this.blanked = blanked;
     }
 
     public Long getParentId() {
@@ -65,6 +74,7 @@ public class Menus extends Auditable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", url=").append(url);
+        sb.append(", blanked=").append(blanked);
         sb.append(", parentId=").append(parentId);
         sb.append(", targetId=").append(targetId);
         sb.append(", createdBy=").append(super.getCreatedBy());
