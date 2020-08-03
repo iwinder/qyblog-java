@@ -2,22 +2,18 @@ package com.windcoder.qycms.system.entity;
 
 import java.util.Date;
 
-public class Role {
+public class Role extends Auditable {
     private Long id;
 
     private String name;
+
+    private String identifier;
 
     private String roleType;
 
     private String remark;
 
-    private Long createdBy;
 
-    private Long lastModifiedBy;
-
-    private Date createdDate;
-
-    private Date lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -33,6 +29,14 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public String getRoleType() {
@@ -51,37 +55,6 @@ public class Role {
         this.remark = remark;
     }
 
-    public Long getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Long getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(Long lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
 
     @Override
     public String toString() {
@@ -91,12 +64,13 @@ public class Role {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", identifier=").append(identifier);
         sb.append(", roleType=").append(roleType);
         sb.append(", remark=").append(remark);
-        sb.append(", createdBy=").append(createdBy);
-        sb.append(", lastModifiedBy=").append(lastModifiedBy);
-        sb.append(", createdDate=").append(createdDate);
-        sb.append(", lastModifiedDate=").append(lastModifiedDate);
+        sb.append(", createdBy=").append(super.getCreatedBy());
+        sb.append(", lastModifiedBy=").append(super.getLastModifiedBy());
+        sb.append(", createdDate=").append(super.getCreatedDate());
+        sb.append(", lastModifiedDate=").append(super.getLastModifiedDate());
         sb.append("]");
         return sb.toString();
     }

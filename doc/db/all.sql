@@ -44,6 +44,7 @@ CREATE TABLE `blog_article` (
   `content` longtext comment '内容-mkdown',
   `content_html` longtext comment '内容-html',
   `perma_link` varchar(255) DEFAULT NULL comment '链接',
+  `canonical_link` varchar(255) DEFAULT NULL comment '规范链接',
   `summary` varchar(255) DEFAULT NULL comment '摘要',
   `thumbnail` varchar(255) DEFAULT NULL comment '缩略图',
   `type` int(11) DEFAULT 1 comment '类型：1：文章，2：页面',
@@ -204,6 +205,7 @@ drop table if exists `sys_role`;
 CREATE TABLE `sys_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
   `name` varchar(255) DEFAULT NULL comment '名称',
+  `identifier` varchar(255) DEFAULT NULL comment '角色标识字符串',
   `role_type` varchar(255) DEFAULT NULL comment '角色类型',
   `remark` varchar(255) DEFAULT NULL comment '备注',
   `created_by` bigint(20) DEFAULT null comment '创建者',
@@ -213,8 +215,10 @@ CREATE TABLE `sys_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色';
 
+Insert into sys_role (NAME,ROLE_TYPE,IDENTIFIER,CREATED_BY,LAST_MODIFIED_BY) values ('超级管理员','SYSTEM','admin',@v_system_user_id,@v_system_user_id);
+INSERT INTO sys_role (NAME,ROLE_TYPE,IDENTIFIER,CREATED_BY,LAST_MODIFIED_BY) VALUES('用户', 'SYSTEM', 'user',@v_system_user_id,@v_system_user_id);
 
-Insert into sys_role (ID,NAME,ROLE_TYPE,CREATED_BY,LAST_MODIFIED_BY) values (@v_superuser_role_id,'超级管理员','SYSTEM',@v_system_user_id,@v_system_user_id);
+
 
 
 -- 角色-权限
@@ -231,6 +235,8 @@ CREATE TABLE `sys_role_privilege` (
 select min(id) into @v_superuser_role_id from sys_role;
 insert into sys_role_privilege (role_id, privilege_id)
 select @v_superuser_role_id as role_id, p.id as privilege_id from sys_privilege p;
+
+
 
 
 -- 授权

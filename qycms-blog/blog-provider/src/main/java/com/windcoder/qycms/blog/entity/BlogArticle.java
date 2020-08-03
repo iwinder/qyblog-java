@@ -10,6 +10,8 @@ public class BlogArticle extends Auditable {
 
     private String permaLink;
 
+    private String canonicalLink;
+
     private String summary;
 
     private String thumbnail;
@@ -57,6 +59,14 @@ public class BlogArticle extends Auditable {
 
     public void setPermaLink(String permaLink) {
         this.permaLink = permaLink;
+    }
+
+    public String getCanonicalLink() {
+        return canonicalLink;
+    }
+
+    public void setCanonicalLink(String canonicalLink) {
+        this.canonicalLink = canonicalLink;
     }
 
     public String getSummary() {
@@ -140,7 +150,6 @@ public class BlogArticle extends Auditable {
     }
 
 
-
     public String getContent() {
         return content;
     }
@@ -166,6 +175,7 @@ public class BlogArticle extends Auditable {
         sb.append(", id=").append(id);
         sb.append(", title=").append(title);
         sb.append(", permaLink=").append(permaLink);
+        sb.append(", canonicalLink=").append(canonicalLink);
         sb.append(", summary=").append(summary);
         sb.append(", thumbnail=").append(thumbnail);
         sb.append(", type=").append(type);

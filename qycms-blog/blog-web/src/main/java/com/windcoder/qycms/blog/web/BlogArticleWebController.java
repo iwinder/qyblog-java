@@ -2,6 +2,7 @@ package com.windcoder.qycms.blog.web;
 
 import com.windcoder.qycms.blog.dto.BlogArticleDto;
 import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
+import com.windcoder.qycms.blog.dto.BlogArticleWebDto;
 import com.windcoder.qycms.blog.service.BlogArticleService;
 import com.windcoder.qycms.dto.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class BlogArticleWebController {
     private BlogArticleService articleService;
     @GetMapping("")
     public ResponseDto allActivities(BlogArticlePageDto article){
-
+        article.setType(1);
         articleService.findAll(article);
         ResponseDto responseDto = new ResponseDto(article);
         return  responseDto;
@@ -31,7 +32,7 @@ public class BlogArticleWebController {
         BlogArticleDto articleDto = new BlogArticleDto();
         articleDto.setId(articleId);
         articleDto.setPublished(true);
-        BlogArticleDto article = articleService.findOneArticleDto(articleDto);
+        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto);
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }
@@ -41,7 +42,7 @@ public class BlogArticleWebController {
         BlogArticleDto articleDto = new BlogArticleDto();
         articleDto.setPermaLink(articleName);
         articleDto.setPublished(true);
-        BlogArticleDto article = articleService.findOneArticleDto(articleDto);
+        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto);
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }

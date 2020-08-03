@@ -4,10 +4,7 @@ package com.windcoder.qycms.blog.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.windcoder.qycms.basis.utils.PinyinUtilZ;
-import com.windcoder.qycms.blog.dto.BlogArticleBaseDto;
-import com.windcoder.qycms.blog.dto.BlogArticleDto;
-import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
-import com.windcoder.qycms.blog.dto.BlogCategoryDto;
+import com.windcoder.qycms.blog.dto.*;
 import com.windcoder.qycms.blog.entity.*;
 import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
 
@@ -177,7 +174,7 @@ public class BlogArticleService {
        myBlogArticleMapper.updateDeleted(true,ids);
     }
 
-    public BlogArticleDto findOneArticleDto(BlogArticleDto blogArticleDto) {
+    public BlogArticle findOne(BlogArticleDto blogArticleDto) {
         BlogArticleExample example = new BlogArticleExample();
         BlogArticleExample.Criteria criteria = example.createCriteria();
         criteria.andDeletedEqualTo(false);
@@ -194,7 +191,11 @@ public class BlogArticleService {
         if (blogArticles.isEmpty()) {
             throw new BusinessException("非法的数据请求");
         }
-        BlogArticle article = blogArticles.get(0);
+        return blogArticles.get(0);
+    }
+
+    public BlogArticleDto findOneArticleDto(BlogArticleDto blogArticleDto) {
+        BlogArticle article = findOne(blogArticleDto);
         BlogArticleDto articleDto = ModelMapperUtils.map(article, BlogArticleDto.class);
         if (article.getCategoryId() != null) {
             BlogCategoryDto categoryDto =  blogCategoryService.findOneCategoryDto(article.getCategoryId());
@@ -202,6 +203,22 @@ public class BlogArticleService {
         }
         List<String> tagNameList =  blogTagService.findTagnameListByArticleId(articleDto.getId());
         articleDto.setTagStrings(tagNameList);
+        return articleDto;
+    }
+
+    public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto) {
+        BlogArticle article = findOne(blogArticleDto);
+        BlogArticleWebDto articleDto = ModelMapperUtils.map(article, BlogArticleWebDto.class);
+        if (article.getCategoryId() != null) {
+            BlogCategoryDto categoryDto =  blogCategoryService.findOneCategoryDto(article.getCategoryId());
+            articleDto.setCategory(categoryDto);
+        }
+        if (articleDto.getType().intValue() == 1) {
+            List<String> tagNameList =  blogTagService.findTagnameListByArticleId(articleDto.getId());
+            articleDto.setTagStrings(tagNameList);
+        }
+
+
         return articleDto;
     }
 

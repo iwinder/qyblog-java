@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.windcoder.qycms.system.entity.Role">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identifier" jdbcType="VARCHAR" property="identifier" />
     <result column="role_type" jdbcType="VARCHAR" property="roleType" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="created_by" jdbcType="BIGINT" property="createdBy" />
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, role_type, remark, created_by, last_modified_by, created_date, last_modified_date
+    id, `name`, identifier, role_type, remark, created_by, last_modified_by, created_date, 
+    last_modified_date
   </sql>
   <select id="selectByExample" parameterType="com.windcoder.qycms.system.entity.RoleExample" resultMap="BaseResultMap">
     select
@@ -106,12 +108,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sys_role (`name`, role_type, remark, 
-      created_by, last_modified_by, created_date, 
-      last_modified_date)
-    values (#{name,jdbcType=VARCHAR}, #{roleType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
-      #{lastModifiedDate,jdbcType=TIMESTAMP})
+    insert into sys_role (`name`, identifier, role_type, 
+      remark, created_by, last_modified_by, 
+      created_date, last_modified_date)
+    values (#{name,jdbcType=VARCHAR}, #{identifier,jdbcType=VARCHAR}, #{roleType,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.windcoder.qycms.system.entity.Role">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -121,6 +123,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
         `name`,
+      </if>
+      <if test="identifier != null">
+        identifier,
       </if>
       <if test="roleType != null">
         role_type,
@@ -144,6 +149,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identifier != null">
+        #{identifier,jdbcType=VARCHAR},
       </if>
       <if test="roleType != null">
         #{roleType,jdbcType=VARCHAR},
@@ -180,6 +188,9 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.identifier != null">
+        identifier = #{record.identifier,jdbcType=VARCHAR},
+      </if>
       <if test="record.roleType != null">
         role_type = #{record.roleType,jdbcType=VARCHAR},
       </if>
@@ -207,6 +218,7 @@
     update sys_role
     set id = #{record.id,jdbcType=BIGINT},
       `name` = #{record.name,jdbcType=VARCHAR},
+      identifier = #{record.identifier,jdbcType=VARCHAR},
       role_type = #{record.roleType,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       created_by = #{record.createdBy,jdbcType=BIGINT},
@@ -222,6 +234,9 @@
     <set>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identifier != null">
+        identifier = #{identifier,jdbcType=VARCHAR},
       </if>
       <if test="roleType != null">
         role_type = #{roleType,jdbcType=VARCHAR},
@@ -247,6 +262,7 @@
   <update id="updateByPrimaryKey" parameterType="com.windcoder.qycms.system.entity.Role">
     update sys_role
     set `name` = #{name,jdbcType=VARCHAR},
+      identifier = #{identifier,jdbcType=VARCHAR},
       role_type = #{roleType,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=BIGINT},

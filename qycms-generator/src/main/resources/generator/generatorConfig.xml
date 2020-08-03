@@ -31,20 +31,22 @@
         </jdbcConnection>
 
         <!-- domain类的位置 -->
-        <javaModelGenerator targetProject="../qycms-blog/blog-provider/src/main/java"
-                            targetPackage="com.windcoder.qycms.blog.entity"/>
+        <javaModelGenerator targetProject="../qycms-core/system-provider/src/main/java"
+                            targetPackage="com.windcoder.qycms.system.entity"/>
 
         <!-- mapper xml的位置 -->
-        <sqlMapGenerator targetProject="../qycms-blog/blog-provider/src/main/resources"
+        <sqlMapGenerator targetProject="../qycms-core/system-provider/src/main/resources"
                          targetPackage="mappers"/>
 
         <!-- mapper类的位置 -->
-        <javaClientGenerator targetProject="../qycms-blog/blog-provider/src/main/java"
-                             targetPackage="com.windcoder.qycms.blog.repository.mybatis"
+        <javaClientGenerator targetProject="../qycms-core/system-provider/src/main/java"
+                             targetPackage="com.windcoder.qycms.system.repository.mybatis"
                              type="XMLMAPPER" />
 
 
-<!--        <table tableName="sys_short_link" domainObjectName="ShortLink">-->
+
+
+        <!--        <table tableName="sys_short_link" domainObjectName="ShortLink">-->
 <!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--        </table>-->
@@ -76,19 +78,20 @@
 <!--            <table tableName="sys_privilege" domainObjectName="Privilege">-->
 <!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--            </table> -->
-<!--            <table tableName="sys_role" domainObjectName="Role">-->
-<!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
-<!--            </table>    -->
+            <table tableName="sys_role" domainObjectName="Role">
+                <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>
+                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+            </table>
 <!--            <table tableName="sys_role_privilege" domainObjectName="RolePrivilege">-->
 <!--            </table>-->
 <!--            <table tableName="sys_permission" domainObjectName="Permission">-->
 <!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--            </table>-->
         <!--   Blog模块     -->
-        <table tableName="blog_article" domainObjectName="BlogArticle">
-            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+<!--        <table tableName="blog_article" domainObjectName="BlogArticle">-->
+<!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
 
 <!--        <table tableName="blog_tag" domainObjectName="BlogTag">-->
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->

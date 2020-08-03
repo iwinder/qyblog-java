@@ -305,6 +305,76 @@ public class BlogArticleExample {
             return (Criteria) this;
         }
 
+        public Criteria andCanonicalLinkIsNull() {
+            addCriterion("canonical_link is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkIsNotNull() {
+            addCriterion("canonical_link is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkEqualTo(String value) {
+            addCriterion("canonical_link =", value, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkNotEqualTo(String value) {
+            addCriterion("canonical_link <>", value, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkGreaterThan(String value) {
+            addCriterion("canonical_link >", value, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkGreaterThanOrEqualTo(String value) {
+            addCriterion("canonical_link >=", value, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkLessThan(String value) {
+            addCriterion("canonical_link <", value, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkLessThanOrEqualTo(String value) {
+            addCriterion("canonical_link <=", value, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkLike(String value) {
+            addCriterion("canonical_link like", value, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkNotLike(String value) {
+            addCriterion("canonical_link not like", value, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkIn(List<String> values) {
+            addCriterion("canonical_link in", values, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkNotIn(List<String> values) {
+            addCriterion("canonical_link not in", values, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkBetween(String value1, String value2) {
+            addCriterion("canonical_link between", value1, value2, "canonicalLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanonicalLinkNotBetween(String value1, String value2) {
+            addCriterion("canonical_link not between", value1, value2, "canonicalLink");
+            return (Criteria) this;
+        }
+
         public Criteria andSummaryIsNull() {
             addCriterion("summary is null");
             return (Criteria) this;

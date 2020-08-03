@@ -30,6 +30,10 @@ public class BlogArticleBaseDto {
      * 链接
      */
     private String permaLink;
+    /**
+     * 规范链接
+     */
+    private String canonicalLink;
 
     /**
      * 摘要
@@ -168,5 +172,13 @@ public class BlogArticleBaseDto {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getCanonicalLink() {
+        return canonicalLink;
+    }
+
+    public void setCanonicalLink(String canonicalLink) {
+        this.canonicalLink = canonicalLink;
     }
 }
