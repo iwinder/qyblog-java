@@ -5,6 +5,7 @@ dependencies {
     compile project(':qycms-core:common')
     compile 'org.apache.shiro:shiro-spring-boot-web-starter:1.5.3'
     compile group: 'org.crazycake', name: 'shiro-redis', version: '3.2.3'
+    compile "com.auth0:java-jwt:3.8.3"
     // https://mvnrepository.com/artifact/com.belerweb/pinyin4j
     compile group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
 

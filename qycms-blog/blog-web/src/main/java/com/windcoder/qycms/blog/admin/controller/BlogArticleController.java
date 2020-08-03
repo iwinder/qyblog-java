@@ -7,6 +7,8 @@ import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
 import com.windcoder.qycms.blog.entity.BlogArticle;
 import com.windcoder.qycms.blog.service.BlogArticleService;
 import com.windcoder.qycms.dto.ResponseDto;
+import com.windcoder.qycms.system.annotation.CurrentUser;
+import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.TypeToken;
@@ -40,8 +42,8 @@ public class BlogArticleController {
 //    }
 
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody BlogArticleDto article) {
-        articleService.save(article);
+    public ResponseDto save(@RequestBody BlogArticleDto article, @CurrentUser UserWebDto user) {
+//        articleService.save(article);
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }
