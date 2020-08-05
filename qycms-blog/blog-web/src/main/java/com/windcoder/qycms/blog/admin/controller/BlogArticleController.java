@@ -43,7 +43,7 @@ public class BlogArticleController {
 
     @PostMapping("/save")
     public ResponseDto save(@RequestBody BlogArticleDto article, @CurrentUser UserWebDto user) {
-//        articleService.save(article);
+        articleService.save(article, user);
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }

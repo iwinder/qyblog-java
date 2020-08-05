@@ -11,6 +11,7 @@ import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper;
 
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.entity.CommentAgent;
 import com.windcoder.qycms.system.enums.CommenttTargetType;
 import com.windcoder.qycms.system.service.CommentAgentService;
@@ -60,7 +61,7 @@ public class BlogArticleService {
      * @param articleDto
      */
     @Transactional
-    public void save(BlogArticleDto articleDto) {
+    public void save(BlogArticleDto articleDto, UserWebDto user) {
 //        BlogArticle article = CopyUtil.copy(articleDto, BlogArticle.class);
         List<String> tagsString = articleDto.getTagStrings();
         BlogArticle article = ModelMapperUtils.map(articleDto, BlogArticle.class);
@@ -77,6 +78,9 @@ public class BlogArticleService {
             article.setCommentAgentId(agent.getId());
             if(StringUtils.isBlank(article.getPermaLink())) {
                 article.setPermaLink(PinyinUtilZ.toHanYuPinyinString(article.getTitle()));
+            }
+            if (article.getAuthorId()==null) {
+                article.setAuthorId(user.getId());
             }
             article.setSummary(StringUtilZ.removeHtmlAndSubstring(article.getContentHtml()));
             this.inster(article);

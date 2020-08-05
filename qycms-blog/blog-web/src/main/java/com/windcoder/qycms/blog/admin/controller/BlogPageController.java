@@ -4,6 +4,8 @@ import com.windcoder.qycms.blog.dto.BlogArticleDto;
 import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
 import com.windcoder.qycms.blog.service.BlogArticleService;
 import com.windcoder.qycms.dto.ResponseDto;
+import com.windcoder.qycms.system.annotation.CurrentUser;
+import com.windcoder.qycms.system.dto.UserWebDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +23,8 @@ public class BlogPageController {
         return  responseDto;
     }
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody BlogArticleDto article) {
-        articleService.save(article);
+    public ResponseDto save(@RequestBody BlogArticleDto article, @CurrentUser UserWebDto user) {
+        articleService.save(article,user);
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }

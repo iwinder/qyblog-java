@@ -3,6 +3,8 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.basis.TestService.RediesService;
+import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.system.dto.SiteConfigWebDto;
 import com.windcoder.qycms.system.entity.SiteConfig;
 import com.windcoder.qycms.system.entity.SiteConfigExample;
@@ -12,16 +14,19 @@ import com.windcoder.qycms.system.repository.mybatis.MySiteConfigMapper;
 import com.windcoder.qycms.system.repository.mybatis.SiteConfigMapper;
 
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JsonParser;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class SiteConfigService {
@@ -29,6 +34,8 @@ public class SiteConfigService {
     private SiteConfigMapper siteConfigMapper;
     @Autowired
     private MySiteConfigMapper mySiteConfigMapper;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 列表查询
@@ -92,13 +99,18 @@ public class SiteConfigService {
 
 
     public List<SiteConfigDto> list(Integer configType,Boolean isWeb) {
+
+        List<SiteConfig> siteConfigs = list(configType);
+        Type type = isWeb ?   new TypeToken<List<SiteConfigWebDto>>() {}.getType() : new TypeToken<List<SiteConfigDto>>() {}.getType();
+        return ModelMapperUtils.map(siteConfigs, type);
+    }
+
+    public List<SiteConfig> list(Integer configType) {
         SiteConfigExample siteConfigExample = new SiteConfigExample();
         if (configType != null) {
             siteConfigExample.createCriteria().andTypeEqualTo(configType);
         }
-        List<SiteConfig> siteConfigs = siteConfigMapper.selectByExampleWithBLOBs(siteConfigExample);
-        Type type = isWeb ?   new TypeToken<List<SiteConfigWebDto>>() {}.getType() : new TypeToken<List<SiteConfigDto>>() {}.getType();
-        return ModelMapperUtils.map(siteConfigs, type);
+        return siteConfigMapper.selectByExampleWithBLOBs(siteConfigExample);
     }
 
     public void saveList(List<SiteConfigDto> SiteConfigDto) {
@@ -108,5 +120,72 @@ public class SiteConfigService {
             siteConfig.setLastModifiedDate(new Date());
         }
         mySiteConfigMapper.updateBatch(siteConfigs);
+        setSiteInfoToRedis(null);
+    }
+
+
+    public void setSiteInfoToRedis(List<SiteConfig> siteConfigs) {
+        if (siteConfigs == null) {
+            SiteConfigExample siteConfigExample = new SiteConfigExample();
+            siteConfigs = siteConfigMapper.selectByExampleWithBLOBs(siteConfigExample);
+        }
+        JSONObject siteBase = new JSONObject();
+        JSONObject siteContent = new JSONObject();
+        JSONObject siteSocial = new JSONObject();
+        JSONObject siteOther = new JSONObject();
+        for (SiteConfig siteConfig: siteConfigs) {
+            switch (siteConfig.getType().intValue()) {
+                case 1:
+                    siteBase.put(siteConfig.getConfigKey(), siteConfig.getConfigValue());
+                    break;
+                case 2:
+                    siteContent.put(siteConfig.getConfigKey(), siteConfig.getConfigValue());
+                    break;
+                case 3:
+                    siteSocial.put(siteConfig.getConfigKey(), siteConfig.getConfigValue());
+                    break;
+                case 4:
+                    siteOther.put(siteConfig.getConfigKey(), siteConfig.getConfigValue());
+                    break;
+            }
+        }
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+
+        ops.set("siteInfo:base", siteBase.toString());
+        ops.set("siteInfo:content",siteContent.toString());
+        ops.set("siteInfo:social",siteSocial.toString());
+        ops.set("siteInfo:other",siteOther.toString());
+
+    }
+
+    public JSONObject findInfoObj(Integer configType){
+        String key = null;
+        switch (configType.intValue()) {
+            case 1:
+                key = "siteInfo:base";
+                break;
+            case 2:
+                key = "siteInfo:content";
+                break;
+            case 3:
+                key = "siteInfo:social";
+                break;
+            case 4:
+                key = "siteInfo:other";
+                break;
+        }
+        if (StringUtils.isBlank(key)) {
+            throw  new BusinessException("类型异常");
+        }
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        String siteInfo  = ops.get(key);
+        if (StringUtils.isBlank(siteInfo)) {
+            List<SiteConfig> siteConfigs =   list(1);
+            setSiteInfoToRedis(siteConfigs);
+            JSONObject siteBase = new JSONObject();
+            siteInfo  = ops.get(key);
+        }
+        JSONObject info = new JSONObject(siteInfo);
+        return info;
     }
 }
