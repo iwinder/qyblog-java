@@ -129,10 +129,10 @@ public class SiteConfigService {
             SiteConfigExample siteConfigExample = new SiteConfigExample();
             siteConfigs = siteConfigMapper.selectByExampleWithBLOBs(siteConfigExample);
         }
-        JSONObject siteBase = new JSONObject();
-        JSONObject siteContent = new JSONObject();
-        JSONObject siteSocial = new JSONObject();
-        JSONObject siteOther = new JSONObject();
+        Map<String, Object> siteBase = new HashMap<>();
+        Map<String, Object> siteContent = new HashMap<>();
+        Map<String, Object> siteSocial = new HashMap<>();
+        Map<String, Object> siteOther = new HashMap<>();
         for (SiteConfig siteConfig: siteConfigs) {
             switch (siteConfig.getType().intValue()) {
                 case 1:
@@ -149,16 +149,16 @@ public class SiteConfigService {
                     break;
             }
         }
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
 
-        ops.set("siteInfo:base", siteBase.toString());
-        ops.set("siteInfo:content",siteContent.toString());
-        ops.set("siteInfo:social",siteSocial.toString());
-        ops.set("siteInfo:other",siteOther.toString());
+        ops.putAll("siteInfo:base", siteBase);
+        ops.putAll("siteInfo:content",siteContent);
+        ops.putAll("siteInfo:social",siteSocial);
+        ops.putAll("siteInfo:other",siteOther);
 
     }
 
-    public JSONObject findInfoObj(Integer configType){
+    public  Map<Object, Object>  findInfoObjString(Integer configType){
         String key = null;
         switch (configType.intValue()) {
             case 1:
@@ -177,15 +177,15 @@ public class SiteConfigService {
         if (StringUtils.isBlank(key)) {
             throw  new BusinessException("类型异常");
         }
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        String siteInfo  = ops.get(key);
-        if (StringUtils.isBlank(siteInfo)) {
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+
+        Map<Object, Object> siteInfo  = ops.entries(key);
+        if (siteInfo == null || siteInfo.isEmpty()) {
             List<SiteConfig> siteConfigs =   list(1);
             setSiteInfoToRedis(siteConfigs);
             JSONObject siteBase = new JSONObject();
-            siteInfo  = ops.get(key);
+            siteInfo  = ops.entries(key);
         }
-        JSONObject info = new JSONObject(siteInfo);
-        return info;
+        return siteInfo;
     }
 }

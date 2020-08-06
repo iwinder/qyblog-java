@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/web/siteInfo/")
@@ -20,7 +21,7 @@ public class SiteInfoWebController {
 
     @GetMapping(value = "base")
     public ResponseDto findBase() {
-       JSONObject jsonObject =  siteConfigService.findInfoObj(1);
+        Map<Object, Object> jsonObject =  siteConfigService.findInfoObjString(1);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(jsonObject);
         return responseDto;
@@ -28,7 +29,7 @@ public class SiteInfoWebController {
 
     @GetMapping(value = "content")
     public ResponseDto findcCntent() {
-        JSONObject jsonObject =  siteConfigService.findInfoObj(2);
+        Map<Object, Object> jsonObject =  siteConfigService.findInfoObjString(2);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(jsonObject);
         return responseDto;
@@ -36,7 +37,7 @@ public class SiteInfoWebController {
 
     @GetMapping(value = "social")
     public ResponseDto findSocial() {
-        JSONObject jsonObject =  siteConfigService.findInfoObj(3);
+        Map<Object, Object> jsonObject =  siteConfigService.findInfoObjString(3);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(jsonObject);
         return responseDto;
@@ -44,13 +45,13 @@ public class SiteInfoWebController {
 
     @GetMapping(value = "other")
     public ResponseDto findOther() {
-        JSONObject jsonObject =  siteConfigService.findInfoObj(4);
-        if (jsonObject.getString("site_pay_flag").equals("false")) {
+        Map<Object, Object> jsonObject=  siteConfigService.findInfoObjString(4);
+        if (jsonObject.get("site_pay_flag").equals("false")) {
             jsonObject.remove("site_weixin_pay_qr");
             jsonObject.remove("site_alipay_pay_qr");
         }
         ResponseDto responseDto = new ResponseDto();
-        responseDto.setContent(jsonObject);
+        responseDto.setContent(jsonObject.toString());
         return responseDto;
     }
 }

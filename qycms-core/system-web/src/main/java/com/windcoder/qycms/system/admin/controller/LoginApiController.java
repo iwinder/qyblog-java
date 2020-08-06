@@ -1,8 +1,10 @@
 package com.windcoder.qycms.system.admin.controller;
 
 import com.windcoder.qycms.dto.ResponseDto;
+import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.service.UserService;
+import com.windcoder.qycms.utils.ModelMapperUtils;
 import com.windcoder.qycms.utils.ReturnResult;
 import com.windcoder.qycms.utils.ValidatorUtil;
 import lombok.Data;
@@ -99,21 +101,16 @@ public class LoginApiController {
     }
 
     @RequestMapping(value = "/currentUser")
-    public ReturnResult currentUser() {
+    public ResponseDto currentUser() {
         if(!SecurityUtils.getSubject().isAuthenticated()){
             throw new UnauthenticatedException();
         }
-        ReturnResult result = new ReturnResult();
+        ResponseDto result = new ResponseDto();
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
-        Map<String, Object> rMap = new HashMap<>();
-        User newUser = userService.findByUsername(user.getUsername());
-        rMap.put("username", newUser.getUsername());
-        rMap.put("nickname", newUser.getNickname());
-        rMap.put("avatar", newUser.getAvatar());
-        result.setResult(rMap);
-        result.setMsg("获取成功");
-        result.setCode(200);
+//        User newUser = userService.findByUsername(user.getUsername());
+        UserWebDto userWebDto = ModelMapperUtils.map(user, UserWebDto.class);
+        result.setContent(userWebDto);
         return result;
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 //@EnableJpaAuditing
 @Configuration
-public class SystemConfig extends WebMvcConfigurationSupport {
+public class SystemConfig implements WebMvcConfigurer {
 
     @Autowired
     CurrentUserMethodArgumentResolver currentUserMethodArgumentResolver;
