@@ -365,6 +365,66 @@ public class MenusExample {
             return (Criteria) this;
         }
 
+        public Criteria andDisplayOrderIsNull() {
+            addCriterion("display_order is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderIsNotNull() {
+            addCriterion("display_order is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderEqualTo(Integer value) {
+            addCriterion("display_order =", value, "displayOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderNotEqualTo(Integer value) {
+            addCriterion("display_order <>", value, "displayOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderGreaterThan(Integer value) {
+            addCriterion("display_order >", value, "displayOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderGreaterThanOrEqualTo(Integer value) {
+            addCriterion("display_order >=", value, "displayOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderLessThan(Integer value) {
+            addCriterion("display_order <", value, "displayOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderLessThanOrEqualTo(Integer value) {
+            addCriterion("display_order <=", value, "displayOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderIn(List<Integer> values) {
+            addCriterion("display_order in", values, "displayOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderNotIn(List<Integer> values) {
+            addCriterion("display_order not in", values, "displayOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderBetween(Integer value1, Integer value2) {
+            addCriterion("display_order between", value1, value2, "displayOrder");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayOrderNotBetween(Integer value1, Integer value2) {
+            addCriterion("display_order not between", value1, value2, "displayOrder");
+            return (Criteria) this;
+        }
+
         public Criteria andParentIdIsNull() {
             addCriterion("parent_id is null");
             return (Criteria) this;

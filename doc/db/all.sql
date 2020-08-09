@@ -400,6 +400,7 @@ CREATE TABLE `sys_menus` (
   `name` varchar(255) DEFAULT NULL comment '菜单名称',
   `url` varchar(255) DEFAULT NULL comment '菜单地址',
   `blanked` bit(1) DEFAULT b'1' comment '是否新窗口打开：0否， 1是',
+  `display_order` int(11) DEFAULT 0 comment '排序',
   `parent_id` bigint(1) DEFAULT NULL comment '父级菜单',
   `target_id` bigint(20) DEFAULT NULL comment '菜单代理',
   `created_by` bigint(20) DEFAULT null comment '创建者',

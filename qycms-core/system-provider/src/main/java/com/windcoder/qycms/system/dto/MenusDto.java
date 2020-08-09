@@ -21,10 +21,16 @@ public class MenusDto {
      * 菜单地址
      */
     private String url;
+
     /**
-     * 是否新窗口打开
+     * 是否新窗口打开：0否， 1是
      */
     private Boolean blanked;
+
+    /**
+     * 排序
+     */
+    private Integer displayorder;
 
     /**
      * 父级菜单
@@ -37,6 +43,7 @@ public class MenusDto {
      * 菜单代理
      */
     private Long targetId;
+    private Integer targetType;
 
     /**
      * 创建者
@@ -146,6 +153,23 @@ public class MenusDto {
 
     public void setChildren(List<MenusDto> children) {
         this.children = children;
+    }
+
+
+    public Integer getDisplayorder() {
+        return displayorder;
+    }
+
+    public void setDisplayorder(Integer displayorder) {
+        this.displayorder = displayorder;
+    }
+
+    public Integer getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(Integer targetType) {
+        this.targetType = targetType;
     }
 
     @Override

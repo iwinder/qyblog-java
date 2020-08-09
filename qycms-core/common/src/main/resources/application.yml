@@ -27,12 +27,18 @@ spring:
     password: ENC(j6n3ISryjfYIBLhG9SWIb6Vah2jySJ4zwypGVE2dl0ilm36KwUzpQqiwf/ST6BJ3)
     port: 6380
     database: 8
-    timeout: 300
+    timeout: 60000
+    Jedis:
+      pool:
+        max-idle: 30
+        max-active: 8
+        max-wait: 60000
+        min-idle: 10
     lettuce:
       pool:
         max-idle: 30
         max-active: 8
-        max-wait: 300
+        max-wait: 60000
         min-idle: 10
 
 # mybatis

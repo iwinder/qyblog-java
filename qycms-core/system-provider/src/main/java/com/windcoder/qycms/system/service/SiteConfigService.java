@@ -36,6 +36,8 @@ public class SiteConfigService {
     private MySiteConfigMapper mySiteConfigMapper;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private UserService userService;
 
     /**
      * 列表查询
@@ -159,6 +161,64 @@ public class SiteConfigService {
     }
 
     public  Map<Object, Object>  findInfoObjString(Integer configType){
+        String key = configTypeToSiteKey(configType);
+        if (StringUtils.isBlank(key)) {
+            throw  new BusinessException("类型异常");
+        }
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+        Map<Object, Object> siteInfo  = null;
+        if (configType>0) {
+            siteInfo =  ops.entries(key);
+            if (siteInfo == null || siteInfo.isEmpty()) {
+                List<SiteConfig> siteConfigs =   list(configType);
+                setSiteInfoToRedis(siteConfigs);
+                siteInfo  = ops.entries(key);
+            }
+        } else {
+            Set<String> keys = redisTemplate.keys(key);
+            siteInfo  = new HashMap<>();
+            for (String okey: keys) {
+                siteInfo.putAll(fillSiteInfo(ops, okey));
+            }
+            siteInfo.putAll(userService.findSiteAdminUserInfo());
+        }
+        return siteInfo;
+    }
+
+
+    public Map<Object, Object> fillSiteInfo(HashOperations<String, Object, Object> ops, String key) {
+        Map<Object, Object> siteInfo  = ops.entries(key);
+        if (siteInfo == null || siteInfo.isEmpty()) {
+            Integer configType = siteKeyToConfigType(key);
+            List<SiteConfig> siteConfigs = list(configType);
+            setSiteInfoToRedis(siteConfigs);
+            siteInfo  = ops.entries(key);
+        }
+        return siteInfo;
+    }
+
+    public Integer siteKeyToConfigType(String key) {
+        Integer configType = null;
+        switch (key) {
+            case "siteInfo:base":
+                configType = 1;
+                break;
+            case "siteInfo:content":
+                configType = 2;
+                break;
+            case "siteInfo:social":
+                configType = 3;
+                break;
+            case "siteInfo:other":
+                configType = 4;
+                break;
+            default:
+                configType = 0;
+        }
+        return configType;
+    }
+
+    public String configTypeToSiteKey(Integer configType) {
         String key = null;
         switch (configType.intValue()) {
             case 1:
@@ -173,19 +233,9 @@ public class SiteConfigService {
             case 4:
                 key = "siteInfo:other";
                 break;
+            default:
+                key = "siteInfo:*";
         }
-        if (StringUtils.isBlank(key)) {
-            throw  new BusinessException("类型异常");
-        }
-        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
-
-        Map<Object, Object> siteInfo  = ops.entries(key);
-        if (siteInfo == null || siteInfo.isEmpty()) {
-            List<SiteConfig> siteConfigs =   list(1);
-            setSiteInfoToRedis(siteConfigs);
-            JSONObject siteBase = new JSONObject();
-            siteInfo  = ops.entries(key);
-        }
-        return siteInfo;
+        return key;
     }
 }

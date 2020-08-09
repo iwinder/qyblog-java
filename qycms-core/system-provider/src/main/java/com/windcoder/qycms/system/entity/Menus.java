@@ -11,9 +11,12 @@ public class Menus extends Auditable {
 
     private Boolean blanked;
 
+    private Integer displayOrder;
+
     private Long parentId;
 
     private Long targetId;
+
 
 
     public Long getId() {
@@ -48,6 +51,14 @@ public class Menus extends Auditable {
         this.blanked = blanked;
     }
 
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
     public Long getParentId() {
         return parentId;
     }
@@ -65,6 +76,7 @@ public class Menus extends Auditable {
     }
 
 
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -75,6 +87,7 @@ public class Menus extends Auditable {
         sb.append(", name=").append(name);
         sb.append(", url=").append(url);
         sb.append(", blanked=").append(blanked);
+        sb.append(", displayOrder=").append(displayOrder);
         sb.append(", parentId=").append(parentId);
         sb.append(", targetId=").append(targetId);
         sb.append(", createdBy=").append(super.getCreatedBy());

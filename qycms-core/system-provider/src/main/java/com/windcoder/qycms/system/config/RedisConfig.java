@@ -44,6 +44,8 @@ public class RedisConfig  extends CachingConfigurerSupport {
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
                 .disableCachingNullValues();
 
+
+
         RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
                 .cacheDefaults(config)
                 .build();

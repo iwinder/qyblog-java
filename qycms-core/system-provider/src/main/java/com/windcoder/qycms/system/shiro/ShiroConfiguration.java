@@ -77,7 +77,7 @@ public class ShiroConfiguration {
 
 
         Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
-        LogoutFilter logoutFilter = new LogoutFilter();
+        LogoutFilter logoutFilter = new ShiroLogoutFilter();
         logoutFilter.setRedirectUrl("/api/admin/login");
         filters.put("/api/admin/logout", logoutFilter);
 //        FormAuthenticationFilter formAuthenticationFilter = new SimpleFormAuthenticationFilter();
@@ -98,7 +98,7 @@ public class ShiroConfiguration {
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/api/admin/login", "anon");
-        filterChainDefinitionMap.put("/api/admin/login", "anon");
+//        filterChainDefinitionMap.put("/api/admin/login", "anon");
         filterChainDefinitionMap.put("/api/stats", "anon");
         filterChainDefinitionMap.put("/api/ldap/**", "anon");
         filterChainDefinitionMap.put("/api/web/**", "anon");
@@ -109,8 +109,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/api/**", "authc");
 
         filterChainDefinitionMap.put("/content/**", "anon");
-        filterChainDefinitionMap.put("/**", "anon" +
-                "");
+        filterChainDefinitionMap.put("/**", "anon");
         //配置shiro默认登录界面地址，前后端分离中登录界面跳转应由前端路由控制，后台仅返回json数据
 //        shiroFilterFactoryBean.setLoginUrl("/api/admin/unauth");
 //        shiroFilterFactoryBean.setLoginUrl("/login");
@@ -199,6 +198,7 @@ public class ShiroConfiguration {
      */
     @Bean
     public RedisManager redisManager() {
+        System.out.println("redisProperties.getTimeout():" + redisProperties.getTimeout());
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(redisProperties.getHost() +":" + redisProperties.getPort());
         redisManager.setTimeout((int) redisProperties.getTimeout().getSeconds());

@@ -3,17 +3,22 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import com.windcoder.qycms.system.dto.RoleDto;
-import com.windcoder.qycms.system.dto.UserInfoDto;
+import com.windcoder.qycms.system.dto.*;
 import com.windcoder.qycms.system.entity.Permission;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.entity.UserExample;
-import com.windcoder.qycms.system.dto.UserDto;
 import com.windcoder.qycms.dto.PageDto;
+import com.windcoder.qycms.system.repository.mybatis.MyUserMapper;
 import com.windcoder.qycms.system.repository.mybatis.UserMapper;
+import com.windcoder.qycms.system.shiro.UserToken;
 import com.windcoder.qycms.utils.CopyUtil;
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -22,6 +27,7 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -29,6 +35,10 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private PermissionService permissionService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+    @Autowired
+    private MyUserMapper myUserMapper;
 
     /**
      * 列表查询
@@ -92,6 +102,12 @@ public class UserService {
     private void update(User user){
         user.setLastModifiedDate(new Date());
         userMapper.updateByPrimaryKeySelective(user);
+        Map<Object, Object> oldUser =  findSiteAdminUserInfo();
+        if (oldUser.get("id").equals(user.getId()+"")) {
+            oldUser.put("nickname", user.getNickname());
+            oldUser.put("avatar", user.getAvatar());
+            refreshSiteAdminUserInfo(oldUser);
+        }
     }
     public User findOne(Long userId) {
        return userMapper.selectByPrimaryKey(userId);
@@ -113,6 +129,29 @@ public class UserService {
             return null;
         }
         return users.get(0);
+    }
 
+    public Map<Object, Object> findSiteAdminUserInfo() {
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+        Map<Object, Object> userInfo  = ops.entries("siteInfo:adminUser");
+        if (userInfo == null || userInfo.isEmpty()) {
+            userInfo  =  myUserMapper.findSiteAdminUserInfo();
+            if (userInfo!=null) {
+                userInfo.put("id",userInfo.get("id") + "");
+            }
+            ops.putAll("siteInfo:adminUser", userInfo);
+        }
+        return userInfo;
+    }
+    @Async
+    public void  refreshSiteAdminUserInfo(Map<Object, Object> userInfo) {
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+        ops.putAll("siteInfo:adminUser", userInfo);
+    }
+
+    public Map<Object, Object>  currentUser() {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        return myUserMapper.findUserAndRoleInfoById(user.getId());
     }
 }

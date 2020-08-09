@@ -55,10 +55,10 @@
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--        </table>-->
 
-<!--        <table tableName="sys_menus" domainObjectName="Menus">-->
-<!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
-<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
-<!--        </table>-->
+        <table tableName="sys_menus" domainObjectName="Menus">
+            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
 <!--        <table tableName="sys_menus_agent" domainObjectName="MenusAgent">-->
 <!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
@@ -78,10 +78,10 @@
 <!--            <table tableName="sys_privilege" domainObjectName="Privilege">-->
 <!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--            </table> -->
-            <table tableName="sys_role" domainObjectName="Role">
-                <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>
-                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-            </table>
+<!--            <table tableName="sys_role" domainObjectName="Role">-->
+<!--                <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
+<!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--            </table>-->
 <!--            <table tableName="sys_role_privilege" domainObjectName="RolePrivilege">-->
 <!--            </table>-->
 <!--            <table tableName="sys_permission" domainObjectName="Permission">-->

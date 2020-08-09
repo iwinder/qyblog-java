@@ -4,6 +4,7 @@ import com.windcoder.qycms.dto.ResponseDto;
 import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.service.UserService;
+import com.windcoder.qycms.system.shiro.UserToken;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import com.windcoder.qycms.utils.ReturnResult;
 import com.windcoder.qycms.utils.ValidatorUtil;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,11 +108,11 @@ public class LoginApiController {
             throw new UnauthenticatedException();
         }
         ResponseDto result = new ResponseDto();
-        Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
-//        User newUser = userService.findByUsername(user.getUsername());
-        UserWebDto userWebDto = ModelMapperUtils.map(user, UserWebDto.class);
-        result.setContent(userWebDto);
+        result.setContent(userService.currentUser());
         return result;
+    }
+    @RequestMapping(value = "/logout")
+    public ResponseDto logout(HttpServletResponse httpServletResponse) {
+        return new ResponseDto();
     }
 }

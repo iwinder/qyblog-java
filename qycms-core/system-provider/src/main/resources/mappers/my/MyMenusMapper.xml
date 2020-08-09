@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.windcoder.qycms.system.repository.mybatis.MyMenusMapper" >
+
+
+    <resultMap type="com.windcoder.qycms.system.dto.MenusWebDto" id="MenusWebDtoMap">
+        <result column="id" property="id"/>
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="parent_id" property="parentId" />
+
+        <collection property="children"
+                    select="com.windcoder.qycms.system.repository.mybatis.MyMenusMapper.findNowChildByParentId"
+                    column="{parentId=id}">
+        </collection>
+    </resultMap>
+
+    <select id="findMaxDisplayOrder" resultType="java.lang.Integer">
+        select max(display_order)
+        from sys_menus
+        <where>
+            <if test="parentId !=null ">
+                and parent_id = #{parentId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findNowChildByParentId" resultType="com.windcoder.qycms.system.dto.MenusWebDto">
+        select sm.id,sm.name,sm.url,sm.parent_id,sm.blanked
+        from sys_menus sm left join sys_menus_agent sma on sm.target_id = sma.id
+        where sma.type = 1
+        and sm.parent_id = #{parentId}
+        order by sm.display_order;
+    </select>
+
+    <select id="findNowHeaderMenus" resultMap="MenusWebDtoMap">
+        select sm.id,sm.name,sm.url,sm.parent_id,sm.blanked
+            from sys_menus sm left join sys_menus_agent sma on sm.target_id = sma.id
+        where sma.type = 1 and parent_id is null
+          order by sm.display_order;
+    </select>
+    <select id="findNowFooterMenus" resultType="com.windcoder.qycms.system.dto.MenusWebDto">
+        select sm.id,sm.name,sm.url,sm.parent_id,sm.blanked
+        from sys_menus sm left join sys_menus_agent sma on sm.target_id = sma.id
+        where sma.type = 2 and parent_id is null
+        order by sm.display_order;
+    </select>
+
+</mapper>

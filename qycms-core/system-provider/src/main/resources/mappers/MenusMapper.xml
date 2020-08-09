@@ -6,6 +6,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="blanked" jdbcType="BIT" property="blanked" />
+    <result column="display_order" jdbcType="INTEGER" property="displayOrder" />
     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
     <result column="target_id" jdbcType="BIGINT" property="targetId" />
     <result column="created_by" jdbcType="BIGINT" property="createdBy" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, url, blanked, parent_id, target_id, created_by, last_modified_by, created_date, 
-    last_modified_date
+    id, `name`, url, blanked, display_order, parent_id, target_id, created_by, last_modified_by, 
+    created_date, last_modified_date
   </sql>
   <select id="selectByExample" parameterType="com.windcoder.qycms.system.entity.MenusExample" resultMap="BaseResultMap">
     select
@@ -110,13 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into sys_menus (`name`, url, blanked, 
-      parent_id, target_id, created_by, 
-      last_modified_by, created_date, last_modified_date
-      )
+      display_order, parent_id, target_id, 
+      created_by, last_modified_by, created_date, 
+      last_modified_date)
     values (#{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{blanked,jdbcType=BIT}, 
-      #{parentId,jdbcType=BIGINT}, #{targetId,jdbcType=BIGINT}, #{createdBy,jdbcType=BIGINT}, 
-      #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}
-      )
+      #{displayOrder,jdbcType=INTEGER}, #{parentId,jdbcType=BIGINT}, #{targetId,jdbcType=BIGINT}, 
+      #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.windcoder.qycms.system.entity.Menus">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -132,6 +133,9 @@
       </if>
       <if test="blanked != null">
         blanked,
+      </if>
+      <if test="displayOrder != null">
+        display_order,
       </if>
       <if test="parentId != null">
         parent_id,
@@ -161,6 +165,9 @@
       </if>
       <if test="blanked != null">
         #{blanked,jdbcType=BIT},
+      </if>
+      <if test="displayOrder != null">
+        #{displayOrder,jdbcType=INTEGER},
       </if>
       <if test="parentId != null">
         #{parentId,jdbcType=BIGINT},
@@ -203,6 +210,9 @@
       <if test="record.blanked != null">
         blanked = #{record.blanked,jdbcType=BIT},
       </if>
+      <if test="record.displayOrder != null">
+        display_order = #{record.displayOrder,jdbcType=INTEGER},
+      </if>
       <if test="record.parentId != null">
         parent_id = #{record.parentId,jdbcType=BIGINT},
       </if>
@@ -232,6 +242,7 @@
       `name` = #{record.name,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
       blanked = #{record.blanked,jdbcType=BIT},
+      display_order = #{record.displayOrder,jdbcType=INTEGER},
       parent_id = #{record.parentId,jdbcType=BIGINT},
       target_id = #{record.targetId,jdbcType=BIGINT},
       created_by = #{record.createdBy,jdbcType=BIGINT},
@@ -253,6 +264,9 @@
       </if>
       <if test="blanked != null">
         blanked = #{blanked,jdbcType=BIT},
+      </if>
+      <if test="displayOrder != null">
+        display_order = #{displayOrder,jdbcType=INTEGER},
       </if>
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=BIGINT},
@@ -280,6 +294,7 @@
     set `name` = #{name,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       blanked = #{blanked,jdbcType=BIT},
+      display_order = #{displayOrder,jdbcType=INTEGER},
       parent_id = #{parentId,jdbcType=BIGINT},
       target_id = #{targetId,jdbcType=BIGINT},
       created_by = #{createdBy,jdbcType=BIGINT},
