@@ -28,18 +28,18 @@ spring:
     port: 6380
     database: 8
     timeout: 60000
-    Jedis:
-      pool:
-        max-idle: 30
-        max-active: 8
-        max-wait: 60000
-        min-idle: 10
+#    Jedis:
+#      pool:
+#        max-idle: 30
+#        max-active: 8
+#        max-wait: 60000
+#        min-idle: 10
     lettuce:
       pool:
-        max-idle: 30
+        max-idle: 10
         max-active: 8
         max-wait: 60000
-        min-idle: 10
+        min-idle: 3
 
 # mybatis
 mybatis:
