@@ -20,7 +20,7 @@ public class BlogArticleWebController {
     @GetMapping("")
     public ResponseDto allActivities(BlogArticlePageDto article){
         article.setType(1);
-        articleService.findAll(article);
+        articleService.findAllWebDto(article);
         ResponseDto responseDto = new ResponseDto(article);
         return  responseDto;
     }
@@ -46,4 +46,8 @@ public class BlogArticleWebController {
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }
+
+
+
+
 }

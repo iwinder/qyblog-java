@@ -14,6 +14,41 @@
             collection定义关联集合类型的属性
             ofType:指定集合里面元素的类型
         -->
+        <association property="author" javaType="com.windcoder.qycms.system.dto.UserWebDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="authorId" property="id"/>
+            <result column="authorNickname" property="nickname" />
+            <result column="nicknameAvatar" property="avatar"/>
+        </association>
+        <association property="category" javaType="com.windcoder.qycms.blog.dto.BlogCategoryDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="categoryId" property="id"/>
+            <result column="categoryName" property="name" />
+            <result column="categoryNamePath" property="namePath"/>
+        </association>
+        <collection property="tagStrings"
+                    select="com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleTagMapper.findTagnameListByArticleId"
+                    column="{articleId=id}">
+        </collection>
+    </resultMap>
+
+    <resultMap type="com.windcoder.qycms.blog.dto.BlogArticleWebBaseDto" id="BlogArticleBaseWebDtoMap">
+        <result column="id" property="id"/>
+        <result column="title" property="title" />
+        <result column="perma_link" property="permaLink" />
+        <result column="summary" property="summary" />
+        <result column="thumbnail" property="thumbnail" />
+        <result column="published_date" property="publishedDate" />
+        <!--
+            collection定义关联集合类型的属性
+            ofType:指定集合里面元素的类型
+        -->
+        <association property="author" javaType="com.windcoder.qycms.system.dto.UserWebDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="authorId" property="id"/>
+            <result column="authorNickname" property="nickname" />
+            <result column="nicknameAvatar" property="avatar"/>
+        </association>
         <association property="category" javaType="com.windcoder.qycms.blog.dto.BlogCategoryDto">
             <!-- 定义这个集合中元素的封装规则 -->
             <result column="categoryId" property="id"/>
@@ -27,27 +62,64 @@
     </resultMap>
 
 
-
+    <sql id="listObj" >
+        ba.id, ba.title,  ba.perma_link, ba.summary, ba.thumbnail, ba.published_date,  ba.deleted, ba.published,
+        bc.id categoryId,bc.name categoryName,bc.name_path categoryNamePath,
+        su.id authorId, su.nickname authorNickname, su.avatar nicknameAvatar
+    </sql>
+    <sql id="commonWhere">
+        <if test="pageDto.published != null and pageDto.published != ''">
+            and ba.published = #{pageDto.published}
+        </if>
+        <if test="pageDto.searchText != null and pageDto.searchText != ''">
+            and  lower(ba.title) like  concat('%',lower(#{pageDto.searchText}),'%')
+        </if>
+        <if test="pageDto.categoryId != null and pageDto.categoryId != ''">
+            and ba.category_id = #{pageDto.categoryId}
+        </if>
+        <if test="pageDto.categoryName != null and pageDto.categoryName != ''">
+            and ba.category_name = #{pageDto.categoryName}
+        </if>
+    </sql>
 
 
     <select id="list" resultMap="BlogArticleBaseDtoMap">
         select
-               ba.id, ba.title,  ba.perma_link, ba.summary, ba.thumbnail, ba.published_date,  ba.deleted, ba.published,
-        bc.id categoryId,bc.name categoryName,bc.name_path categoryNamePath
+              <include refid="listObj"></include>
         from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
+        left join sys_user su on ba.author_id = su.id
         <where>
             ba.deleted = false
-            <if test="pageDto.published != null and pageDto.published != ''">
-                    and ba.published = #{pageDto.published}
-            </if>
-            <if test="pageDto.searchText != null and pageDto.searchText != ''">
-                and  lower(ba.title) like  concat('%',lower(#{pageDto.searchText}),'%')
-            </if>
-
+            <include refid="commonWhere"></include>
         </where>
         order by ba.created_date DESC
-
     </select>
+
+
+    <select id="listWeb" resultMap="BlogArticleBaseWebDtoMap">
+        select
+        <include refid="listObj"></include>
+        from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
+        left join sys_user su on ba.author_id = su.id
+        <if test="pageDto.tagId != null or (pageDto.tagName !=null and pageDto.tagName !='')">
+            left join blog_article_tag bat on ba.id = bat.article_id
+        </if>
+        <if test="pageDto.tagName !=null and pageDto.tagName !=''">
+            left join blog_tag bt on bat.tag_id = bt.id
+        </if>
+        <where>
+            ba.deleted = false
+            <include refid="commonWhere"></include>
+            <if test="pageDto.tagId != null and pageDto.tagId != ''">
+                and bat.tag_id = #{pageDto.tagId}
+            </if>
+            <if test="pageDto.tagName !=null and pageDto.tagName !=''">
+                and bt.tag_name = #{pageDto.tagName}
+            </if>
+        </where>
+        order by ba.created_date DESC
+    </select>
+
     <update id="updateDeleted">
         update blog_article ba set `deleted` = #{deletedStatus}
         where ba.id in

@@ -210,6 +210,14 @@ public class BlogArticleService {
         return articleDto;
     }
 
+    public void findAllWebDto(BlogArticlePageDto pageDto) {
+        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        List<BlogArticleBaseDto> articles = myBlogArticleMapper.list(pageDto);
+        PageInfo<BlogArticleBaseDto> pageInfo = new PageInfo<>(articles);
+        pageDto.setTotal(pageInfo.getTotal());
+        pageDto.setList(articles);
+    }
+
     public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto) {
         BlogArticle article = findOne(blogArticleDto);
         BlogArticleWebDto articleDto = ModelMapperUtils.map(article, BlogArticleWebDto.class);

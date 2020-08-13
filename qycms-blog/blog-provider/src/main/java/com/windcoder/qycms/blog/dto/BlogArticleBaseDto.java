@@ -3,6 +3,9 @@ package com.windcoder.qycms.blog.dto;
 //import com.windcoder.qycms.core.system.dto.CategoryBaseDto;
 //import com.windcoder.qycms.core.system.dto.UserDto;
 
+import com.windcoder.qycms.system.dto.UserDto;
+import com.windcoder.qycms.system.dto.UserWebDto;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +52,7 @@ public class BlogArticleBaseDto {
     /**
      * 作者
      */
-//    private UserDto author;
+    private UserWebDto author;
 //
     private BlogCategoryDto category;
 
@@ -107,13 +110,13 @@ public class BlogArticleBaseDto {
         this.permaLink = permaLink;
     }
 
-//    public UserDto getAuthor() {
-//        return author;
-//    }
-//
-//    public void setAuthor(UserDto author) {
-//        this.author = author;
-//    }
+    public UserWebDto getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserWebDto author) {
+        this.author = author;
+    }
 
 
     public String getSummary() {

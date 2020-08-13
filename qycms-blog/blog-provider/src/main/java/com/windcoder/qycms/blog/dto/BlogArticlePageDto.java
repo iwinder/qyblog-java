@@ -8,4 +8,8 @@ public class BlogArticlePageDto extends PageDto {
     private String searchText;
     private Boolean published;
     private Integer type;
+    private Long categoryId;
+    private String categoryName;
+    private Long tagId;
+    private String tagName;
 }
