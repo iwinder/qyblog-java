@@ -212,23 +212,26 @@ public class BlogArticleService {
 
     public void findAllWebDto(BlogArticlePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
-        List<BlogArticleBaseDto> articles = myBlogArticleMapper.list(pageDto);
-        PageInfo<BlogArticleBaseDto> pageInfo = new PageInfo<>(articles);
+        List<BlogArticleWebBaseDto> articles = myBlogArticleMapper.listWeb(pageDto);
+        PageInfo<BlogArticleWebBaseDto> pageInfo = new PageInfo<>(articles);
         pageDto.setTotal(pageInfo.getTotal());
         pageDto.setList(articles);
     }
 
     public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto) {
-        BlogArticle article = findOne(blogArticleDto);
-        BlogArticleWebDto articleDto = ModelMapperUtils.map(article, BlogArticleWebDto.class);
-        if (article.getCategoryId() != null) {
-            BlogCategoryDto categoryDto =  blogCategoryService.findOneCategoryDto(article.getCategoryId());
-            articleDto.setCategory(categoryDto);
+//        BlogArticle article = findOne(blogArticleDto);
+        BlogArticleWebDto articleDto = myBlogArticleMapper.findOneWeb(blogArticleDto);
+        if (articleDto==null) {
+            throw  new BusinessException("404");
         }
-        if (articleDto.getType().intValue() == 1) {
-            List<String> tagNameList =  blogTagService.findTagnameListByArticleId(articleDto.getId());
-            articleDto.setTagStrings(tagNameList);
-        }
+//        if (article.getCategoryId() != null) {
+//            BlogCategoryDto categoryDto =  blogCategoryService.findOneCategoryDto(article.getCategoryId());
+//            articleDto.setCategory(categoryDto);
+//        }
+//        if (articleDto.getType().intValue() == 1) {
+//            List<String> tagNameList =  blogTagService.findTagnameListByArticleId(articleDto.getId());
+//            articleDto.setTagStrings(tagNameList);
+//        }
 
 
         return articleDto;

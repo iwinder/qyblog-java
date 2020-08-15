@@ -31,4 +31,11 @@
         from blog_tag t left join blog_article_tag bat on t.id = bat.tag_id
         where bat.article_id = #{articleId}
     </select>
+
+
+    <select id="findTagWebListByArticleId" resultType="com.windcoder.qycms.blog.dto.BlogTagWebDto">
+        select t.id, t.name,t.identifier
+        from blog_tag t left join blog_article_tag bat on t.id = bat.tag_id
+        where bat.article_id = #{articleId}
+    </select>
 </mapper>

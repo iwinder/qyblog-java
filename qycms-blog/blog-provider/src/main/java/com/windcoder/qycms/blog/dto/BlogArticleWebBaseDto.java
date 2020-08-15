@@ -41,10 +41,11 @@ public class BlogArticleWebBaseDto {
      */
     private UserWebDto author;
 //
-    private BlogCategoryDto category;
+    private BlogCategoryWebDto category;
 
 
     private List<String> tagStrings;
+    private List<BlogTagWebDto> tags;
     /**
      * 发布日期
      */
