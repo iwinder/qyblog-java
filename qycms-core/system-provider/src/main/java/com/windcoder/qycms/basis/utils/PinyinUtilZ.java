@@ -26,7 +26,11 @@ public class PinyinUtilZ {
     public static String toHanYuPinyinString(String str) {
         try {
             String noFormat =  toHanYuPinyinStringByChinese(str);
-            return noFormat.replaceAll("[^a-z0-9]", "-").replaceAll("(\\-+)", "-");
+            String tmpTitle =  noFormat.replaceAll("[^a-z0-9]", "-").replaceAll("(\\-+)", "-");
+            if(tmpTitle.startsWith("-")) {
+                tmpTitle = tmpTitle.substring(1);
+            }
+            return tmpTitle;
         } catch (BadHanyuPinyinOutputFormatCombination badHanyuPinyinOutputFormatCombination) {
             log.error(badHanyuPinyinOutputFormatCombination.getLocalizedMessage());
             new BusinessException("转换拼音失败");

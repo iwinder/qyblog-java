@@ -10,4 +10,6 @@ public interface MyBlogArticleMapper {
     List<BlogArticleWebBaseDto> listWeb(@Param("pageDto") BlogArticlePageDto pageDto);
     BlogArticleWebDto findOneWeb(@Param("articleDto") BlogArticleDto blogArticleDto);
     void updateDeleted(@Param("deletedStatus") Boolean deletedStatus, @Param("ids")Long[] ids);
+    Integer countPermaLinkLike(@Param("permaLink") String permaLink, @Param("notId")Long notId);
+    Integer countPermaLinkEquals(@Param("permaLink") String permaLink, @Param("notId")Long notId);
 }

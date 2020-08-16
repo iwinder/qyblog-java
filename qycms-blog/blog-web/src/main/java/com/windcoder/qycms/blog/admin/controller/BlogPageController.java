@@ -44,4 +44,10 @@ public class BlogPageController {
         ResponseDto responseDto = new ResponseDto();
         return responseDto;
     }
+    @PostMapping("/checkPermaLink")
+    public ResponseDto checkAndGetPermaLink(@RequestBody BlogArticleDto article) {
+        String link = articleService.checkAndGetPermaLink(article);
+        ResponseDto responseDto = new ResponseDto(link);
+        return responseDto;
+    }
 }

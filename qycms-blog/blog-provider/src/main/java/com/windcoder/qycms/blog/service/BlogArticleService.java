@@ -77,7 +77,7 @@ public class BlogArticleService {
             CommentAgent agent = initCommentAgent(article);
             article.setCommentAgentId(agent.getId());
             if(StringUtils.isBlank(article.getPermaLink())) {
-                article.setPermaLink(PinyinUtilZ.toHanYuPinyinString(article.getTitle()));
+                article.setPermaLink(getNewPermaLinkLikeByTitle(article.getTitle()));
             }
             if (article.getAuthorId()==null) {
                 article.setAuthorId(user.getId());
@@ -110,6 +110,43 @@ public class BlogArticleService {
     private void update(BlogArticle article) {
         article.setLastModifiedDate(new Date());
         blogArticleMapper.updateByPrimaryKeySelective(article);
+    }
+
+    public String checkAndGetPermaLink(BlogArticleDto article) {
+        if (StringUtils.isBlank(article.getPermaLink()) && StringUtils.isBlank(article.getTitle())) {
+            throw new BusinessException("参数异常");
+        }
+        String titile = article.getPermaLink();
+        if (StringUtils.isBlank(article.getPermaLink())) {
+            titile = PinyinUtilZ.toHanYuPinyinString(article.getTitle());
+        }
+        return getNewPermaLinkLikeByLink(titile, article.getId());
+    }
+
+    public String getNewPermaLinkLikeByLink(String link,Long notId) {
+        Integer count = countPermaLinkLike(link, notId);
+        if (count >0) {
+            StringBuilder str = new StringBuilder(link).append("-").append(count+1);
+            return str.toString();
+        }
+        return link;
+    }
+    /**
+     * 获取新的PermaLink
+     * @param title
+     * @return
+     */
+    public String getNewPermaLinkLikeByTitle(String title) {
+        String titile = PinyinUtilZ.toHanYuPinyinString(title);
+        return getNewPermaLinkLikeByLink(titile, null);
+    }
+    public Integer getPermaLinkLikeByTitle(String title, Long notId) {
+        String titile = PinyinUtilZ.toHanYuPinyinString(title);
+        return myBlogArticleMapper.countPermaLinkLike(titile, notId);
+    }
+
+    public Integer countPermaLinkLike(String permaLink, Long notId) {
+       return myBlogArticleMapper.countPermaLinkLike(permaLink, notId);
     }
     public CommentAgent initCommentAgent(BlogArticle article) {
         CommentAgent agent = new CommentAgent();

@@ -103,6 +103,9 @@
         <if test="pageDto.published != null and pageDto.published != ''">
             and ba.published = #{pageDto.published}
         </if>
+        <if test="pageDto.type != null and pageDto.type != ''">
+            and ba.type = #{pageDto.type}
+        </if>
         <if test="pageDto.searchText != null and pageDto.searchText != ''">
             and  lower(ba.title) like  concat('%',lower(#{pageDto.searchText}),'%')
         </if>
@@ -171,6 +174,7 @@
                 and ba.perma_link = #{articleDto.permaLink}
             </if>
         </where>
+        limit 1
     </select>
 
     <update id="updateDeleted">
@@ -180,4 +184,27 @@
             #{item}
         </foreach>
     </update>
+
+    <select id="countPermaLinkLike" resultType="java.lang.Integer">
+        select count(*) from blog_article
+            <where>
+                deleted = false
+                and lower(perma_link)  like concat(lower(#{permaLink}),'%')
+                <if test="notId != null" >
+                  and  id &lt;&gt; #{notId}
+                </if>
+            </where>
+
+    </select>
+    <select id="countPermaLinkEquals" resultType="java.lang.Integer">
+        select count(*) from blog_article
+            <where>
+                deleted = false and
+                lower(perma_link)   = lower(#{permaLink})
+                <if test="notId != null" >
+                    and   id &lt;&gt; #{notId}
+                </if>
+            </where>
+
+    </select>
 </mapper>
