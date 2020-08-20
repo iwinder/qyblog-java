@@ -10,6 +10,7 @@
         <result column="summary" property="summary" />
         <result column="thumbnail" property="thumbnail" />
         <result column="published_date" property="publishedDate" />
+        <result column="view_count" property="viewCount" />
         <!--
             collection定义关联集合类型的属性
             ofType:指定集合里面元素的类型
@@ -39,6 +40,8 @@
         <result column="summary" property="summary" />
         <result column="thumbnail" property="thumbnail" />
         <result column="published_date" property="publishedDate" />
+        <result column="view_count" property="viewCount" />
+        <result column="commentCount" property="commentCount" />
         <!--
             collection定义关联集合类型的属性
             ofType:指定集合里面元素的类型
@@ -71,6 +74,8 @@
         <result column="content_html" property="contentHtml" />
         <result column="type" property="type" />
         <result column="comment_agent_id" property="commentAgentId" />
+        <result column="view_count" property="viewCount" />
+        <result column="commentCount" property="commentCount" />
         <!--
             collection定义关联集合类型的属性
             ofType:指定集合里面元素的类型
@@ -95,9 +100,11 @@
 
 
     <sql id="listObj" >
-        ba.id, ba.title,  ba.perma_link, ba.summary, ba.thumbnail, ba.published_date,  ba.deleted, ba.published,
+        ba.id, ba.title,  ba.perma_link, ba.summary, ba.thumbnail,
+        ba.published_date,  ba.deleted, ba.published, ba.view_count,
         bc.id categoryId,bc.name categoryName,
-        su.id authorId, su.nickname authorNickname, su.avatar nicknameAvatar
+        su.id authorId, su.nickname authorNickname, su.avatar nicknameAvatar,
+        (select count(*) from sns_comment where target_id = ba.comment_agent_id) commentCount
     </sql>
     <sql id="commonWhere">
         <if test="pageDto.published != null and pageDto.published != ''">
@@ -207,4 +214,8 @@
             </where>
 
     </select>
+    <update id="updatePostViews" >
+        UPDATE blog_article SET view_count = view_count + #{viewCount}
+        WHERE id = #{aid};
+    </update>
 </mapper>

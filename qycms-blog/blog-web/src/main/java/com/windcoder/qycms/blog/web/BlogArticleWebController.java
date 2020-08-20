@@ -5,6 +5,7 @@ import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
 import com.windcoder.qycms.blog.dto.BlogArticleWebDto;
 import com.windcoder.qycms.blog.service.BlogArticleService;
 import com.windcoder.qycms.dto.ResponseDto;
+import com.windcoder.qycms.system.config.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,8 @@ public class BlogArticleWebController {
 
     @Autowired
     private BlogArticleService articleService;
+
+
     @GetMapping("")
     public ResponseDto allActivities(BlogArticlePageDto article){
         article.setType(1);

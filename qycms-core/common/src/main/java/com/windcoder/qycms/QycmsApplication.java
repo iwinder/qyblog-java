@@ -2,6 +2,7 @@ package com.windcoder.qycms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Description:
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Time: 23:50 下午
  */
 @SpringBootApplication
+@EnableScheduling
 //@EnableJpaAuditing
 public class QycmsApplication   {
     public static void main(String[] args) {

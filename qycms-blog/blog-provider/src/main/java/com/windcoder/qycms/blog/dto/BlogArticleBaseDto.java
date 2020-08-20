@@ -67,6 +67,8 @@ public class BlogArticleBaseDto {
 
     private Integer type;
 
+    private Long viewCount;
+
 
     public Long getId() {
         return id;
@@ -183,5 +185,13 @@ public class BlogArticleBaseDto {
 
     public void setCanonicalLink(String canonicalLink) {
         this.canonicalLink = canonicalLink;
+    }
+
+    public Long getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Long viewCount) {
+        this.viewCount = viewCount;
     }
 }

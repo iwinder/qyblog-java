@@ -8,6 +8,7 @@ import com.windcoder.qycms.system.dto.CommentPageDto;
 import com.windcoder.qycms.system.dto.CommentWebDto;
 import com.windcoder.qycms.system.entity.Comment;
 import com.windcoder.qycms.system.service.CommentService;
+import com.windcoder.qycms.utils.AgentUserUtil;
 import com.windcoder.qycms.utils.CookieUtils;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import com.windcoder.qycms.utils.ValidatorUtil;
@@ -48,6 +49,8 @@ public class CommentWebController {
         checkfield(comment) ;
         String ip  = IpAddressUtil.getClientRealIp(request);
         comment.setAuthorIp(ip);
+        String agent = AgentUserUtil.getUserAgent(request);
+        comment.setAgent(agent);
         CommentWebDto commentWebDto =  commentService.addTopLevelComment(agentTargetId, comment, response);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(commentWebDto);
@@ -73,6 +76,8 @@ public class CommentWebController {
         checkfield(comment);
         String ip  = IpAddressUtil.getClientRealIp(request);
         comment.setAuthorIp(ip);
+        String agent = AgentUserUtil.getUserAgent(request);
+        comment.setAgent(agent);
         CommentWebDto commentWebDto =  commentService.addReply(agentTargetId,parentId,comment,response);
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(commentWebDto);

@@ -12,4 +12,6 @@ public interface MyBlogArticleMapper {
     void updateDeleted(@Param("deletedStatus") Boolean deletedStatus, @Param("ids")Long[] ids);
     Integer countPermaLinkLike(@Param("permaLink") String permaLink, @Param("notId")Long notId);
     Integer countPermaLinkEquals(@Param("permaLink") String permaLink, @Param("notId")Long notId);
+
+    int updatePostViews(@Param("aid") Long aid, @Param("viewCount") Long viewCount);
 }

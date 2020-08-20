@@ -11,15 +11,19 @@ import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper;
 
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.system.annotation.ViewCountLimit;
+import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.entity.CommentAgent;
 import com.windcoder.qycms.system.enums.CommenttTargetType;
 import com.windcoder.qycms.system.service.CommentAgentService;
 
+import com.windcoder.qycms.utils.IpAddressUtil;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import com.windcoder.qycms.utils.StringUtilZ;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +47,8 @@ public class BlogArticleService {
     private BlogTagService blogTagService;
     @Autowired
     private CommentAgentService commentAgentService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 列表查询
@@ -82,9 +88,11 @@ public class BlogArticleService {
             if (article.getAuthorId()==null) {
                 article.setAuthorId(user.getId());
             }
+            article.setViewCount(0L);
             article.setSummary(StringUtilZ.removeHtmlAndSubstring(article.getContentHtml()));
             this.inster(article);
         } else {
+            article.setViewCount(null);
             this.update(article);
         }
 
@@ -255,12 +263,16 @@ public class BlogArticleService {
         pageDto.setList(articles);
     }
 
+    @ViewCountLimit
     public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto) {
 //        BlogArticle article = findOne(blogArticleDto);
         BlogArticleWebDto articleDto = myBlogArticleMapper.findOneWeb(blogArticleDto);
         if (articleDto==null) {
             throw  new BusinessException("404");
         }
+        String value = IpAddressUtil.getClientRealIp();
+        String key = new StringBuilder("post:viewCount:").append(articleDto.getId()).toString();
+        redisUtil.addPostViewCount(key,value);
 //        if (article.getCategoryId() != null) {
 //            BlogCategoryDto categoryDto =  blogCategoryService.findOneCategoryDto(article.getCategoryId());
 //            articleDto.setCategory(categoryDto);
@@ -269,9 +281,15 @@ public class BlogArticleService {
 //            List<String> tagNameList =  blogTagService.findTagnameListByArticleId(articleDto.getId());
 //            articleDto.setTagStrings(tagNameList);
 //        }
-
+        Long nowCount = redisUtil.getPostViewCount(key);
+        articleDto.setViewCount(nowCount + articleDto.getViewCount());
 
         return articleDto;
+    }
+
+    public void updateView(Long aid, Long viewCount) {
+        BlogArticleExample example = new BlogArticleExample();
+        myBlogArticleMapper.updatePostViews(aid, viewCount);
     }
 
 

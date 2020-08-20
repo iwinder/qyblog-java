@@ -54,4 +54,7 @@ public class BlogArticleWebBaseDto {
     private Long commentAgentId;
 
     private Integer type;
+
+    private Long viewCount;
+    private Long commentCount;
 }

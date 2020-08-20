@@ -7,9 +7,11 @@ archivesBaseName = "qycms-common"
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile('org.springframework.boot:spring-boot-starter-aop')
 //    compile("org.springframework.boot:spring-boot-starter-data-jpa")
 //    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile('org.springframework.boot:spring-boot-starter-data-redis')
+
 // https://mvnrepository.com/artifact/org.json/json
     compile group: 'org.json', name: 'json', version: '20200518'
 
@@ -28,5 +30,7 @@ dependencies {
     compile('org.apache.commons:commons-lang3:3.5')
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
+// https://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
+    compile group: 'eu.bitwalker', name: 'UserAgentUtils', version: '1.21'
 
 }
