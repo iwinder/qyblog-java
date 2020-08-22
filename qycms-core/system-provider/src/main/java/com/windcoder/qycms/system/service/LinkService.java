@@ -3,14 +3,22 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.system.dto.LinkWebDto;
 import com.windcoder.qycms.system.entity.Link;
 import com.windcoder.qycms.system.entity.LinkExample;
 import com.windcoder.qycms.system.dto.LinkDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.system.repository.mybatis.LinkMapper;
 
+import com.windcoder.qycms.system.repository.mybatis.MyLinkMapper;
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.json.JSONArray;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +32,10 @@ import java.util.Date;
 public class LinkService {
     @Resource
     private LinkMapper linkMapper;
+    @Autowired
+    private MyLinkMapper myLinkMapper;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 列表查询
@@ -52,6 +64,7 @@ public class LinkService {
         } else {
             this.update(link);
         }
+        initNowSiteLinks();
     }
 
     /**
@@ -83,5 +96,45 @@ public class LinkService {
         link.setLastModifiedDate(new Date());
         linkMapper.updateByPrimaryKeySelective(link);
     }
+
+
+    @Async
+    public void initNowSiteLinks() {
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+        ops.delete("site_link","index","notIndex");
+    }
+
+    public List<Object> findIndexLinkInRedis() {
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+        String indexObj = (String)ops.get("site_link","index");
+        if (StringUtils.isEmpty(indexObj)) {
+            List<LinkWebDto> allWebLink = myLinkMapper.findAllWebLink(true);
+            JSONArray index = new JSONArray(allWebLink);
+            ops.put("site_link","index",index.toString());
+            return index.toList();
+        }else {
+            JSONArray index = new JSONArray(indexObj);
+            return index.toList();
+        }
+    }
+
+    public List<Object> findNotIndexLinkInRedis() {
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+        String notIndexObj = (String)ops.get("site_link","notIndex");
+        if (StringUtils.isEmpty(notIndexObj)) {
+            List<LinkWebDto> allWebLink = myLinkMapper.findAllWebLink(false);
+            JSONArray notIndex = new JSONArray(allWebLink);
+            ops.put("site_link","notIndex",notIndex.toString());
+            return notIndex.toList();
+        }else {
+            JSONArray index = new JSONArray(notIndexObj);
+            return index.toList();
+        }
+    }
+
+    public void findAllWebLink() {
+
+    }
+
 
 }

@@ -22,6 +22,7 @@ import org.springframework.boot.json.JsonParser;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -125,7 +126,7 @@ public class SiteConfigService {
         setSiteInfoToRedis(null);
     }
 
-
+    @Async
     public void setSiteInfoToRedis(List<SiteConfig> siteConfigs) {
         if (siteConfigs == null) {
             SiteConfigExample siteConfigExample = new SiteConfigExample();

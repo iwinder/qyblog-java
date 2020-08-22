@@ -3,28 +3,35 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.system.dto.ShortLinkWebDto;
 import com.windcoder.qycms.system.entity.ShortLink;
 import com.windcoder.qycms.system.entity.ShortLinkExample;
 import com.windcoder.qycms.system.dto.ShortLinkDto;
 import com.windcoder.qycms.dto.PageDto;
+import com.windcoder.qycms.system.repository.mybatis.MyShortLinkMapper;
 import com.windcoder.qycms.system.repository.mybatis.ShortLinkMapper;
 
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class ShortLinkService {
     @Resource
     private ShortLinkMapper shortLinkMapper;
-
+    @Autowired
+    private MyShortLinkMapper myShortLinkMapper;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
     /**
      * 列表查询
      * @param pageDto
@@ -52,6 +59,7 @@ public class ShortLinkService {
         } else {
             this.update(shortLink);
         }
+        initNowSiteShortLinks();
     }
 
     /**
@@ -62,6 +70,7 @@ public class ShortLinkService {
         ShortLinkExample shortLinkExample = new ShortLinkExample();
         shortLinkExample.createCriteria().andIdIn(Arrays.asList(ids));
         shortLinkMapper.deleteByExample(shortLinkExample);
+        initNowSiteShortLinks();
     }
 
     /**
@@ -82,6 +91,27 @@ public class ShortLinkService {
     private void update(ShortLink shortLink){
         shortLink.setLastModifiedDate(new Date());
         shortLinkMapper.updateByPrimaryKeySelective(shortLink);
+    }
+
+    @Async
+    public void initNowSiteShortLinks() {
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+        List<ShortLinkWebDto> allWebDto = myShortLinkMapper.findAllWebDto();
+        Map<String, Object> linkGo = new HashMap<>();
+        for (ShortLinkWebDto shortLink: allWebDto) {
+            linkGo.put(shortLink.getIdentifier(), shortLink.getUrl());
+        }
+        ops.putAll("site_go", linkGo);
+    }
+
+    public Map<Object, Object> findAllShortWebDto() {
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+        Map<Object, Object> linkInfo = ops.entries("site_go");
+        if(linkInfo==null || linkInfo.isEmpty()) {
+            initNowSiteShortLinks();
+            linkInfo  = ops.entries("site_go");
+        }
+        return linkInfo;
     }
 
 }

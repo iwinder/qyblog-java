@@ -2,7 +2,9 @@ package com.windcoder.qycms.system.web.controller;
 
 import com.windcoder.qycms.dto.ResponseDto;
 import com.windcoder.qycms.system.dto.MenusWebDto;
+import com.windcoder.qycms.system.service.LinkService;
 import com.windcoder.qycms.system.service.MenusService;
+import com.windcoder.qycms.system.service.ShortLinkService;
 import com.windcoder.qycms.system.service.SiteConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -24,6 +26,10 @@ public class SiteInfoWebController {
     private SiteConfigService siteConfigService;
     @Autowired
     private MenusService menusService;
+    @Autowired
+    private ShortLinkService shortLinkService;
+    @Autowired
+    private LinkService linkService;
 
 
     @GetMapping(value = "base")
@@ -79,6 +85,26 @@ public class SiteInfoWebController {
         Map<String, List<Object>> nowAllMenus = menusService.findNowAllMenus();
         ResponseDto responseDto = new ResponseDto();
         responseDto.setContent(nowAllMenus);
+        return responseDto;
+    }
+
+    @GetMapping(value = "indexlinks")
+    public ResponseDto findIndexLinks() {
+        List<Object> indexLink = linkService.findIndexLinkInRedis();
+        ResponseDto responseDto = new ResponseDto(indexLink);
+        return responseDto;
+    }
+
+    @GetMapping(value = "notIndexLinks")
+    public ResponseDto findAllNotIndexLinks() {
+        List<Object> notIndexLink = linkService.findNotIndexLinkInRedis();
+        ResponseDto responseDto = new ResponseDto(notIndexLink);
+        return responseDto;
+    }
+    @GetMapping(value = "shortLinks")
+    public ResponseDto findAllShortLinks() {
+        Map<Object, Object> allShortWebDto = shortLinkService.findAllShortWebDto();
+        ResponseDto responseDto = new ResponseDto(allShortWebDto);
         return responseDto;
     }
 }
