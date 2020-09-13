@@ -103,8 +103,7 @@
         ba.id, ba.title,  ba.perma_link, ba.summary, ba.thumbnail,
         ba.published_date,  ba.deleted, ba.published, ba.view_count,
         bc.id categoryId,bc.name categoryName,
-        su.id authorId, su.nickname authorNickname, su.avatar nicknameAvatar,
-        (select count(*) from sns_comment where target_id = ba.comment_agent_id) commentCount
+        su.id authorId, su.nickname authorNickname, su.avatar nicknameAvatar
     </sql>
     <sql id="commonWhere">
         <if test="pageDto.published != null and pageDto.published != ''">
@@ -141,6 +140,7 @@
     <select id="listWeb" resultMap="BlogArticleBaseWebDtoMap">
         select
         <include refid="listObj"></include>,
+        (select count(*) from sns_comment where target_id = ba.comment_agent_id and status='ENROLLED' ) commentCount,
                bc.identifier categoryIdentifier
         from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
         left join sys_user su on ba.author_id = su.id
@@ -167,6 +167,7 @@
     <select id="findOneWeb"  resultMap="BlogArticleWebDtoMap">
         select
         <include refid="listObj"></include>,
+        (select count(*) from sns_comment where target_id = ba.comment_agent_id and status='ENROLLED' ) commentCount,
         bc.identifier categoryIdentifier,
         ba.content_html,ba.type, ba.comment_agent_id
         from `blog_article` ba left join blog_category bc on ba.category_id = bc.id

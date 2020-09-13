@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.windcoder.qycms.basis.utils.PinyinUtilZ;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.blog.dto.BlogTagBaseDto;
+import com.windcoder.qycms.blog.dto.BlogTagWebDto;
 import com.windcoder.qycms.blog.entity.BlogArticleTag;
 import com.windcoder.qycms.blog.entity.BlogTag;
 import com.windcoder.qycms.blog.entity.BlogTagExample;
@@ -113,6 +114,20 @@ public class BlogTagService {
         return null;
     }
 
+    public BlogTag findById(Long id) {
+        return blogTagMapper.selectByPrimaryKey(id);
+    }
+
+    public BlogTag findByIdentifier(String identifier) {
+        BlogTagExample example = new BlogTagExample();
+        example.createCriteria().andIdentifierEqualTo(identifier);
+        List<BlogTag> blogTags = blogTagMapper.selectByExample(example);
+        if(!blogTags.isEmpty()) {
+            return blogTags.get(0);
+        }
+        return null;
+    }
+
     public List<BlogArticleTag>  findArticleTagByArticleId(Long articleId) {
         return blogArticleTagService.findByArticleId(articleId);
     }
@@ -131,4 +146,21 @@ public class BlogTagService {
     public List<String> findTagnameListByArticleId(Long articleId) {
         return blogArticleTagService.findTagnameListByArticleId(articleId);
     }
+
+    public BlogTagWebDto findByIdForWeb(Long id) {
+        BlogTag tag =  findById(id);
+        if (tag==null) {
+            return new BlogTagWebDto();
+        }
+        return ModelMapperUtils.map(tag, BlogTagWebDto.class);
+    }
+
+    public BlogTagWebDto findByIdentifierForWeb(String name) {
+        BlogTag tag = findByIdentifier(name);
+        if (tag==null) {
+            return new BlogTagWebDto();
+        }
+        return ModelMapperUtils.map(tag, BlogTagWebDto.class);
+    }
+
 }

@@ -12,7 +12,7 @@ public class CookieUtils {
     public static Cookie setCookie(HttpServletResponse response, String cookieKey, String cookieValue, Integer maxAge){
         Cookie loginCookie = new Cookie(cookieKey,cookieValue);
         // loginCookie.setDomain("192.168.0.108");
-        // loginCookie.setPath("/");
+         loginCookie.setPath("/");
         if( maxAge != null){
             loginCookie.setMaxAge(maxAge);
         }

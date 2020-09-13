@@ -16,4 +16,30 @@ public class StringUtilZ {
 
     }
 
+    public static Integer randomRange(Integer minNum,Integer maxNum) {
+        int tmp = 0;
+        if (minNum == null) {
+            if ( maxNum == null) {
+                return tmp;
+            } else {
+                return (int) (Math.random()*maxNum+1);
+            }
+
+        } else   {
+           if (maxNum == null) {
+               return  minNum + (int) (Math.random()*10+1);
+           } else {
+               return  minNum + (int) (Math.random()*(maxNum-minNum+1));
+           }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        for (int i=0;i<100;i++) {
+            System.out.println(randomRange(0, null));
+        }
+
+    }
+
 }

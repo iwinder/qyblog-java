@@ -1,7 +1,8 @@
 package com.windcoder.qycms.system.enums;
 
 public enum CommenttTargetType {
-    ARTICLE("A", "文章");
+    ARTICLE("A", "文章"),
+    PAGE("P", "页面");
     private String code;
 
     private String desc;

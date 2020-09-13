@@ -159,7 +159,7 @@ public class BlogArticleService {
     public CommentAgent initCommentAgent(BlogArticle article) {
         CommentAgent agent = new CommentAgent();
         agent.setEnabled(true);
-        agent.setTargetType(CommenttTargetType.ARTICLE.name());
+        agent.setTargetType(article.getType().equals(1)?CommenttTargetType.ARTICLE.name():CommenttTargetType.PAGE.name());
         agent.setTargetName(article.getTitle());
         if (article.getId()!=null) {
             agent.setTargetId(article.getId());
@@ -258,6 +258,9 @@ public class BlogArticleService {
     public void findAllWebDto(BlogArticlePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         List<BlogArticleWebBaseDto> articles = myBlogArticleMapper.listWeb(pageDto);
+        for (BlogArticleWebBaseDto article: articles) {
+            article.setDefNum(String.valueOf(StringUtilZ.randomRange(1,32)));
+        }
         PageInfo<BlogArticleWebBaseDto> pageInfo = new PageInfo<>(articles);
         pageDto.setTotal(pageInfo.getTotal());
         pageDto.setList(articles);
@@ -283,7 +286,7 @@ public class BlogArticleService {
 //        }
         Long nowCount = redisUtil.getPostViewCount(key);
         articleDto.setViewCount(nowCount + articleDto.getViewCount());
-
+        articleDto.setDefNum(String.valueOf(StringUtilZ.randomRange(1,32)));
         return articleDto;
     }
 

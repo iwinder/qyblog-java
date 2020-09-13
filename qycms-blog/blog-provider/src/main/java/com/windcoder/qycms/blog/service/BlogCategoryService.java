@@ -4,10 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.windcoder.qycms.basis.utils.PinyinUtilZ;
+import com.windcoder.qycms.blog.dto.BlogCategoryWebDto;
 import com.windcoder.qycms.blog.entity.BlogCategory;
 import com.windcoder.qycms.blog.entity.BlogCategoryExample;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.blog.entity.BlogCategoryTree;
+import com.windcoder.qycms.blog.entity.BlogTag;
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogCategoryMapper;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.blog.repository.mybatis.BlogCategoryMapper;
@@ -354,8 +356,32 @@ public class BlogCategoryService {
           blogCategoryDto.setParent(ModelMapperUtils.map(parent, BlogCategoryDto.class));
         }
         return blogCategoryDto;
+    }
+
+    public BlogCategory findByIdentifier(String identifier) {
+        BlogCategoryExample example = new BlogCategoryExample();
+        example.createCriteria().andIdentifierEqualTo(identifier);
+        List<BlogCategory> blogCategories = blogCategoryMapper.selectByExample(example);
+        if(!blogCategories.isEmpty()) {
+            return blogCategories.get(0);
+        }
+        return null;
+    }
 
 
+    public BlogCategoryWebDto findByIdForWeb(Long id) {
+        BlogCategory category = getOne(id);
+        if (category == null) {
+            return new BlogCategoryWebDto();
+        }
+        return ModelMapperUtils.map(category, BlogCategoryWebDto.class);
+    }
 
+    public BlogCategoryWebDto findByIdentifierForWeb(String identifier) {
+        BlogCategory category = findByIdentifier(identifier);
+        if (category == null) {
+            return new BlogCategoryWebDto();
+        }
+        return ModelMapperUtils.map(category, BlogCategoryWebDto.class);
     }
 }
