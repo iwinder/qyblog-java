@@ -101,6 +101,13 @@ public class SiteInfoWebController {
         ResponseDto responseDto = new ResponseDto(notIndexLink);
         return responseDto;
     }
+
+    @GetMapping(value = "allLinks")
+    public ResponseDto findAllLinks() {
+        List<Object> all  =   linkService.findAllWebLink();
+        ResponseDto responseDto = new ResponseDto(all);
+        return responseDto;
+    }
     @GetMapping(value = "shortLinks")
     public ResponseDto findAllShortLinks() {
         Map<Object, Object> allShortWebDto = shortLinkService.findAllShortWebDto();

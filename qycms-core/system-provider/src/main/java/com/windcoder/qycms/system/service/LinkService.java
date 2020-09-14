@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
@@ -132,8 +133,19 @@ public class LinkService {
         }
     }
 
-    public void findAllWebLink() {
+    public List<Object> findAllWebLink() {
+        List<Object> indexLink = findIndexLinkInRedis();
+        List<Object> notIndexLink = findNotIndexLinkInRedis();
+        List<Object> all = new ArrayList<Object>();
+        if(indexLink!=null) {
+            all.addAll(indexLink);
 
+        }
+        if(notIndexLink!=null) {
+            all.addAll(notIndexLink);
+        }
+
+        return all;
     }
 
 
