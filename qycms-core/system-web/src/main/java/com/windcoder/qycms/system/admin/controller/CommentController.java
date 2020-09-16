@@ -1,5 +1,6 @@
 package com.windcoder.qycms.system.admin.controller;
 
+import com.windcoder.qycms.system.dto.CommentPageDto;
 import com.windcoder.qycms.system.entity.Comment;
 import com.windcoder.qycms.system.dto.CommentDto;
 import com.windcoder.qycms.dto.PageDto;
@@ -28,7 +29,7 @@ public class CommentController {
      * @return
      */
     @GetMapping("")
-    public ResponseDto list(PageDto pageDto) {
+    public ResponseDto list(CommentPageDto pageDto) {
         commentService.list(pageDto);
         ResponseDto responseDto = new ResponseDto(pageDto);
         return responseDto;

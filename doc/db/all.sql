@@ -301,9 +301,7 @@ CREATE TABLE `sns_comment` (
   PRIMARY KEY (`id`),
   KEY `FKhx4nrk2kessc0qfc7i3n9kt5u` (`parent_id`),
   KEY `FK5fdxbmdylnf81xn1iu12ac9i2` (`target_id`),
-  KEY `FKdjdspxwjo7efjfxqrryds8phs` (`top_parent_id`),
-  CONSTRAINT `FKdjdspxwjo7efjfxqrryds8phs` FOREIGN KEY (`top_parent_id`) REFERENCES `sns_comment` (`id`),
-  CONSTRAINT `FKhx4nrk2kessc0qfc7i3n9kt5u` FOREIGN KEY (`parent_id`) REFERENCES `sns_comment` (`id`)
+  KEY `FKdjdspxwjo7efjfxqrryds8phs` (`top_parent_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
 
 

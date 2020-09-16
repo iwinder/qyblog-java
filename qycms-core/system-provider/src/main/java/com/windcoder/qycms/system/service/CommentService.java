@@ -4,15 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.windcoder.qycms.exception.BusinessException;
-import com.windcoder.qycms.system.dto.CommentPageDto;
-import com.windcoder.qycms.system.dto.CommentWebDto;
-import com.windcoder.qycms.system.dto.UserWebDto;
+import com.windcoder.qycms.system.dto.*;
 import com.windcoder.qycms.system.entity.Comment;
 import com.windcoder.qycms.system.entity.CommentAgent;
 import com.windcoder.qycms.system.entity.CommentExample;
-import com.windcoder.qycms.system.dto.CommentDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.system.entity.User;
+import com.windcoder.qycms.system.enums.CommentStatus;
 import com.windcoder.qycms.system.repository.mybatis.CommentMapper;
 
 import com.windcoder.qycms.utils.CookieUtils;
@@ -48,14 +46,15 @@ public class CommentService {
      * 列表查询
      * @param pageDto
      */
-    public void list(PageDto pageDto) {
+    public void list(CommentPageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         CommentExample commentExample = new CommentExample();
-        List<Comment> comments = commentMapper.selectByExample(commentExample);
+        List<Comment> comments = commentMapper.selectByExampleWithBLOBs(commentExample);
         PageInfo<Comment> pageInfo = new PageInfo<>(comments);
         pageDto.setTotal(pageInfo.getTotal());
-        Type type = new TypeToken<List<Comment>>() {}.getType();
-        List<CommentDto> commentDtoList = ModelMapperUtils.map(comments, type);
+        Type type = new TypeToken<List<CommentListDto>>() {}.getType();
+        List<CommentListDto> commentDtoList = ModelMapperUtils.map(comments, type);
+        fillCommentListDto(commentDtoList);
         pageDto.setList(commentDtoList);
     }
 
@@ -145,7 +144,7 @@ public class CommentService {
             criteria.andTopParentIdEqualTo(pageDto.getParentId());
             example.setOrderByClause("created_date ASC");
         }
-        criteria.andStatusNotEqualTo("APPLIED");
+        criteria.andStatusNotEqualTo(CommentStatus.APPLIED.name());
         List<Comment> comments = commentMapper.selectByExampleWithBLOBs(example);
         Type type = new TypeToken<List<CommentWebDto>>() {}.getType();
         List<CommentWebDto> commentsDto = ModelMapperUtils.map(comments,type);
@@ -162,7 +161,7 @@ public class CommentService {
 //                userDto = new UserWebDto(user.getId(), user.getNickname(), user.getAvatar());
 //                commentWebDto.setUser(userDto);
 //            }
-            if (commentWebDto.getStatus().equalsIgnoreCase("REFUSED")) {
+            if (commentWebDto.getStatus().equalsIgnoreCase(CommentStatus.REFUSED.name())) {
                 commentWebDto.setContent("该评论已被删除");
             }
             if (commentWebDto.getParent()!=null && commentWebDto.getParent().getId() !=null) {
@@ -230,7 +229,7 @@ public class CommentService {
 
     private Long countByEmailAndStatusEnrolled(String authorEmail) {
         CommentExample example = new CommentExample();
-        example.createCriteria().andAuthorEmailEqualTo(authorEmail).andStatusEqualTo("ENROLLED");
+        example.createCriteria().andAuthorEmailEqualTo(authorEmail).andStatusEqualTo(CommentStatus.ENROLLED.name());
         return commentMapper.countByExample(example);
     }
 
@@ -275,13 +274,51 @@ public class CommentService {
         if(countByEmail.longValue()>0){
             Long count = countByEmailAndStatusEnrolled(comment.getAuthorEmail());
             if(count.longValue()>0){
-                comment.setStatus("ENROLLED");
+                comment.setStatus(CommentStatus.ENROLLED.name());
             } else {
-                comment.setStatus("APPLIED");
+                comment.setStatus(CommentStatus.APPLIED.name());
             }
         } else {
-            comment.setStatus("APPLIED");
+            comment.setStatus(CommentStatus.APPLIED.name());
         }
 
+    }
+    public void fillCommentListDto(List<CommentListDto> listDtos) {
+        CommentDto commentDto = null;
+        CommentAgentBaseDto agentDto = null;
+        for (CommentListDto dto : listDtos) {
+            if (dto.getParent()!=null && dto.getParent().getId()!=null) {
+                Comment one = findOne(dto.getParent().getId());
+                commentDto = new CommentDto();
+                if (one!=null && one.getId() != null) {
+                    commentDto.setId(one.getId());
+                    commentDto.setAuthorName(one.getAuthorName());
+                    commentDto.setAuthorUrl(one.getAuthorUrl());
+                    commentDto.setContent(one.getContent());
+                    commentDto.setStatus(one.getStatus());
+
+                } else {
+                    commentDto.setId(dto.getParent().getId());
+                    commentDto.setAuthorName("网友");
+                    commentDto.setContent("内容已删除");
+                    commentDto.setStatus(CommentStatus.DELETED.name());
+                }
+                dto.setParent(commentDto);
+
+            }
+            if (dto.getTarget() != null && dto.getTarget().getId()!=null) {
+                CommentAgent oneAgent = agentTargetService.findOne(dto.getTarget().getId());
+                agentDto = new CommentAgentBaseDto();
+                if (oneAgent!=null&&oneAgent.getId()!=null) {
+                    agentDto.setId(oneAgent.getId());
+                    agentDto.setTargetId(oneAgent.getTargetId());
+                    agentDto.setTargetName(oneAgent.getTargetName());
+                    agentDto.setTargetType(oneAgent.getTargetType());
+                } else {
+                    agentDto.setId(dto.getTarget().getId());
+                }
+                dto.setTarget(agentDto);
+            }
+        }
     }
 }

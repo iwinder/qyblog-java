@@ -12,7 +12,6 @@ import com.windcoder.qycms.system.repository.mybatis.CommentAgentMapper;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Type;

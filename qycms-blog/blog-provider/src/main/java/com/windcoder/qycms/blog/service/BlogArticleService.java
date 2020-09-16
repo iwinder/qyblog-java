@@ -15,7 +15,7 @@ import com.windcoder.qycms.system.annotation.ViewCountLimit;
 import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.entity.CommentAgent;
-import com.windcoder.qycms.system.enums.CommenttTargetType;
+import com.windcoder.qycms.system.enums.CommentTargetType;
 import com.windcoder.qycms.system.service.CommentAgentService;
 
 import com.windcoder.qycms.utils.IpAddressUtil;
@@ -23,14 +23,12 @@ import com.windcoder.qycms.utils.ModelMapperUtils;
 import com.windcoder.qycms.utils.StringUtilZ;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -91,6 +89,7 @@ public class BlogArticleService {
             article.setViewCount(0L);
             article.setSummary(StringUtilZ.removeHtmlAndSubstring(article.getContentHtml()));
             this.inster(article);
+            updateCommentAgent(agent, article.getId());
         } else {
             article.setViewCount(null);
             this.update(article);
@@ -159,7 +158,7 @@ public class BlogArticleService {
     public CommentAgent initCommentAgent(BlogArticle article) {
         CommentAgent agent = new CommentAgent();
         agent.setEnabled(true);
-        agent.setTargetType(article.getType().equals(1)?CommenttTargetType.ARTICLE.name():CommenttTargetType.PAGE.name());
+        agent.setTargetType(article.getType().equals(1)? CommentTargetType.ARTICLE.name(): CommentTargetType.PAGE.name());
         agent.setTargetName(article.getTitle());
         if (article.getId()!=null) {
             agent.setTargetId(article.getId());
@@ -167,6 +166,12 @@ public class BlogArticleService {
         commentAgentService.save(agent);
         return agent;
 
+    }
+    public void updateCommentAgent( CommentAgent agent,Long articleId) {
+        if(articleId != null && agent.getTargetId() == null) {
+            agent.setTargetId(articleId);
+            commentAgentService.save(agent);
+        }
     }
     public void saveTags(Long articleId, List<String> tagsString){
         if(tagsString ==null || tagsString.isEmpty()) {
