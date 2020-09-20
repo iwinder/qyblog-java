@@ -13,8 +13,7 @@ import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.enums.CommentStatus;
 import com.windcoder.qycms.system.repository.mybatis.CommentMapper;
 
-import com.windcoder.qycms.utils.CookieUtils;
-import com.windcoder.qycms.utils.ModelMapperUtils;
+import com.windcoder.qycms.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.TypeToken;
@@ -49,6 +48,12 @@ public class CommentService {
     public void list(CommentPageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         CommentExample commentExample = new CommentExample();
+        if (StringUtils.isNotBlank(pageDto.getStatus())) {
+            commentExample.createCriteria().andStatusEqualTo(pageDto.getStatus());
+        } else {
+            commentExample.createCriteria().andStatusNotEqualTo(CommentStatus.REFUSED.name());
+        }
+        commentExample.setOrderByClause("created_date desc");
         List<Comment> comments = commentMapper.selectByExampleWithBLOBs(commentExample);
         PageInfo<Comment> pageInfo = new PageInfo<>(comments);
         pageDto.setTotal(pageInfo.getTotal());
@@ -73,6 +78,28 @@ public class CommentService {
         return comment;
     }
 
+    public Comment saveComment(CommentDto commentDto) {
+        Comment comment = ModelMapperUtils.map(commentDto, Comment.class);
+        if (comment.getId() == null) {
+            if (comment.getUserId()!=null) {
+                comment.setStatus(CommentStatus.ENROLLED.name());
+                UserInfoDto user = userService.findOneUserDto(comment.getUserId());
+                comment.setAuthorName(user.getNickname());
+                comment.setAuthorEmail(user.getEmail());
+                Comment parent = findOne(commentDto.getParentId());
+                Long topParentId = (null == parent.getTopParentId()) ? parent.getId() : parent.getTopParentId();
+                Integer level = parent.getDepth() + 1;
+                comment.setTopParentId(topParentId);
+                comment.setDepth(level);
+                this.inster(comment);
+            }
+        } else {
+            this.update(comment);
+        }
+        return comment;
+    }
+
+
 
 
     /**
@@ -80,9 +107,10 @@ public class CommentService {
      * @param ids
      */
     public void delete(Long[] ids) {
-        CommentExample commentExample = new CommentExample();
-        commentExample.createCriteria().andIdIn(Arrays.asList(ids));
-        commentMapper.deleteByExample(commentExample);
+        updateStatus(ids, "REFUSED");
+//        CommentExample commentExample = new CommentExample();
+//        commentExample.createCriteria().andIdIn(Arrays.asList(ids));
+//        commentMapper.deleteByExample(commentExample);
     }
 
     /**
@@ -103,6 +131,19 @@ public class CommentService {
     private void update(Comment comment){
         comment.setLastModifiedDate(new Date());
         commentMapper.updateByPrimaryKeySelective(comment);
+    }
+
+    public void updateStatus(Long[] ids,String status) {
+        Comment comment = null;
+        if (ids == null || status == null) {
+            return;
+        }
+        for (Long id: ids) {
+            comment = new Comment();
+            comment.setId(id);
+            comment.setStatus(status);
+            update(comment);
+        }
     }
 
 
@@ -155,6 +196,7 @@ public class CommentService {
         Long replyCount = null;
         PageInfo<Comment> pageInfo = new PageInfo<>(comments);
         pageDto.setTotal(pageInfo.getTotal());
+        Long parentId = null;
         for (CommentWebDto commentWebDto : commentsDto) {
 //            if (commentWebDto.getUserId()!=null && !commentWebDto.getUserId().equals(0)) {
 //                user = userService.findOne(commentWebDto.getUserId());
@@ -164,17 +206,28 @@ public class CommentService {
             if (commentWebDto.getStatus().equalsIgnoreCase(CommentStatus.REFUSED.name())) {
                 commentWebDto.setContent("该评论已被删除");
             }
-            if (commentWebDto.getParent()!=null && commentWebDto.getParent().getId() !=null) {
-                parent = findOne(commentWebDto.getParent().getId());
+            if (commentWebDto.getParentId()!=null || (commentWebDto.getParent()!=null && commentWebDto.getParent().getId() !=null)) {
+                if (commentWebDto.getParentId()!=null) {
+                    parentId = commentWebDto.getParentId();
+                } else {
+                    parentId = commentWebDto.getParent().getId();
+                }
+                parent = findOne(parentId);
                 parentDto = new CommentWebDto();
                 parentDto.setId(parent.getId());
                 parentDto.setAuthorName(parent.getAuthorName());
+                parentDto.setAuthorEmail(StringUtilZ.getMD5(parent.getAuthorEmail()));
                 parentDto.setAuthorUrl(parent.getAuthorUrl());
+                commentWebDto.setParent(parentDto);
             } else  {
                 replyCount =  countByTopParentId(commentWebDto.getId());
                 commentWebDto.setReplyCount(replyCount.intValue());
             }
-            commentWebDto.setAuthorEmail(null);
+            if(commentWebDto.getUser()!=null && commentWebDto.getUser().getId()!=null) {
+                UserWebDto oneUserWebDto = userService.findOneUserWebDto(commentWebDto.getUser().getId());
+                commentWebDto.setUser(oneUserWebDto);
+            }
+            commentWebDto.setAuthorEmail(StringUtilZ.getMD5(commentWebDto.getAuthorEmail()));
         }
 
         pageDto.setList(commentsDto);
@@ -286,6 +339,7 @@ public class CommentService {
     public void fillCommentListDto(List<CommentListDto> listDtos) {
         CommentDto commentDto = null;
         CommentAgentBaseDto agentDto = null;
+        UserWebDto userWebDto = null;
         for (CommentListDto dto : listDtos) {
             if (dto.getParent()!=null && dto.getParent().getId()!=null) {
                 Comment one = findOne(dto.getParent().getId());
@@ -294,7 +348,6 @@ public class CommentService {
                     commentDto.setId(one.getId());
                     commentDto.setAuthorName(one.getAuthorName());
                     commentDto.setAuthorUrl(one.getAuthorUrl());
-                    commentDto.setContent(one.getContent());
                     commentDto.setStatus(one.getStatus());
 
                 } else {
@@ -318,6 +371,11 @@ public class CommentService {
                     agentDto.setId(dto.getTarget().getId());
                 }
                 dto.setTarget(agentDto);
+            }
+            if(dto.getUser()!=null && dto.getUser().getId()!=null) {
+                userWebDto = userService.findOneUserWebDto(dto.getUser().getId());
+                dto.getUser().setAvatar(userWebDto.getAvatar());
+                dto.getUser().setNickname(userWebDto.getNickname());
             }
         }
     }

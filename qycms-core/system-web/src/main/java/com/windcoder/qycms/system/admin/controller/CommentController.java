@@ -6,11 +6,14 @@ import com.windcoder.qycms.system.dto.CommentDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.dto.ResponseDto;
 import com.windcoder.qycms.system.service.CommentService;
+import com.windcoder.qycms.utils.AgentUserUtil;
+import com.windcoder.qycms.utils.IpAddressUtil;
 import com.windcoder.qycms.utils.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -41,16 +44,17 @@ public class CommentController {
      * @return
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody  CommentDto commentDto) {
+    public ResponseDto save( HttpServletRequest request,
+            @RequestBody  CommentDto commentDto) {
         // 保存校验
-        ValidatorUtil.length(commentDto.getAgent(), "评论者客户端", 1, 255);
-        ValidatorUtil.length(commentDto.getAuthorName(), "评论者用户名", 1, 255);
-        ValidatorUtil.length(commentDto.getAuthorEmail(), "评论者邮箱", 1, 255);
-        ValidatorUtil.length(commentDto.getAuthorIp(), "评论者ip", 1, 255);
-        ValidatorUtil.length(commentDto.getAuthorUrl(), "评论者网址", 1, 255);
-        ValidatorUtil.length(commentDto.getStatus(), "评论状态", 1, 255);
-
-        commentService.save(commentDto);
+        ValidatorUtil.require(commentDto.getContent(), "内容");
+        if (commentDto.getId() == null) {
+            String ip  = IpAddressUtil.getClientRealIp(request);
+            commentDto.setAuthorIp(ip);
+            String agent = AgentUserUtil.getUserAgent(request);
+            commentDto.setAgent(agent);
+        }
+        commentService.saveComment(commentDto);
         ResponseDto responseDto = new ResponseDto(commentDto);
         return responseDto;
     }
@@ -63,6 +67,19 @@ public class CommentController {
     @DeleteMapping("/deleted")
     public ResponseDto delete(@RequestBody Long[] ids) {
         commentService.delete(ids);
+        ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
+
+    /**
+     * 更新状态
+     * @param ids
+     * @param status
+     * @return
+     */
+    @PostMapping(value = "/updateStatus")
+    public ResponseDto updateStatus(Long[] ids,String status) {
+        commentService.updateStatus(ids, status);
         ResponseDto responseDto = new ResponseDto();
         return responseDto;
     }

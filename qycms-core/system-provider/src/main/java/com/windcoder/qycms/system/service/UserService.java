@@ -121,6 +121,12 @@ public class UserService {
         return userInfo;
     }
 
+    public UserWebDto findOneUserWebDto(Long userId) {
+        User user = findOne(userId);
+        UserWebDto userWebDto = ModelMapperUtils.map(user, UserWebDto.class);
+        return userWebDto;
+    }
+
     public User findByUsername(String username) {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUsernameEqualTo(username);

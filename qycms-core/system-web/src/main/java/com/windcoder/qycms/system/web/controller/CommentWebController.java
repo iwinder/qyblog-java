@@ -84,12 +84,11 @@ public class CommentWebController {
         return responseDto;
 
     }
-
-
     private void checkfield(CommentDto commentDto) {
         ValidatorUtil.require(commentDto.getAuthorName(), "昵称");
         ValidatorUtil.require(commentDto.getAuthorEmail(), "邮箱");
         ValidatorUtil.isEmail(commentDto.getAuthorEmail());
+        ValidatorUtil.require(commentDto.getContent(), "内容");
     }
 //    @GetMapping(value = "/agent")
 //    public CommentAgentDto findCommentAgent(@PathVariable("agentTargetId")Long agentTargetId){

@@ -90,6 +90,7 @@ public class BlogArticleService {
             article.setSummary(StringUtilZ.removeHtmlAndSubstring(article.getContentHtml()));
             this.inster(article);
             updateCommentAgent(agent, article.getId());
+            articleDto.setId(article.getId());
         } else {
             article.setViewCount(null);
             this.update(article);

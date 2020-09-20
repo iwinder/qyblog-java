@@ -1,5 +1,11 @@
 package com.windcoder.qycms.utils;
 
+import com.windcoder.qycms.exception.BusinessException;
+import org.apache.commons.codec.digest.Md5Crypt;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+
 public class StringUtilZ {
 
     private static String removeHtml(String html) {
@@ -33,6 +39,19 @@ public class StringUtilZ {
            }
         }
 
+    }
+    /**
+     * 对字符串md5加密
+     *
+     * @param str
+     * @return
+     */
+    public static String getMD5(String str) {
+        try {
+            return MD5Util.stringToMD5(str,32);
+        } catch (Exception e) {
+            throw new BusinessException("数据加密出现错误");
+        }
     }
 
     public static void main(String[] args) {

@@ -1,10 +1,10 @@
 package com.windcoder.qycms.system.enums;
 
 public enum  CommentStatus {
-    APPLIED("A", "文章"),
-    ENROLLED("E", "页面"),
-    REFUSED("E", "页面"),
-    DELETED("D", "页面");
+    APPLIED("A", "待审核"),
+    ENROLLED("E", "通过"),
+    REFUSED("E", "拒绝"),
+    DELETED("D", "删除");
     private String code;
 
     private String desc;

@@ -55,6 +55,8 @@ public class CommentWebDto {
 
     private CommentWebDto parent;
 
+    private Long parentId;
+
     /**
      * 用户id, 0 游客
      */
@@ -64,7 +66,7 @@ public class CommentWebDto {
     /**
      * 根回复
      */
-    private Long topParentId;
+    private CommentWebDto topParent;
 
     /**
      * 创建时间
@@ -143,12 +145,12 @@ public class CommentWebDto {
 
 
 
-    public Long getTopParentId() {
-        return topParentId;
+    public CommentWebDto getTopParent() {
+        return topParent;
     }
 
-    public void setTopParentId(Long topParentId) {
-        this.topParentId = topParentId;
+    public void setTopParent(CommentWebDto topParent) {
+        this.topParent = topParent;
     }
 
     public Date getCreatedDate() {
@@ -176,6 +178,14 @@ public class CommentWebDto {
         this.parent = parent;
     }
 
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
     public Integer getReplyCount() {
         return replyCount;
     }
@@ -199,8 +209,9 @@ public class CommentWebDto {
         sb.append(", targetId=").append(targetId);
         sb.append(", depth=").append(depth);
         sb.append(", parent=").append(parent);
+        sb.append(", parentId=").append(parentId);
         sb.append(", user=").append(user);
-        sb.append(", topParentId=").append(topParentId);
+        sb.append(", topParentId=").append(topParent);
         sb.append(", replyCount=").append(replyCount);
         sb.append(", createdDate=").append(createdDate);
         sb.append("]");
