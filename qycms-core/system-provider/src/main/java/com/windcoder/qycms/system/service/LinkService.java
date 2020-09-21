@@ -3,6 +3,7 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.system.dto.LinkWebDto;
 import com.windcoder.qycms.system.entity.Link;
 import com.windcoder.qycms.system.entity.LinkExample;
@@ -104,7 +105,7 @@ public class LinkService {
         HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
         ops.delete("site_link","index","notIndex");
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public List<Object> findIndexLinkInRedis() {
         HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
         String indexObj = (String)ops.get("site_link","index");
@@ -118,7 +119,7 @@ public class LinkService {
             return index.toList();
         }
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public List<Object> findNotIndexLinkInRedis() {
         HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
         String notIndexObj = (String)ops.get("site_link","notIndex");
@@ -132,7 +133,7 @@ public class LinkService {
             return index.toList();
         }
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public List<Object> findAllWebLink() {
         List<Object> indexLink = findIndexLinkInRedis();
         List<Object> notIndexLink = findNotIndexLinkInRedis();

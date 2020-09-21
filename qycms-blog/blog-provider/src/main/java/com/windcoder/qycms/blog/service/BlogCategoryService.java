@@ -14,6 +14,7 @@ import com.windcoder.qycms.blog.repository.mybatis.MyBlogCategoryMapper;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.blog.repository.mybatis.BlogCategoryMapper;
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.utils.CopyUtil;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -368,7 +369,7 @@ public class BlogCategoryService {
         return null;
     }
 
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public BlogCategoryWebDto findByIdForWeb(Long id) {
         BlogCategory category = getOne(id);
         if (category == null) {
@@ -376,7 +377,7 @@ public class BlogCategoryService {
         }
         return ModelMapperUtils.map(category, BlogCategoryWebDto.class);
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public BlogCategoryWebDto findByIdentifierForWeb(String identifier) {
         BlogCategory category = findByIdentifier(identifier);
         if (category == null) {

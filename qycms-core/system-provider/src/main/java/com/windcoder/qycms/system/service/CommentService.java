@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.system.dto.*;
 import com.windcoder.qycms.system.entity.Comment;
 import com.windcoder.qycms.system.entity.CommentAgent;
@@ -160,12 +161,12 @@ public class CommentService {
         }
         return agentTarget;
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public void findTopLevelComments(Long agentTargetId, CommentPageDto pageDto) {
         checkAndGetCommentAgent(agentTargetId);
         findWebComments(agentTargetId, pageDto);
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public void findReplies(Long agentTargetId,Long parentId, CommentPageDto pageDto) {
         checkAndGetCommentAgent(agentTargetId);
         pageDto.setParentId(parentId);
@@ -238,7 +239,7 @@ public class CommentService {
     }
 
 
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public CommentWebDto addTopLevelComment(Long agentTargetId, CommentDto commentDto, HttpServletResponse response) {
         CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
         commentDto.setTargetId(agentTarget.getId());
@@ -254,7 +255,7 @@ public class CommentService {
         setCommentAuthorIntoCookie(response,commentDto.getAuthorName(),commentDto.getAuthorEmail(),commentDto.getAuthorUrl());
         return commentwebDto;
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public CommentWebDto addReply(Long agentTargetId,Long parentId, CommentDto commentDto, HttpServletResponse response) {
         CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
         Comment parent = findOne(parentId);

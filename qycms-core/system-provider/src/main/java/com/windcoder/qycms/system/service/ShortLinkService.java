@@ -3,6 +3,7 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.system.dto.ShortLinkWebDto;
 import com.windcoder.qycms.system.entity.ShortLink;
 import com.windcoder.qycms.system.entity.ShortLinkExample;
@@ -103,7 +104,7 @@ public class ShortLinkService {
         }
         ops.putAll("site_go", linkGo);
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public Map<Object, Object> findAllShortWebDto() {
         HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
         Map<Object, Object> linkInfo = ops.entries("site_go");

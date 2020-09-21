@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 
 import com.windcoder.qycms.basis.TestService.RediesService;
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.system.dto.SiteConfigWebDto;
 import com.windcoder.qycms.system.entity.SiteConfig;
 import com.windcoder.qycms.system.entity.SiteConfigExample;
@@ -160,7 +161,7 @@ public class SiteConfigService {
         ops.putAll("siteInfo:other",siteOther);
 
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public  Map<Object, Object>  findInfoObjString(Integer configType){
         String key = configTypeToSiteKey(configType);
         if (StringUtils.isBlank(key)) {

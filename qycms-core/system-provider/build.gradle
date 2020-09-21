@@ -8,6 +8,8 @@ dependencies {
     compile "com.auth0:java-jwt:3.8.3"
     // https://mvnrepository.com/artifact/com.belerweb/pinyin4j
     compile group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
+// https://mvnrepository.com/artifact/com.google.guava/guava
+    compile group: 'com.google.guava', name: 'guava', version: '29.0-jre'
 
 //    compile group: 'org.springframework', name: 'spring-websocket'
 //    compile 'org.springframework.boot:spring-boot-starter-data-ldap'

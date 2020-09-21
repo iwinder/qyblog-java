@@ -11,6 +11,7 @@ import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper;
 
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.system.annotation.ViewCountLimit;
 import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.dto.UserWebDto;
@@ -260,7 +261,7 @@ public class BlogArticleService {
         articleDto.setTagStrings(tagNameList);
         return articleDto;
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public void findAllWebDto(BlogArticlePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         List<BlogArticleWebBaseDto> articles = myBlogArticleMapper.listWeb(pageDto);
@@ -272,6 +273,7 @@ public class BlogArticleService {
         pageDto.setList(articles);
     }
 
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     @ViewCountLimit
     public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto) {
 //        BlogArticle article = findOne(blogArticleDto);
