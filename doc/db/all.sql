@@ -65,6 +65,18 @@ CREATE TABLE `blog_article` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 comment='文章';
 
 
+-- 文章访客
+drop table if exists `blog_article_visitor`;
+CREATE TABLE `blog_article_visitor` (
+`id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
+`article_id` bigint(20) NOT NULL comment '文章id',
+`visitor_agent` varchar(255) DEFAULT NULL comment '访客客户端',
+`visitor_ip` varchar(255) DEFAULT NULL comment '访客ip',
+`created_date` datetime comment '创建时间',
+`last_modified_date` datetime comment '更新时间',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 comment='文章浏览量详情';
+
 -- 标签
 drop table if exists `blog_tag`;
 CREATE TABLE `blog_tag` (

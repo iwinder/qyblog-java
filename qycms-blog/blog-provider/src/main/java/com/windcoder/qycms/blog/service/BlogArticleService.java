@@ -19,6 +19,7 @@ import com.windcoder.qycms.system.entity.CommentAgent;
 import com.windcoder.qycms.system.enums.CommentTargetType;
 import com.windcoder.qycms.system.service.CommentAgentService;
 
+import com.windcoder.qycms.utils.AgentUserUtil;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import com.windcoder.qycms.utils.StringUtilZ;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +48,8 @@ public class BlogArticleService {
     private BlogTagService blogTagService;
     @Autowired
     private CommentAgentService commentAgentService;
+    @Autowired
+    private BlogArticleVisitorService blogArticleVisitorService;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -274,16 +278,15 @@ public class BlogArticleService {
     }
 
     @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
-    @ViewCountLimit
     public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto) {
 //        BlogArticle article = findOne(blogArticleDto);
         BlogArticleWebDto articleDto = myBlogArticleMapper.findOneWeb(blogArticleDto);
         if (articleDto==null) {
             throw  new BusinessException("404");
         }
-        String value = IpAddressUtil.getClientRealIp();
+
         String key = new StringBuilder("post:viewCount:").append(articleDto.getId()).toString();
-        redisUtil.addPostViewCount(key,value);
+
 //        if (article.getCategoryId() != null) {
 //            BlogCategoryDto categoryDto =  blogCategoryService.findOneCategoryDto(article.getCategoryId());
 //            articleDto.setCategory(categoryDto);
@@ -301,6 +304,16 @@ public class BlogArticleService {
     public void updateView(Long aid, Long viewCount) {
         BlogArticleExample example = new BlogArticleExample();
         myBlogArticleMapper.updatePostViews(aid, viewCount);
+    }
+
+    public void addVersion(Long articleId, HttpServletRequest request) {
+        BlogArticleVisitor  visitor = new BlogArticleVisitor();
+        String ip  = IpAddressUtil.getClientRealIp(request);
+        visitor.setVisitorIp(ip);
+        String agent = AgentUserUtil.getUserAgent(request);
+        visitor.setVisitorAgent(agent);
+        visitor.setArticleId(articleId);
+        blogArticleVisitorService.save(visitor);
     }
 
 

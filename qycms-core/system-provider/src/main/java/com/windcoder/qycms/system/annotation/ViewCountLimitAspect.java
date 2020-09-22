@@ -1,6 +1,7 @@
 package com.windcoder.qycms.system.annotation;
 
 import com.windcoder.qycms.system.config.RedisUtil;
+import com.windcoder.qycms.utils.AgentUserUtil;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -8,9 +9,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-//@Aspect
-//@Configuration
+import javax.servlet.http.HttpServletRequest;
+
+@Aspect
+@Configuration
 public class ViewCountLimitAspect {
     @Autowired
     private RedisUtil redisUtil;
@@ -25,8 +30,17 @@ public class ViewCountLimitAspect {
         Object blogId = object[0];
         Object obj = null;
         try {
-
-            obj = joinPoint.proceed();
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            String borderGroup = AgentUserUtil.getBorderGroup(request);
+            if (!borderGroup.equalsIgnoreCase("Robot/Spider")) {
+                String value = IpAddressUtil.getClientRealIp(request);
+                String key = new StringBuilder("post:viewCount:").append(blogId).toString();
+                Long flag = redisUtil.addPostViewCount(key,value);
+                System.out.println("post:viewCount flag"+ flag);
+                if(flag.longValue()>0) {
+                    obj = joinPoint.proceed();
+                }
+            }
         } catch (Throwable e) {
             e.printStackTrace();
         }

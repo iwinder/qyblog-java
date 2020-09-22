@@ -13,9 +13,12 @@ public class GeneratorPathUtils {
     static final String SYSTEM_CONSOLE_URL = "qycms-core/system-web";
 
 
-    public static  String MODULE =  SYSTEM_MODULE;
-    public static  String PROJECT_URL =  SYSTEM_SERVICE_URL;
-    public static  String PROJECT_CONSOLE_URL = SYSTEM_CONSOLE_URL;
+//    public static  String MODULE =  SYSTEM_MODULE;
+//    public static  String PROJECT_URL =  SYSTEM_SERVICE_URL;
+//    public static  String PROJECT_CONSOLE_URL = SYSTEM_CONSOLE_URL;
+    public static  String MODULE =  BLOG_MODULE;
+    public static  String PROJECT_URL =  BLOG_SERVICE_URL;
+    public static  String PROJECT_CONSOLE_URL = BLOG_CONSOLE_URL;
 
     // VUE
     static final String TO_VUE_BASE_PATH = "/home/wind/work/Web/qyblog-web/";

@@ -11,8 +11,8 @@ public class RedisUtil {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    public void addPostViewCount(String key, String value) {
-        redisTemplate.opsForHyperLogLog().add(key, value);
+    public Long addPostViewCount(String key, String value) {
+      return redisTemplate.opsForHyperLogLog().add(key, value);
     }
 
 

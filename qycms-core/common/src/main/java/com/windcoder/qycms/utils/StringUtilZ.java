@@ -8,6 +8,8 @@ import java.security.MessageDigest;
 
 public class StringUtilZ {
 
+//    private final String[] BOTS = ["google"];
+
     private static String removeHtml(String html) {
         String content = "";
         content = html.replaceAll( ".*?<body.*?>(.*?)<\\/body>", "$1");
