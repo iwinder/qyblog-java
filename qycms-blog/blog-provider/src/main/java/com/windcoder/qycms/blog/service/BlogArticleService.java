@@ -265,7 +265,6 @@ public class BlogArticleService {
         articleDto.setTagStrings(tagNameList);
         return articleDto;
     }
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public void findAllWebDto(BlogArticlePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         List<BlogArticleWebBaseDto> articles = myBlogArticleMapper.listWeb(pageDto);
@@ -277,7 +276,7 @@ public class BlogArticleService {
         pageDto.setList(articles);
     }
 
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+
     public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto) {
 //        BlogArticle article = findOne(blogArticleDto);
         BlogArticleWebDto articleDto = myBlogArticleMapper.findOneWeb(blogArticleDto);

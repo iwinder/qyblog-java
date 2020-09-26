@@ -363,6 +363,8 @@ Insert into sys_site_config (config_key,config_value,config_name,config_tip,type
 values('site_head_code','','页头自定义代码','页面头部加载的自定义代码，位于head标签结束前',2,@v_system_user_id,@v_system_user_id);
 Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
 values('site_foot_code','','页脚自定义代码','页面底部加载的自定义代码，位于body标签结束前',2,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_sider_code','','侧边栏自定义代码','侧边栏加载的自定义代码，位于body标签结束前',2,@v_system_user_id,@v_system_user_id);
 
 Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
 values('site_desc','','个人描述','个人一句话说明',3,@v_system_user_id,@v_system_user_id);

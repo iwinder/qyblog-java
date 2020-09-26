@@ -5,6 +5,7 @@ import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
 import com.windcoder.qycms.blog.dto.BlogArticleWebDto;
 import com.windcoder.qycms.blog.service.BlogArticleService;
 import com.windcoder.qycms.dto.ResponseDto;
+import com.windcoder.qycms.system.annotation.BloomLimit;
 import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.system.annotation.ViewCountLimit;
 import com.windcoder.qycms.system.config.RedisUtil;
@@ -22,7 +23,7 @@ public class BlogArticleWebController {
     @Autowired
     private BlogArticleService articleService;
 
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     @GetMapping("")
     public ResponseDto allActivities(BlogArticlePageDto article){
         article.setType(1);
@@ -32,7 +33,7 @@ public class BlogArticleWebController {
     }
 
 
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     @GetMapping("/{articleId}")
     public ResponseDto get(@PathVariable("articleId") Long articleId) {
         BlogArticleDto articleDto = new BlogArticleDto();
@@ -42,7 +43,8 @@ public class BlogArticleWebController {
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @BloomLimit
     @GetMapping("/name/{articleName}")
     public ResponseDto getByName(@PathVariable("articleName") String articleName) {
         BlogArticleDto articleDto = new BlogArticleDto();

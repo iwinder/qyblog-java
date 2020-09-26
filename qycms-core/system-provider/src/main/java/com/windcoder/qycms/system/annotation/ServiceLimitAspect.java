@@ -5,6 +5,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.RateLimiter;
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.exception.LimitException;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -39,27 +40,25 @@ public class ServiceLimitAspect {
     }
 
     @Around("ServiceAspect()")
-    public  Object around(ProceedingJoinPoint joinPoint) {
+    public  Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         ServiceLimit limitAnnotation = method.getAnnotation(ServiceLimit.class);
         ServiceLimit.LimitType limitType = limitAnnotation.limitType();
         String key = limitAnnotation.key();
         Object obj;
-        try {
-            if(limitType.equals(ServiceLimit.LimitType.IP)){
-                key = IpAddressUtil.getClientRealIp();
-            }
-            RateLimiter rateLimiter = caches.get(key);
-            Boolean flag = rateLimiter.tryAcquire();
-            if(flag){
-                obj = joinPoint.proceed();
-            }else{
-                throw new BusinessException("小同志，你访问的太频繁了");
-            }
-        } catch (Throwable e) {
-            throw new BusinessException("小同志，你访问的太频繁了");
+
+        if(limitType.equals(ServiceLimit.LimitType.IP)){
+            key = IpAddressUtil.getClientRealIp();
         }
+        RateLimiter rateLimiter = caches.get(key);
+        Boolean flag = rateLimiter.tryAcquire();
+        if(flag){
+            obj = joinPoint.proceed();
+        }else{
+            throw new LimitException("小同志，你访问的太频繁了");
+        }
+
         return obj;
     }
 }
