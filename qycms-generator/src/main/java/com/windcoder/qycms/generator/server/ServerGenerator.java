@@ -71,9 +71,9 @@ public class ServerGenerator {
         FreeMarkerUtil.initConfig("service.ftl");
         FreeMarkerUtil.generator(toServicePath+ Domain +"Service.java", map);
 //
-//        // 生成Controller
-//        FreeMarkerUtil.initConfig("controller.ftl");
-//        FreeMarkerUtil.generator(toControllerPath+ Domain +"Controller.java", map);
+        // 生成Controller
+        FreeMarkerUtil.initConfig("controller.ftl");
+        FreeMarkerUtil.generator(toControllerPath+ Domain +"Controller.java", map);
     }
 
 

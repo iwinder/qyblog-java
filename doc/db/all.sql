@@ -451,6 +451,22 @@ CREATE TABLE `sys_short_link` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='短链接表';
 
+
+drop table if exists `sys_ip_black`;
+CREATE TABLE `sys_ip_black` (
+`id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
+`visitor_ip` varchar(255) DEFAULT NULL comment '访客ip',
+`visitor_agent` varchar(255) DEFAULT NULL comment '访客客户端',
+`type` varchar(255)  DEFAULT NULL comment '类型',
+`remarks` varchar(255)  DEFAULT NULL comment '备注',
+ `black_num` int(11) DEFAULT 0  comment '被封次数',
+`created_date` datetime comment '创建时间',
+`last_modified_date` datetime comment '更新时间',
+ `deleted` bit(1) DEFAULT b'0' comment '是否删除：0不删除， 1 删除',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 comment='ip黑名单';
+
+
 commit;
 -- end;
 

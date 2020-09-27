@@ -1,15 +1,26 @@
 package com.windcoder.qycms.system.config;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.Set;
 
 @Component
 public class RedisUtil {
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    public static final String POST_VIEW_COUNT  = "post:viewCount:";
+    public static final String IPBLACK_FREQUENT_ACCESS = "IpBlack:FrequentAccess:";
+    public static final int IPBLACK_FREQUENT_LIMIT_NUM = 10;
+    public static final int IPBLACK_NOT_FOUNT_LIMIT_NUM = 10;
+    public static final String IPBLACK_NOT_FOUNT = "IpBlack:NotFount:";
+    public static final String IPBLACK_TMP_INFO = "IpBlack:TmpInfo";
 
     public Long addPostViewCount(String key, String value) {
       return redisTemplate.opsForHyperLogLog().add(key, value);
@@ -30,5 +41,21 @@ public class RedisUtil {
     public Set<String> getKeys(String pattern) {
         Set<String> keys = redisTemplate.keys(pattern);
         return keys;
+    }
+
+    public Long increment(String key) {
+      return   redisTemplate.opsForValue().increment(key);
+    }
+
+
+    public void setIpBlackTmpInfo(JSONObject tmpInfo) {
+        ListOperations<String, String> ops = redisTemplate.opsForList();
+
+        ops.leftPush(IPBLACK_TMP_INFO, tmpInfo.toString());
+    }
+
+    public void getIpBlackTmpInfo() {
+
+
     }
 }

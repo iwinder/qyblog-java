@@ -11,6 +11,7 @@ import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper;
 
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.exception.NotFoundException;
 import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.system.annotation.ViewCountLimit;
 import com.windcoder.qycms.system.config.RedisUtil;
@@ -267,11 +268,15 @@ public class BlogArticleService {
     }
     public void findAllWebDto(BlogArticlePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+//        if (PageHelper.getLocalPage().)
         List<BlogArticleWebBaseDto> articles = myBlogArticleMapper.listWeb(pageDto);
         for (BlogArticleWebBaseDto article: articles) {
             article.setDefNum(String.valueOf(StringUtilZ.randomRange(1,32)));
         }
         PageInfo<BlogArticleWebBaseDto> pageInfo = new PageInfo<>(articles);
+        if (pageInfo.getPages()<pageDto.getPage()) {
+            throw new NotFoundException("列表访问超出最大值");
+        }
         pageDto.setTotal(pageInfo.getTotal());
         pageDto.setList(articles);
     }

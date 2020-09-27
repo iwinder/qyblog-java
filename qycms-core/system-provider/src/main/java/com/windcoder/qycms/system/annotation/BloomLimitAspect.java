@@ -4,17 +4,20 @@ import com.windcoder.qycms.exception.LimitException;
 import com.windcoder.qycms.exception.NotFoundException;
 import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.filters.BloomCacheFilter;
+import com.windcoder.qycms.utils.AgentUserUtil;
+import com.windcoder.qycms.utils.IpAddressUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
 @Aspect
 @Configuration
-@Order(2)
+@Order(3)
 public class BloomLimitAspect {
     @Autowired
     private RedisUtil redisUtil;
@@ -34,6 +37,18 @@ public class BloomLimitAspect {
             if(BloomCacheFilter.mightContain(String.valueOf(blogLink))){
                 obj = joinPoint.proceed();
             }else{
+                String key = IpAddressUtil.getClientRealIp();
+                StringBuilder newkey = new StringBuilder(redisUtil.IPBLACK_NOT_FOUNT);
+                newkey.append(key);
+                long num = redisUtil.increment(newkey.toString());
+                if(num >= Long.valueOf(redisUtil.IPBLACK_NOT_FOUNT_LIMIT_NUM).longValue()) {
+                    JSONObject info = new JSONObject();
+                    info.put("ip", key);
+                    info.put("agent", AgentUserUtil.getUserAgent());
+                    info.put("type", "NOTFOUNT");
+                    info.put("remarks", "访问不存在的文章过多");
+                    redisUtil.setIpBlackTmpInfo(info);
+                }
                 throw new NotFoundException("小同志，你访问的文章不存在");
             }
         } catch (Throwable e) {

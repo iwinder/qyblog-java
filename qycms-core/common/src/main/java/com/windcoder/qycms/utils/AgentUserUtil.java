@@ -5,6 +5,8 @@ import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
@@ -12,6 +14,11 @@ import java.util.regex.Pattern;
 
 @Slf4j
 public class AgentUserUtil {
+
+    public static String getUserAgent() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return getUserAgent(request);
+    }
     /**
      * 根据http获取userAgent信息
      * @param request

@@ -21,7 +21,7 @@ public class PostViewCountTask {
     @Scheduled(cron = "0 0/5 * * * ?")
     public void updatePostView() {
         log.info("计数落库开始......");
-        Set<String> keys = redisUtil.getKeys("post:viewCount:*");
+        Set<String> keys = redisUtil.getKeys(redisUtil.POST_VIEW_COUNT + "*");
 
         keys.forEach(e-> {
             Long  viewCount = redisUtil.getPostViewCount(e);

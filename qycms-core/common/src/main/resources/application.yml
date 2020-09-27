@@ -6,6 +6,8 @@ server:
       http-only: true
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   http:
     multipart:
       max-file-size: 10737418244

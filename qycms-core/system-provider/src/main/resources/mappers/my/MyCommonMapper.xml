@@ -3,25 +3,7 @@
 <mapper namespace="com.windcoder.qycms.system.repository.mybatis.MyCommonMapper" >
 
 
-<!--    <select id="findSiteAdminUserInfo" resultType="java.util.Map">-->
-<!--        select su.id,su.nickname,su.avatar-->
-<!--        from sys_user su-->
-<!--        where-->
-<!--            id = (select min(user_id)-->
-<!--            from  sys_permission sp-->
-<!--                left join sys_role sr on sp.role_id = sr.id-->
-<!--                where sr.identifier = 'admin'  )-->
 
-<!--    </select>-->
-
-<!--    <select id="findUserAndRoleInfoById" resultType="java.util.Map">-->
-<!--        select su.id,su.nickname,su.avatar,sr.name roleName-->
-<!--        from sys_user su left join sys_permission sp on su.id = sp.user_id-->
-<!--        left join sys_role sr on sp.role_id = sr.id-->
-<!--        where-->
-<!--            su.id=#{userId};-->
-
-<!--    </select>-->
     <select id="findAllBlogPostLink" resultType="java.lang.String">
         select perma_link from blog_article where deleted = 0;
     </select>

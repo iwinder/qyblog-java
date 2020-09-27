@@ -27,7 +27,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig  extends CachingConfigurerSupport {
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
-        System.out.println("cacheManager s111111111");
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
 
@@ -54,7 +53,7 @@ public class RedisConfig  extends CachingConfigurerSupport {
 
     @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
-        System.out.println("redisTemplate s111111111");
+
         StringRedisTemplate template = new StringRedisTemplate(factory);
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
         //解决查询缓存转换异常的问题
