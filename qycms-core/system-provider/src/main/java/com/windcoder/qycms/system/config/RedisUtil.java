@@ -1,5 +1,6 @@
 package com.windcoder.qycms.system.config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
@@ -54,8 +55,13 @@ public class RedisUtil {
         ops.leftPush(IPBLACK_TMP_INFO, tmpInfo.toString());
     }
 
-    public void getIpBlackTmpInfo() {
-
+    public Long getOpsValue(String key) {
+        String tmp = redisTemplate.opsForValue().get(key);
+        if (StringUtils.isBlank(tmp)) {
+            tmp = String.valueOf(0);
+        }
+        System.out.println("key:"+ key +"tmp: "+ tmp);
+      return Long.valueOf(tmp);
 
     }
 }

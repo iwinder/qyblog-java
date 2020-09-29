@@ -13,6 +13,7 @@ import com.windcoder.qycms.blog.entity.BlogTagExample;
 import com.windcoder.qycms.blog.dto.BlogTagDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.blog.repository.mybatis.BlogTagMapper;
+import com.windcoder.qycms.system.annotation.BloomIpLimit;
 import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.utils.CopyUtil;
 import com.windcoder.qycms.utils.ModelMapperUtils;
@@ -147,6 +148,7 @@ public class BlogTagService {
     public List<String> findTagnameListByArticleId(Long articleId) {
         return blogArticleTagService.findTagnameListByArticleId(articleId);
     }
+    @BloomIpLimit
     @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public BlogTagWebDto findByIdForWeb(Long id) {
         BlogTag tag =  findById(id);
@@ -155,6 +157,7 @@ public class BlogTagService {
         }
         return ModelMapperUtils.map(tag, BlogTagWebDto.class);
     }
+    @BloomIpLimit
     @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public BlogTagWebDto findByIdentifierForWeb(String name) {
         BlogTag tag = findByIdentifier(name);
