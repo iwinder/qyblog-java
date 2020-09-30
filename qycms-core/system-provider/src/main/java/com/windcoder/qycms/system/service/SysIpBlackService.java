@@ -8,6 +8,7 @@ import com.windcoder.qycms.system.entity.SysIpBlack;
 import com.windcoder.qycms.system.entity.SysIpBlackExample;
 import com.windcoder.qycms.system.dto.SysIpBlackDto;
 import com.windcoder.qycms.dto.PageDto;
+import com.windcoder.qycms.system.enums.IpBlackType;
 import com.windcoder.qycms.system.filters.BloomIpCacheFilter;
 import com.windcoder.qycms.system.repository.mybatis.MySysIpBlackMapper;
 import com.windcoder.qycms.system.repository.mybatis.SysIpBlackMapper;
@@ -148,6 +149,9 @@ public class SysIpBlackService {
                 inster(ipBlack);
             } else {
                 ipBlack.setId(old.getId());
+                if (old.getType().equalsIgnoreCase(IpBlackType.SYSTEM.name())) {
+                    ipBlack.setType(old.getType());
+                }
                 ipBlack.setBlackNum(old.getBlackNum() + ipBlack.getBlackNum());
                 update(ipBlack);
             }

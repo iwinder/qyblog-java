@@ -7,6 +7,7 @@ import com.google.common.util.concurrent.RateLimiter;
 import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.exception.LimitException;
 import com.windcoder.qycms.system.config.RedisUtil;
+import com.windcoder.qycms.system.enums.IpBlackType;
 import com.windcoder.qycms.utils.AgentUserUtil;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -72,7 +73,7 @@ public class ServiceLimitAspect {
                 JSONObject info = new JSONObject();
                 info.put("ip", key);
                 info.put("agent", AgentUserUtil.getUserAgent());
-                info.put("type", "FREQUENTACCESS");
+                info.put("type", IpBlackType.FREQUENTACCESS.name());
                 info.put("remarks", "访问的太频繁");
                 redisUtil.setIpBlackTmpInfo(info);
             }

@@ -3,6 +3,7 @@ package com.windcoder.qycms.system.annotation;
 import com.windcoder.qycms.exception.LimitException;
 import com.windcoder.qycms.exception.NotFoundException;
 import com.windcoder.qycms.system.config.RedisUtil;
+import com.windcoder.qycms.system.enums.IpBlackType;
 import com.windcoder.qycms.system.filters.BloomCacheFilter;
 import com.windcoder.qycms.utils.AgentUserUtil;
 import com.windcoder.qycms.utils.IpAddressUtil;
@@ -45,7 +46,7 @@ public class BloomLimitAspect {
                     JSONObject info = new JSONObject();
                     info.put("ip", key);
                     info.put("agent", AgentUserUtil.getUserAgent());
-                    info.put("type", "NOTFOUNT");
+                    info.put("type", IpBlackType.NOTFOUNT.name());
                     info.put("remarks", "访问不存在的文章过多");
                     redisUtil.setIpBlackTmpInfo(info);
                 }
