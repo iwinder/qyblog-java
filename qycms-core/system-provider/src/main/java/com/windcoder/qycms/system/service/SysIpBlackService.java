@@ -58,10 +58,26 @@ public class SysIpBlackService {
      * @param sysIpBlackDto
      */
     public void save(SysIpBlackDto sysIpBlackDto){
-        SysIpBlack sysIpBlack = ModelMapperUtils.map(sysIpBlackDto, SysIpBlack.class);
-        if (null == sysIpBlack.getId()) {
-            this.inster(sysIpBlack);
+
+        if (null == sysIpBlackDto.getId()) {
+            String[] ips = sysIpBlackDto.getVisitorIp().split("\\r?\\n");
+            SysIpBlack sysIpBlack = null;
+            for (String ip: ips) {
+                sysIpBlack = findOneByIp(ip);
+                if (sysIpBlack !=null) {
+                    continue;
+                }
+                sysIpBlack = new SysIpBlack();
+                sysIpBlack.setVisitorIp(ip);
+                sysIpBlack.setType(IpBlackType.SYSTEM.name());
+                sysIpBlack.setRemarks("管理员亲点");
+                sysIpBlack.setDeleted(false);
+                sysIpBlack.setBlackNum(1);
+                this.inster(sysIpBlack);
+            }
+
         } else {
+            SysIpBlack sysIpBlack = ModelMapperUtils.map(sysIpBlackDto, SysIpBlack.class);
             this.update(sysIpBlack);
         }
     }
@@ -149,7 +165,8 @@ public class SysIpBlackService {
                 inster(ipBlack);
             } else {
                 ipBlack.setId(old.getId());
-                if (old.getType().equalsIgnoreCase(IpBlackType.SYSTEM.name())) {
+                if (old.getType().equalsIgnoreCase(IpBlackType.SYSTEM.name()) ||
+                old.getType().equalsIgnoreCase(IpBlackType.LOGIN.name())) {
                     ipBlack.setType(old.getType());
                 }
                 ipBlack.setBlackNum(old.getBlackNum() + ipBlack.getBlackNum());

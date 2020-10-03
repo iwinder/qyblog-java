@@ -3,16 +3,17 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.entity.GlobalProperties;
 import com.windcoder.qycms.system.dto.*;
-import com.windcoder.qycms.system.entity.Permission;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.entity.UserExample;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.system.repository.mybatis.MyUserMapper;
 import com.windcoder.qycms.system.repository.mybatis.UserMapper;
-import com.windcoder.qycms.system.shiro.UserToken;
+import com.windcoder.qycms.system.shiro.PasswordHelper;
 import com.windcoder.qycms.utils.CopyUtil;
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -39,6 +39,8 @@ public class UserService {
     private StringRedisTemplate redisTemplate;
     @Autowired
     private MyUserMapper myUserMapper;
+    @Autowired
+    private GlobalProperties globalProperties;
 
     /**
      * 列表查询
@@ -159,5 +161,13 @@ public class UserService {
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
         return myUserMapper.findUserAndRoleInfoById(user.getId());
+    }
+    public void entryptPassword(User user) {
+        if (StringUtils.isNotBlank(user.getPassword())) {
+            String salt = PasswordHelper.generateSalt();
+            user.setSalt(salt);
+            String password = PasswordHelper.encryptPassword(user,globalProperties.getToken());
+            user.setPassword(password);
+        }
     }
 }

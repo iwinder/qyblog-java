@@ -6,6 +6,7 @@ apply plugin: 'idea'
 archivesBaseName = "qycms-common"
 
 dependencies {
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile('org.springframework.boot:spring-boot-starter-aop')
 //    compile("org.springframework.boot:spring-boot-starter-data-jpa")

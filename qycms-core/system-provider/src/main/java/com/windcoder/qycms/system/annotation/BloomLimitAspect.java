@@ -43,12 +43,7 @@ public class BloomLimitAspect {
                 newkey.append(key);
                 long num = redisUtil.increment(newkey.toString());
                 if(num >= Long.valueOf(redisUtil.IPBLACK_NOT_FOUNT_LIMIT_NUM).longValue()) {
-                    JSONObject info = new JSONObject();
-                    info.put("ip", key);
-                    info.put("agent", AgentUserUtil.getUserAgent());
-                    info.put("type", IpBlackType.NOTFOUNT.name());
-                    info.put("remarks", "访问不存在的文章过多");
-                    redisUtil.setIpBlackTmpInfo(info);
+                    redisUtil.saveBlack(key,AgentUserUtil.getUserAgent(),IpBlackType.NOTFOUNT.name(), "访问不存在的文章过多");
                 }
                 throw new NotFoundException("小同志，你访问的文章不存在");
             }

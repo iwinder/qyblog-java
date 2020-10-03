@@ -45,10 +45,15 @@
 
 
 
-                <table tableName="sys_ip_black" domainObjectName="SysIpBlack">
+        <table tableName="sys_login_log" domainObjectName="SysLoginLog">
             <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
+
+<!--        <table tableName="sys_ip_black" domainObjectName="SysIpBlack">-->
+<!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
 
         <!--        <table tableName="sys_short_link" domainObjectName="ShortLink">-->
 <!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->

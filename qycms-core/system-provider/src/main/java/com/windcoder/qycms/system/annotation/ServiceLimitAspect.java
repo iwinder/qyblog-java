@@ -70,12 +70,7 @@ public class ServiceLimitAspect {
             newkey.append(key);
             long num = redisUtil.increment(newkey.toString());
             if(num >= Long.valueOf(redisUtil.IPBLACK_FREQUENT_LIMIT_NUM).longValue()) {
-                JSONObject info = new JSONObject();
-                info.put("ip", key);
-                info.put("agent", AgentUserUtil.getUserAgent());
-                info.put("type", IpBlackType.FREQUENTACCESS.name());
-                info.put("remarks", "访问的太频繁");
-                redisUtil.setIpBlackTmpInfo(info);
+                redisUtil.saveBlack(key,AgentUserUtil.getUserAgent(),IpBlackType.FREQUENTACCESS.name(), "访问的太频繁");
             }
             throw new LimitException("小同志，你访问的太频繁了");
 

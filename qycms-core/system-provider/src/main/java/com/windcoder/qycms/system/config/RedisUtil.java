@@ -1,5 +1,7 @@
 package com.windcoder.qycms.system.config;
 
+import com.windcoder.qycms.system.enums.IpBlackType;
+import com.windcoder.qycms.utils.AgentUserUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class RedisUtil {
     public static final int IPBLACK_FREQUENT_LIMIT_NUM = 10;
     public static final int IPBLACK_NOT_FOUNT_LIMIT_NUM = 10;
     public static final String IPBLACK_NOT_FOUNT = "IpBlack:NotFount:";
+    public static final String IPBLACK_USERNAME_NOT_FOUNT = "IpBlack:UserNameNotFount:";
+    public static final int IPBLACK_USERNAME_NOT_FOUNT_LIMIT_NUM = 2;
     public static final String IPBLACK_TMP_INFO = "IpBlack:TmpInfo";
 
     public Long addPostViewCount(String key, String value) {
@@ -63,5 +67,15 @@ public class RedisUtil {
         System.out.println("key:"+ key +"tmp: "+ tmp);
       return Long.valueOf(tmp);
 
+    }
+
+
+    public void saveBlack(String ip,String agent,String type,String remarks) {
+        JSONObject info = new JSONObject();
+        info.put("ip", ip);
+        info.put("agent", agent);
+        info.put("type", type);
+        info.put("remarks", remarks);
+        setIpBlackTmpInfo(info);
     }
 }

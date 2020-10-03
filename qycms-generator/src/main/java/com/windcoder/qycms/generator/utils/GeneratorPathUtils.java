@@ -30,7 +30,8 @@ public class GeneratorPathUtils {
 //    public static  String VUE_MODULE = "link";
 //    public static  String VUE_MODULE = "role";
 //    public static  String VUE_MODULE = "permission";
-    public static  String VUE_MODULE = "ip-black";
+//    public static  String VUE_MODULE = "ip-black";
+    public static  String VUE_MODULE = "login-log";
     public static final String TO_VUE_CONSOLE_PROJECT = TO_VUE_BASE_PATH +"qy-console/src/views/admin/";
 
 

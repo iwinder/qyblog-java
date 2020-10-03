@@ -76,6 +76,7 @@
         <result column="comment_agent_id" property="commentAgentId" />
         <result column="view_count" property="viewCount" />
         <result column="commentCount" property="commentCount" />
+        <result column="enabled" property="commentAgentFlag" />
         <!--
             collection定义关联集合类型的属性
             ofType:指定集合里面元素的类型
@@ -170,8 +171,10 @@
         (select count(*) from sns_comment where target_id = ba.comment_agent_id and status='ENROLLED' ) commentCount,
         bc.identifier categoryIdentifier,
         ba.content_html,ba.type, ba.comment_agent_id
+        ,ca.enabled
         from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
         left join sys_user su on ba.author_id = su.id
+        left join sns_comment_agent  ca on ba.comment_agent_id = ca.id
         <where>
             ba.deleted = false
             and ba.published = true

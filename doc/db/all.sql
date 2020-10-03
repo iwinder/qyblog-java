@@ -467,6 +467,18 @@ CREATE TABLE `sys_ip_black` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 comment='ip黑名单';
 
 
+drop table if exists `sys_login_log`;
+CREATE TABLE `sys_login_log` (
+`id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
+`username` varchar(50) not null comment '用户用户名',
+`user_ip` varchar(255) DEFAULT NULL comment '用户ip',
+`user_agent` varchar(255) DEFAULT NULL comment '用户客户端',
+`created_date` datetime comment '创建时间',
+`last_modified_date` datetime comment '更新时间',
+ `deleted` bit(1) DEFAULT b'0' comment '是否删除：0不删除， 1 删除',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 comment='登录日志';
+
 commit;
 -- end;
 

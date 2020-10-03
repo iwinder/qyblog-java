@@ -6,6 +6,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
 public class PasswordHelper {
+
     public static final String ALGORITHM = "SHA-1";
 
     public static final int HASHITERATIONS = 2;
@@ -18,11 +19,11 @@ public class PasswordHelper {
         return SecurityUtils.encodeHex(salt);
     }
 
-    public static String encryptPassword(User user) {
+    public static String encryptPassword(User user, String token) {
         String newPassword = new SimpleHash(
                 ALGORITHM,
                 user.getPassword(),
-                ByteSource.Util.bytes(user.getCredentialsSalt()),
+                ByteSource.Util.bytes(token + user.getCredentialsSalt()),
                 HASHITERATIONS).toHex();
         return  newPassword;
     }

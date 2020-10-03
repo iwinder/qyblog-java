@@ -8,4 +8,5 @@ public class BlogArticleWebDto extends BlogArticleWebBaseDto{
      * 内容-html
      */
     private String contentHtml;
+    private Boolean commentAgentFlag;
 }

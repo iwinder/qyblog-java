@@ -37,10 +37,13 @@ public class BloomIpLimitAspect {
         newkey.append(key);
         StringBuilder notFountkey = new StringBuilder(redisUtil.IPBLACK_NOT_FOUNT);
         notFountkey.append(key);
+        StringBuilder notUserNameFountkey = new StringBuilder(redisUtil.IPBLACK_USERNAME_NOT_FOUNT);
+        notFountkey.append(key);
 
         if(!BloomIpCacheFilter.mightContain(key) &&
             redisUtil.getOpsValue(newkey.toString()).longValue()< redisUtil.IPBLACK_FREQUENT_LIMIT_NUM  &&
-            redisUtil.getOpsValue(notFountkey.toString()).longValue()< redisUtil.IPBLACK_NOT_FOUNT_LIMIT_NUM){
+            redisUtil.getOpsValue(notFountkey.toString()).longValue()< redisUtil.IPBLACK_NOT_FOUNT_LIMIT_NUM &&
+            redisUtil.getOpsValue(notUserNameFountkey.toString()).longValue()< redisUtil.IPBLACK_USERNAME_NOT_FOUNT_LIMIT_NUM){
             obj = joinPoint.proceed();
         }else{
             throw new LimitException("请稍候尝试");

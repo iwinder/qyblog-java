@@ -1,8 +1,13 @@
 package com.windcoder.qycms.system.shiro;
 
+import com.windcoder.qycms.entity.GlobalProperties;
+import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.entity.User;
+import com.windcoder.qycms.system.enums.IpBlackType;
 import com.windcoder.qycms.system.service.PermissionService;
 import com.windcoder.qycms.system.service.UserService;
+import com.windcoder.qycms.utils.AgentUserUtil;
+import com.windcoder.qycms.utils.IpAddressUtil;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -11,15 +16,16 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-
 public class UserRealm extends AuthorizingRealm {
     @Autowired
     private UserService userService;
 
     @Autowired
     private PermissionService permissionService;
-
+    @Autowired
+    private GlobalProperties globalProperties;
+    @Autowired
+    private RedisUtil redisUtil;
 
 
 
@@ -69,11 +75,12 @@ public class UserRealm extends AuthorizingRealm {
         checkUser(user);
 
 
-        return new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getCredentialsSalt()), getName());
+        return new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(globalProperties.getToken()+user.getCredentialsSalt()), getName());
     }
 
     private void checkUser(User user) {
         if (null == user ) {
+            saveError(user.getUsername());
             throw new AuthenticationException("用户名或密码错误");
         }
         if (user.getUsername() == null  ) {
@@ -85,6 +92,17 @@ public class UserRealm extends AuthorizingRealm {
 //        if(user.getEndDate() != null && user.getEndDate().before(new Date())){
 //            throw new AuthenticationException("帐号已到期，禁止登录系统！");
 //        }
+    }
+
+    public void saveError(String username) {
+        String key = IpAddressUtil.getClientRealIp();
+        StringBuilder newkey = new StringBuilder(redisUtil.IPBLACK_USERNAME_NOT_FOUNT);
+        newkey.append(key);
+        long num = redisUtil.increment(newkey.toString());
+        if(num >= Long.valueOf(redisUtil.IPBLACK_USERNAME_NOT_FOUNT_LIMIT_NUM).longValue()) {
+            redisUtil.saveBlack(key, AgentUserUtil.getUserAgent(),
+                    IpBlackType.LOGIN.name(),username + "用户名不存在过多");
+        }
     }
 
 }

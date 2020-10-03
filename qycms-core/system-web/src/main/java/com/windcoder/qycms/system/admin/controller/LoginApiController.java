@@ -1,20 +1,20 @@
 package com.windcoder.qycms.system.admin.controller;
 
 import com.windcoder.qycms.dto.ResponseDto;
+import com.windcoder.qycms.system.annotation.BloomIpLimit;
+import com.windcoder.qycms.system.annotation.ServiceLimit;
+import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.entity.User;
+import com.windcoder.qycms.system.enums.IpBlackType;
+import com.windcoder.qycms.system.service.SysLoginLogService;
 import com.windcoder.qycms.system.service.UserService;
 import com.windcoder.qycms.system.shiro.UserToken;
-import com.windcoder.qycms.utils.ModelMapperUtils;
-import com.windcoder.qycms.utils.ReturnResult;
-import com.windcoder.qycms.utils.ValidatorUtil;
+import com.windcoder.qycms.utils.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,13 @@ import java.util.Map;
 public class LoginApiController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private SysLoginLogService sysLoginLogService;
+    @Autowired
+    private RedisUtil redisUtil;
 
-
-
+    @BloomIpLimit
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     @PostMapping("login")
     public ResponseDto adminLogin(@RequestBody User user){
         ResponseDto result = new ResponseDto();
@@ -51,6 +55,7 @@ public class LoginApiController {
             rMap.put("isLoggedIn", true);
             rMap.put("token", subject.getSession().getId());
             result.setContent(rMap);
+            sysLoginLogService.saveLog(token.getUsername());
         } catch (IncorrectCredentialsException e) {
             log.error(e.getMessage());
             result.setSuccess(false);
@@ -59,6 +64,12 @@ public class LoginApiController {
             log.error(e.getMessage());
             result.setSuccess(false);
             result.setMessage("用户名或密码错误");
+        } catch (ExcessiveAttemptsException e) {
+            log.error(e.getMessage());
+            result.setSuccess(false);
+            result.setMessage("用户名或密码错误");
+            redisUtil.saveBlack(IpAddressUtil.getClientRealIp(), AgentUserUtil.getUserAgent(),
+                    IpBlackType.LOGIN.name(),user.getUsername() + "密码错误次数超过5次");
         } catch (AuthenticationException e) {
             log.error(e.getMessage());
             result.setSuccess(false);
@@ -115,4 +126,5 @@ public class LoginApiController {
     public ResponseDto logout(HttpServletResponse httpServletResponse) {
         return new ResponseDto();
     }
+
 }

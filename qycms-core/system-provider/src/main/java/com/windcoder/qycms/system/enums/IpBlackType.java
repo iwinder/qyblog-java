@@ -3,7 +3,8 @@ package com.windcoder.qycms.system.enums;
 public enum IpBlackType {
     FREQUENTACCESS("F", "频繁访问"),
     NOTFOUNT("N", "访问不存在页面过多"),
-    SYSTEM("S", "拒绝");
+    LOGIN("L", "登录异常"),
+    SYSTEM("S", "系统");
     private String code;
 
     private String desc;
