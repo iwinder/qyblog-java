@@ -87,7 +87,7 @@ public class LinkService {
         Date now = new Date();
         link.setCreatedDate(now);
         link.setLastModifiedDate(now);
-        linkMapper.insert(link);
+        linkMapper.insertSelective(link);
     }
 
     /**

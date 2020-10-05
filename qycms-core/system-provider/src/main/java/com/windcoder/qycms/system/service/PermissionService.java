@@ -76,7 +76,7 @@ public class PermissionService {
         Date now = new Date();
         permission.setCreatedDate(now);
         permission.setLastModifiedDate(now);
-        permissionMapper.insert(permission);
+        permissionMapper.insertSelective(permission);
     }
 
     /**

@@ -120,8 +120,13 @@ public class CommentService {
      */
     private void inster(Comment comment){
         Date now = new Date();
-        comment.setCreatedDate(now);
-        comment.setLastModifiedDate(now);
+        if (comment.getCreatedDate()==null) {
+            comment.setCreatedDate(now);
+        }
+       if (comment.getLastModifiedDate() == null) {
+
+           comment.setLastModifiedDate(now);
+       }
         commentMapper.insert(comment);
     }
 

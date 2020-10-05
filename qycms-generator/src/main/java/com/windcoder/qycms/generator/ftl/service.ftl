@@ -91,7 +91,7 @@ public class ${Domain}Service {
         ${domain}.setLastModifiedDate(now);
             </#if>
         </#list>
-        ${domain}Mapper.insert(${domain});
+        ${domain}Mapper.insertSelective(${domain});
     }
 
     /**

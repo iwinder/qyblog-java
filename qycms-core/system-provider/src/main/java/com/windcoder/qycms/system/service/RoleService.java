@@ -71,7 +71,7 @@ public class RoleService {
         Date now = new Date();
         role.setCreatedDate(now);
         role.setLastModifiedDate(now);
-        roleMapper.insert(role);
+        roleMapper.insertSelective(role);
     }
 
     /**

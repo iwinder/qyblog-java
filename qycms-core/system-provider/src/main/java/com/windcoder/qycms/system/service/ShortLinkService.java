@@ -82,7 +82,7 @@ public class ShortLinkService {
         Date now = new Date();
         shortLink.setCreatedDate(now);
         shortLink.setLastModifiedDate(now);
-        shortLinkMapper.insert(shortLink);
+        shortLinkMapper.insertSelective(shortLink);
     }
 
     /**

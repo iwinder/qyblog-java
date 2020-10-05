@@ -3,6 +3,7 @@ package com.windcoder.qycms.blog.dto;
 //import com.windcoder.qycms.core.system.dto.CategoryBaseDto;
 //import com.windcoder.qycms.core.system.dto.UserDto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.windcoder.qycms.system.dto.UserDto;
 import com.windcoder.qycms.system.dto.UserWebDto;
 
@@ -68,6 +69,17 @@ public class BlogArticleBaseDto {
     private Integer type;
 
     private Long viewCount;
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createdDate;
+
+    /**
+     * 更新时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date lastModifiedDate;
 
 
     public Long getId() {
@@ -193,5 +205,21 @@ public class BlogArticleBaseDto {
 
     public void setViewCount(Long viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

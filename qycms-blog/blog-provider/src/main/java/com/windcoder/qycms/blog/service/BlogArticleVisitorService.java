@@ -76,7 +76,7 @@ public class BlogArticleVisitorService {
         Date now = new Date();
         blogArticleVisitor.setCreatedDate(now);
         blogArticleVisitor.setLastModifiedDate(now);
-        blogArticleVisitorMapper.insert(blogArticleVisitor);
+        blogArticleVisitorMapper.insertSelective(blogArticleVisitor);
     }
 
     /**

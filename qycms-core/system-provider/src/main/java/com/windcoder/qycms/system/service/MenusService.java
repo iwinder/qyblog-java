@@ -100,7 +100,7 @@ public class MenusService {
         menus.setCreatedDate(now);
         menus.setDisplayOrder(getNewDisplayOrder(menus.getParentId()));
         menus.setLastModifiedDate(now);
-        menusMapper.insert(menus);
+        menusMapper.insertSelective(menus);
     }
 
     /**

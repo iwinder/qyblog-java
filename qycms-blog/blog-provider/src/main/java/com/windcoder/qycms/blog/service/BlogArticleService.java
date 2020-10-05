@@ -92,11 +92,14 @@ public class BlogArticleService {
             if (article.getAuthorId()==null) {
                 article.setAuthorId(user.getId());
             }
-            article.setViewCount(0L);
+            if (article.getViewCount()==null) {
+                article.setViewCount(0L);
+            }
             article.setSummary(StringUtilZ.removeHtmlAndSubstring(article.getContentHtml()));
             this.inster(article);
             updateCommentAgent(agent, article.getId());
             articleDto.setId(article.getId());
+            articleDto.setCommentAgentId(agent.getId());
         } else {
             article.setViewCount(null);
             this.update(article);
@@ -105,6 +108,19 @@ public class BlogArticleService {
         saveTags(article.getId(), tagsString);
 
     }
+    @Transactional
+    public void saveByBlogMove(BlogArticleDto articleDto, UserWebDto user) {
+        if (articleDto.getCategory()!=null && articleDto.getCategory().getName()!=null) {
+            BlogCategoryDto oneCategory = blogCategoryService.findOneCategoryDtoByName(articleDto.getCategory().getName());
+            if (oneCategory == null) {
+                oneCategory = new BlogCategoryDto();
+                oneCategory.setName(articleDto.getCategory().getName());
+                blogCategoryService.save(oneCategory);
+                articleDto.getCategory().setId(oneCategory.getId());
+            }
+        }
+        save(articleDto,user);
+    }
 
     /**
      * 新增
@@ -112,9 +128,13 @@ public class BlogArticleService {
      */
     private void inster(BlogArticle article){
         Date now = new Date();
-        article.setCreatedDate(now);
-        article.setLastModifiedDate(now);
-        blogArticleMapper.insert(article);
+        if (article.getCreatedDate() == null) {
+            article.setCreatedDate(now);
+        }
+        if (article.getLastModifiedDate() == null) {
+            article.setLastModifiedDate(now);
+        }
+        blogArticleMapper.insertSelective(article);
     }
 
     /**

@@ -84,7 +84,7 @@ public class BlogTagService {
         Date now = new Date();
         blogTag.setCreatedDate(now);
         blogTag.setLastModifiedDate(now);
-        blogTagMapper.insert(blogTag);
+        blogTagMapper.insertSelective(blogTag);
     }
 
     /**

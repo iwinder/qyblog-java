@@ -70,7 +70,7 @@ public class BlogArticleTagService {
      * @param blogArticleTag
      */
     private void inster(BlogArticleTag blogArticleTag){
-        blogArticleTagMapper.insert(blogArticleTag);
+        blogArticleTagMapper.insertSelective(blogArticleTag);
     }
 
     public List<BlogArticleTag> findByArticleId(Long articleId) {

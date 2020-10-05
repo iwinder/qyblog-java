@@ -100,7 +100,7 @@ public class SysIpBlackService {
         Date now = new Date();
         sysIpBlack.setCreatedDate(now);
         sysIpBlack.setLastModifiedDate(now);
-        sysIpBlackMapper.insert(sysIpBlack);
+        sysIpBlackMapper.insertSelective(sysIpBlack);
     }
 
     /**

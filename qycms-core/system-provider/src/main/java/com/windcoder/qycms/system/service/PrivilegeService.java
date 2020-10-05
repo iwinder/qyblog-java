@@ -68,7 +68,7 @@ public class PrivilegeService {
         Date now = new Date();
         privilege.setCreatedDate(now);
         privilege.setLastModifiedDate(now);
-        privilegeMapper.insert(privilege);
+        privilegeMapper.insertSelective(privilege);
     }
 
     /**

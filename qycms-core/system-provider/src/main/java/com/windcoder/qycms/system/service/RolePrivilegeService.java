@@ -70,7 +70,7 @@ public class RolePrivilegeService {
      * @param rolePrivilege
      */
     private void inster(RolePrivilege rolePrivilege){
-        rolePrivilegeMapper.insert(rolePrivilege);
+        rolePrivilegeMapper.insertSelective(rolePrivilege);
     }
 
     /**

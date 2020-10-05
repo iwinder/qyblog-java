@@ -87,7 +87,7 @@ public class SysLoginLogService {
         Date now = new Date();
         sysLoginLog.setCreatedDate(now);
         sysLoginLog.setLastModifiedDate(now);
-        sysLoginLogMapper.insert(sysLoginLog);
+        sysLoginLogMapper.insertSelective(sysLoginLog);
     }
 
     /**

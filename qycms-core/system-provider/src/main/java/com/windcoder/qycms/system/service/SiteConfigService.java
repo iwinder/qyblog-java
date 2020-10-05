@@ -88,7 +88,7 @@ public class SiteConfigService {
         Date now = new Date();
         siteConfig.setCreatedDate(now);
         siteConfig.setLastModifiedDate(now);
-        siteConfigMapper.insert(siteConfig);
+        siteConfigMapper.insertSelective(siteConfig);
     }
 
     /**

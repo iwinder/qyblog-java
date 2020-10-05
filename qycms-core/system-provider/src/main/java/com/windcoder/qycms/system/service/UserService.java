@@ -94,7 +94,7 @@ public class UserService {
         Date now = new Date();
         user.setCreatedDate(now);
         user.setLastModifiedDate(now);
-        userMapper.insert(user);
+        userMapper.insertSelective(user);
     }
 
     /**

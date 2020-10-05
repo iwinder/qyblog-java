@@ -47,6 +47,8 @@ CREATE TABLE `blog_article` (
   `canonical_link` varchar(255) DEFAULT NULL comment '规范链接',
   `summary` varchar(255) DEFAULT NULL comment '摘要',
   `thumbnail` varchar(255) DEFAULT NULL comment '缩略图',
+  `password` varchar(255) not null comment '密码',
+  `status` varchar(255) not null comment '状态:public: 公共，private: 私密，encryption：加密',
   `type` int(11) DEFAULT 1 comment '类型：1：文章，2：页面',
   `view_count` bigint(20) DEFAULT '0' comment '浏览人数',
   `published_date` datetime DEFAULT NULL comment '发布日期',
@@ -61,7 +63,8 @@ CREATE TABLE `blog_article` (
   `last_modified_date` datetime comment '更新时间',
   PRIMARY KEY (`id`),
   KEY `blog_article_author_id_IDX` (`author_id`),
-  KEY `blog_article_type_and_category_id_IDX` (`type`,`category_id`)
+  KEY `blog_article_type_and_category_id_IDX` (`type`,`category_id`),
+  KEY `blog_article_perma_link_IDX` (`perma_link`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 comment='文章';
 
 
@@ -116,8 +119,7 @@ CREATE TABLE `blog_category` (
   `created_date` datetime DEFAULT NULL comment '创建时间',
   `last_modified_date` datetime DEFAULT NULL comment '更新时间',
   PRIMARY KEY (`id`),
-  KEY `FK18qsxukvf40pdippprno5eq5b` (`parent_id`),
-  CONSTRAINT `FK18qsxukvf40pdippprno5eq5b` FOREIGN KEY (`parent_id`) REFERENCES `blog_category` (`id`)
+  KEY `FK18qsxukvf40pdippprno5eq5b` (`parent_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 comment='文章分类';
 
 

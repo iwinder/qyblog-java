@@ -73,7 +73,7 @@ public class MenusAgentService {
         Date now = new Date();
         menusAgent.setCreatedDate(now);
         menusAgent.setLastModifiedDate(now);
-        menusAgentMapper.insert(menusAgent);
+        menusAgentMapper.insertSelective(menusAgent);
     }
 
     /**

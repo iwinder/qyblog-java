@@ -69,7 +69,8 @@ public class BlogCategoryService {
             if(StringUtils.isBlank(blogCategory.getIdentifier())) {
                 blogCategory.setIdentifier(PinyinUtilZ.toHanYuPinyinString(blogCategory.getName()));
             }
-            this.inster(blogCategory);
+            Long id = this.inster(blogCategory);
+            blogCategoryDto.setId(id);
             afterInsert(blogCategory);
         } else {
             // 验证父节点不能更新为自己及自己的子节点
@@ -107,11 +108,11 @@ public class BlogCategoryService {
      * 新增
      * @param blogCategory
      */
-    private void inster(BlogCategory blogCategory){
+    private Long inster(BlogCategory blogCategory){
         Date now = new Date();
         blogCategory.setCreatedDate(now);
         blogCategory.setLastModifiedDate(now);
-        blogCategoryMapper.insert(blogCategory);
+       return Long.valueOf(blogCategoryMapper.insertSelective(blogCategory));
     }
 
     /**
@@ -339,6 +340,18 @@ public class BlogCategoryService {
             }
         }
         return articlesDto;
+    }
+
+    public BlogCategoryDto findOneCategoryDtoByName(String name) {
+        BlogCategoryExample categoryExample  = new BlogCategoryExample();
+        categoryExample.createCriteria().andNameEqualTo(name);
+        List<BlogCategory> blogCategorys= blogCategoryMapper.selectByExample(categoryExample);
+        if (blogCategorys.isEmpty()) {
+            return null;
+        }
+        BlogCategory blogCategory = blogCategorys.get(0);
+        BlogCategoryDto blogCategoryDto = ModelMapperUtils.map(blogCategory, BlogCategoryDto.class);
+        return blogCategoryDto;
     }
 
 
