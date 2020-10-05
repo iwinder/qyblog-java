@@ -16,6 +16,10 @@ public class BlogArticle extends Auditable {
 
     private String thumbnail;
 
+    private String password;
+
+    private String status;
+
     private Integer type;
 
     private Long viewCount;
@@ -31,7 +35,6 @@ public class BlogArticle extends Auditable {
     private Boolean deleted;
 
     private Boolean published;
-
 
     private String content;
 
@@ -83,6 +86,22 @@ public class BlogArticle extends Auditable {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Integer getType() {
@@ -178,6 +197,8 @@ public class BlogArticle extends Auditable {
         sb.append(", canonicalLink=").append(canonicalLink);
         sb.append(", summary=").append(summary);
         sb.append(", thumbnail=").append(thumbnail);
+        sb.append(", password=").append(password);
+        sb.append(", status=").append(status);
         sb.append(", type=").append(type);
         sb.append(", viewCount=").append(viewCount);
         sb.append(", publishedDate=").append(publishedDate);

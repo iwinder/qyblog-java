@@ -117,13 +117,24 @@ public class UserService {
 
     public UserInfoDto findOneUserDto(Long userId) {
         User user = findOne(userId);
-        UserInfoDto userInfo =  ModelMapperUtils.map(user, UserInfoDto.class);
-        Long roleId =  permissionService.selectRoleIdByUserId(userInfo.getId());
-        userInfo.setRoleId(roleId);
-        return userInfo;
+        if (user!=null) {
+            UserInfoDto userInfo =  ModelMapperUtils.map(user, UserInfoDto.class);
+            Long roleId =  permissionService.selectRoleIdByUserId(userInfo.getId());
+            userInfo.setRoleId(roleId);
+            return userInfo;
+        }
+        return null;
     }
-
+    public UserInfoDto findOneUserDtoForDb(Long userId){
+        User user = findOne(userId);
+        if (user!=null) {
+            UserInfoDto userInfo =  ModelMapperUtils.map(user, UserInfoDto.class);
+            return userInfo;
+        }
+        return null;
+    }
     public UserWebDto findOneUserWebDto(Long userId) {
+
         User user = findOne(userId);
         UserWebDto userWebDto = ModelMapperUtils.map(user, UserWebDto.class);
         return userWebDto;

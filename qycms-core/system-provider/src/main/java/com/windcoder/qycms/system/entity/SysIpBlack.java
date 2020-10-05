@@ -1,8 +1,10 @@
 package com.windcoder.qycms.system.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SysIpBlack extends Auditable {
+public class SysIpBlack implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Long id;
 
     private String visitorIp;

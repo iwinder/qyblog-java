@@ -1,6 +1,6 @@
 package com.windcoder.qycms.blog.entity;
 
-import com.sun.istack.internal.NotNull;
+
 import lombok.Data;
 
 import java.io.Serializable;

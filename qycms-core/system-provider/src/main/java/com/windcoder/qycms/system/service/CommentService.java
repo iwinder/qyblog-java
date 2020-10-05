@@ -14,6 +14,7 @@ import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.enums.CommentStatus;
 import com.windcoder.qycms.system.repository.mybatis.CommentMapper;
 
+import com.windcoder.qycms.system.repository.mybatis.MyCommentMapper;
 import com.windcoder.qycms.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +42,8 @@ public class CommentService {
     private CommentAgentService agentTargetService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MyCommentMapper myCommentMapper;
 
     /**
      * 列表查询
@@ -100,6 +103,26 @@ public class CommentService {
         return comment;
     }
 
+    public void saveCommentFromDb(CommentDto commentDto) {
+        Comment comment = ModelMapperUtils.map(commentDto, Comment.class);
+        comment.setStatus(CommentStatus.ENROLLED.name());
+        if (comment.getUserId()!=null) {
+            UserInfoDto user = userService.findOneUserDtoForDb(comment.getUserId());
+            comment.setAuthorName(user.getNickname());
+            comment.setAuthorEmail(user.getEmail());
+        }
+        if (commentDto.getParentId() == null) {
+            comment.setDepth(1);
+        } else {
+            Comment parent = findOne(commentDto.getParentId());
+            Long topParentId = (null == parent.getTopParentId()) ? parent.getId() : parent.getTopParentId();
+            Integer level = parent.getDepth() + 1;
+            comment.setTopParentId(topParentId);
+            comment.setDepth(level);
+        }
+
+        myCommentMapper.insertSelective(comment);
+    }
 
 
 
@@ -378,7 +401,7 @@ public class CommentService {
                 }
                 dto.setTarget(agentDto);
             }
-            if(dto.getUser()!=null && dto.getUser().getId()!=null) {
+            if(dto.getUser()!=null && dto.getUser().getId()!=null && dto.getUser().getId().longValue()>0) {
                 userWebDto = userService.findOneUserWebDto(dto.getUser().getId());
                 dto.getUser().setAvatar(userWebDto.getAvatar());
                 dto.getUser().setNickname(userWebDto.getNickname());

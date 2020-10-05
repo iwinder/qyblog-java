@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.windcoder.qycms.basis.utils.PinyinUtilZ;
 import com.windcoder.qycms.blog.dto.*;
 import com.windcoder.qycms.blog.entity.*;
+import com.windcoder.qycms.blog.enums.BlogArticleStatus;
 import com.windcoder.qycms.blog.repository.mybatis.BlogArticleMapper;
 
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper;
@@ -133,6 +134,12 @@ public class BlogArticleService {
         }
         if (article.getLastModifiedDate() == null) {
             article.setLastModifiedDate(now);
+        }
+        if (StringUtils.isBlank(article.getStatus())) {
+            article.setStatus(BlogArticleStatus.PUBLIC.name());
+            if (StringUtils.isNotBlank(article.getPassword())) {
+                article.setStatus(BlogArticleStatus.ENCRYPTION.name());
+            }
         }
         blogArticleMapper.insertSelective(article);
     }

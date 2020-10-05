@@ -58,4 +58,5 @@ public class BlogArticleWebBaseDto {
     private Long viewCount;
     private Long commentCount;
     private String defNum;
+    private String status;
 }

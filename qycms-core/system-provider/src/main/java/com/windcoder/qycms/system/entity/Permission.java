@@ -2,7 +2,7 @@ package com.windcoder.qycms.system.entity;
 
 import java.util.Date;
 
-public class Permission {
+public class Permission extends Auditable{
     private Long id;
 
     private Long userId;
@@ -11,13 +11,7 @@ public class Permission {
 
     private Long privilegeId;
 
-    private Long createdBy;
 
-    private Long lastModifiedBy;
-
-    private Date createdDate;
-
-    private Date lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -51,37 +45,6 @@ public class Permission {
         this.privilegeId = privilegeId;
     }
 
-    public Long getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Long getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(Long lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
 
     @Override
     public String toString() {
@@ -93,10 +56,10 @@ public class Permission {
         sb.append(", userId=").append(userId);
         sb.append(", roleId=").append(roleId);
         sb.append(", privilegeId=").append(privilegeId);
-        sb.append(", createdBy=").append(createdBy);
-        sb.append(", lastModifiedBy=").append(lastModifiedBy);
-        sb.append(", createdDate=").append(createdDate);
-        sb.append(", lastModifiedDate=").append(lastModifiedDate);
+        sb.append(", createdBy=").append(super.getCreatedBy());
+        sb.append(", lastModifiedBy=").append(super.getLastModifiedBy());
+        sb.append(", createdDate=").append(super.getCreatedDate());
+        sb.append(", lastModifiedDate=").append(super.getLastModifiedDate());
         sb.append("]");
         return sb.toString();
     }

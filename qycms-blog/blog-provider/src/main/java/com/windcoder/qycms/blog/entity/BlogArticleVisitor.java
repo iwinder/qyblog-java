@@ -1,6 +1,9 @@
 package com.windcoder.qycms.blog.entity;
 
 import com.windcoder.qycms.system.entity.Auditable;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,9 +17,11 @@ public class BlogArticleVisitor implements Serializable {
     private String visitorAgent;
 
     private String visitorIp;
-
+    @CreatedDate
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
-
+    @LastModifiedDate
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date lastModifiedDate;
 
     public Long getId() {

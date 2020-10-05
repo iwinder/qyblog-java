@@ -1,16 +1,14 @@
 package com.windcoder.qycms.blog.dto;
 
-//import com.windcoder.qycms.core.system.dto.CategoryBaseDto;
-//import com.windcoder.qycms.core.system.dto.UserDto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.windcoder.qycms.system.dto.UserDto;
 import com.windcoder.qycms.system.dto.UserWebDto;
+import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class BlogArticleBaseDto {
 
     private Long id;
@@ -29,6 +27,10 @@ public class BlogArticleBaseDto {
      * 是否已删除
      */
     private Boolean deleted;
+
+    private String password;
+
+    private String status;
 
     /**
      * 链接
@@ -82,144 +84,5 @@ public class BlogArticleBaseDto {
     private Date lastModifiedDate;
 
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-    public Boolean getPublished() {
-        return published;
-    }
-
-
-    public void setPublished(Boolean published) {
-        this.published = published;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean isDeleted) {
-        this.deleted = isDeleted;
-    }
-
-    public String getPermaLink() {
-        return permaLink;
-    }
-
-    public void setPermaLink(String permaLink) {
-        this.permaLink = permaLink;
-    }
-
-    public UserWebDto getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(UserWebDto author) {
-        this.author = author;
-    }
-
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public Date getPublishedDate() {
-        return publishedDate;
-    }
-
-    public void setPublishedDate(Date publishedDate) {
-        this.publishedDate = publishedDate;
-    }
-
-    public BlogCategoryDto getCategory() {
-        return category;
-    }
-
-    public void setCategory(BlogCategoryDto category) {
-        this.category = category;
-    }
-
-
-
-    public List<String> getTagStrings() {
-        return tagStrings;
-    }
-
-    public void setTagStrings(List<String> tagStrings) {
-        this.tagStrings = tagStrings;
-    }
-
-    public Long getCommentAgentId() {
-        return commentAgentId;
-    }
-
-    public void setCommentAgentId(Long commentAgentId) {
-        this.commentAgentId = commentAgentId;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getCanonicalLink() {
-        return canonicalLink;
-    }
-
-    public void setCanonicalLink(String canonicalLink) {
-        this.canonicalLink = canonicalLink;
-    }
-
-    public Long getViewCount() {
-        return viewCount;
-    }
-
-    public void setViewCount(Long viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
 }

@@ -8,6 +8,8 @@
     <result column="canonical_link" jdbcType="VARCHAR" property="canonicalLink" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
     <result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="view_count" jdbcType="BIGINT" property="viewCount" />
     <result column="published_date" jdbcType="TIMESTAMP" property="publishedDate" />
@@ -84,9 +86,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, title, perma_link, canonical_link, summary, thumbnail, `type`, view_count, published_date, 
-    author_id, category_id, comment_agent_id, deleted, published, created_by, last_modified_by, 
-    created_date, last_modified_date
+    id, title, perma_link, canonical_link, summary, thumbnail, `password`, `status`, 
+    `type`, view_count, published_date, author_id, category_id, comment_agent_id, deleted, 
+    published, created_by, last_modified_by, created_date, last_modified_date
   </sql>
   <sql id="Blob_Column_List">
     content, content_html
@@ -144,19 +146,21 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into blog_article (title, perma_link, canonical_link, 
-      summary, thumbnail, `type`, 
-      view_count, published_date, author_id, 
-      category_id, comment_agent_id, deleted, 
-      published, created_by, last_modified_by, 
-      created_date, last_modified_date, content, 
-      content_html)
+      summary, thumbnail, `password`, 
+      `status`, `type`, view_count, 
+      published_date, author_id, category_id, 
+      comment_agent_id, deleted, published, 
+      created_by, last_modified_by, created_date, 
+      last_modified_date, content, content_html
+      )
     values (#{title,jdbcType=VARCHAR}, #{permaLink,jdbcType=VARCHAR}, #{canonicalLink,jdbcType=VARCHAR}, 
-      #{summary,jdbcType=VARCHAR}, #{thumbnail,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{viewCount,jdbcType=BIGINT}, #{publishedDate,jdbcType=TIMESTAMP}, #{authorId,jdbcType=BIGINT}, 
-      #{categoryId,jdbcType=BIGINT}, #{commentAgentId,jdbcType=BIGINT}, #{deleted,jdbcType=BIT}, 
-      #{published,jdbcType=BIT}, #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, 
-      #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}, 
-      #{contentHtml,jdbcType=LONGVARCHAR})
+      #{summary,jdbcType=VARCHAR}, #{thumbnail,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{viewCount,jdbcType=BIGINT}, 
+      #{publishedDate,jdbcType=TIMESTAMP}, #{authorId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, 
+      #{commentAgentId,jdbcType=BIGINT}, #{deleted,jdbcType=BIT}, #{published,jdbcType=BIT}, 
+      #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}, #{contentHtml,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.windcoder.qycms.blog.entity.BlogArticle">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -178,6 +182,12 @@
       </if>
       <if test="thumbnail != null">
         thumbnail,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="status != null">
+        `status`,
       </if>
       <if test="type != null">
         `type`,
@@ -237,6 +247,12 @@
       </if>
       <if test="thumbnail != null">
         #{thumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
         #{type,jdbcType=INTEGER},
@@ -309,6 +325,12 @@
       <if test="record.thumbnail != null">
         thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
       </if>
+      <if test="record.password != null">
+        `password` = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=VARCHAR},
+      </if>
       <if test="record.type != null">
         `type` = #{record.type,jdbcType=INTEGER},
       </if>
@@ -364,6 +386,8 @@
       canonical_link = #{record.canonicalLink,jdbcType=VARCHAR},
       summary = #{record.summary,jdbcType=VARCHAR},
       thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
+      `password` = #{record.password,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=VARCHAR},
       `type` = #{record.type,jdbcType=INTEGER},
       view_count = #{record.viewCount,jdbcType=BIGINT},
       published_date = #{record.publishedDate,jdbcType=TIMESTAMP},
@@ -390,6 +414,8 @@
       canonical_link = #{record.canonicalLink,jdbcType=VARCHAR},
       summary = #{record.summary,jdbcType=VARCHAR},
       thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
+      `password` = #{record.password,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=VARCHAR},
       `type` = #{record.type,jdbcType=INTEGER},
       view_count = #{record.viewCount,jdbcType=BIGINT},
       published_date = #{record.publishedDate,jdbcType=TIMESTAMP},
@@ -423,6 +449,12 @@
       </if>
       <if test="thumbnail != null">
         thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
         `type` = #{type,jdbcType=INTEGER},
@@ -476,6 +508,8 @@
       canonical_link = #{canonicalLink,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
       thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
       `type` = #{type,jdbcType=INTEGER},
       view_count = #{viewCount,jdbcType=BIGINT},
       published_date = #{publishedDate,jdbcType=TIMESTAMP},
@@ -499,6 +533,8 @@
       canonical_link = #{canonicalLink,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
       thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
       `type` = #{type,jdbcType=INTEGER},
       view_count = #{viewCount,jdbcType=BIGINT},
       published_date = #{publishedDate,jdbcType=TIMESTAMP},

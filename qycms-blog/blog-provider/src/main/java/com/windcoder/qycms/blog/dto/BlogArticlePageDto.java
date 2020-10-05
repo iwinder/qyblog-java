@@ -12,5 +12,7 @@ public class BlogArticlePageDto extends PageDto {
     private String categoryName;
     private Long tagId;
     private String tagName;
+    private String password;
 
+    private String status;
 }

@@ -1,5 +1,9 @@
 package com.windcoder.qycms.system.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Comment {
@@ -26,9 +30,11 @@ public class Comment {
     private Long userId;
 
     private Long topParentId;
-
+    @CreatedDate
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
-
+    @LastModifiedDate
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date lastModifiedDate;
 
     private String content;
