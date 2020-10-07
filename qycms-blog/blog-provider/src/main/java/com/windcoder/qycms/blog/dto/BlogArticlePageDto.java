@@ -13,6 +13,6 @@ public class BlogArticlePageDto extends PageDto {
     private Long tagId;
     private String tagName;
     private String password;
-
+    private Long userId;
     private String status;
 }

@@ -21,6 +21,8 @@ public class Comment {
 
     private String status;
 
+    private String type;
+
     private Long targetId;
 
     private Integer depth;
@@ -30,6 +32,7 @@ public class Comment {
     private Long userId;
 
     private Long topParentId;
+
     @CreatedDate
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
@@ -93,6 +96,14 @@ public class Comment {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getTargetId() {
@@ -172,6 +183,7 @@ public class Comment {
         sb.append(", authorIp=").append(authorIp);
         sb.append(", authorUrl=").append(authorUrl);
         sb.append(", status=").append(status);
+        sb.append(", type=").append(type);
         sb.append(", targetId=").append(targetId);
         sb.append(", depth=").append(depth);
         sb.append(", parentId=").append(parentId);

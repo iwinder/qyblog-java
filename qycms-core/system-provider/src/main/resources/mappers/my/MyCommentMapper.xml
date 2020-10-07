@@ -3,6 +3,9 @@
 <mapper namespace="com.windcoder.qycms.system.repository.mybatis.MyCommentMapper" >
 
 
+
+
+
     <insert id="insertSelective" parameterType="com.windcoder.qycms.system.entity.Comment">
         insert into sns_comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -26,6 +29,9 @@
             </if>
             <if test="status != null">
                 `status`,
+            </if>
+            <if test="type != null">
+                `type`,
             </if>
             <if test="targetId != null">
                 target_id,
@@ -73,6 +79,9 @@
             </if>
             <if test="status != null">
                 #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
             </if>
             <if test="targetId != null">
                 #{targetId,jdbcType=BIGINT},

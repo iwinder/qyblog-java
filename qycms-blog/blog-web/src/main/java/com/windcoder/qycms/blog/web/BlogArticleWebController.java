@@ -5,11 +5,9 @@ import com.windcoder.qycms.blog.dto.BlogArticlePageDto;
 import com.windcoder.qycms.blog.dto.BlogArticleWebDto;
 import com.windcoder.qycms.blog.service.BlogArticleService;
 import com.windcoder.qycms.dto.ResponseDto;
-import com.windcoder.qycms.system.annotation.BloomIpLimit;
-import com.windcoder.qycms.system.annotation.BloomLimit;
-import com.windcoder.qycms.system.annotation.ServiceLimit;
-import com.windcoder.qycms.system.annotation.ViewCountLimit;
+import com.windcoder.qycms.system.annotation.*;
 import com.windcoder.qycms.system.config.RedisUtil;
+import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.utils.AgentUserUtil;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +25,11 @@ public class BlogArticleWebController {
     @BloomIpLimit
     @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     @GetMapping("")
-    public ResponseDto allActivities(BlogArticlePageDto article){
+    public ResponseDto allActivities(BlogArticlePageDto article, @CurrentUser UserWebDto user){
         article.setType(1);
+        if (user!=null && user.getId()!=null && user.getId()>0) {
+            article.setUserId(user.getId());
+        }
         articleService.findAllWebDto(article);
         ResponseDto responseDto = new ResponseDto(article);
         return  responseDto;
@@ -37,11 +38,11 @@ public class BlogArticleWebController {
     @BloomIpLimit
     @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     @GetMapping("/{articleId}")
-    public ResponseDto get(@PathVariable("articleId") Long articleId) {
+    public ResponseDto get(@PathVariable("articleId") Long articleId, @CurrentUser UserWebDto user) {
         BlogArticleDto articleDto = new BlogArticleDto();
         articleDto.setId(articleId);
         articleDto.setPublished(true);
-        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto);
+        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto,user);
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }
@@ -49,11 +50,11 @@ public class BlogArticleWebController {
     @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     @BloomLimit
     @GetMapping("/name/{articleName}")
-    public ResponseDto getByName(@PathVariable("articleName") String articleName) {
+    public ResponseDto getByName(@PathVariable("articleName") String articleName, @CurrentUser UserWebDto user) {
         BlogArticleDto articleDto = new BlogArticleDto();
         articleDto.setPermaLink(articleName);
         articleDto.setPublished(true);
-        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto);
+        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto,user);
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }

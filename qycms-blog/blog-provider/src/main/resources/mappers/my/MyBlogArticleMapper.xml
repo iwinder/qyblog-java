@@ -42,6 +42,7 @@
         <result column="published_date" property="publishedDate" />
         <result column="view_count" property="viewCount" />
         <result column="commentCount" property="commentCount" />
+        <result column="status" property="status" />
         <!--
             collection定义关联集合类型的属性
             ofType:指定集合里面元素的类型
@@ -141,6 +142,7 @@
     <select id="listWeb" resultMap="BlogArticleBaseWebDtoMap">
         select
         <include refid="listObj"></include>,
+        ba.status,
         (select count(*) from sns_comment where target_id = ba.comment_agent_id and status='ENROLLED' ) commentCount,
                bc.identifier categoryIdentifier
         from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
@@ -160,6 +162,14 @@
             <if test="pageDto.tagName !=null and pageDto.tagName !=''">
                 and bt.identifier = #{pageDto.tagName}
             </if>
+            <choose>
+                <when test="pageDto.userId != null and pageDto.userId !=''">
+                    and (ba.status='PUBLIC' or (ba.status = 'PRIVATE' and ba.author_id=#{pageDto.userId} ) )
+                </when>
+                <otherwise>
+                    and ba.status='PUBLIC'
+                </otherwise>
+            </choose>
         </where>
         order by  ba.published_date DESC, ba.created_date DESC
     </select>
@@ -184,6 +194,14 @@
             <if test="articleDto.permaLink !=null and articleDto.permaLink !=''">
                 and ba.perma_link = #{articleDto.permaLink}
             </if>
+            <choose>
+                <when test="userId != null and userId !=''">
+                    and (ba.status='PUBLIC' or (ba.status = 'PRIVATE' and ba.author_id=#{userId} ) )
+                </when>
+                <otherwise>
+                    and ba.status='PUBLIC'
+                </otherwise>
+            </choose>
         </where>
         limit 1
     </select>

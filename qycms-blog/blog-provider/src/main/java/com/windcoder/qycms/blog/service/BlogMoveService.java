@@ -1,13 +1,21 @@
 package com.windcoder.qycms.blog.service;
 
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.google.common.base.Charsets;
+import com.google.common.hash.BloomFilter;
+import com.google.common.hash.Funnels;
 import com.windcoder.qycms.blog.dto.BlogArticleDto;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.blog.entity.BlogMove;
 import com.windcoder.qycms.blog.enums.BlogArticleStatus;
+import com.windcoder.qycms.entity.DruidCommonProperties;
 import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.system.dto.CommentDto;
 import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.enums.CommentStatus;
+import com.windcoder.qycms.system.enums.CommentType;
+import com.windcoder.qycms.system.filters.BloomCacheFilter;
+import com.windcoder.qycms.system.repository.mybatis.MyCommonMapper;
 import com.windcoder.qycms.system.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -24,6 +34,11 @@ public class BlogMoveService {
     private BlogArticleService blogArticleService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private DruidCommonProperties druidCommonProperties;
+    @Autowired
+    private MyCommonMapper myCommonMapper;
+
     String URL = "jdbc:mysql://%s:%s/%s?useSSL=false&characterEncoding=utf8";
 
     String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -46,14 +61,40 @@ public class BlogMoveService {
 
 
         // TODO: 后期视情况改为prepareStatement
-        try(Connection conn =DriverManager.getConnection(url, blogMove.getUsername(), blogMove.getPassword());){
+
+        try(Connection conn =initDruidDataSource(url, blogMove.getUsername(), blogMove.getPassword());){
             importArticleDataByDB( conn,  user);
         } catch (final SQLException e) {
             log.error("数据库解析异常 ", e);
             throw new BusinessException("数据库解析异常");
+        } catch (Exception e) {
+            log.error("数据库解析异常2 ", e);
+            throw new BusinessException("数据库解析异常");
         }
     }
+    public Connection initDruidDataSource(String url, String username, String password) throws Exception {
+//        druidCommonProperties
+        HashMap<String, Object> properties = new HashMap<String, Object>();
+        properties.put("url",url);
+        properties.put("username",username);
+        properties.put("password",password);
+        properties.put("driverClassName",getDriver());
+        properties.put("initialSize",druidCommonProperties.getInitialSize());
+        properties.put("minIdle",druidCommonProperties.getMinIdle());
+        properties.put("maxActive",druidCommonProperties.getMaxActive());
+        properties.put("maxWait",druidCommonProperties.getMaxWait());
+        properties.put("timeBetweenEvictionRunsMillis",druidCommonProperties.getTimeBetweenEvictionRunsMillis());
+        properties.put("minEvictableIdleTimeMillis",druidCommonProperties.getMinEvictableIdleTimeMillis());
+        properties.put("validationQuery",druidCommonProperties.getValidationQuery());
+        properties.put("testWhileIdle",druidCommonProperties.getTestWhileIdle());
+        properties.put("testOnBorrow",druidCommonProperties.getTestOnBorrow());
+        properties.put("testOnReturn",druidCommonProperties.getTestOnReturn());
+        properties.put("poolPreparedStatements",druidCommonProperties.getPoolPreparedStatements());
+        properties.put("maxOpenPreparedStatements",druidCommonProperties.getMaxOpenPreparedStatements());
+        properties.put("asyncInit",druidCommonProperties.getAsyncInit());
 
+        return DruidDataSourceFactory.createDataSource(properties).getConnection();
+    }
     public void importArticleDataByDB(Connection conn, UserWebDto user) {
         String infoSql = "SELECT  " +
                 "p.* " +
@@ -101,7 +142,7 @@ public class BlogMoveService {
                 log.warn("当前总数量 {} ", count);
             }
         } catch (SQLException e) {
-            log.error("数据库文章总数解析异常", e.getMessage());
+            log.error("数据库文章总数解析异常", e);
             throw new BusinessException("数据库文章总数解析异常");
         }
         int pageIndex = 0;
@@ -150,9 +191,9 @@ public class BlogMoveService {
                         articleDto.setStatus(BlogArticleStatus.ENCRYPTION.name());
                         articleDto.setPassword(password);
                     }
-                    articleDto.setPublishedDate(resultSet.getDate("post_date"));
-                    articleDto.setCreatedDate(resultSet.getDate("post_date"));
-                    articleDto.setLastModifiedDate(resultSet.getDate("post_modified"));
+                    articleDto.setPublishedDate(resultSet.getTimestamp("post_date"));
+                    articleDto.setCreatedDate(resultSet.getTimestamp("post_date"));
+                    articleDto.setLastModifiedDate(resultSet.getTimestamp("post_modified"));
                     if (StringUtils.isNotBlank(tagStr)) {
                         articleDto.setTagStrings(Arrays.asList(tagStr.split(",")));
                     }
@@ -176,7 +217,7 @@ public class BlogMoveService {
                     try {
                         resultSet.close();
                     } catch (SQLException e) {
-                        log.error("数据库文章查询列表解析异常: ", e);
+                        log.error("数据库文章查询列表解析异常2: ", e);
                         throw new BusinessException("数据库文章查询列表解析异常");
                     }
                 }
@@ -184,7 +225,12 @@ public class BlogMoveService {
 
             pageIndex += pageSize;
         }
+        if (count >0) {
+            List<String> list = myCommonMapper.findAllBlogPostLink();
+            BloomCacheFilter.refresh(list);
+        }
     }
+
     public void importComentDataByDB(Connection conn,ResultSet ccountRS, ResultSet cListRS,Long aid,Long userId,Long agentId, int commentCount ,CommentDto commentDto) {
         String commentCountSql = "SELECT count(*) FROM  wp_comments wc  where  comment_post_ID  = ?;";
         String commentListSql = "SELECT * FROM  wp_comments wc  where  comment_post_ID  = ? order by comment_id ASC limit ?,?;";
@@ -196,14 +242,14 @@ public class BlogMoveService {
                 log.warn("当前评论总数量 {} ", commentCount);
             }
         } catch (SQLException e){
-            log.error("数据库评论总数解析异常", e.getMessage());
+            log.error("数据库评论总数解析异常", e);
             throw new BusinessException("数据库评论总数解析异常");
         } finally {
             if (ccountRS!=null) {
                 try {
                     ccountRS.close();
                 } catch (SQLException e) {
-                    log.error("数据库评论总数解析异常 ", e);
+                    log.error("数据库评论总数解析异常2 ", e);
                     throw new BusinessException("数据库评论总数解析异常");
                 }
             }
@@ -212,6 +258,7 @@ public class BlogMoveService {
         int cpageSize = COMMENT_PAGE_SIZE;
         int cParent = 0;
         int cUserId = 0;
+        String type= null;
         UserWebDto userWebDto = null;
         while (commentCount>0 && commentCount >= cpageIndex) {
             try(PreparedStatement pstmt = conn.prepareStatement(commentListSql);) {
@@ -223,6 +270,7 @@ public class BlogMoveService {
                     commentDto = new CommentDto();
                     cUserId = cListRS.getInt("user_id");
                     cParent = cListRS.getInt("comment_parent");
+                    type = cListRS.getString("comment_type");
                     commentDto.setId(cListRS.getLong("comment_id"));
                     commentDto.setAuthorName(cListRS.getString("comment_author"));
                     commentDto.setAuthorEmail(cListRS.getString("comment_author_email"));
@@ -234,6 +282,10 @@ public class BlogMoveService {
                     commentDto.setLastModifiedDate(cListRS.getDate("comment_date"));
                     commentDto.setTargetId(agentId);
                     commentDto.setStatus(CommentStatus.ENROLLED.name());
+                    commentDto.setType(CommentType.GENERAL.name());
+                    if (StringUtils.isNotBlank(type) && type.equalsIgnoreCase("pingback")) {
+                        commentDto.setType(CommentType.PINGBACK.name());
+                    }
                     if (cUserId > 0 && cUserId == 1) {
                         userWebDto = new UserWebDto();
                         userWebDto.setId(userId);
@@ -245,15 +297,15 @@ public class BlogMoveService {
                     commentService.saveCommentFromDb(commentDto);
                 }
             } catch (SQLException e) {
-                log.error("数据库评论列表解析异常", e.getMessage());
+                log.error("数据库评论列表解析异常", e);
                 throw new BusinessException("数据库评论列表解析异常");
             } finally {
-                if (ccountRS!=null) {
+                if (cListRS!=null) {
                     try {
-                        ccountRS.close();
+                        cListRS.close();
                     } catch (SQLException e) {
-                        log.error("数据库评论总数解析异常 ", e);
-                        throw new BusinessException("数据库评论总数解析异常");
+                        log.error("数据库评论列表解析异常2 ", e);
+                        throw new BusinessException("数据库评论列表解析异常");
                     }
                 }
             }

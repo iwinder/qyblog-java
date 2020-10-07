@@ -208,7 +208,7 @@ public class CommentService {
         CommentExample.Criteria criteria = example.createCriteria();
         criteria.andTargetIdEqualTo(agentTargetId);
         if (pageDto.getParentId() == null) {
-            criteria.andParentIdIsNull().andDepthEqualTo(1);
+            criteria.andParentIdEqualTo(Long.valueOf(0)).andDepthEqualTo(1);
             example.setOrderByClause("created_date DESC");
         } else {
             criteria.andTopParentIdEqualTo(pageDto.getParentId());
@@ -235,7 +235,8 @@ public class CommentService {
             if (commentWebDto.getStatus().equalsIgnoreCase(CommentStatus.REFUSED.name())) {
                 commentWebDto.setContent("该评论已被删除");
             }
-            if (commentWebDto.getParentId()!=null || (commentWebDto.getParent()!=null && commentWebDto.getParent().getId() !=null)) {
+            if ((commentWebDto.getParentId()!=null &&commentWebDto.getParentId()>0) || (commentWebDto.getParent()!=null
+                    && commentWebDto.getParent().getId() !=null && commentWebDto.getParent().getId()>0)) {
                 if (commentWebDto.getParentId()!=null) {
                     parentId = commentWebDto.getParentId();
                 } else {
@@ -252,7 +253,7 @@ public class CommentService {
                 replyCount =  countByTopParentId(commentWebDto.getId());
                 commentWebDto.setReplyCount(replyCount.intValue());
             }
-            if(commentWebDto.getUser()!=null && commentWebDto.getUser().getId()!=null) {
+            if(commentWebDto.getUser()!=null && commentWebDto.getUser().getId()!=null &&commentWebDto.getUser().getId()>0 ) {
                 UserWebDto oneUserWebDto = userService.findOneUserWebDto(commentWebDto.getUser().getId());
                 commentWebDto.setUser(oneUserWebDto);
             }

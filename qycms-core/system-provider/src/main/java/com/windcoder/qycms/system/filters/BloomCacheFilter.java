@@ -31,4 +31,14 @@ public class BloomCacheFilter {
     public static void setBloomFilter(BloomFilter<String> newValue) {
            bloomFilter = newValue ;
     }
+
+    public static void refresh(List<String> list){
+        if (list ==null) {
+            return;
+        }
+        BloomCacheFilter.setBloomFilter( BloomFilter.create(Funnels.stringFunnel(Charsets.UTF_8), list.size()));
+        list.forEach(blogLink ->BloomCacheFilter.getBloomFilter().put(blogLink));
+    }
+
+
 }

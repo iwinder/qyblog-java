@@ -5,6 +5,8 @@ import org.apache.commons.codec.digest.Md5Crypt;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtilZ {
 
@@ -20,6 +22,12 @@ public class StringUtilZ {
 
     public static String removeHtmlAndSubstring(String html) {
         String content = removeHtml(html);
+        return content.substring(0,Math.min(100, content.length()));
+
+    }
+
+    public static String substringHtml(String html) {
+        String content = HtmlToText.getContent(html);
         return content.substring(0,Math.min(100, content.length()));
 
     }
@@ -61,6 +69,23 @@ public class StringUtilZ {
             System.out.println(randomRange(0, null));
         }
 
+    }
+
+    public static String getFirstMatcher(String regex, String source) {
+        String result = "";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(source);
+        if (matcher.find()) {
+            result = matcher.group(1);
+        }
+        return result;
+    }
+
+    public static String getReplaceAll(String regex, String source,String  replace ){
+        String result = "";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(source);
+        return matcher.replaceAll(replace);
     }
 
 }

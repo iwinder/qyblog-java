@@ -22,8 +22,7 @@ public class BlogLinkBloomTask {
     public void createBloom() {
         log.info("开始初始化布隆缓存过滤");
         List<String> list = myCommonMapper.findAllBlogPostLink();
-        BloomCacheFilter.setBloomFilter( BloomFilter.create(Funnels.stringFunnel(Charsets.UTF_8), list.size()));
-        list.forEach(blogLink ->BloomCacheFilter.getBloomFilter().put(blogLink));
+        BloomCacheFilter.refresh(list);
         log.info("初始化布隆缓存过滤结束");
     }
 }

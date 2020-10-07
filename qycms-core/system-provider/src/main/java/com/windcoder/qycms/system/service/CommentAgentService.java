@@ -70,7 +70,7 @@ public class CommentAgentService {
         Date now = new Date();
         commentAgent.setCreatedDate(now);
         commentAgent.setLastModifiedDate(now);
-        commentAgentMapper.insert(commentAgent);
+        commentAgentMapper.insertSelective(commentAgent);
     }
 
     /**

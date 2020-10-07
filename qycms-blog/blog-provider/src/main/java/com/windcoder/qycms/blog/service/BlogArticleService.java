@@ -19,6 +19,8 @@ import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.entity.CommentAgent;
 import com.windcoder.qycms.system.enums.CommentTargetType;
+import com.windcoder.qycms.system.filters.BloomCacheFilter;
+import com.windcoder.qycms.system.repository.mybatis.MyCommonMapper;
 import com.windcoder.qycms.system.service.CommentAgentService;
 
 import com.windcoder.qycms.utils.AgentUserUtil;
@@ -54,7 +56,8 @@ public class BlogArticleService {
     private BlogArticleVisitorService blogArticleVisitorService;
     @Autowired
     private RedisUtil redisUtil;
-
+    @Autowired
+    private MyCommonMapper myCommonMapper;
     /**
      * 列表查询
      * @param pageDto
@@ -101,6 +104,8 @@ public class BlogArticleService {
             updateCommentAgent(agent, article.getId());
             articleDto.setId(article.getId());
             articleDto.setCommentAgentId(agent.getId());
+            List<String> list = myCommonMapper.findAllBlogPostLink();
+            BloomCacheFilter.refresh(list);
         } else {
             article.setViewCount(null);
             this.update(article);
@@ -108,6 +113,34 @@ public class BlogArticleService {
 
         saveTags(article.getId(), tagsString);
 
+    }
+    public void addByBlogMove(BlogArticleDto articleDto, UserWebDto user) {
+        List<String> tagsString = articleDto.getTagStrings();
+        BlogArticle article = ModelMapperUtils.map(articleDto, BlogArticle.class);
+        if (article.getPublished() &&  null == article.getPublishedDate()){
+            article.setPublishedDate(new Date());
+        }
+        CommentAgent agent = initCommentAgent(article);
+        article.setCommentAgentId(agent.getId());
+        if(StringUtils.isBlank(article.getPermaLink())) {
+            article.setPermaLink(getNewPermaLinkLikeByTitle(article.getTitle()));
+        }
+        if (article.getAuthorId()==null) {
+            article.setAuthorId(user.getId());
+        }
+        if (article.getViewCount()==null) {
+            article.setViewCount(0L);
+        }
+        article.setSummary(StringUtilZ.substringHtml(article.getContentHtml()));
+        String img = StringUtilZ.getFirstMatcher("<img [^>]*\\bsrc=[\'\"]([^\'\"]+)[^>]*>", article.getContentHtml());
+        if (StringUtils.isNotBlank(img)) {
+            article.setThumbnail(img);
+        }
+        this.inster(article);
+        updateCommentAgent(agent, article.getId());
+        articleDto.setId(article.getId());
+        articleDto.setCommentAgentId(agent.getId());
+        saveTags(article.getId(), tagsString);
     }
     @Transactional
     public void saveByBlogMove(BlogArticleDto articleDto, UserWebDto user) {
@@ -117,10 +150,11 @@ public class BlogArticleService {
                 oneCategory = new BlogCategoryDto();
                 oneCategory.setName(articleDto.getCategory().getName());
                 blogCategoryService.save(oneCategory);
-                articleDto.getCategory().setId(oneCategory.getId());
+
             }
+            articleDto.getCategory().setId(oneCategory.getId());
         }
-        save(articleDto,user);
+        addByBlogMove(articleDto,user);
     }
 
     /**
@@ -309,9 +343,13 @@ public class BlogArticleService {
     }
 
 
-    public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto) {
+    public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto,UserWebDto user) {
 //        BlogArticle article = findOne(blogArticleDto);
-        BlogArticleWebDto articleDto = myBlogArticleMapper.findOneWeb(blogArticleDto);
+        Long userId = null;
+        if (user!=null && user.getId()!=null && user.getId()>0) {
+            userId = user.getId();
+        }
+        BlogArticleWebDto articleDto = myBlogArticleMapper.findOneWeb(blogArticleDto,userId);
         if (articleDto==null) {
             throw  new BusinessException("404");
         }

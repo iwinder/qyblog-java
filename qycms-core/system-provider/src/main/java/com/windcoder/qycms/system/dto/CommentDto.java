@@ -85,6 +85,8 @@ public class CommentDto {
 
     private String targetName;
 
+    private String type;
+
     public Long getId() {
         return id;
     }
@@ -214,6 +216,14 @@ public class CommentDto {
         this.targetName = targetName;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -228,6 +238,7 @@ public class CommentDto {
         sb.append(", authorUrl=").append(authorUrl);
         sb.append(", content=").append(content);
         sb.append(", status=").append(status);
+        sb.append(", type=").append(type);
         sb.append(", targetId=").append(targetId);
         sb.append(", targetName=").append(targetName);
         sb.append(", depth=").append(depth);
