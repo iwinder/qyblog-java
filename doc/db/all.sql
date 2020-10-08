@@ -22,8 +22,9 @@ create table `sys_user` (
   unique key `username_unique` (`username`),
   unique key `email_unique` (`email`)
 ) engine=innodb default charset=utf8mb4 comment='用户';
-# INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `email`, `deleted`, `disable`, `nickname`, `password`, `salt`, `username`, `created_by`, `last_modified_by`) VALUES (1, '2018-9-7 03:14:53', '2018-11-4 03:58:11', '/content/upload/2018/11/04/e246ba56-81aa-4226-8189-cc2d10ccd56a.jpg', '1@qq.com', 0, 0, '测试', 'e68b0a6751860afed4938951be1ef002ee697d04', 'b8314a417d4037731ad10f92c25dc911fad829094a22', 'admin', 1, 1);
-INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `email`, `deleted`, `disable`, `nickname`, `password`, `salt`, `username`, `created_by`, `last_modified_by`) VALUES (1, now(), now(), '/content/upload/2018/11/04/e246ba56-81aa-4226-8189-cc2d10ccd56a.jpg', '1@qq.com', 0, 0, '测试', 'e68b0a6751860afed4938951be1ef002ee697d04', 'b8314a417d4037731ad10f92c25dc911fad829094a22', 'admin', 1, 1);
+-- # INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `email`, `deleted`, `disable`, `nickname`, `password`, `salt`, `username`, `created_by`, `last_modified_by`) VALUES (1, '2018-9-7 03:14:53', '2018-11-4 03:58:11', '/content/upload/2018/11/04/e246ba56-81aa-4226-8189-cc2d10ccd56a.jpg', '1@qq.com', 0, 0, '测试', 'e68b0a6751860afed4938951be1ef002ee697d04', 'b8314a417d4037731ad10f92c25dc911fad829094a22', 'admin', 1, 1);
+--hW61c
+INSERT INTO `sys_user` (`id`, `created_date`, `last_modified_date`, `avatar`, `email`, `deleted`, `disable`, `nickname`, `password`, `salt`, `username`, `created_by`, `last_modified_by`) VALUES (1, now(), now(), '/content/upload/2018/11/04/e246ba56-81aa-4226-8189-cc2d10ccd56a.jpg', '1@qq.com', 0, 0, '测试', 'b1671f39bfece116f0cc2d854a78f981bed37f921e2b', '824b24db909456c6b2a0d0cf26826468fe268db8', 'admin', 1, 1);
 
 
 
@@ -160,8 +161,7 @@ CREATE TABLE `sys_privilege` (
   `created_date` datetime DEFAULT now() comment '创建时间',
   `last_modified_date` datetime DEFAULT now() comment '更新时间',
   PRIMARY KEY (`id`),
-  KEY `FK7h567kbm8i2uteel1pwveyamj` (`parent_id`),
-  CONSTRAINT `FK7h567kbm8i2uteel1pwveyamj` FOREIGN KEY (`parent_id`) REFERENCES `sys_privilege` (`id`)
+  KEY `FK7h567kbm8i2uteel1pwveyamj` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='资源';
 
 
@@ -241,9 +241,7 @@ CREATE TABLE `sys_role_privilege` (
   `role_id` bigint(20) NOT NULL comment '角色id',
   `privilege_id` bigint(20) NOT NULL comment '资源id',
   PRIMARY KEY (`role_id`,`privilege_id`),
-  KEY `FKvf9lt66q9oyjludcg83nfinq` (`privilege_id`),
-  CONSTRAINT `FKr3sw06rqbrufgrkfq2c8dxhvb` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`),
-  CONSTRAINT `FKvf9lt66q9oyjludcg83nfinq` FOREIGN KEY (`privilege_id`) REFERENCES `sys_privilege` (`id`)
+  KEY `FKvf9lt66q9oyjludcg83nfinq` (`privilege_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限表';
 
 select min(id) into @v_superuser_role_id from sys_role;
@@ -267,10 +265,7 @@ CREATE TABLE `sys_permission` (
   PRIMARY KEY (`id`),
   KEY `FKl0lymq83eg69a9awoqn9sp3pi` (`privilege_id`),
   KEY `FKhidmju68461bmv7st3pfkrhcu` (`role_id`),
-  KEY `FK1nk6vdhuhcniyse9wik3pp5l7` (`user_id`),
-  CONSTRAINT `FK1nk6vdhuhcniyse9wik3pp5l7` FOREIGN KEY (`user_id`) REFERENCES `sys_user` (`id`),
-  CONSTRAINT `FKhidmju68461bmv7st3pfkrhcu` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`),
-  CONSTRAINT `FKl0lymq83eg69a9awoqn9sp3pi` FOREIGN KEY (`privilege_id`) REFERENCES `sys_privilege` (`id`)
+  KEY `FK1nk6vdhuhcniyse9wik3pp5l7` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='授权表';
 # select min(id) into @v_system_user_id from sys_user;
 Insert into sys_permission (CREATED_BY,LAST_MODIFIED_BY,PRIVILEGE_ID,ROLE_ID,USER_ID) values (@v_system_user_id,@v_system_user_id,null,@v_superuser_role_id,@v_system_user_id);

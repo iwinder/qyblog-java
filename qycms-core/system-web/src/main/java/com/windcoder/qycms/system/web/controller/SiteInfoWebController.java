@@ -71,7 +71,7 @@ public class SiteInfoWebController {
     @GetMapping(value = "all")
     public ResponseDto findAll() {
         Map<Object, Object> jsonObject=  siteConfigService.findInfoObjString(0);
-        if (jsonObject.get("site_pay_flag").equals("false")) {
+        if (jsonObject !=null && jsonObject.containsKey("site_pay_flag") && jsonObject.get("site_pay_flag").equals("false")) {
             jsonObject.remove("site_weixin_pay_qr");
             jsonObject.remove("site_alipay_pay_qr");
         }

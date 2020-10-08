@@ -27,15 +27,10 @@ public class SystemConfig implements WebMvcConfigurer {
 //        return new AuditorAwareImpl();
 //    }
 
-   @Bean
-   public String us(){
-       System.out.println("us3333");
-        return "ddd";
-    }
+
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        System.out.println("addArgumentResolvers111111111");
 //        CurrentUserMethodArgumentResolver ur = new CurrentUserMethodArgumentResolver();
 //        argumentResolvers.add(ur);
         argumentResolvers.add(currentUserMethodArgumentResolver);
@@ -43,7 +38,6 @@ public class SystemConfig implements WebMvcConfigurer {
     }
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        System.out.println("addFormatters s111111111");
         registry.addConverter(new DateConvert());
     }
 

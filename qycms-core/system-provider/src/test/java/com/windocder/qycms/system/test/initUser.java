@@ -21,8 +21,6 @@ public class initUser {
     @Test
     public void initUser() {
         User user  = new User();
-//        user.setUsername("WindZRCHH");
-//        user.setPassword("123456");
         user.setUsername("admin");
         user.setPassword("admin");
         user.setSalt(PasswordHelper.generateSalt());

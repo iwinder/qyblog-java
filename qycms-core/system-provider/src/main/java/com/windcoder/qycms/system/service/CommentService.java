@@ -91,7 +91,7 @@ public class CommentService {
                 comment.setAuthorName(user.getNickname());
                 comment.setAuthorEmail(user.getEmail());
                 Comment parent = findOne(commentDto.getParentId());
-                Long topParentId = (null == parent.getTopParentId()) ? parent.getId() : parent.getTopParentId();
+                Long topParentId = (null == parent.getTopParentId()|| parent.getTopParentId().equals(0)) ? parent.getId() : parent.getTopParentId();
                 Integer level = parent.getDepth() + 1;
                 comment.setTopParentId(topParentId);
                 comment.setDepth(level);
@@ -115,7 +115,7 @@ public class CommentService {
             comment.setDepth(1);
         } else {
             Comment parent = findOne(commentDto.getParentId());
-            Long topParentId = (null == parent.getTopParentId()) ? parent.getId() : parent.getTopParentId();
+            Long topParentId = (null == parent.getTopParentId() || parent.getTopParentId().equals(0)) ? parent.getId() : parent.getTopParentId();
             Integer level = parent.getDepth() + 1;
             comment.setTopParentId(topParentId);
             comment.setDepth(level);
@@ -371,7 +371,7 @@ public class CommentService {
         CommentAgentBaseDto agentDto = null;
         UserWebDto userWebDto = null;
         for (CommentListDto dto : listDtos) {
-            if (dto.getParent()!=null && dto.getParent().getId()!=null) {
+            if (dto.getParent()!=null && dto.getParent().getId()!=null && dto.getParent().getId()>0) {
                 Comment one = findOne(dto.getParent().getId());
                 commentDto = new CommentDto();
                 if (one!=null && one.getId() != null) {

@@ -18,7 +18,7 @@ public class PostViewCountTask {
     private BlogArticleService articleService;
 
 //    @Scheduled(cron = "0 30 23 * * ?")
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void updatePostView() {
         log.info("计数落库开始......");
         Set<String> keys = redisUtil.getKeys(redisUtil.POST_VIEW_COUNT + "*");

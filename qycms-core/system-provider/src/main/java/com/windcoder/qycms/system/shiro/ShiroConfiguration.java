@@ -198,7 +198,6 @@ public class ShiroConfiguration {
      */
     @Bean
     public RedisManager redisManager() {
-        System.out.println("redisProperties.getTimeout():" + redisProperties.getTimeout());
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(redisProperties.getHost() +":" + redisProperties.getPort());
         redisManager.setTimeout((int) redisProperties.getTimeout().getSeconds());
