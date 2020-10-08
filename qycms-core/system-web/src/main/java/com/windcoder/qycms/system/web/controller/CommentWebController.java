@@ -3,6 +3,7 @@ package com.windcoder.qycms.system.web.controller;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.dto.ResponseDto;
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.system.annotation.ServiceLimit;
 import com.windcoder.qycms.system.dto.CommentDto;
 import com.windcoder.qycms.system.dto.CommentPageDto;
 import com.windcoder.qycms.system.dto.CommentWebDto;
@@ -31,7 +32,7 @@ public class CommentWebController {
     @Resource
     private CommentService commentService;
 
-
+    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     @GetMapping(value = "")
     public ResponseDto list(@PathVariable("agentTargetId") Long agentTargetId,CommentPageDto pageDto) {
         commentService.findTopLevelComments(agentTargetId, pageDto);

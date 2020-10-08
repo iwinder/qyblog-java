@@ -256,8 +256,8 @@ public class BlogMoveService {
         }
         int cpageIndex = 0;
         int cpageSize = COMMENT_PAGE_SIZE;
-        int cParent = 0;
-        int cUserId = 0;
+        Long cParent = 0L;
+        Long cUserId = 0L;
         String type= null;
         UserWebDto userWebDto = null;
         while (commentCount>0 && commentCount >= cpageIndex) {
@@ -268,8 +268,8 @@ public class BlogMoveService {
                 cListRS = pstmt.executeQuery();
                 while (cListRS.next()) {
                     commentDto = new CommentDto();
-                    cUserId = cListRS.getInt("user_id");
-                    cParent = cListRS.getInt("comment_parent");
+                    cUserId = cListRS.getLong("user_id");
+                    cParent = cListRS.getLong("comment_parent");
                     type = cListRS.getString("comment_type");
                     commentDto.setId(cListRS.getLong("comment_id"));
                     commentDto.setAuthorName(cListRS.getString("comment_author"));
@@ -286,12 +286,12 @@ public class BlogMoveService {
                     if (StringUtils.isNotBlank(type) && type.equalsIgnoreCase("pingback")) {
                         commentDto.setType(CommentType.PINGBACK.name());
                     }
-                    if (cUserId > 0 && cUserId == 1) {
+                    if (cUserId!=null && cUserId.longValue() > 0 && cUserId.equals(1L)) {
                         userWebDto = new UserWebDto();
                         userWebDto.setId(userId);
                         commentDto.setUser(userWebDto);
                     }
-                    if (cParent >0 ) {
+                    if (cParent!=null && cParent.longValue() >0 ) {
                         commentDto.setParentId(Long.valueOf(cParent));
                     }
                     commentService.saveCommentFromDb(commentDto);

@@ -91,7 +91,7 @@ public class CommentService {
                 comment.setAuthorName(user.getNickname());
                 comment.setAuthorEmail(user.getEmail());
                 Comment parent = findOne(commentDto.getParentId());
-                Long topParentId = (null == parent.getTopParentId()|| parent.getTopParentId().equals(0)) ? parent.getId() : parent.getTopParentId();
+                Long topParentId = (null == parent.getTopParentId()|| parent.getTopParentId().equals(0L)) ? parent.getId() : parent.getTopParentId();
                 Integer level = parent.getDepth() + 1;
                 comment.setTopParentId(topParentId);
                 comment.setDepth(level);
@@ -111,11 +111,11 @@ public class CommentService {
             comment.setAuthorName(user.getNickname());
             comment.setAuthorEmail(user.getEmail());
         }
-        if (commentDto.getParentId() == null) {
+        if (commentDto.getParentId() == null || commentDto.getParentId().equals(0L)) {
             comment.setDepth(1);
         } else {
             Comment parent = findOne(commentDto.getParentId());
-            Long topParentId = (null == parent.getTopParentId() || parent.getTopParentId().equals(0)) ? parent.getId() : parent.getTopParentId();
+            Long topParentId = (null == parent.getTopParentId() || parent.getTopParentId().equals(0L)) ? parent.getId() : parent.getTopParentId();
             Integer level = parent.getDepth() + 1;
             comment.setTopParentId(topParentId);
             comment.setDepth(level);
@@ -189,12 +189,12 @@ public class CommentService {
         }
         return agentTarget;
     }
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+
     public void findTopLevelComments(Long agentTargetId, CommentPageDto pageDto) {
         checkAndGetCommentAgent(agentTargetId);
         findWebComments(agentTargetId, pageDto);
     }
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+
     public void findReplies(Long agentTargetId,Long parentId, CommentPageDto pageDto) {
         checkAndGetCommentAgent(agentTargetId);
         pageDto.setParentId(parentId);
@@ -235,8 +235,8 @@ public class CommentService {
             if (commentWebDto.getStatus().equalsIgnoreCase(CommentStatus.REFUSED.name())) {
                 commentWebDto.setContent("该评论已被删除");
             }
-            if ((commentWebDto.getParentId()!=null &&commentWebDto.getParentId()>0) || (commentWebDto.getParent()!=null
-                    && commentWebDto.getParent().getId() !=null && commentWebDto.getParent().getId()>0)) {
+            if ((commentWebDto.getParentId()!=null &&commentWebDto.getParentId().longValue()>0) || (commentWebDto.getParent()!=null
+                    && commentWebDto.getParent().getId() !=null && commentWebDto.getParent().getId().longValue()>0)) {
                 if (commentWebDto.getParentId()!=null) {
                     parentId = commentWebDto.getParentId();
                 } else {
@@ -253,7 +253,7 @@ public class CommentService {
                 replyCount =  countByTopParentId(commentWebDto.getId());
                 commentWebDto.setReplyCount(replyCount.intValue());
             }
-            if(commentWebDto.getUser()!=null && commentWebDto.getUser().getId()!=null &&commentWebDto.getUser().getId()>0 ) {
+            if(commentWebDto.getUser()!=null && commentWebDto.getUser().getId()!=null &&commentWebDto.getUser().getId().longValue()>0 ) {
                 UserWebDto oneUserWebDto = userService.findOneUserWebDto(commentWebDto.getUser().getId());
                 commentWebDto.setUser(oneUserWebDto);
             }
