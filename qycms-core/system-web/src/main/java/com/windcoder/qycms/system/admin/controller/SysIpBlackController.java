@@ -1,5 +1,6 @@
 package com.windcoder.qycms.system.admin.controller;
 
+import com.windcoder.qycms.system.dto.SysIpBlackPageDto;
 import com.windcoder.qycms.system.entity.SysIpBlack;
 import com.windcoder.qycms.system.dto.SysIpBlackDto;
 import com.windcoder.qycms.dto.PageDto;
@@ -28,7 +29,7 @@ public class SysIpBlackController {
      * @return
      */
     @GetMapping("")
-    public ResponseDto list(PageDto pageDto) {
+    public ResponseDto list(SysIpBlackPageDto pageDto) {
         sysIpBlackService.list(pageDto);
         ResponseDto responseDto = new ResponseDto(pageDto);
         return responseDto;

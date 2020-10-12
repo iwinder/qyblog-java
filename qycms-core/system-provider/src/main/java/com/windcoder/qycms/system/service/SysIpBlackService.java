@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.windcoder.qycms.system.config.RedisUtil;
+import com.windcoder.qycms.system.dto.SysIpBlackPageDto;
 import com.windcoder.qycms.system.entity.SysIpBlack;
 import com.windcoder.qycms.system.entity.SysIpBlackExample;
 import com.windcoder.qycms.system.dto.SysIpBlackDto;
@@ -41,9 +42,14 @@ public class SysIpBlackService {
      * 列表查询
      * @param pageDto
      */
-    public void list(PageDto pageDto) {
+    public void list(SysIpBlackPageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         SysIpBlackExample sysIpBlackExample = new SysIpBlackExample();
+        SysIpBlackExample.Criteria criteria = sysIpBlackExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
+        if (StringUtils.isNotBlank(pageDto.getSearchText())) {
+            criteria.andVisitorIpLike(pageDto.getSearchText());
+        }
         List<SysIpBlack> sysIpBlacks = sysIpBlackMapper.selectByExample(sysIpBlackExample);
         PageInfo<SysIpBlack> pageInfo = new PageInfo<>(sysIpBlacks);
         pageDto.setTotal(pageInfo.getTotal());
@@ -80,6 +86,7 @@ public class SysIpBlackService {
             SysIpBlack sysIpBlack = ModelMapperUtils.map(sysIpBlackDto, SysIpBlack.class);
             this.update(sysIpBlack);
         }
+        updateBlackFromRedis();
     }
 
     /**
@@ -87,9 +94,8 @@ public class SysIpBlackService {
      * @param ids
      */
     public void delete(Long[] ids) {
-        SysIpBlackExample sysIpBlackExample = new SysIpBlackExample();
-        sysIpBlackExample.createCriteria().andIdIn(Arrays.asList(ids));
-        sysIpBlackMapper.deleteByExample(sysIpBlackExample);
+        mySysIpBlackMapper.updateDeleted(true, ids);
+        updateBlackFromRedis();
     }
 
     /**
@@ -169,6 +175,7 @@ public class SysIpBlackService {
                 old.getType().equalsIgnoreCase(IpBlackType.LOGIN.name())) {
                     ipBlack.setType(old.getType());
                 }
+                ipBlack.setDeleted(false);
                 ipBlack.setBlackNum(old.getBlackNum() + ipBlack.getBlackNum());
                 update(ipBlack);
             }

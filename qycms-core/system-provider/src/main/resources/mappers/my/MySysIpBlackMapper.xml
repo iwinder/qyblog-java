@@ -7,4 +7,12 @@
     <select id="findAllIpBlackIp" resultType="java.lang.String">
         select visitor_ip from sys_ip_black where deleted = 0;
     </select>
+
+    <update id="updateDeleted">
+        update sys_ip_black ba set `deleted` = #{deletedStatus}
+        where ba.id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 </mapper>
