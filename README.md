@@ -18,3 +18,7 @@
 - 2018.11.03 完成第一版博客的管理功能（包含分类、标签、图片上传）；用户管理功能（用户增删改查）。
 
 
+```js
+gradle build -Denv=test -x test
+gradle build   -x test
+```

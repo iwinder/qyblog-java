@@ -161,7 +161,7 @@ public class SiteConfigService {
         ops.putAll("siteInfo:other",siteOther);
 
     }
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+//    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public  Map<Object, Object>  findInfoObjString(Integer configType){
         String key = configTypeToSiteKey(configType);
         if (StringUtils.isBlank(key)) {

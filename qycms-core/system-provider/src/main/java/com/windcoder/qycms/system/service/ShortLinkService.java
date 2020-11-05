@@ -104,7 +104,7 @@ public class ShortLinkService {
         }
         ops.putAll("site_go", linkGo);
     }
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+//    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
     public Map<Object, Object> findAllShortWebDto() {
         HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
         Map<Object, Object> linkInfo = ops.entries("site_go");
