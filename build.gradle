@@ -45,7 +45,6 @@ allprojects {
 //            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 //        }
     }
-
 }
 
 
@@ -102,7 +101,7 @@ configure(rootProject) {
     dependencies {
         compile project(":qycms-core:system-web")
         compile project(":qycms-blog:blog-web")
-//        compile project(":qycms-blog:blog-web")
+        compile project(":qycms-file:file-web")
     }
 
     ext {

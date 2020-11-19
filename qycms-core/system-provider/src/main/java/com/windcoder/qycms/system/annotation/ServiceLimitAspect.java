@@ -60,6 +60,9 @@ public class ServiceLimitAspect {
 
         if(limitType.equals(ServiceLimit.LimitType.IP)){
             key = IpAddressUtil.getClientRealIp();
+            if(key.equals("127.0.0.1")) {
+                return joinPoint.proceed();
+            }
         }
         RateLimiter rateLimiter = caches.get(key);
         Boolean flag = rateLimiter.tryAcquire();

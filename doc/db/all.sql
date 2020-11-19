@@ -397,7 +397,7 @@ CREATE TABLE `sys_menus_agent` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='菜单包装表';
 
-select min(id) into @v_system_user_id from sys_user;
+# select min(id) into @v_system_user_id from sys_user;
 Insert into sys_menus_agent (name,type,created_by,last_modified_by)
 values('顶部菜单',1,@v_system_user_id,@v_system_user_id) ;
 Insert into sys_menus_agent (name,type,created_by,last_modified_by)

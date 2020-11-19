@@ -33,6 +33,9 @@ public class BloomIpLimitAspect {
         Object[] object = joinPoint.getArgs();
         Object obj;
         String key = IpAddressUtil.getClientRealIp();
+        if(key.equals("127.0.0.1")) {
+            return joinPoint.proceed();
+        }
         StringBuilder newkey = new StringBuilder(redisUtil.IPBLACK_FREQUENT_ACCESS);
         newkey.append(key);
         StringBuilder notFountkey = new StringBuilder(redisUtil.IPBLACK_NOT_FOUNT);

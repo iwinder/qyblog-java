@@ -34,6 +34,9 @@ public class ViewCountLimitAspect {
             String borderGroup = AgentUserUtil.getBorderGroup(request);
             if (!borderGroup.equalsIgnoreCase("Robot/Spider")) {
                 String value = IpAddressUtil.getClientRealIp(request);
+                if(value.equals("127.0.0.1")) {
+                    return joinPoint.proceed();
+                }
                 String key = new StringBuilder(redisUtil.POST_VIEW_COUNT).append(blogId).toString();
                 Long flag = redisUtil.addPostViewCount(key,value);
                 if(flag.longValue()>0) {

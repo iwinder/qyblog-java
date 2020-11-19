@@ -1,0 +1,8 @@
+apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
+
+dependencies {
+    compile project(':qycms-core:system-provider')
+    compile 'com.qiniu:qiniu-java-sdk:7.3.+'
+//    compile project(':qycms-core:common')
+}
