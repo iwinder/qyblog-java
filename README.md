@@ -21,3 +21,7 @@
 gradle build -x test
 ```
 
+```js
+gradle build -Denv=test -x test
+gradle build   -x test
+```
