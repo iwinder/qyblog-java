@@ -8,6 +8,8 @@ import com.windcoder.qycms.system.entity.MenusAgentExample;
 import com.windcoder.qycms.system.dto.MenusAgentDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.system.entity.User;
+import com.windcoder.qycms.system.enums.MenusAgentIdentifier;
+import com.windcoder.qycms.system.enums.MenusAgentType;
 import com.windcoder.qycms.system.repository.mybatis.MenusAgentMapper;
 
 import com.windcoder.qycms.utils.ModelMapperUtils;
@@ -73,6 +75,7 @@ public class MenusAgentService {
         Date now = new Date();
         menusAgent.setCreatedDate(now);
         menusAgent.setLastModifiedDate(now);
+        menusAgent.setType(MenusAgentType.USER.name());
         menusAgentMapper.insertSelective(menusAgent);
     }
 

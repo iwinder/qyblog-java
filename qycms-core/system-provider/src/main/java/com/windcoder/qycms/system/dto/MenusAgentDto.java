@@ -18,8 +18,8 @@ public class MenusAgentDto {
     /**
      * 菜单位置：0未启用， 1顶部，2页尾
      */
-    private Integer type;
-
+    private Integer identifier;
+    private String type;
     /**
      * 创建者
      */
@@ -58,11 +58,19 @@ public class MenusAgentDto {
         this.name = name;
     }
 
-    public Integer getType() {
+    public Integer getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(Integer identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -107,6 +115,7 @@ public class MenusAgentDto {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
+        sb.append(", identifier=").append(identifier);
         sb.append(", type=").append(type);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);

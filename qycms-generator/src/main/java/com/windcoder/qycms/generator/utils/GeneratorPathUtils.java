@@ -22,6 +22,7 @@ public class GeneratorPathUtils {
 
     // VUE
     static final String TO_VUE_BASE_PATH = "/home/wind/work/Web/qyblog-web/";
+    static final String TO_VUE_BASE_PATH_W = "D:\\02Program\\personal\\web\\qyblog-web\\";
 //    public static  String VUE_MODULE = "category";
 //    public static  String VUE_MODULE = "user";
 //    public static  String VUE_MODULE = "comment";
@@ -33,6 +34,7 @@ public class GeneratorPathUtils {
 //    public static  String VUE_MODULE = "ip-black";
     public static  String VUE_MODULE = "login-log";
     public static final String TO_VUE_CONSOLE_PROJECT = TO_VUE_BASE_PATH +"qy-console/src/views/admin/";
+    public static final String TO_VUE_CONSOLE_PUBLIC_W = TO_VUE_BASE_PATH_W +"qy-console\\public";
 
 
 }

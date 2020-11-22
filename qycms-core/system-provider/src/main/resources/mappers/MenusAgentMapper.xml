@@ -4,7 +4,8 @@
   <resultMap id="BaseResultMap" type="com.windcoder.qycms.system.entity.MenusAgent">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="identifier" jdbcType="INTEGER" property="identifier" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="created_by" jdbcType="BIGINT" property="createdBy" />
     <result column="last_modified_by" jdbcType="BIGINT" property="lastModifiedBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, `type`, created_by, last_modified_by, created_date, last_modified_date
+    id, `name`, identifier, `type`, created_by, last_modified_by, created_date, last_modified_date
   </sql>
   <select id="selectByExample" parameterType="com.windcoder.qycms.system.entity.MenusAgentExample" resultMap="BaseResultMap">
     select
@@ -105,12 +106,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sys_menus_agent (`name`, `type`, created_by, 
-      last_modified_by, created_date, last_modified_date
-      )
-    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{createdBy,jdbcType=BIGINT}, 
-      #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}
-      )
+    insert into sys_menus_agent (`name`, identifier, `type`, 
+      created_by, last_modified_by, created_date, 
+      last_modified_date)
+    values (#{name,jdbcType=VARCHAR}, #{identifier,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.windcoder.qycms.system.entity.MenusAgent">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -120,6 +121,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
         `name`,
+      </if>
+      <if test="identifier != null">
+        identifier,
       </if>
       <if test="type != null">
         `type`,
@@ -141,8 +145,11 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="identifier != null">
+        #{identifier,jdbcType=INTEGER},
+      </if>
       <if test="type != null">
-        #{type,jdbcType=INTEGER},
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         #{createdBy,jdbcType=BIGINT},
@@ -173,8 +180,11 @@
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.identifier != null">
+        identifier = #{record.identifier,jdbcType=INTEGER},
+      </if>
       <if test="record.type != null">
-        `type` = #{record.type,jdbcType=INTEGER},
+        `type` = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.createdBy != null">
         created_by = #{record.createdBy,jdbcType=BIGINT},
@@ -197,7 +207,8 @@
     update sys_menus_agent
     set id = #{record.id,jdbcType=BIGINT},
       `name` = #{record.name,jdbcType=VARCHAR},
-      `type` = #{record.type,jdbcType=INTEGER},
+      identifier = #{record.identifier,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=VARCHAR},
       created_by = #{record.createdBy,jdbcType=BIGINT},
       last_modified_by = #{record.lastModifiedBy,jdbcType=BIGINT},
       created_date = #{record.createdDate,jdbcType=TIMESTAMP},
@@ -212,8 +223,11 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="identifier != null">
+        identifier = #{identifier,jdbcType=INTEGER},
+      </if>
       <if test="type != null">
-        `type` = #{type,jdbcType=INTEGER},
+        `type` = #{type,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=BIGINT},
@@ -233,7 +247,8 @@
   <update id="updateByPrimaryKey" parameterType="com.windcoder.qycms.system.entity.MenusAgent">
     update sys_menus_agent
     set `name` = #{name,jdbcType=VARCHAR},
-      `type` = #{type,jdbcType=INTEGER},
+      identifier = #{identifier,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=BIGINT},
       last_modified_by = #{lastModifiedBy,jdbcType=BIGINT},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
