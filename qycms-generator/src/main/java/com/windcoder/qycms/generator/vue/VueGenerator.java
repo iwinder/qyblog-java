@@ -17,7 +17,7 @@ import java.util.*;
 public class VueGenerator {
     static final String MODULE = GeneratorPathUtils.VUE_MODULE;
 
-    static String toVuePath =  GeneratorPathUtils.TO_VUE_CONSOLE_PROJECT + MODULE + "/";
+    static String toVuePath =  GeneratorPathUtils.TO_VUE_CONSOLE_PROJECT_W + MODULE + "/";
     static String generatorConfigPath = "qycms-generator/src/main/resources/generator/generatorConfig.xml";
 
     public static void main(String[] args) throws Exception  {

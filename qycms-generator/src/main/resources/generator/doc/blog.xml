@@ -1,5 +1,19 @@
 <!-- generatorConfig.xml 配置 -->
 
+<!-- 系统类 -->
+<!-- domain类的位置 -->
+<javaModelGenerator targetProject="../qycms-core/system-provider/src/main/java"
+                    targetPackage="com.windcoder.qycms.system.entity"/>
+
+<!-- mapper xml的位置 -->
+<sqlMapGenerator targetProject="../qycms-core/system-provider/src/main/resources"
+                 targetPackage="mappers"/>
+
+<!-- mapper类的位置 -->
+<javaClientGenerator targetProject="../qycms-core/system-provider/src/main/java"
+                     targetPackage="com.windcoder.qycms.system.repository.mybatis"
+                     type="XMLMAPPER" />
+<!-- 博客类 -->
 <!-- domain类的位置 -->
 <javaModelGenerator targetProject="../qycms-blog/blog-provider/src/main/java"
                     targetPackage="com.windcoder.qycms.blog.entity"/>
@@ -14,16 +28,18 @@
                      type="XMLMAPPER" />
 
 
+<!-- 博客类 -->
+<!-- domain类的位置 -->
+<javaModelGenerator targetProject="../qycms-file/file-provider/src/main/java"
+                    targetPackage="com.windcoder.qycms.file.entity"/>
 
-<javaModelGenerator targetProject="../qycms-core/system-provider/src/main/java"
-                    targetPackage="com.windcoder.qycms.system.entity"/>
-
-        <!-- mapper xml的位置 -->
-<sqlMapGenerator targetProject="../qycms-core/system-provider/src/main/resources"
+<!-- mapper xml的位置 -->
+<sqlMapGenerator targetProject="../qycms-file/file-provider/src/main/resources"
                  targetPackage="mappers"/>
 
-        <!-- mapper类的位置 -->
-<javaClientGenerator targetProject="../qycms-core/system-provider/src/main/java"
-                     targetPackage="com.windcoder.qycms.system.repository.mybatis"
+<!-- mapper类的位置 -->
+<javaClientGenerator targetProject="../qycms-file/file-provider/src/main/java"
+                     targetPackage="com.windcoder.qycms.file.repository.mybatis"
                      type="XMLMAPPER" />
+
 

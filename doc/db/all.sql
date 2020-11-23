@@ -498,19 +498,19 @@ CREATE TABLE `file_lib_type` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='媒体库类型表';
 
 select min(id) into @v_system_user_id from sys_user;
-Insert into file_lib_type (name,type,created_by,last_modified_by)
+Insert into file_lib_type (name,identifier, type,created_by,last_modified_by)
 values('本地',1,'SYSTEM',@v_system_user_id,@v_system_user_id) ;
-Insert into file_lib_type (name,type,created_by,last_modified_by)
+Insert into file_lib_type (name,identifier, type,created_by,last_modified_by)
 values('七牛',2,'SYSTEM',@v_system_user_id,@v_system_user_id) ;
-Insert into file_lib_type (name,type,created_by,last_modified_by)
-values('阿里OSS',2,'SYSTEM',@v_system_user_id,@v_system_user_id) ;
+Insert into file_lib_type (name,identifier, type,created_by,last_modified_by)
+values('阿里OSS',3,'SYSTEM',@v_system_user_id,@v_system_user_id) ;
 
 -- 媒体库类型配置
 drop table if exists `file_lib_config`;
 CREATE TABLE `file_lib_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
   `access_Key` varchar(255) DEFAULT NULL comment '密钥AccessKey',
-	`secret_Key ` int(11) DEFAULT 0  comment '密钥SecretKey',
+	`secret_Key` varchar(255)   DEFAULT NULL  comment '密钥SecretKey',
 	`bucket` varchar(255)  DEFAULT NULL comment '存储空间',
 	`Endpoint` varchar(255)  DEFAULT NULL comment '绑定域名',
 	`prefix` varchar(255)  DEFAULT NULL comment '前缀',

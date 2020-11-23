@@ -17,7 +17,7 @@ public class DbUtil {
         Connection conn = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false&autoReconnect=true";
+            String url = "jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false&autoReconnect=true&serverTimezone=Asia/Shanghai";
             String user = "winder";
             String pass = "123456";
             conn = DriverManager.getConnection(url,user,pass);

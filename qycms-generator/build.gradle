@@ -45,7 +45,9 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
 //task mybatisGenerate {
 //    logger.warn("projectDir.path:"+projectDir)
 //    ant.properties['generator.project.root'] = "/home/wind/work/Java/IdeaProjects/qycms/qycms-blog/blog-provider"

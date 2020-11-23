@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE generatorConfiguration
-        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!--<!DOCTYPE generatorConfiguration-->
+<!--        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"-->
+<!--        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">-->
 
 <generatorConfiguration>
     <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
@@ -30,17 +30,17 @@
                         password="123456">
         </jdbcConnection>
 
-
-        <javaModelGenerator targetProject="../qycms-core/system-provider/src/main/java"
-                            targetPackage="com.windcoder.qycms.system.entity"/>
+        <!-- domain类的位置 -->
+        <javaModelGenerator targetProject="../qycms-file/file-provider/src/main/java"
+                            targetPackage="com.windcoder.qycms.file.entity"/>
 
         <!-- mapper xml的位置 -->
-        <sqlMapGenerator targetProject="../qycms-core/system-provider/src/main/resources"
+        <sqlMapGenerator targetProject="../qycms-file/file-provider/src/main/resources"
                          targetPackage="mappers"/>
 
         <!-- mapper类的位置 -->
-        <javaClientGenerator targetProject="../qycms-core/system-provider/src/main/java"
-                             targetPackage="com.windcoder.qycms.system.repository.mybatis"
+        <javaClientGenerator targetProject="../qycms-file/file-provider/src/main/java"
+                             targetPackage="com.windcoder.qycms.file.repository.mybatis"
                              type="XMLMAPPER" />
 
 
@@ -70,10 +70,10 @@
 <!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--        </table>-->
-        <table tableName="sys_menus_agent" domainObjectName="MenusAgent">
-            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+<!--        <table tableName="sys_menus_agent" domainObjectName="MenusAgent">-->
+<!--            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+<!--        </table>-->
 <!--                <table tableName="sns_comment_agent" domainObjectName="CommentAgent">-->
 <!--                    <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--                </table>-->
@@ -117,5 +117,10 @@
 <!--        </table>-->
 <!--        <table tableName="blog_category_tree" domainObjectName="BlogCategoryTree" />-->
 
+
+        <table tableName="file_lib_config" domainObjectName="fileLibConfig">
+            <property name="rootClass" value="com.windcoder.qycms.system.entity.Auditable"/>
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>

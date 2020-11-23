@@ -12,10 +12,14 @@ public class GeneratorPathUtils {
 //    static final String SYSTEM_CONSOLE_URL = "qycms-core/system-console";
     static final String SYSTEM_CONSOLE_URL = "qycms-core/system-web";
 
+    static final String FILE_MODULE = "file";
+    static final String FILE_SERVICE_URL = "qycms-file/file-provider";
+//    static final String FILE_CONSOLE_URL = "qycms-file/file-console";
+    static final String FILE_CONSOLE_URL = "qycms-file/file-web";
 
-    public static  String MODULE =  SYSTEM_MODULE;
-    public static  String PROJECT_URL =  SYSTEM_SERVICE_URL;
-    public static  String PROJECT_CONSOLE_URL = SYSTEM_CONSOLE_URL;
+    public static  String MODULE =  FILE_MODULE;
+    public static  String PROJECT_URL =  FILE_SERVICE_URL;
+    public static  String PROJECT_CONSOLE_URL = FILE_CONSOLE_URL;
 //    public static  String MODULE =  BLOG_MODULE;
 //    public static  String PROJECT_URL =  BLOG_SERVICE_URL;
 //    public static  String PROJECT_CONSOLE_URL = BLOG_CONSOLE_URL;
@@ -32,9 +36,11 @@ public class GeneratorPathUtils {
 //    public static  String VUE_MODULE = "role";
 //    public static  String VUE_MODULE = "permission";
 //    public static  String VUE_MODULE = "ip-black";
-    public static  String VUE_MODULE = "login-log";
+//    public static  String VUE_MODULE = "login-log";
+    public static  String VUE_MODULE = "file-lib";
     public static final String TO_VUE_CONSOLE_PROJECT = TO_VUE_BASE_PATH +"qy-console/src/views/admin/";
-    public static final String TO_VUE_CONSOLE_PUBLIC_W = TO_VUE_BASE_PATH_W +"qy-console\\public";
+    public static final String TO_VUE_CONSOLE_PROJECT_W = TO_VUE_BASE_PATH_W +"qy-console/src/views/admin/";
+    public static final String TO_VUE_CONSOLE_PUBLIC_W = TO_VUE_BASE_PATH_W +"qy-console\\public\\";
 
 
 }
