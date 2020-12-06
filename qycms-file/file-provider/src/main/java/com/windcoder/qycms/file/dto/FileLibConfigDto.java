@@ -3,7 +3,7 @@ package com.windcoder.qycms.file.dto;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class fileLibConfigDto {
+public class FileLibConfigDto {
 
     /**
      * id

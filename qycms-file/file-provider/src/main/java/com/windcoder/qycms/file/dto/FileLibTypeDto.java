@@ -1,29 +1,55 @@
-package com.windcoder.qycms.file.entity;
+package com.windcoder.qycms.file.dto;
 
-import com.windcoder.qycms.system.entity.Auditable;
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class fileLibConfig extends Auditable {
+public class FileLibTypeDto {
+
+    /**
+     * id
+     */
     private Long id;
 
-    private String accessKey;
+    /**
+     * 媒体库类型名称
+     */
+    private String name;
 
-    private String secretKey;
+    /**
+     * 类型标识：1本地， 2七牛，3阿里OSS
+     */
+    private Integer identifier;
 
-    private String bucket;
+    /**
+     * 类型
+     */
+    private String type;
 
-    private String endpoint;
+    /**
+     * 是否启用：0不启用， 1 启用
+     */
+    private Boolean status;
 
-    private String prefix;
-
-    private Long typeId;
-
+    /**
+     * 创建者
+     */
     private Long createdBy;
 
+    /**
+     * 更新者
+     */
     private Long lastModifiedBy;
 
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdDate;
 
+    /**
+     * 更新时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date lastModifiedDate;
 
     public Long getId() {
@@ -34,52 +60,36 @@ public class fileLibConfig extends Auditable {
         this.id = id;
     }
 
-    public String getAccessKey() {
-        return accessKey;
+    public String getName() {
+        return name;
     }
 
-    public void setAccessKey(String accessKey) {
-        this.accessKey = accessKey;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSecretKey() {
-        return secretKey;
+    public Integer getIdentifier() {
+        return identifier;
     }
 
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
+    public void setIdentifier(Integer identifier) {
+        this.identifier = identifier;
     }
 
-    public String getBucket() {
-        return bucket;
+    public String getType() {
+        return type;
     }
 
-    public void setBucket(String bucket) {
-        this.bucket = bucket;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getEndpoint() {
-        return endpoint;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
-    public Long getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public Long getCreatedBy() {
@@ -114,6 +124,7 @@ public class fileLibConfig extends Auditable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -121,12 +132,10 @@ public class fileLibConfig extends Auditable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", accessKey=").append(accessKey);
-        sb.append(", secretKey=").append(secretKey);
-        sb.append(", bucket=").append(bucket);
-        sb.append(", endpoint=").append(endpoint);
-        sb.append(", prefix=").append(prefix);
-        sb.append(", typeId=").append(typeId);
+        sb.append(", name=").append(name);
+        sb.append(", identifier=").append(identifier);
+        sb.append(", type=").append(type);
+        sb.append(", status=").append(status);
         sb.append(", createdBy=").append(createdBy);
         sb.append(", lastModifiedBy=").append(lastModifiedBy);
         sb.append(", createdDate=").append(createdDate);
@@ -134,4 +143,6 @@ public class fileLibConfig extends Auditable {
         sb.append("]");
         return sb.toString();
     }
+
+
 }

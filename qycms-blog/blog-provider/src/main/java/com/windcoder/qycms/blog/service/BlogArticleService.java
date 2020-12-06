@@ -335,7 +335,7 @@ public class BlogArticleService {
             article.setDefNum(String.valueOf(StringUtilZ.randomRange(1,32)));
         }
         PageInfo<BlogArticleWebBaseDto> pageInfo = new PageInfo<>(articles);
-        if (pageInfo.getPages()<pageDto.getPage()) {
+        if (pageInfo.getTotal()>0 && pageInfo.getPages()<pageDto.getPage()) {
             throw new NotFoundException("列表访问超出最大值");
         }
         pageDto.setTotal(pageInfo.getTotal());

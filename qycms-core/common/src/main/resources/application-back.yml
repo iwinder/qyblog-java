@@ -20,12 +20,12 @@ spring:
     type:  com.alibaba.druid.pool.DruidDataSource
     url: jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
     connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;"
-    #    username: ENC(Sua21kW9AckGBtpW13LyF03e7aOjC2zE)
-    #    password: ENC(f+2+aW4Po3YqeQkXaccinw==)
+#    username: ENC(Sua21kW9AckGBtpW13LyF03e7aOjC2zE)
+#    password: ENC(f+2+aW4Po3YqeQkXaccinw==)
     username: winder
     password: 123456
-    #    username: qycmsdev
-    #    password: DCZehzmeAiM5wtrc
+#    username: qycmsdev
+#    password: DCZehzmeAiM5wtrc
     initialSize: 5
     minIdle: 5
     maxActive: 20
@@ -43,9 +43,9 @@ spring:
     host: ENC(e/prl+7EXAa9PmwCfoE1a0TP8LrSrfaCSgjwFMQreEYczuxSBdMuEsHtXDgCjSzL)
     password: ENC(j6n3ISryjfYIBLhG9SWIb6Vah2jySJ4zwypGVE2dl0ilm36KwUzpQqiwf/ST6BJ3)
     port: 6380
-    #    host: ENC(8rnOjnmgWvWCjiT2QBDaEcIJhC/LAhGSNFHZrt/Q5l2Q+M/Rp38vCY3Vt23LOgVb)
-    #    password: ENC(C3CZ0TIuuxQUnTgrpY+c8E0VxcbQ1jXJWPle0/4ZkuVGVEhBCxy1ub1KE/GSmIks)
-    #    port: 6379
+#    host: ENC(8rnOjnmgWvWCjiT2QBDaEcIJhC/LAhGSNFHZrt/Q5l2Q+M/Rp38vCY3Vt23LOgVb)
+#    password: ENC(C3CZ0TIuuxQUnTgrpY+c8E0VxcbQ1jXJWPle0/4ZkuVGVEhBCxy1ub1KE/GSmIks)
+#    port: 6379
 
     database: 8
     timeout: 100000

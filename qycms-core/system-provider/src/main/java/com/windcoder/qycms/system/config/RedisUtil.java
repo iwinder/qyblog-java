@@ -64,7 +64,6 @@ public class RedisUtil {
         if (StringUtils.isBlank(tmp)) {
             tmp = String.valueOf(0);
         }
-        System.out.println("key:"+ key +"tmp: "+ tmp);
       return Long.valueOf(tmp);
 
     }

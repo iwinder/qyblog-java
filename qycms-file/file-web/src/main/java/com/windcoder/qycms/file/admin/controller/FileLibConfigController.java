@@ -1,10 +1,10 @@
 package com.windcoder.qycms.file.admin.controller;
 
-import com.windcoder.qycms.file.entity.fileLibConfig;
-import com.windcoder.qycms.file.dto.fileLibConfigDto;
+import com.windcoder.qycms.file.entity.FileLibConfig;
+import com.windcoder.qycms.file.dto.FileLibConfigDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.dto.ResponseDto;
-import com.windcoder.qycms.file.service.fileLibConfigService;
+import com.windcoder.qycms.file.service.FileLibConfigService;
 import com.windcoder.qycms.utils.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/admin/fileLibConfig")
 @Slf4j
-public class fileLibConfigController {
+public class FileLibConfigController {
 
     @Resource
-    private fileLibConfigService fileLibConfigService;
+    private FileLibConfigService fileLibConfigService;
 
     public static final String BUSINESS_NAME = "媒体库类型配置";
 
@@ -40,7 +40,7 @@ public class fileLibConfigController {
      * @return
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody  fileLibConfigDto fileLibConfigDto) {
+    public ResponseDto save(@RequestBody  FileLibConfigDto fileLibConfigDto) {
         // 保存校验
         ValidatorUtil.length(fileLibConfigDto.getAccessKey(), "密钥AccessKey", 1, 255);
         ValidatorUtil.length(fileLibConfigDto.getSecretKey(), "密钥SecretKey", 1, 255);
@@ -62,6 +62,12 @@ public class fileLibConfigController {
     public ResponseDto delete(@RequestBody Long[] ids) {
         fileLibConfigService.delete(ids);
         ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
+    @GetMapping("/byType/{typeId}")
+    public ResponseDto findOneByTypeId(@PathVariable("typeId") Long typeId) {
+        FileLibConfigDto oneByTypeIdOfAdmin = fileLibConfigService.findOneByTypeIdOfAdmin(typeId);
+        ResponseDto responseDto = new ResponseDto(oneByTypeIdOfAdmin);
         return responseDto;
     }
 }

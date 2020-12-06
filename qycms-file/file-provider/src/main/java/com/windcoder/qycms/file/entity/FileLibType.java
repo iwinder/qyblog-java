@@ -3,7 +3,7 @@ package com.windcoder.qycms.file.entity;
 import com.windcoder.qycms.system.entity.Auditable;
 import java.util.Date;
 
-public class fileLibType extends Auditable {
+public class FileLibType extends Auditable {
     private Long id;
 
     private String name;
@@ -11,6 +11,10 @@ public class fileLibType extends Auditable {
     private Integer identifier;
 
     private String type;
+
+    private Boolean status;
+
+
     public Long getId() {
         return id;
     }
@@ -43,6 +47,14 @@ public class fileLibType extends Auditable {
         this.type = type;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -53,6 +65,7 @@ public class fileLibType extends Auditable {
         sb.append(", name=").append(name);
         sb.append(", identifier=").append(identifier);
         sb.append(", type=").append(type);
+        sb.append(", status=").append(status);
         sb.append(", createdBy=").append(super.getCreatedBy());
         sb.append(", lastModifiedBy=").append(super.getLastModifiedBy());
         sb.append(", createdDate=").append(super.getCreatedDate());

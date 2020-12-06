@@ -19,7 +19,7 @@ public class IpBlackTask {
     private SysIpBlackService sysIpBlackService;
 
     //每天23点执行一次
-    @Scheduled(cron = "0 0 0/3 * * ? ")
+    @Scheduled(cron = "0 0 0/3 * * ?")
     public void createBloom() {
         log.info("开始初始化黑名单布隆缓存过滤");
         sysIpBlackService.updateBlackFromRedis();

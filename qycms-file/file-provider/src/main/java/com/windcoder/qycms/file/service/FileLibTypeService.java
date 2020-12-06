@@ -3,12 +3,13 @@ package com.windcoder.qycms.file.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import com.windcoder.qycms.file.entity.fileLibType;
-import com.windcoder.qycms.file.entity.fileLibTypeExample;
-import com.windcoder.qycms.file.dto.fileLibTypeDto;
+import com.windcoder.qycms.file.entity.FileLibType;
+import com.windcoder.qycms.file.entity.FileLibTypeExample;
+import com.windcoder.qycms.file.dto.FileLibTypeDto;
 import com.windcoder.qycms.dto.PageDto;
-import com.windcoder.qycms.file.repository.mybatis.fileLibTypeMapper;
+import com.windcoder.qycms.file.repository.mybatis.FileLibTypeMapper;
 
+import com.windcoder.qycms.system.enums.MenusAgentType;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,9 @@ import java.util.List;
 import java.util.Date;
 
 @Service
-public class fileLibTypeService {
+public class FileLibTypeService {
     @Resource
-    private fileLibTypeMapper fileLibTypeMapper;
+    private FileLibTypeMapper fileLibTypeMapper;
 
     /**
      * 列表查询
@@ -31,12 +32,12 @@ public class fileLibTypeService {
      */
     public void list(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
-        fileLibTypeExample fileLibTypeExample = new fileLibTypeExample();
-        List<fileLibType> fileLibTypes = fileLibTypeMapper.selectByExample(fileLibTypeExample);
-        PageInfo<fileLibType> pageInfo = new PageInfo<>(fileLibTypes);
+        FileLibTypeExample fileLibTypeExample = new FileLibTypeExample();
+        List<FileLibType> fileLibTypes = fileLibTypeMapper.selectByExample(fileLibTypeExample);
+        PageInfo<FileLibType> pageInfo = new PageInfo<>(fileLibTypes);
         pageDto.setTotal(pageInfo.getTotal());
-        Type type = new TypeToken<List<fileLibTypeDto>>() {}.getType();
-        List<fileLibTypeDto> fileLibTypeDtoList = ModelMapperUtils.map(fileLibTypes, type);
+        Type type = new TypeToken<List<FileLibTypeDto>>() {}.getType();
+        List<FileLibTypeDto> fileLibTypeDtoList = ModelMapperUtils.map(fileLibTypes, type);
         pageDto.setList(fileLibTypeDtoList);
     }
 
@@ -45,8 +46,8 @@ public class fileLibTypeService {
      * 保存，id有值时更新，无值时新增
      * @param fileLibTypeDto
      */
-    public void save(fileLibTypeDto fileLibTypeDto){
-        fileLibType fileLibType = ModelMapperUtils.map(fileLibTypeDto, fileLibType.class);
+    public void save(FileLibTypeDto fileLibTypeDto){
+        FileLibType fileLibType = ModelMapperUtils.map(fileLibTypeDto, FileLibType.class);
         if (null == fileLibType.getId()) {
             this.inster(fileLibType);
         } else {
@@ -59,20 +60,31 @@ public class fileLibTypeService {
      * @param ids
      */
     public void delete(Long[] ids) {
-        fileLibTypeExample fileLibTypeExample = new fileLibTypeExample();
+        FileLibTypeExample fileLibTypeExample = new FileLibTypeExample();
         fileLibTypeExample.createCriteria().andIdIn(Arrays.asList(ids));
         fileLibTypeMapper.deleteByExample(fileLibTypeExample);
     }
 
+    public FileLibType findOne(Long id) {
+        FileLibType fileLibType = fileLibTypeMapper.selectByPrimaryKey(id);
+        return fileLibType;
+    }
+    public FileLibTypeDto findOneTypeDto(Long id) {
+        FileLibType fileLibType = findOne(id);
+        if (fileLibType!=null) {
+          return   ModelMapperUtils.map(fileLibType, FileLibTypeDto.class);
+        }
+        return null;
+    }
     /**
      * 新增
      * @param fileLibType
      */
-    private void inster(fileLibType fileLibType){
+    private void inster(FileLibType fileLibType){
         Date now = new Date();
         fileLibType.setCreatedDate(now);
         fileLibType.setLastModifiedDate(now);
-        fileLibType.setType("USER");
+        fileLibType.setType(MenusAgentType.USER.name());
         fileLibTypeMapper.insertSelective(fileLibType);
     }
 
@@ -80,9 +92,10 @@ public class fileLibTypeService {
      * 更新
      * @param fileLibType
      */
-    private void update(fileLibType fileLibType){
+    private void update(FileLibType fileLibType){
         fileLibType.setLastModifiedDate(new Date());
         fileLibTypeMapper.updateByPrimaryKeySelective(fileLibType);
     }
+
 
 }

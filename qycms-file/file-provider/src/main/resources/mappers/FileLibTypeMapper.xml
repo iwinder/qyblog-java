@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.windcoder.qycms.file.repository.mybatis.fileLibConfigMapper">
-  <resultMap id="BaseResultMap" type="com.windcoder.qycms.file.entity.fileLibConfig">
+<mapper namespace="com.windcoder.qycms.file.repository.mybatis.FileLibTypeMapper">
+  <resultMap id="BaseResultMap" type="com.windcoder.qycms.file.entity.FileLibType">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="access_Key" jdbcType="VARCHAR" property="accessKey" />
-    <result column="secret_Key" jdbcType="VARCHAR" property="secretKey" />
-    <result column="bucket" jdbcType="VARCHAR" property="bucket" />
-    <result column="Endpoint" jdbcType="VARCHAR" property="endpoint" />
-    <result column="prefix" jdbcType="VARCHAR" property="prefix" />
-    <result column="type_id" jdbcType="BIGINT" property="typeId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identifier" jdbcType="INTEGER" property="identifier" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="status" jdbcType="BIT" property="status" />
     <result column="created_by" jdbcType="BIGINT" property="createdBy" />
     <result column="last_modified_by" jdbcType="BIGINT" property="lastModifiedBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
@@ -73,16 +71,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, access_Key, secret_Key, bucket, Endpoint, `prefix`, type_id, created_by, last_modified_by, 
-    created_date, last_modified_date
+    id, `name`, identifier, `type`, `status`, created_by, last_modified_by, created_date, 
+    last_modified_date
   </sql>
-  <select id="selectByExample" parameterType="com.windcoder.qycms.file.entity.fileLibConfigExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.windcoder.qycms.file.entity.FileLibTypeExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from file_lib_config
+    from file_lib_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -93,55 +91,47 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from file_lib_config
+    from file_lib_type
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from file_lib_config
+    delete from file_lib_type
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.windcoder.qycms.file.entity.fileLibConfigExample">
-    delete from file_lib_config
+  <delete id="deleteByExample" parameterType="com.windcoder.qycms.file.entity.FileLibTypeExample">
+    delete from file_lib_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.windcoder.qycms.file.entity.fileLibConfig">
+  <insert id="insert" parameterType="com.windcoder.qycms.file.entity.FileLibType">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into file_lib_config (access_Key, secret_Key, bucket, 
-      Endpoint, `prefix`, type_id, 
-      created_by, last_modified_by, created_date, 
-      last_modified_date)
-    values (#{accessKey,jdbcType=VARCHAR}, #{secretKey,jdbcType=VARCHAR}, #{bucket,jdbcType=VARCHAR}, 
-      #{endpoint,jdbcType=VARCHAR}, #{prefix,jdbcType=VARCHAR}, #{typeId,jdbcType=BIGINT}, 
-      #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, 
-      #{lastModifiedDate,jdbcType=TIMESTAMP})
+    insert into file_lib_type (`name`, identifier, `type`, 
+      `status`, created_by, last_modified_by, 
+      created_date, last_modified_date)
+    values (#{name,jdbcType=VARCHAR}, #{identifier,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{status,jdbcType=BIT}, #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.windcoder.qycms.file.entity.fileLibConfig">
+  <insert id="insertSelective" parameterType="com.windcoder.qycms.file.entity.FileLibType">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into file_lib_config
+    insert into file_lib_type
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="accessKey != null">
-        access_Key,
+      <if test="name != null">
+        `name`,
       </if>
-      <if test="secretKey != null">
-        secret_Key,
+      <if test="identifier != null">
+        identifier,
       </if>
-      <if test="bucket != null">
-        bucket,
+      <if test="type != null">
+        `type`,
       </if>
-      <if test="endpoint != null">
-        Endpoint,
-      </if>
-      <if test="prefix != null">
-        `prefix`,
-      </if>
-      <if test="typeId != null">
-        type_id,
+      <if test="status != null">
+        `status`,
       </if>
       <if test="createdBy != null">
         created_by,
@@ -157,23 +147,17 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="accessKey != null">
-        #{accessKey,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="secretKey != null">
-        #{secretKey,jdbcType=VARCHAR},
+      <if test="identifier != null">
+        #{identifier,jdbcType=INTEGER},
       </if>
-      <if test="bucket != null">
-        #{bucket,jdbcType=VARCHAR},
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
       </if>
-      <if test="endpoint != null">
-        #{endpoint,jdbcType=VARCHAR},
-      </if>
-      <if test="prefix != null">
-        #{prefix,jdbcType=VARCHAR},
-      </if>
-      <if test="typeId != null">
-        #{typeId,jdbcType=BIGINT},
+      <if test="status != null">
+        #{status,jdbcType=BIT},
       </if>
       <if test="createdBy != null">
         #{createdBy,jdbcType=BIGINT},
@@ -189,35 +173,29 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.windcoder.qycms.file.entity.fileLibConfigExample" resultType="java.lang.Long">
-    select count(*) from file_lib_config
+  <select id="countByExample" parameterType="com.windcoder.qycms.file.entity.FileLibTypeExample" resultType="java.lang.Long">
+    select count(*) from file_lib_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update file_lib_config
+    update file_lib_type
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.accessKey != null">
-        access_Key = #{record.accessKey,jdbcType=VARCHAR},
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.secretKey != null">
-        secret_Key = #{record.secretKey,jdbcType=VARCHAR},
+      <if test="record.identifier != null">
+        identifier = #{record.identifier,jdbcType=INTEGER},
       </if>
-      <if test="record.bucket != null">
-        bucket = #{record.bucket,jdbcType=VARCHAR},
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=VARCHAR},
       </if>
-      <if test="record.endpoint != null">
-        Endpoint = #{record.endpoint,jdbcType=VARCHAR},
-      </if>
-      <if test="record.prefix != null">
-        `prefix` = #{record.prefix,jdbcType=VARCHAR},
-      </if>
-      <if test="record.typeId != null">
-        type_id = #{record.typeId,jdbcType=BIGINT},
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=BIT},
       </if>
       <if test="record.createdBy != null">
         created_by = #{record.createdBy,jdbcType=BIGINT},
@@ -237,14 +215,12 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update file_lib_config
+    update file_lib_type
     set id = #{record.id,jdbcType=BIGINT},
-      access_Key = #{record.accessKey,jdbcType=VARCHAR},
-      secret_Key = #{record.secretKey,jdbcType=VARCHAR},
-      bucket = #{record.bucket,jdbcType=VARCHAR},
-      Endpoint = #{record.endpoint,jdbcType=VARCHAR},
-      `prefix` = #{record.prefix,jdbcType=VARCHAR},
-      type_id = #{record.typeId,jdbcType=BIGINT},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      identifier = #{record.identifier,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=BIT},
       created_by = #{record.createdBy,jdbcType=BIGINT},
       last_modified_by = #{record.lastModifiedBy,jdbcType=BIGINT},
       created_date = #{record.createdDate,jdbcType=TIMESTAMP},
@@ -253,26 +229,20 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.windcoder.qycms.file.entity.fileLibConfig">
-    update file_lib_config
+  <update id="updateByPrimaryKeySelective" parameterType="com.windcoder.qycms.file.entity.FileLibType">
+    update file_lib_type
     <set>
-      <if test="accessKey != null">
-        access_Key = #{accessKey,jdbcType=VARCHAR},
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="secretKey != null">
-        secret_Key = #{secretKey,jdbcType=VARCHAR},
+      <if test="identifier != null">
+        identifier = #{identifier,jdbcType=INTEGER},
       </if>
-      <if test="bucket != null">
-        bucket = #{bucket,jdbcType=VARCHAR},
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
       </if>
-      <if test="endpoint != null">
-        Endpoint = #{endpoint,jdbcType=VARCHAR},
-      </if>
-      <if test="prefix != null">
-        `prefix` = #{prefix,jdbcType=VARCHAR},
-      </if>
-      <if test="typeId != null">
-        type_id = #{typeId,jdbcType=BIGINT},
+      <if test="status != null">
+        `status` = #{status,jdbcType=BIT},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=BIGINT},
@@ -289,14 +259,12 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.windcoder.qycms.file.entity.fileLibConfig">
-    update file_lib_config
-    set access_Key = #{accessKey,jdbcType=VARCHAR},
-      secret_Key = #{secretKey,jdbcType=VARCHAR},
-      bucket = #{bucket,jdbcType=VARCHAR},
-      Endpoint = #{endpoint,jdbcType=VARCHAR},
-      `prefix` = #{prefix,jdbcType=VARCHAR},
-      type_id = #{typeId,jdbcType=BIGINT},
+  <update id="updateByPrimaryKey" parameterType="com.windcoder.qycms.file.entity.FileLibType">
+    update file_lib_type
+    set `name` = #{name,jdbcType=VARCHAR},
+      identifier = #{identifier,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=BIT},
       created_by = #{createdBy,jdbcType=BIGINT},
       last_modified_by = #{lastModifiedBy,jdbcType=BIGINT},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
