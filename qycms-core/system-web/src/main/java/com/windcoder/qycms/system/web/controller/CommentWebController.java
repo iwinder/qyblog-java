@@ -1,29 +1,20 @@
 package com.windcoder.qycms.system.web.controller;
 
-import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.dto.ResponseDto;
-import com.windcoder.qycms.exception.BusinessException;
-import com.windcoder.qycms.system.annotation.ServiceLimit;
+import com.windcoder.qycms.system.annotation.IpApiLimit;
 import com.windcoder.qycms.system.dto.CommentDto;
 import com.windcoder.qycms.system.dto.CommentPageDto;
 import com.windcoder.qycms.system.dto.CommentWebDto;
-import com.windcoder.qycms.system.entity.Comment;
 import com.windcoder.qycms.system.service.CommentService;
 import com.windcoder.qycms.utils.AgentUserUtil;
-import com.windcoder.qycms.utils.CookieUtils;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import com.windcoder.qycms.utils.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 @RestController
 @RequestMapping("api/web/comment/{agentTargetId}")
@@ -32,7 +23,7 @@ public class CommentWebController {
     @Resource
     private CommentService commentService;
 
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     @GetMapping(value = "")
     public ResponseDto list(@PathVariable("agentTargetId") Long agentTargetId,CommentPageDto pageDto) {
         commentService.findTopLevelComments(agentTargetId, pageDto);

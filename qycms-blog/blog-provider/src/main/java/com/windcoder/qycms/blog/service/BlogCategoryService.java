@@ -9,19 +9,17 @@ import com.windcoder.qycms.blog.entity.BlogCategory;
 import com.windcoder.qycms.blog.entity.BlogCategoryExample;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.blog.entity.BlogCategoryTree;
-import com.windcoder.qycms.blog.entity.BlogTag;
 import com.windcoder.qycms.blog.repository.mybatis.MyBlogCategoryMapper;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.blog.repository.mybatis.BlogCategoryMapper;
 import com.windcoder.qycms.exception.BusinessException;
-import com.windcoder.qycms.system.annotation.ServiceLimit;
+import com.windcoder.qycms.system.annotation.IpApiLimit;
 import com.windcoder.qycms.utils.CopyUtil;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -382,7 +380,7 @@ public class BlogCategoryService {
         return null;
     }
 
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     public BlogCategoryWebDto findByIdForWeb(Long id) {
         BlogCategory category = getOne(id);
         if (category == null) {
@@ -390,7 +388,7 @@ public class BlogCategoryService {
         }
         return ModelMapperUtils.map(category, BlogCategoryWebDto.class);
     }
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     public BlogCategoryWebDto findByIdentifierForWeb(String identifier) {
         BlogCategory category = findByIdentifier(identifier);
         if (category == null) {

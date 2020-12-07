@@ -33,7 +33,7 @@ public class ViewCountLimitAspect {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String borderGroup = AgentUserUtil.getBorderGroup(request);
             if (!borderGroup.equalsIgnoreCase("Robot/Spider")) {
-                String value = IpAddressUtil.getClientRealIp(request);
+                String value = IpAddressUtil.getClientRealIp();
                 if(value.equals("127.0.0.1")) {
                     return joinPoint.proceed();
                 }

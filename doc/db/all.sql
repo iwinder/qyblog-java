@@ -74,7 +74,7 @@ drop table if exists `blog_article_visitor`;
 CREATE TABLE `blog_article_visitor` (
 `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
 `article_id` bigint(20) NOT NULL comment '文章id',
-`visitor_agent` varchar(255) DEFAULT NULL comment '访客客户端',
+`visitor_agent` text DEFAULT NULL comment '访客客户端',
 `visitor_ip` varchar(255) DEFAULT NULL comment '访客ip',
 `created_date` datetime comment '创建时间',
 `last_modified_date` datetime comment '更新时间',
@@ -293,7 +293,7 @@ CREATE TABLE `sns_comment_agent` (
 drop table if exists `sns_comment`;
 CREATE TABLE `sns_comment` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
-  `agent` varchar(255) DEFAULT NULL comment '评论者客户端',
+  `agent` text DEFAULT NULL comment '评论者客户端',
   `author_name` tinytext DEFAULT NULL  comment '评论者用户名',
   `author_email` varchar(255) DEFAULT NULL comment '评论者邮箱',
   `author_ip` varchar(255) DEFAULT NULL comment '评论者ip',
@@ -458,7 +458,7 @@ drop table if exists `sys_ip_black`;
 CREATE TABLE `sys_ip_black` (
 `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
 `visitor_ip` varchar(255) DEFAULT NULL comment '访客ip',
-`visitor_agent` varchar(255) DEFAULT NULL comment '访客客户端',
+`visitor_agent` text DEFAULT NULL comment '访客客户端',
 `type` varchar(255)  DEFAULT NULL comment '类型',
 `remarks` varchar(255)  DEFAULT NULL comment '备注',
  `black_num` int(11) DEFAULT 0  comment '被封次数',
@@ -474,7 +474,7 @@ CREATE TABLE `sys_login_log` (
 `id` bigint(20) NOT NULL AUTO_INCREMENT comment 'id',
 `username` varchar(50) not null comment '用户用户名',
 `user_ip` varchar(255) DEFAULT NULL comment '用户ip',
-`user_agent` varchar(255) DEFAULT NULL comment '用户客户端',
+`user_agent`  text DEFAULT NULL comment '用户客户端',
 `created_date` datetime comment '创建时间',
 `last_modified_date` datetime comment '更新时间',
  `deleted` bit(1) DEFAULT b'0' comment '是否删除：0不删除， 1 删除',

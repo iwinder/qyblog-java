@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.apache.shiro.mgt.SecurityManager;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
@@ -30,6 +31,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfiguration {
     @Autowired
+    @Lazy
     RedisProperties redisProperties;
 
     /**

@@ -4,12 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.windcoder.qycms.exception.BusinessException;
-import com.windcoder.qycms.system.annotation.ServiceLimit;
+import com.windcoder.qycms.system.annotation.IpApiLimit;
 import com.windcoder.qycms.system.dto.*;
 import com.windcoder.qycms.system.entity.Comment;
 import com.windcoder.qycms.system.entity.CommentAgent;
 import com.windcoder.qycms.system.entity.CommentExample;
-import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.enums.CommentStatus;
 import com.windcoder.qycms.system.repository.mybatis.CommentMapper;
@@ -29,7 +28,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 
@@ -268,7 +266,7 @@ public class CommentService {
     }
 
 
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     public CommentWebDto addTopLevelComment(Long agentTargetId, CommentDto commentDto, HttpServletResponse response) {
         CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
         commentDto.setTargetId(agentTarget.getId());
@@ -284,7 +282,7 @@ public class CommentService {
         setCommentAuthorIntoCookie(response,commentDto.getAuthorName(),commentDto.getAuthorEmail(),commentDto.getAuthorUrl());
         return commentwebDto;
     }
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     public CommentWebDto addReply(Long agentTargetId,Long parentId, CommentDto commentDto, HttpServletResponse response) {
         CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
         Comment parent = findOne(parentId);

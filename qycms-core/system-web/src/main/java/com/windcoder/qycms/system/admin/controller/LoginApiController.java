@@ -2,16 +2,13 @@ package com.windcoder.qycms.system.admin.controller;
 
 import com.windcoder.qycms.dto.ResponseDto;
 import com.windcoder.qycms.system.annotation.BloomIpLimit;
-import com.windcoder.qycms.system.annotation.ServiceLimit;
+import com.windcoder.qycms.system.annotation.IpApiLimit;
 import com.windcoder.qycms.system.config.RedisUtil;
-import com.windcoder.qycms.system.dto.UserWebDto;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.enums.IpBlackType;
 import com.windcoder.qycms.system.service.SysLoginLogService;
 import com.windcoder.qycms.system.service.UserService;
-import com.windcoder.qycms.system.shiro.UserToken;
 import com.windcoder.qycms.utils.*;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -41,7 +38,7 @@ public class LoginApiController {
     private RedisUtil redisUtil;
 
     @BloomIpLimit
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     @PostMapping("login")
     public ResponseDto adminLogin(@RequestBody User user){
         ResponseDto result = new ResponseDto();

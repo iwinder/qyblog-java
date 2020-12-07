@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.windcoder.qycms.basis.utils.PinyinUtilZ;
-import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.blog.dto.BlogTagBaseDto;
 import com.windcoder.qycms.blog.dto.BlogTagWebDto;
 import com.windcoder.qycms.blog.entity.BlogArticleTag;
@@ -14,7 +13,7 @@ import com.windcoder.qycms.blog.dto.BlogTagDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.blog.repository.mybatis.BlogTagMapper;
 import com.windcoder.qycms.system.annotation.BloomIpLimit;
-import com.windcoder.qycms.system.annotation.ServiceLimit;
+import com.windcoder.qycms.system.annotation.IpApiLimit;
 import com.windcoder.qycms.utils.CopyUtil;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -149,7 +148,7 @@ public class BlogTagService {
         return blogArticleTagService.findTagnameListByArticleId(articleId);
     }
     @BloomIpLimit
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     public BlogTagWebDto findByIdForWeb(Long id) {
         BlogTag tag =  findById(id);
         if (tag==null) {
@@ -158,7 +157,7 @@ public class BlogTagService {
         return ModelMapperUtils.map(tag, BlogTagWebDto.class);
     }
     @BloomIpLimit
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     public BlogTagWebDto findByIdentifierForWeb(String name) {
         BlogTag tag = findByIdentifier(name);
         if (tag==null) {

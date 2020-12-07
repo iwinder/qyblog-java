@@ -3,7 +3,7 @@ package com.windcoder.qycms.system.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import com.windcoder.qycms.system.annotation.ServiceLimit;
+import com.windcoder.qycms.system.annotation.IpApiLimit;
 import com.windcoder.qycms.system.dto.MenusPageDto;
 import com.windcoder.qycms.system.dto.MenusWebDto;
 import com.windcoder.qycms.system.entity.Menus;
@@ -174,7 +174,7 @@ public class MenusService {
             return  footer.toList();
         }
     }
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     public Map<String,List<Object>> findNowAllMenus() {
         List<Object> header =  findNowHeaderMenus();
         List<Object> footer =  findNowFooterMenus();

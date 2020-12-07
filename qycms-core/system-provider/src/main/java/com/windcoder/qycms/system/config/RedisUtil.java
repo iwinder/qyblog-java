@@ -20,8 +20,8 @@ public class RedisUtil {
 
     public static final String POST_VIEW_COUNT  = "post:viewCount:";
     public static final String IPBLACK_FREQUENT_ACCESS = "IpBlack:FrequentAccess:";
-    public static final int IPBLACK_FREQUENT_LIMIT_NUM = 10;
-    public static final int IPBLACK_NOT_FOUNT_LIMIT_NUM = 10;
+    public static final int IPBLACK_FREQUENT_LIMIT_NUM = 5;
+    public static final int IPBLACK_NOT_FOUNT_LIMIT_NUM = 5;
     public static final String IPBLACK_NOT_FOUNT = "IpBlack:NotFount:";
     public static final String IPBLACK_USERNAME_NOT_FOUNT = "IpBlack:UserNameNotFount:";
     public static final int IPBLACK_USERNAME_NOT_FOUNT_LIMIT_NUM = 2;

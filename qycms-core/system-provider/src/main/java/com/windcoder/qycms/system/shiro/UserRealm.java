@@ -15,16 +15,21 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 public class UserRealm extends AuthorizingRealm {
     @Autowired
+    @Lazy
     private UserService userService;
 
     @Autowired
+    @Lazy
     private PermissionService permissionService;
     @Autowired
+    @Lazy
     private GlobalProperties globalProperties;
     @Autowired
+    @Lazy
     private RedisUtil redisUtil;
 
 

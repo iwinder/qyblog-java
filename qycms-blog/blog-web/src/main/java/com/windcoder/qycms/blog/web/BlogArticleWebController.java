@@ -6,10 +6,7 @@ import com.windcoder.qycms.blog.dto.BlogArticleWebDto;
 import com.windcoder.qycms.blog.service.BlogArticleService;
 import com.windcoder.qycms.dto.ResponseDto;
 import com.windcoder.qycms.system.annotation.*;
-import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.dto.UserWebDto;
-import com.windcoder.qycms.utils.AgentUserUtil;
-import com.windcoder.qycms.utils.IpAddressUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +20,7 @@ public class BlogArticleWebController {
     private BlogArticleService articleService;
 
     @BloomIpLimit
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     @GetMapping("")
     public ResponseDto allActivities(BlogArticlePageDto article, @CurrentUser UserWebDto user){
         article.setType(1);
@@ -36,7 +33,7 @@ public class BlogArticleWebController {
     }
 
     @BloomIpLimit
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     @GetMapping("/{articleId}")
     public ResponseDto get(@PathVariable("articleId") Long articleId, @CurrentUser UserWebDto user) {
         BlogArticleDto articleDto = new BlogArticleDto();
@@ -47,7 +44,7 @@ public class BlogArticleWebController {
         return responseDto;
     }
     @BloomIpLimit
-    @ServiceLimit(limitType= ServiceLimit.LimitType.IP)
+    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
     @BloomLimit
     @GetMapping("/name/{articleName}")
     public ResponseDto getByName(@PathVariable("articleName") String articleName, @CurrentUser UserWebDto user) {
