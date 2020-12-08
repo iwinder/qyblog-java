@@ -8,6 +8,7 @@ import com.windcoder.qycms.exception.LimitException;
 import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.enums.IpBlackType;
 import com.windcoder.qycms.utils.AgentUserUtil;
+import com.windcoder.qycms.utils.Constants;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -58,6 +59,7 @@ public class IpApiLimitAspect {
 
         if(limitType.equals(IpApiLimit.LimitType.IP)){
             ip = IpAddressUtil.getClientRealIp();
+            ip = Constants.REDIS_TEST_IP;
             if(ip.equals("127.0.0.1")) {
                 return joinPoint.proceed();
             }
@@ -68,15 +70,9 @@ public class IpApiLimitAspect {
         if(flag){
             obj = joinPoint.proceed();
         }else{
-            ip = StringUtils.isBlank(ip)? key:ip;
-            StringBuilder newkey = new StringBuilder(redisUtil.IPBLACK_FREQUENT_ACCESS);
-            newkey.append(ip);
-            long num = redisUtil.increment(newkey.toString());
-            if(num >= Long.valueOf(redisUtil.IPBLACK_FREQUENT_LIMIT_NUM).longValue()) {
-                redisUtil.saveBlack(ip,AgentUserUtil.getUserAgent(),IpBlackType.FREQUENTACCESS.name(), "访问的太频繁");
-            }
-            throw new LimitException("小同志，你访问的太频繁了");
+            redisUtil.saveBlack(ip,AgentUserUtil.getUserAgent(),IpBlackType.FREQUENTACCESS.name(), "访问的太频繁");
 
+            throw new LimitException("小同志，你访问的太频繁了");
         }
 
         return obj;

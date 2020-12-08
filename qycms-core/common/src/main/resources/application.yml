@@ -22,10 +22,10 @@ spring:
     connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;"
     #    username: ENC(Sua21kW9AckGBtpW13LyF03e7aOjC2zE)
     #    password: ENC(f+2+aW4Po3YqeQkXaccinw==)
-    username: winder
-    password: 123456
-    #    username: qycmsdev
-    #    password: DCZehzmeAiM5wtrc
+    #    username: winder
+    #    password: 123456
+    username: qycmsdev
+    password: DCZehzmeAiM5wtrc
     initialSize: 5
     minIdle: 5
     maxActive: 20
@@ -40,13 +40,9 @@ spring:
     maxOpenPreparedStatements: 20
     asyncInit: true
   redis:
-    host: ENC(e/prl+7EXAa9PmwCfoE1a0TP8LrSrfaCSgjwFMQreEYczuxSBdMuEsHtXDgCjSzL)
-    password: ENC(j6n3ISryjfYIBLhG9SWIb6Vah2jySJ4zwypGVE2dl0ilm36KwUzpQqiwf/ST6BJ3)
+    host: ENC(pq5QVxGVGzg+y7PwM3Zd9VtP2wccfPBwcXNpofkv663Nh0dNyybWj1CDy2guRuud)
+    password: ENC(MuYdsqHjoTmzgNf8fQk8n6M+ykgXulg2eUlGWvBN4GrrZbTZl2Lg4PuauPXiaBBo)
     port: 6380
-    #    host: ENC(8rnOjnmgWvWCjiT2QBDaEcIJhC/LAhGSNFHZrt/Q5l2Q+M/Rp38vCY3Vt23LOgVb)
-    #    password: ENC(C3CZ0TIuuxQUnTgrpY+c8E0VxcbQ1jXJWPle0/4ZkuVGVEhBCxy1ub1KE/GSmIks)
-    #    port: 6379
-
     database: 8
     timeout: 100000
     Jedis:
@@ -80,13 +76,13 @@ jasypt:
 #用于控制mybatis打印sql，生产环境应更改为ERROR级别
 logging:
   level:
-    root: info
+    root: error
     com:
       windcoder:
-        qycms: debug
+        qycms: error
 
 qy:
-  token: hW61c
+  token: o6lZQ
 
 
 

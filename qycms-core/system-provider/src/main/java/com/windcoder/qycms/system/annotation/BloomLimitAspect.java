@@ -6,6 +6,7 @@ import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.enums.IpBlackType;
 import com.windcoder.qycms.system.filters.BloomCacheFilter;
 import com.windcoder.qycms.utils.AgentUserUtil;
+import com.windcoder.qycms.utils.Constants;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -39,6 +40,7 @@ public class BloomLimitAspect {
                 obj = joinPoint.proceed();
             }else{
                 String key = IpAddressUtil.getClientRealIp();
+                key = Constants.REDIS_TEST_IP;
                 StringBuilder newkey = new StringBuilder(redisUtil.IPBLACK_NOT_FOUNT);
                 newkey.append(key);
                 long num = redisUtil.increment(newkey.toString());

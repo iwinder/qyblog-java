@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * 更新Ip黑名单过滤器
+ */
 @Component
 @Slf4j
 public class IpBlackTask {

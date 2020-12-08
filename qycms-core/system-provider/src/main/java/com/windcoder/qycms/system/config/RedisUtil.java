@@ -2,6 +2,7 @@ package com.windcoder.qycms.system.config;
 
 import com.windcoder.qycms.system.enums.IpBlackType;
 import com.windcoder.qycms.utils.AgentUserUtil;
+import com.windcoder.qycms.utils.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,12 @@ public class RedisUtil {
     }
 
     public Long increment(String key) {
-      return   redisTemplate.opsForValue().increment(key);
+        Boolean flag = redisTemplate.opsForValue().setIfAbsent(key, String.valueOf(1l), Constants.REDIS_DEFAULT_TIMEOUT,Constants.REDIS_DEFAULT_TIMEUNIT);
+        if(!flag) {
+            return   redisTemplate.opsForValue().increment(key,1);
+        } else {
+            return 1l;
+        }
     }
 
 

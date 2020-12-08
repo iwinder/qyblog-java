@@ -132,6 +132,7 @@ public class SysIpBlackService {
      * 更新
      */
     public void updateBlackFromRedis() {
+        // 查询ip黑名单临时记录
         ListOperations<String, String> ops = redisTemplate.opsForList();
         String tmpStr = ops.rightPop(RedisUtil.IPBLACK_TMP_INFO);
         JSONObject object = null;
@@ -172,7 +173,7 @@ public class SysIpBlackService {
             } else {
                 ipBlack.setId(old.getId());
                 if (old.getType().equalsIgnoreCase(IpBlackType.SYSTEM.name()) ||
-                old.getType().equalsIgnoreCase(IpBlackType.LOGIN.name())) {
+                old.getType().equalsIgnoreCase(IpBlackType.LOGIN.name()) || old.getType().equalsIgnoreCase(IpBlackType.NOTFOUNT.name())) {
                     ipBlack.setType(old.getType());
                 }
                 ipBlack.setDeleted(false);
@@ -181,6 +182,14 @@ public class SysIpBlackService {
             }
         }
 
+    }
+
+    /**
+     * 清除所有禁止缓存数据
+     */
+    public void clearBlackInfoOfRedis() {
+        Set<String> keys = redisTemplate.keys("IpBlack:*");
+        redisTemplate.delete(keys);
     }
 
 }

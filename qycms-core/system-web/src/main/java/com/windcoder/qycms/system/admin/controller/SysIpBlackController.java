@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/admin/sysIpBlack")
+    @RequestMapping("api/admin/sysIpBlack")
 @Slf4j
 public class SysIpBlackController {
 
@@ -61,6 +61,14 @@ public class SysIpBlackController {
     @DeleteMapping("/deleted")
     public ResponseDto delete(@RequestBody Long[] ids) {
         sysIpBlackService.delete(ids);
+        ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
+
+
+    @GetMapping("/clearBlackInfo")
+    public ResponseDto clearBlackInfoOfRedis() {
+        sysIpBlackService.clearBlackInfoOfRedis();
         ResponseDto responseDto = new ResponseDto();
         return responseDto;
     }

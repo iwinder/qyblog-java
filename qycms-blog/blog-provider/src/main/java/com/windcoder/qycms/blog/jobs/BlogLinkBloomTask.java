@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * 更新文章布隆过滤器
+ */
 @Component
 @Slf4j
 public class BlogLinkBloomTask {

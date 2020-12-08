@@ -2,6 +2,7 @@ package com.windcoder.qycms.system.annotation;
 
 import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.utils.AgentUserUtil;
+import com.windcoder.qycms.utils.Constants;
 import com.windcoder.qycms.utils.IpAddressUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -34,6 +35,7 @@ public class ViewCountLimitAspect {
             String borderGroup = AgentUserUtil.getBorderGroup(request);
             if (!borderGroup.equalsIgnoreCase("Robot/Spider")) {
                 String value = IpAddressUtil.getClientRealIp();
+                value = Constants.REDIS_TEST_IP;
                 if(value.equals("127.0.0.1")) {
                     return joinPoint.proceed();
                 }
