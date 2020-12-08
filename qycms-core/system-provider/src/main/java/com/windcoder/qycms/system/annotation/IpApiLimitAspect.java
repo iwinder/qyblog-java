@@ -59,7 +59,6 @@ public class IpApiLimitAspect {
 
         if(limitType.equals(IpApiLimit.LimitType.IP)){
             ip = IpAddressUtil.getClientRealIp();
-            ip = Constants.REDIS_TEST_IP;
             if(ip.equals("127.0.0.1")) {
                 return joinPoint.proceed();
             }

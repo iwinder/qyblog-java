@@ -35,7 +35,6 @@ public class ViewCountLimitAspect {
             String borderGroup = AgentUserUtil.getBorderGroup(request);
             if (!borderGroup.equalsIgnoreCase("Robot/Spider")) {
                 String value = IpAddressUtil.getClientRealIp();
-                value = Constants.REDIS_TEST_IP;
                 if(value.equals("127.0.0.1")) {
                     return joinPoint.proceed();
                 }

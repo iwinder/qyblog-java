@@ -34,7 +34,6 @@ public class BloomIpLimitAspect {
         Object[] object = joinPoint.getArgs();
         Object obj;
         String key = IpAddressUtil.getClientRealIp();
-        key = Constants.REDIS_TEST_IP;
         if(key.equals("127.0.0.1")) {
             return joinPoint.proceed();
         }

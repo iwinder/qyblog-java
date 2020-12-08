@@ -40,7 +40,6 @@ public class BloomLimitAspect {
                 obj = joinPoint.proceed();
             }else{
                 String key = IpAddressUtil.getClientRealIp();
-                key = Constants.REDIS_TEST_IP;
                 StringBuilder newkey = new StringBuilder(redisUtil.IPBLACK_NOT_FOUNT);
                 newkey.append(key);
                 long num = redisUtil.increment(newkey.toString());
