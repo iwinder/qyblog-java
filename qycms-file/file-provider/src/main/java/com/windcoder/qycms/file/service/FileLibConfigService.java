@@ -10,12 +10,13 @@ import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.file.repository.mybatis.FileLibConfigMapper;
 
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Type;
@@ -59,7 +60,7 @@ public class FileLibConfigService {
             this.update(fileLibConfig);
         }
         HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
-        ops.put(PREFIX_FILE_LIBLE_CONFIG,PREFIX_FILE_LIBLE_CONFIG_KEY+fileLibConfig.getTypeId(),fileLibConfig);
+        ops.put(PREFIX_FILE_LIBLE_CONFIG,PREFIX_FILE_LIBLE_CONFIG_KEY+fileLibConfig.getTypeId(),new JSONObject(fileLibConfig).toString());
     }
 
     /**
@@ -90,14 +91,19 @@ public class FileLibConfigService {
     public FileLibConfigDto findOneByTypeIdOfAdmin(Long typeId) {
         // 获取 redis 缓存 qy:fileLibConfig:typeId
         HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
-        FileLibConfig config = (FileLibConfig) ops.get(PREFIX_FILE_LIBLE_CONFIG,PREFIX_FILE_LIBLE_CONFIG_KEY+typeId);
-        if (config==null) {
+        String str = (String) ops.get(PREFIX_FILE_LIBLE_CONFIG,PREFIX_FILE_LIBLE_CONFIG_KEY+typeId);
+
+        FileLibConfig config = null;
+        if (StringUtils.isBlank(str)) {
             config = findOneByTypeId(typeId);
             if (config==null) {
                 return new FileLibConfigDto();
             } else {
-                ops.put(PREFIX_FILE_LIBLE_CONFIG,PREFIX_FILE_LIBLE_CONFIG_KEY+typeId,config);
+                ops.put(PREFIX_FILE_LIBLE_CONFIG,PREFIX_FILE_LIBLE_CONFIG_KEY+typeId,new JSONObject(config).toString());
             }
+        } else {
+            JSONObject jobj = new JSONObject(str);
+            config = changeJsonObjectToFileLibConfig(jobj);
         }
 
         return ModelMapperUtils.map(config, FileLibConfigDto.class);
@@ -124,5 +130,30 @@ public class FileLibConfigService {
     }
 
 
-
+    private  FileLibConfig changeJsonObjectToFileLibConfig(JSONObject jobj) {
+        FileLibConfig fileLibConfig = new FileLibConfig();
+        fileLibConfig.setId(jobj.getLong("id"));
+        if(jobj.has("accessKey")) {
+            fileLibConfig.setAccessKey(jobj.getString("accessKey"));
+        }
+        if(jobj.has("secretKey")) {
+            fileLibConfig.setSecretKey(jobj.getString("secretKey"));
+        }
+        if(jobj.has("bucket")) {
+            fileLibConfig.setBucket(jobj.getString("bucket"));
+        }
+        if(jobj.has("domain")) {
+            fileLibConfig.setDomain(jobj.getString("domain"));
+        }
+        if(jobj.has("endpoint")) {
+            fileLibConfig.setEndpoint(jobj.getString("endpoint"));
+        }
+        if(jobj.has("prefix")) {
+            fileLibConfig.setPrefix(jobj.getString("prefix"));
+        }
+        if(jobj.has("typeId")) {
+            fileLibConfig.setTypeId(jobj.getLong("typeId"));
+        }
+        return fileLibConfig;
+    }
 }

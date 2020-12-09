@@ -502,9 +502,9 @@ select min(id) into @v_system_user_id from sys_user;
 Insert into file_lib_type (name,identifier, type, status, created_by,last_modified_by)
 values('本地',1,'SYSTEM', 1, @v_system_user_id,@v_system_user_id) ;
 Insert into file_lib_type (name,identifier, type,status, created_by,last_modified_by)
-values('七牛',2,'SYSTEM',0, @v_system_user_id,@v_system_user_id) ;
+values('七牛云OSS',2,'SYSTEM',0, @v_system_user_id,@v_system_user_id) ;
 Insert into file_lib_type (name,identifier, type,status, created_by,last_modified_by)
-values('阿里OSS',3,'SYSTEM',0, @v_system_user_id,@v_system_user_id) ;
+values('阿里云OSS',3,'SYSTEM',0, @v_system_user_id,@v_system_user_id) ;
 
 -- 媒体库类型配置
 drop table if exists `file_lib_config`;

@@ -3,6 +3,7 @@ package com.windcoder.qycms.file.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.windcoder.qycms.file.dto.FileLibTypePageDto;
 import com.windcoder.qycms.file.entity.FileLibType;
 import com.windcoder.qycms.file.entity.FileLibTypeExample;
 import com.windcoder.qycms.file.dto.FileLibTypeDto;
@@ -11,9 +12,9 @@ import com.windcoder.qycms.file.repository.mybatis.FileLibTypeMapper;
 
 import com.windcoder.qycms.system.enums.MenusAgentType;
 import com.windcoder.qycms.utils.ModelMapperUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Type;
@@ -30,9 +31,16 @@ public class FileLibTypeService {
      * 列表查询
      * @param pageDto
      */
-    public void list(PageDto pageDto) {
+    public void list(FileLibTypePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         FileLibTypeExample fileLibTypeExample = new FileLibTypeExample();
+        FileLibTypeExample.Criteria criteria = fileLibTypeExample.createCriteria();
+        if (StringUtils.isNoneBlank(pageDto.getSearchText())) {
+            criteria.andNameLike(pageDto.getSearchText());
+        }
+        if (pageDto.getStatus() !=null) {
+            criteria.andStatusEqualTo(pageDto.getStatus());
+        }
         List<FileLibType> fileLibTypes = fileLibTypeMapper.selectByExample(fileLibTypeExample);
         PageInfo<FileLibType> pageInfo = new PageInfo<>(fileLibTypes);
         pageDto.setTotal(pageInfo.getTotal());
@@ -75,6 +83,23 @@ public class FileLibTypeService {
           return   ModelMapperUtils.map(fileLibType, FileLibTypeDto.class);
         }
         return null;
+    }
+
+    public List<FileLibTypeDto> findAllOfNotPage(FileLibTypePageDto typeDto) {
+        FileLibTypeExample fileLibTypeExample = new FileLibTypeExample();
+        FileLibTypeExample.Criteria criteria = fileLibTypeExample.createCriteria();
+        if (StringUtils.isNoneBlank(typeDto.getSearchText())) {
+            criteria.andNameLike(typeDto.getSearchText());
+        }
+        if (typeDto.getStatus() !=null) {
+            criteria.andStatusEqualTo(typeDto.getStatus());
+        }
+        fileLibTypeExample.setOrderByClause("identifier ASC");
+        List<FileLibType> fileLibTypes = fileLibTypeMapper.selectByExample(fileLibTypeExample);
+        Type type = new TypeToken<List<FileLibTypeDto>>() {}.getType();
+        List<FileLibTypeDto> fileLibTypeDtoList = ModelMapperUtils.map(fileLibTypes, type);
+        return fileLibTypeDtoList;
+
     }
     /**
      * 新增

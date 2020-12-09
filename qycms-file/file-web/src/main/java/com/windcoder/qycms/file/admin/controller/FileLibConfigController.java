@@ -1,5 +1,6 @@
 package com.windcoder.qycms.file.admin.controller;
 
+import com.windcoder.qycms.file.dto.FileLibTypePageDto;
 import com.windcoder.qycms.file.entity.FileLibConfig;
 import com.windcoder.qycms.file.dto.FileLibConfigDto;
 import com.windcoder.qycms.dto.PageDto;
@@ -28,7 +29,7 @@ public class FileLibConfigController {
      * @return
      */
     @GetMapping("")
-    public ResponseDto list(PageDto pageDto) {
+    public ResponseDto list(FileLibTypePageDto pageDto) {
         fileLibConfigService.list(pageDto);
         ResponseDto responseDto = new ResponseDto(pageDto);
         return responseDto;
@@ -42,11 +43,13 @@ public class FileLibConfigController {
     @PostMapping("/save")
     public ResponseDto save(@RequestBody  FileLibConfigDto fileLibConfigDto) {
         // 保存校验
-        ValidatorUtil.length(fileLibConfigDto.getAccessKey(), "密钥AccessKey", 1, 255);
-        ValidatorUtil.length(fileLibConfigDto.getSecretKey(), "密钥SecretKey", 1, 255);
-        ValidatorUtil.length(fileLibConfigDto.getBucket(), "存储空间", 1, 255);
-        ValidatorUtil.length(fileLibConfigDto.getEndpoint(), "绑定域名", 1, 255);
-        ValidatorUtil.length(fileLibConfigDto.getPrefix(), "前缀", 1, 255);
+        if (fileLibConfigDto.getTypeId().longValue()>1) {
+            ValidatorUtil.length(fileLibConfigDto.getAccessKey(), "密钥AccessKey", 1, 255);
+            ValidatorUtil.length(fileLibConfigDto.getSecretKey(), "密钥SecretKey", 1, 255);
+            ValidatorUtil.length(fileLibConfigDto.getBucket(), "存储空间", 1, 255);
+            ValidatorUtil.length(fileLibConfigDto.getEndpoint(), "绑定域名", 1, 255);
+            ValidatorUtil.length(fileLibConfigDto.getPrefix(), "前缀", 1, 255);
+        }
 
         fileLibConfigService.save(fileLibConfigDto);
         ResponseDto responseDto = new ResponseDto(fileLibConfigDto);

@@ -36,6 +36,11 @@ public class FileLibConfigDto {
     private String prefix;
 
     /**
+     * 域名
+     */
+    private String domain;
+
+    /**
      * 媒体库类型ID
      */
     private Long typeId;
@@ -150,6 +155,13 @@ public class FileLibConfigDto {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 
     @Override
     public String toString() {
