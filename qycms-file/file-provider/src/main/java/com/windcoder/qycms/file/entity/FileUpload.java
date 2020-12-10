@@ -1,4 +1,4 @@
-package com.windcoder.qycms.utils;
+package com.windcoder.qycms.file.entity;
 
 public class FileUpload {
 
@@ -22,6 +22,11 @@ public class FileUpload {
      * 文件扩展名
      */
     private String extention;
+
+    /**
+     * 文件hash值
+     */
+    private String hash;
 
 
     public String getOriginFileName() {
