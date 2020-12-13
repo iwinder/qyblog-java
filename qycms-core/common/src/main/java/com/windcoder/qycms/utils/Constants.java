@@ -3,6 +3,10 @@ package com.windcoder.qycms.utils;
 import java.util.concurrent.TimeUnit;
 
 public class Constants {
+
+    // Redis
+    public static final String PREFIX_FILE_LIBLE_CONFIG = "qy:fileLibConfig";
+    public static final String PREFIX_FILE_LIBLE_CONFIG_KEY = "type";
     // 七牛云配置
     public static final String QINIU_ACCESS_KEY = "qiniu_access_key";
     public static final String QINIU_SECRET_KEY = "qiniu_secret_key";

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.windcoder.qycms.file.repository.mybatis.FileMetaMapper">
+  <resultMap id="BaseResultMap" type="com.windcoder.qycms.file.entity.FileMeta">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="origin_file_name" jdbcType="VARCHAR" property="originFileName" />
+    <result column="fname" jdbcType="VARCHAR" property="fname" />
+    <result column="fsize" jdbcType="BIGINT" property="fsize" />
+    <result column="extention" jdbcType="VARCHAR" property="extention" />
+    <result column="mime_type" jdbcType="VARCHAR" property="mimeType" />
+    <result column="fhash" jdbcType="VARCHAR" property="fhash" />
+    <result column="fmd5" jdbcType="VARCHAR" property="fmd5" />
+    <result column="relative_path" jdbcType="VARCHAR" property="relativePath" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="last_modified_by" jdbcType="BIGINT" property="lastModifiedBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_modified_date" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, origin_file_name, fname, fsize, extention, mime_type, fhash, fmd5, relative_path, 
+    created_by, last_modified_by, created_date, last_modified_date
+  </sql>
+  <select id="selectByExample" parameterType="com.windcoder.qycms.file.entity.FileMetaExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from file_meta
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from file_meta
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from file_meta
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.windcoder.qycms.file.entity.FileMetaExample">
+    delete from file_meta
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.windcoder.qycms.file.entity.FileMeta">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into file_meta (origin_file_name, fname, fsize, 
+      extention, mime_type, fhash, 
+      fmd5, relative_path, created_by, 
+      last_modified_by, created_date, last_modified_date
+      )
+    values (#{originFileName,jdbcType=VARCHAR}, #{fname,jdbcType=VARCHAR}, #{fsize,jdbcType=BIGINT}, 
+      #{extention,jdbcType=VARCHAR}, #{mimeType,jdbcType=VARCHAR}, #{fhash,jdbcType=VARCHAR}, 
+      #{fmd5,jdbcType=VARCHAR}, #{relativePath,jdbcType=VARCHAR}, #{createdBy,jdbcType=BIGINT}, 
+      #{lastModifiedBy,jdbcType=BIGINT}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.windcoder.qycms.file.entity.FileMeta">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into file_meta
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="originFileName != null">
+        origin_file_name,
+      </if>
+      <if test="fname != null">
+        fname,
+      </if>
+      <if test="fsize != null">
+        fsize,
+      </if>
+      <if test="extention != null">
+        extention,
+      </if>
+      <if test="mimeType != null">
+        mime_type,
+      </if>
+      <if test="fhash != null">
+        fhash,
+      </if>
+      <if test="fmd5 != null">
+        fmd5,
+      </if>
+      <if test="relativePath != null">
+        relative_path,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="lastModifiedBy != null">
+        last_modified_by,
+      </if>
+      <if test="createdDate != null">
+        created_date,
+      </if>
+      <if test="lastModifiedDate != null">
+        last_modified_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="originFileName != null">
+        #{originFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fname != null">
+        #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="fsize != null">
+        #{fsize,jdbcType=BIGINT},
+      </if>
+      <if test="extention != null">
+        #{extention,jdbcType=VARCHAR},
+      </if>
+      <if test="mimeType != null">
+        #{mimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="fhash != null">
+        #{fhash,jdbcType=VARCHAR},
+      </if>
+      <if test="fmd5 != null">
+        #{fmd5,jdbcType=VARCHAR},
+      </if>
+      <if test="relativePath != null">
+        #{relativePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastModifiedBy != null">
+        #{lastModifiedBy,jdbcType=BIGINT},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.windcoder.qycms.file.entity.FileMetaExample" resultType="java.lang.Long">
+    select count(*) from file_meta
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update file_meta
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.originFileName != null">
+        origin_file_name = #{record.originFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fname != null">
+        fname = #{record.fname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fsize != null">
+        fsize = #{record.fsize,jdbcType=BIGINT},
+      </if>
+      <if test="record.extention != null">
+        extention = #{record.extention,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mimeType != null">
+        mime_type = #{record.mimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fhash != null">
+        fhash = #{record.fhash,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fmd5 != null">
+        fmd5 = #{record.fmd5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relativePath != null">
+        relative_path = #{record.relativePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastModifiedBy != null">
+        last_modified_by = #{record.lastModifiedBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.createdDate != null">
+        created_date = #{record.createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastModifiedDate != null">
+        last_modified_date = #{record.lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update file_meta
+    set id = #{record.id,jdbcType=BIGINT},
+      origin_file_name = #{record.originFileName,jdbcType=VARCHAR},
+      fname = #{record.fname,jdbcType=VARCHAR},
+      fsize = #{record.fsize,jdbcType=BIGINT},
+      extention = #{record.extention,jdbcType=VARCHAR},
+      mime_type = #{record.mimeType,jdbcType=VARCHAR},
+      fhash = #{record.fhash,jdbcType=VARCHAR},
+      fmd5 = #{record.fmd5,jdbcType=VARCHAR},
+      relative_path = #{record.relativePath,jdbcType=VARCHAR},
+      created_by = #{record.createdBy,jdbcType=BIGINT},
+      last_modified_by = #{record.lastModifiedBy,jdbcType=BIGINT},
+      created_date = #{record.createdDate,jdbcType=TIMESTAMP},
+      last_modified_date = #{record.lastModifiedDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.windcoder.qycms.file.entity.FileMeta">
+    update file_meta
+    <set>
+      <if test="originFileName != null">
+        origin_file_name = #{originFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fname != null">
+        fname = #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="fsize != null">
+        fsize = #{fsize,jdbcType=BIGINT},
+      </if>
+      <if test="extention != null">
+        extention = #{extention,jdbcType=VARCHAR},
+      </if>
+      <if test="mimeType != null">
+        mime_type = #{mimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="fhash != null">
+        fhash = #{fhash,jdbcType=VARCHAR},
+      </if>
+      <if test="fmd5 != null">
+        fmd5 = #{fmd5,jdbcType=VARCHAR},
+      </if>
+      <if test="relativePath != null">
+        relative_path = #{relativePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastModifiedBy != null">
+        last_modified_by = #{lastModifiedBy,jdbcType=BIGINT},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.windcoder.qycms.file.entity.FileMeta">
+    update file_meta
+    set origin_file_name = #{originFileName,jdbcType=VARCHAR},
+      fname = #{fname,jdbcType=VARCHAR},
+      fsize = #{fsize,jdbcType=BIGINT},
+      extention = #{extention,jdbcType=VARCHAR},
+      mime_type = #{mimeType,jdbcType=VARCHAR},
+      fhash = #{fhash,jdbcType=VARCHAR},
+      fmd5 = #{fmd5,jdbcType=VARCHAR},
+      relative_path = #{relativePath,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=BIGINT},
+      last_modified_by = #{lastModifiedBy,jdbcType=BIGINT},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

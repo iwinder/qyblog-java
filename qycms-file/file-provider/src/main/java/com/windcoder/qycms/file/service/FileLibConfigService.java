@@ -9,6 +9,7 @@ import com.windcoder.qycms.file.dto.FileLibConfigDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.file.repository.mybatis.FileLibConfigMapper;
 
+import com.windcoder.qycms.utils.Constants;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -30,8 +31,7 @@ public class FileLibConfigService {
     private FileLibConfigMapper fileLibConfigMapper;
     @Autowired
     private StringRedisTemplate redisTemplate;
-    public static final String PREFIX_FILE_LIBLE_CONFIG = "qy:fileLibConfig";
-    public static final String PREFIX_FILE_LIBLE_CONFIG_KEY = "type";
+
     /**
      * 列表查询
      * @param pageDto
@@ -60,7 +60,7 @@ public class FileLibConfigService {
             this.update(fileLibConfig);
         }
         HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
-        ops.put(PREFIX_FILE_LIBLE_CONFIG,PREFIX_FILE_LIBLE_CONFIG_KEY+fileLibConfig.getTypeId(),new JSONObject(fileLibConfig).toString());
+        ops.put(Constants.PREFIX_FILE_LIBLE_CONFIG,Constants.PREFIX_FILE_LIBLE_CONFIG_KEY+fileLibConfig.getTypeId(),new JSONObject(fileLibConfig).toString());
     }
 
     /**
@@ -88,25 +88,29 @@ public class FileLibConfigService {
         return configs.get(0);
     }
 
-    public FileLibConfigDto findOneByTypeIdOfAdmin(Long typeId) {
+    public FileLibConfigDto findOneByTypeIdOfDto(Long typeId) {
+        FileLibConfig config = findOneByTypeIdFromCache(typeId);
+        return ModelMapperUtils.map(config, FileLibConfigDto.class);
+    }
+
+    public FileLibConfig findOneByTypeIdFromCache(Long typeId) {
         // 获取 redis 缓存 qy:fileLibConfig:typeId
         HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
-        String str = (String) ops.get(PREFIX_FILE_LIBLE_CONFIG,PREFIX_FILE_LIBLE_CONFIG_KEY+typeId);
+        String str = (String) ops.get(Constants.PREFIX_FILE_LIBLE_CONFIG,Constants.PREFIX_FILE_LIBLE_CONFIG_KEY+typeId);
 
         FileLibConfig config = null;
         if (StringUtils.isBlank(str)) {
             config = findOneByTypeId(typeId);
             if (config==null) {
-                return new FileLibConfigDto();
+                return new FileLibConfig();
             } else {
-                ops.put(PREFIX_FILE_LIBLE_CONFIG,PREFIX_FILE_LIBLE_CONFIG_KEY+typeId,new JSONObject(config).toString());
+                ops.put(Constants.PREFIX_FILE_LIBLE_CONFIG,Constants.PREFIX_FILE_LIBLE_CONFIG_KEY+typeId,new JSONObject(config).toString());
             }
         } else {
             JSONObject jobj = new JSONObject(str);
             config = changeJsonObjectToFileLibConfig(jobj);
         }
-
-        return ModelMapperUtils.map(config, FileLibConfigDto.class);
+        return config;
     }
 
     /**

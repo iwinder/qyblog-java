@@ -1,9 +1,7 @@
 package com.windcoder.qycms.file.admin.controller;
 
 import com.windcoder.qycms.file.dto.FileLibTypePageDto;
-import com.windcoder.qycms.file.entity.FileLibConfig;
 import com.windcoder.qycms.file.dto.FileLibConfigDto;
-import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.dto.ResponseDto;
 import com.windcoder.qycms.file.service.FileLibConfigService;
 import com.windcoder.qycms.utils.ValidatorUtil;
@@ -11,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/admin/fileLibConfig")
@@ -69,7 +66,7 @@ public class FileLibConfigController {
     }
     @GetMapping("/byType/{typeId}")
     public ResponseDto findOneByTypeId(@PathVariable("typeId") Long typeId) {
-        FileLibConfigDto oneByTypeIdOfAdmin = fileLibConfigService.findOneByTypeIdOfAdmin(typeId);
+        FileLibConfigDto oneByTypeIdOfAdmin = fileLibConfigService.findOneByTypeIdOfDto(typeId);
         ResponseDto responseDto = new ResponseDto(oneByTypeIdOfAdmin);
         return responseDto;
     }
