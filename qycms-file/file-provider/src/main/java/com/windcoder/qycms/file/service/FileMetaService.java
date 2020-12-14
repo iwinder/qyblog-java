@@ -7,16 +7,15 @@ import com.windcoder.qycms.file.dto.FileMetaPageDto;
 import com.windcoder.qycms.file.entity.FileMeta;
 import com.windcoder.qycms.file.entity.FileMetaExample;
 import com.windcoder.qycms.file.dto.FileMetaDto;
-import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.file.repository.mybatis.FileMetaMapper;
 
+import com.windcoder.qycms.system.service.SiteConfigService;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +25,8 @@ import java.util.Date;
 public class FileMetaService {
     @Resource
     private FileMetaMapper fileMetaMapper;
-
+    @Autowired
+    private SiteConfigService siteConfigService;
     /**
      * 列表查询
      * @param pageDto
@@ -36,7 +36,7 @@ public class FileMetaService {
         FileMetaExample fileMetaExample = new FileMetaExample();
         FileMetaExample.Criteria criteria = fileMetaExample.createCriteria();
         if (StringUtils.isNoneBlank(pageDto.getSearchText())) {
-            criteria.andOriginFileNameLike(pageDto.getSearchText());
+            criteria.andOriginFileNameLike("%"+pageDto.getSearchText()+"%");
         }
         fileMetaExample.setOrderByClause("created_date DESC");
         List<FileMeta> fileMetas = fileMetaMapper.selectByExample(fileMetaExample);
@@ -44,9 +44,19 @@ public class FileMetaService {
         pageDto.setTotal(pageInfo.getTotal());
         List<FileMetaDto> fileMetaDtoList = new ArrayList<FileMetaDto>();
         FileMetaDto metaDto = null;
+        String siteUrl = siteConfigService.findValueOneByKey("siteInfo:base","site_url");
+
         for (FileMeta meta: fileMetas) {
             metaDto = fileMetaToDto(meta);
-            metaDto.setDefUrl(metaDto.getRelativePath());
+            String defUrl = metaDto.getRelativePath();
+            if (StringUtils.isNoneBlank(siteUrl)) {
+                if (siteUrl.endsWith("/")) {
+                    defUrl = siteUrl.substring(0,siteUrl.length()-1)+metaDto.getRelativePath();
+                } else {
+                    defUrl = siteUrl + metaDto.getRelativePath();
+                }
+            }
+            metaDto.setDefUrl(defUrl);
             fileMetaDtoList.add(metaDto);
         }
         pageDto.setList(fileMetaDtoList);
@@ -76,6 +86,16 @@ public class FileMetaService {
         fileMetaMapper.deleteByExample(fileMetaExample);
     }
 
+    public FileMeta findOneByMd5(String md5) {
+        FileMetaExample fileMetaExample = new FileMetaExample();
+        fileMetaExample.createCriteria().andFmd5EqualTo(md5);
+        List<FileMeta> fileMetas = fileMetaMapper.selectByExample(fileMetaExample);
+        if (fileMetas.size()>0) {
+            return fileMetas.get(0);
+        }
+        return null;
+    }
+
     /**
      * 新增
      * @param fileMeta
@@ -95,6 +115,7 @@ public class FileMetaService {
         fileMeta.setLastModifiedDate(new Date());
         fileMetaMapper.updateByPrimaryKeySelective(fileMeta);
     }
+
 
     private FileMetaDto fileMetaToDto(FileMeta fileMeta) {
         FileMetaDto dto = new FileMetaDto();

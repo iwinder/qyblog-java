@@ -16,10 +16,12 @@ import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.file.dto.FileMetaDto;
 import com.windcoder.qycms.file.dto.FileMetaPageDto;
 import com.windcoder.qycms.file.entity.FileLibConfig;
+import com.windcoder.qycms.file.factory.FileUploadServiceFactory;
 import com.windcoder.qycms.file.service.FileLibConfigService;
 import com.windcoder.qycms.file.service.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -33,7 +35,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class QiNiuFileUploadServiceImpl implements FileUploadService {
+public class QiNiuFileUploadServiceImpl implements FileUploadService, InitializingBean {
     @Autowired
     private FileLibConfigService fileLibConfigService;
 
@@ -43,8 +45,11 @@ public class QiNiuFileUploadServiceImpl implements FileUploadService {
      * @param typeId
      * @return
      */
-    public FileMetaDto uploadFile(final MultipartFile file,final Long typeId) {
+    public FileMetaDto uploadFile(final MultipartFile file, Long typeId) {
         // 获取媒体库配置
+        if (typeId == null) {
+            typeId = 2L;
+        }
         FileLibConfig fileLibConfig = getFileLibConfig(typeId);
         //构造一个带指定 Region 对象的配置类
         Configuration cfg = new Configuration();
@@ -152,4 +157,8 @@ public class QiNiuFileUploadServiceImpl implements FileUploadService {
     }
 
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        FileUploadServiceFactory.register(2,this);
+    }
 }

@@ -48,7 +48,7 @@ spring:
     #    port: 6379
 
     database: 8
-    timeout: 100000
+    timeout: 60000
     Jedis:
       pool:
         max-idle: 5

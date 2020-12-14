@@ -135,7 +135,7 @@
             ba.deleted = false
             <include refid="commonWhere"></include>
         </where>
-        order by ba.created_date DESC
+        order by ba.created_date DESC,ba.id DESC
     </select>
 
 
@@ -171,7 +171,7 @@
                 </otherwise>
             </choose>
         </where>
-        order by  ba.published_date DESC, ba.created_date DESC
+        order by  ba.published_date DESC, ba.created_date DESC,ba.id DESC
     </select>
 
 

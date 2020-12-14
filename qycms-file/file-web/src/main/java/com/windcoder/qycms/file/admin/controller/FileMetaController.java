@@ -6,6 +6,8 @@ import com.windcoder.qycms.file.dto.FileMetaDto;
 import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.dto.ResponseDto;
 import com.windcoder.qycms.file.service.FileMetaService;
+import com.windcoder.qycms.file.service.FileService;
+import com.windcoder.qycms.file.service.FileUploadService;
 import com.windcoder.qycms.file.service.impl.DefaultFileUploadServiceImpl;
 import com.windcoder.qycms.file.service.impl.QiNiuFileUploadServiceImpl;
 import com.windcoder.qycms.utils.ValidatorUtil;
@@ -28,6 +30,8 @@ public class FileMetaController {
     private QiNiuFileUploadServiceImpl qiNiuFileUploadService;
     @Autowired
     private DefaultFileUploadServiceImpl defaultFileUploadServiceImpl;
+    @Autowired
+    private FileService fileService;
 
     public static final String BUSINESS_NAME = "文件信息表";
 
@@ -70,7 +74,16 @@ public class FileMetaController {
         ResponseDto responseDto = new ResponseDto();
         return responseDto;
     }
+    @PostMapping("/upload")
+    public ResponseDto defaultUploadFile(@RequestParam MultipartFile file) {
+        ResponseDto responseDto = new ResponseDto();
+        FileMetaDto metaDto = null;
+        FileUploadService uploadFileService = fileService.getUploadFileService();
+        metaDto = uploadFileService.uploadFile(file,null);
 
+        responseDto.setContent(metaDto);
+        return responseDto;
+    }
     @PostMapping("/upload/{typeId}")
     public ResponseDto uploadFile(@RequestParam MultipartFile file, @PathVariable("typeId") Long typeId) {
         ResponseDto responseDto = new ResponseDto();

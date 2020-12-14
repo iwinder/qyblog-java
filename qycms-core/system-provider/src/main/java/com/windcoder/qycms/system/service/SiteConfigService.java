@@ -95,6 +95,30 @@ public class SiteConfigService {
         siteConfigMapper.updateByPrimaryKeySelective(siteConfig);
     }
 
+    public SiteConfig findOneByKey(String key) {
+        SiteConfigExample siteConfigExample = new SiteConfigExample();
+        siteConfigExample.createCriteria().andConfigKeyEqualTo(key);
+        List<SiteConfig> siteConfigs = siteConfigMapper.selectByExample(siteConfigExample);
+        if (siteConfigs.size()>0) {
+            return siteConfigs.get(0);
+        } else {
+            return new SiteConfig();
+        }
+    }
+
+    public String findValueOneByKey(String key, String hashKey) {
+        HashOperations<String, Object, Object> ops = redisTemplate.opsForHash();
+        String value = (String) ops.get(key, hashKey);
+        if (StringUtils.isBlank(value)) {
+            SiteConfig oneByKey = findOneByKey(key);
+            if (StringUtils.isNoneBlank(oneByKey.getConfigValue())) {
+                ops.put(key,hashKey,oneByKey.getConfigValue());
+            }
+            return oneByKey.getConfigValue();
+        }
+        return value;
+    }
+
 
 
     public List<SiteConfigDto> list(Integer configType,Boolean isWeb) {

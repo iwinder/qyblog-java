@@ -204,6 +204,13 @@ public class ShiroConfiguration {
         redisManager.setHost(redisProperties.getHost() +":" + redisProperties.getPort());
         redisManager.setTimeout((int) redisProperties.getTimeout().getSeconds());
         redisManager.setPassword(redisProperties.getPassword());
+        redisManager.getJedisPoolConfig().setTestWhileIdle(true);
+        redisManager.getJedisPoolConfig().setTestOnBorrow(false);
+        redisManager.getJedisPoolConfig().setTestOnReturn(false);
+        redisManager.getJedisPoolConfig().setTestOnReturn(false);
+        // 表示idle object evitor两次扫描之间要sleep的毫秒数；
+        redisManager.getJedisPoolConfig().setTimeBetweenEvictionRunsMillis(60000);
+        redisManager.getJedisPoolConfig().setMinEvictableIdleTimeMillis(60000);
         return redisManager;
     }
 
