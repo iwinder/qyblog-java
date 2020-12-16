@@ -17,4 +17,6 @@ public class Constants {
     public static final long REDIS_DEFAULT_TIMEOUT =  500;
     // 默认过期时间单位  毫秒
     public static final TimeUnit REDIS_DEFAULT_TIMEUNIT =  TimeUnit.MILLISECONDS;
+    // 小程序请求头token
+     public static final String MINA_HEADER_TOKEN_KEY = "qy-mina-token";
 }

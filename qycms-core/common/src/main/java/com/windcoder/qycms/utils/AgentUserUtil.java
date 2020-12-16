@@ -48,8 +48,11 @@ public class AgentUserUtil {
         String osVersion = "";
         if(StringUtils.isBlank(userAgent))
             return osVersion;
-        String[] strArr = userAgent.substring(userAgent.indexOf("(")+1,
-                userAgent.indexOf(")")).split(";");
+        String[] strArr = null;
+        if(userAgent.indexOf("(")>=0 &&  userAgent.indexOf(")")>=0) {
+            strArr = userAgent.substring(userAgent.indexOf("(")+1,
+                    userAgent.indexOf(")")).split(";");
+        }
         if(null == strArr || strArr.length == 0)
             return osVersion;
 
@@ -302,7 +305,7 @@ public class AgentUserUtil {
      */
     public static String getBrowserVersion(String userAgent) {
         Browser browser =  getBrowser(userAgent);
-        String borderVersion = browser.getVersion( userAgent).toString();
+        String borderVersion = browser.getVersion( userAgent)!=null?  browser.getVersion( userAgent).toString():null;
         return borderVersion;
     }
 
@@ -311,8 +314,11 @@ public class AgentUserUtil {
 //		String androidUserAgent = "Mozilla/5.0 (Linux; Android 8.0; LON-AL00 Build/HUAWEILON-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 MQQBrowser/6.2 TBS/044204 Mobile Safari/537.36 V1_AND_SQ_7.7.8_908_YYB_D QQ/7.7.8.3705 NetType/WIFI WebP/0.3.0 Pixel/1440";
 //		String iosUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16A366 QQ/7.7.8.421 V1_IPH_SQ_7.7.8_1_APP_A Pixel/750 Core/UIWebView Device/Apple(iPhone 6s) NetType/WIFI QBWebViewType/1";
 //        String winUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36";
-        String winUserAgent = "Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)";
-
+//        String winUserAgent = "Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)";
+        String winUserAgent = "Mozilla/5.0 zgrab/0.x";
+//        String winUserAgent = "python-requests/2.20.1";
+        System.out.println("测试是否包含python："+  winUserAgent.toLowerCase().contains("python"));
+        System.out.println("测试是否包含zgrab："+  winUserAgent.toLowerCase().contains("zgrab"));
         System.out.println("浏览器组："+getBorderGroup(winUserAgent));
         System.out.println("浏览器名字："+getBorderName(winUserAgent));
         System.out.println("浏览器类型"+getBorderType(winUserAgent));

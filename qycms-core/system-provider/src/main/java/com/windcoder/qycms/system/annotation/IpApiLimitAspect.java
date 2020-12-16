@@ -19,7 +19,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
@@ -56,6 +59,15 @@ public class IpApiLimitAspect {
         String key = limitAnnotation.key();
         Object obj;
         String ip = null;
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String userAgent = AgentUserUtil.getUserAgent(request).toLowerCase();
+        if (userAgent.contains("python")||userAgent.contains("zgrab")) {
+            // 爬虫类-非法访问
+            ip = IpAddressUtil.getClientRealIp();
+            redisUtil.saveBlack(ip,AgentUserUtil.getUserAgent(),IpBlackType.ACCESSVIOLATION.name(), "非正常访问");
+            throw new LimitException("小同志，你访问的太频繁了");
+        }
 
         if(limitType.equals(IpApiLimit.LimitType.IP)){
             ip = IpAddressUtil.getClientRealIp();

@@ -21,8 +21,6 @@ import org.springframework.core.annotation.Order;
 @Configuration
 @Order(1)
 public class BloomIpLimitAspect {
-    @Autowired
-    private RedisUtil redisUtil;
     //Service层切点  限流
     @Pointcut("@annotation(com.windcoder.qycms.system.annotation.BloomIpLimit)")
     public void ServiceAspect() {

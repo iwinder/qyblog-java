@@ -3,5 +3,6 @@ apply plugin: 'idea'
 
 dependencies {
     compile project(':qycms-core:system-provider')
+    implementation "com.kotcrab.remark:remark:1.2.0"
 //    compile project(':qycms-core:common')
 }

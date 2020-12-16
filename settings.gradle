@@ -7,5 +7,7 @@ include 'qycms-blog:blog-provider'
 include 'qycms-blog:blog-web'
 include 'qycms-file:file-provider'
 include 'qycms-file:file-web'
+include 'qycms-mina:mina-provider'
+include 'qycms-mina:mina-web'
 include 'qycms-generator'
 

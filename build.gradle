@@ -105,6 +105,7 @@ configure(rootProject) {
         compile project(":qycms-core:system-web")
         compile project(":qycms-blog:blog-web")
         compile project(":qycms-file:file-web")
+        compile project(":qycms-mina:mina-web")
     }
 
     ext {

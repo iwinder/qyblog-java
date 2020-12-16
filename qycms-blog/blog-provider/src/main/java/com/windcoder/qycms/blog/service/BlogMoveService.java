@@ -8,6 +8,7 @@ import com.windcoder.qycms.blog.dto.BlogArticleDto;
 import com.windcoder.qycms.blog.dto.BlogCategoryDto;
 import com.windcoder.qycms.blog.entity.BlogMove;
 import com.windcoder.qycms.blog.enums.BlogArticleStatus;
+import com.windcoder.qycms.blog.utils.RemarkUtils;
 import com.windcoder.qycms.entity.DruidCommonProperties;
 import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.system.dto.CommentDto;
@@ -153,6 +154,8 @@ public class BlogMoveService {
         String password = null;
         String status = null;
         String type =null;
+        String commentMark = null;
+        String commentHtml = null;
         BlogCategoryDto categoryDto = null;
         Long aid = null;
         int commentCount = 0;
@@ -174,11 +177,16 @@ public class BlogMoveService {
                     status = resultSet.getString("post_status");
                     password = resultSet.getString("post_password");
                     type = resultSet.getString("post_type");
+                    commentMark = resultSet.getString("post_content_filtered");
+                    commentHtml = resultSet.getString("post_content");
+                    if (StringUtils.isBlank(commentMark)){
+                        commentMark = RemarkUtils.htmlToMarkdown(commentHtml);
+                    }
                     articleDto.setType(type.equalsIgnoreCase("page")? 2: 1);
                     articleDto.setTitle(resultSet.getString("post_title"));
                     articleDto.setPermaLink(resultSet.getString("post_name"));
-                    articleDto.setContent(resultSet.getString("post_content_filtered"));
-                    articleDto.setContentHtml(resultSet.getString("post_content"));
+                    articleDto.setContent(commentMark);
+                    articleDto.setContentHtml(commentHtml);
                     articleDto.setViewCount(Long.valueOf(resultSet.getInt("post_views")));
                     articleDto.setCanonicalLink(resultSet.getString("canonical"));
                     articleDto.setDeleted(false);

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 public class GlobalProperties {
     @Value("${token:windcoder}")
     private String token;
+    @Value("${minaToken:windcoder}")
+    private String minaToken;
 
 
 }

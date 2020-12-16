@@ -20,7 +20,14 @@ public class PageDto<T> {
      * 总条数
      */
     protected long total;
-
+    /**
+     * 总页数
+     */
+    private int pages;
+    /**
+     * 是否是最后一页
+     */
+    private boolean  EOFFlag;
     protected List<T> list;
 
 
@@ -30,6 +37,8 @@ public class PageDto<T> {
         sb.append("page=").append(page);
         sb.append(", size=").append(size);
         sb.append(", total=").append(total);
+        sb.append(", pages=").append(pages);
+        sb.append(", EOFFlag=").append(EOFFlag);
         sb.append(", list=").append(list);
 
         sb.append('}');

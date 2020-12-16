@@ -54,7 +54,7 @@ CREATE TABLE `blog_article` (
   `view_count` bigint(20) DEFAULT '0' comment '浏览人数',
   `published_date` datetime DEFAULT NULL comment '发布日期',
   `author_id` bigint(20) DEFAULT NULL comment '作者id',
-  `category_id` bigint(20) DEFAULT NULL comment '所属分类',
+  `category_id` bigint(20) DEFAULT 1 comment '所属分类',
   `comment_agent_id` bigint(20) DEFAULT NULL comment '评论组件id',
   `deleted` bit(1) DEFAULT b'0' comment '是否删除：0不删除， 1 删除',
   `published` bit(1) DEFAULT b'0' comment '是否发布：0不发布， 1 发布',

@@ -329,13 +329,15 @@ public class BlogArticleService {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
 //        if (PageHelper.getLocalPage().)
         List<BlogArticleWebBaseDto> articles = myBlogArticleMapper.listWeb(pageDto);
-        for (BlogArticleWebBaseDto article: articles) {
-            article.setDefNum(String.valueOf(StringUtilZ.randomRange(1,32)));
-        }
+//        for (BlogArticleWebBaseDto article: articles) {
+//            article.setDefNum(String.valueOf(StringUtilZ.randomRange(1,32)));
+//        }
         PageInfo<BlogArticleWebBaseDto> pageInfo = new PageInfo<>(articles);
         if (pageInfo.getTotal()>0 && pageInfo.getPages()<pageDto.getPage()) {
             throw new NotFoundException("列表访问超出最大值");
         }
+        pageDto.setPages(pageInfo.getPages());
+        pageDto.setEOFFlag(pageInfo.isIsLastPage());
         pageDto.setTotal(pageInfo.getTotal());
         pageDto.setList(articles);
     }
@@ -374,6 +376,9 @@ public class BlogArticleService {
     }
 
     public void addVersion(Long articleId, HttpServletRequest request) {
+        if (articleId==null) {
+            return;
+        }
         BlogArticleVisitor  visitor = new BlogArticleVisitor();
         String ip  = IpAddressUtil.getClientRealIp(request);
         visitor.setVisitorIp(ip);
