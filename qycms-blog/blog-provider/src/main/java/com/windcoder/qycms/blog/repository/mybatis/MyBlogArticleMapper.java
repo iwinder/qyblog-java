@@ -9,6 +9,7 @@ public interface MyBlogArticleMapper {
     List<BlogArticleBaseDto> list(@Param("pageDto") BlogArticlePageDto pageDto);
     List<BlogArticleWebBaseDto> listWeb(@Param("pageDto") BlogArticlePageDto pageDto);
     BlogArticleWebDto findOneWeb(@Param("articleDto") BlogArticleDto blogArticleDto, @Param("userId") Long userId);
+    BlogArticleWebDto findOneMina(@Param("articleDto") BlogArticleDto blogArticleDto, @Param("userId") Long userId);
     void updateDeleted(@Param("deletedStatus") Boolean deletedStatus, @Param("ids")Long[] ids);
     Integer countPermaLinkLike(@Param("permaLink") String permaLink, @Param("notId")Long notId);
     Integer countPermaLinkEquals(@Param("permaLink") String permaLink, @Param("notId")Long notId);

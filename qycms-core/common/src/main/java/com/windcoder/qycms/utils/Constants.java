@@ -19,4 +19,5 @@ public class Constants {
     public static final TimeUnit REDIS_DEFAULT_TIMEUNIT =  TimeUnit.MILLISECONDS;
     // 小程序请求头token
      public static final String MINA_HEADER_TOKEN_KEY = "qy-mina-token";
+     public static final String MINA_HEADER_TIME_KEY = "qy-mina-time";
 }

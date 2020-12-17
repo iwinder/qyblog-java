@@ -24,7 +24,7 @@ public class MinaBlogService {
         BlogArticleDto articleDto = new BlogArticleDto();
         articleDto.setId(articleId);
         articleDto.setPublished(true);
-        return articleService.findOneArticleWebDto(articleDto,null);
+        return articleService.findOneArticleWebDto(articleDto,null,"mina");
     }
     public void addVersion(Long articleId, HttpServletRequest request) {
         articleService.addVersion(articleId,request);

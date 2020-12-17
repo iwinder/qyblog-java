@@ -43,17 +43,16 @@ public class MinaVerificationAspect {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String referer = request.getHeader("Referer").toLowerCase();
             String token = request.getHeader(Constants.MINA_HEADER_TOKEN_KEY);
-            if (referer.contains("servicewechat.com")&&referer.contains("wx72b9cfef32a63dde")&& StringUtils.isNotBlank(token)) {
+            String startTimeStr = request.getHeader(Constants.MINA_HEADER_TIME_KEY);
+            if (referer.contains("servicewechat.com")&&referer.contains("wx72b9cfef32a63dde")&& StringUtils.isNotBlank(token) && StringUtils.isNotBlank(startTimeStr)) {
                 // 属于微信小程序
                 String miniSlat = globalProperties.getMinaToken();
-                String tokenOne = DigestUtils.md5DigestAsHex(token.getBytes());
-                int start = tokenOne.indexOf(miniSlat);
-                if (start>0) {
-                   String tokenTow =  tokenOne.substring(0,start);
-                   String startTimeStr = DigestUtils.md5DigestAsHex(tokenTow.getBytes());
-                   long startTime = Long.valueOf(startTimeStr);
+                long startTime = Long.valueOf(startTimeStr);
+                String tmpMd5 = DigestUtils.md5DigestAsHex(startTimeStr.getBytes()) + miniSlat;
+                String nowMd5 = DigestUtils.md5DigestAsHex(tmpMd5.getBytes());
+                if (nowMd5.equals(token)) {
                    long exc = now - startTime;
-                   if (exc>0 && (exc/1000)<=60) {
+                   if (exc>0 && (exc/1000)<=180) {
                        return joinPoint.proceed();
                    }
                 }

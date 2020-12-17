@@ -73,6 +73,7 @@
         <result column="thumbnail" property="thumbnail" />
         <result column="published_date" property="publishedDate" />
         <result column="content_html" property="contentHtml" />
+        <result column="content" property="content" />
         <result column="type" property="type" />
         <result column="comment_agent_id" property="commentAgentId" />
         <result column="view_count" property="viewCount" />
@@ -125,6 +126,30 @@
         </if>
     </sql>
 
+    <sql id="findOneOfWebAndMinaCommon">
+        from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
+        left join sys_user su on ba.author_id = su.id
+        left join sns_comment_agent  ca on ba.comment_agent_id = ca.id
+        <where>
+            ba.deleted = false
+            and ba.published = true
+            <if test="articleDto.id != null and articleDto.id != ''">
+                and ba.id = #{articleDto.id}
+            </if>
+            <if test="articleDto.permaLink !=null and articleDto.permaLink !=''">
+                and ba.perma_link = #{articleDto.permaLink}
+            </if>
+            <choose>
+                <when test="userId != null and userId !=''">
+                    and (ba.status='PUBLIC' or (ba.status = 'PRIVATE' and ba.author_id=#{userId} ) )
+                </when>
+                <otherwise>
+                    and ba.status='PUBLIC'
+                </otherwise>
+            </choose>
+        </where>
+        limit 1
+    </sql>
 
     <select id="list" resultMap="BlogArticleBaseDtoMap">
         select
@@ -182,28 +207,18 @@
         bc.identifier categoryIdentifier,
         ba.content_html,ba.type, ba.comment_agent_id
         ,ca.enabled
-        from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
-        left join sys_user su on ba.author_id = su.id
-        left join sns_comment_agent  ca on ba.comment_agent_id = ca.id
-        <where>
-            ba.deleted = false
-            and ba.published = true
-            <if test="articleDto.id != null and articleDto.id != ''">
-                and ba.id = #{articleDto.id}
-            </if>
-            <if test="articleDto.permaLink !=null and articleDto.permaLink !=''">
-                and ba.perma_link = #{articleDto.permaLink}
-            </if>
-            <choose>
-                <when test="userId != null and userId !=''">
-                    and (ba.status='PUBLIC' or (ba.status = 'PRIVATE' and ba.author_id=#{userId} ) )
-                </when>
-                <otherwise>
-                    and ba.status='PUBLIC'
-                </otherwise>
-            </choose>
-        </where>
-        limit 1
+        <include refid="findOneOfWebAndMinaCommon"></include>
+    </select>
+
+
+    <select id="findOneMina"  resultMap="BlogArticleWebDtoMap">
+        select
+        <include refid="listObj"></include>,
+        (select count(*) from sns_comment where target_id = ba.comment_agent_id and status='ENROLLED' ) commentCount,
+        bc.identifier categoryIdentifier,
+        ba.content,ba.type, ba.comment_agent_id
+        ,ca.enabled
+        <include refid="findOneOfWebAndMinaCommon"></include>
     </select>
 
     <update id="updateDeleted">

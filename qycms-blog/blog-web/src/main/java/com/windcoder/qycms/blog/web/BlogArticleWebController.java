@@ -39,7 +39,7 @@ public class BlogArticleWebController {
         BlogArticleDto articleDto = new BlogArticleDto();
         articleDto.setId(articleId);
         articleDto.setPublished(true);
-        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto,user);
+        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto,user,"web");
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }
@@ -51,7 +51,7 @@ public class BlogArticleWebController {
         BlogArticleDto articleDto = new BlogArticleDto();
         articleDto.setPermaLink(articleName);
         articleDto.setPublished(true);
-        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto,user);
+        BlogArticleWebDto article = articleService.findOneArticleWebDto(articleDto,user,"web");
         ResponseDto responseDto = new ResponseDto(article);
         return responseDto;
     }

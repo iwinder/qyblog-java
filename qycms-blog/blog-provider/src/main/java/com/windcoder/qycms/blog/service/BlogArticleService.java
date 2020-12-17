@@ -343,13 +343,18 @@ public class BlogArticleService {
     }
 
 
-    public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto,UserWebDto user) {
+    public BlogArticleWebDto findOneArticleWebDto(BlogArticleDto blogArticleDto,UserWebDto user, String from) {
 //        BlogArticle article = findOne(blogArticleDto);
         Long userId = null;
         if (user!=null && user.getId()!=null && user.getId()>0) {
             userId = user.getId();
         }
-        BlogArticleWebDto articleDto = myBlogArticleMapper.findOneWeb(blogArticleDto,userId);
+        BlogArticleWebDto articleDto = null;
+        if (from.equals("web")) {
+            articleDto = myBlogArticleMapper.findOneWeb(blogArticleDto,userId);
+        } else if (from.equals("mina")) {
+            articleDto = myBlogArticleMapper.findOneMina(blogArticleDto,userId);
+        }
         if (articleDto==null) {
             throw  new BusinessException("404");
         }
@@ -369,6 +374,8 @@ public class BlogArticleService {
         articleDto.setDefNum(String.valueOf(StringUtilZ.randomRange(1,32)));
         return articleDto;
     }
+
+
 
     public void updateView(Long aid, Long viewCount) {
         BlogArticleExample example = new BlogArticleExample();
