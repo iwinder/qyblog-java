@@ -196,7 +196,7 @@
                 </otherwise>
             </choose>
         </where>
-        order by  ba.published_date DESC, ba.created_date DESC,ba.id DESC
+        order by  ba.published_date DESC,ba.id DESC
     </select>
 
 
@@ -250,6 +250,17 @@
                 </if>
             </where>
 
+    </select>
+    <select id="finAllPublishedPermaLink" resultType="com.windcoder.qycms.blog.dto.BlogArticleWebBaseDto">
+        select ba.perma_link,ba.published_date from blog_article ba
+         where
+         ba.deleted = false
+         and ba.status='PUBLIC'
+        and ba.published = true
+        <if test="pageDto.type != null and pageDto.type != ''">
+            and ba.type = #{pageDto.type}
+        </if>
+          order by  ba.published_date DESC,ba.id DESC
     </select>
     <update id="updatePostViews" >
         UPDATE blog_article SET view_count = view_count + #{viewCount}

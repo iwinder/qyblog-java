@@ -3,7 +3,6 @@ package com.windcoder.qycms.blog.admin.controller;
 import com.windcoder.qycms.blog.service.SiteMapGeneratorService;
 import com.windcoder.qycms.dto.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +15,9 @@ public class SiteMapGeneratorController {
     @Autowired
     private SiteMapGeneratorService generatorService;
     @GetMapping("")
-    public ResponseDto get() {
+    public ResponseDto generatorXml() {
         ResponseDto responseDto = new ResponseDto();
-        generatorService.s(responseDto);
+        generatorService.generatorXml();
         return responseDto;
     }
 }

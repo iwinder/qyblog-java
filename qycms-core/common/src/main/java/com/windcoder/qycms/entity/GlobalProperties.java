@@ -13,6 +13,8 @@ public class GlobalProperties {
     private String token;
     @Value("${minaToken:windcoder}")
     private String minaToken;
+    @Value("${xmlPath:/wdata/qy-xml}")
+    private String xmlPath;
 
 
 }

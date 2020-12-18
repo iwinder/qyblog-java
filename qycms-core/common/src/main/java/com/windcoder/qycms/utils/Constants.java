@@ -20,4 +20,7 @@ public class Constants {
     // 小程序请求头token
      public static final String MINA_HEADER_TOKEN_KEY = "qy-mina-token";
      public static final String MINA_HEADER_TIME_KEY = "qy-mina-time";
+     public static final String SITE_MAP_FILE_POST_NAME = "post-sitemap.xml";
+     public static final String SITE_MAP_FILE_PAGE_NAME = "page-sitemap.xml";
+     public static final String SITE_MAP_FILE_INDEX_NAME = "sitemap_index.xml";
 }

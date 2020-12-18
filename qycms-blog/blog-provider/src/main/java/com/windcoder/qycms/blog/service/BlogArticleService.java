@@ -395,6 +395,17 @@ public class BlogArticleService {
         blogArticleVisitorService.save(visitor);
     }
 
+    public void finAllPublishedPermaLink(BlogArticlePageDto pageDto) {
+
+        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        List<BlogArticleWebBaseDto> articles = myBlogArticleMapper.finAllPublishedPermaLink(pageDto);
+        PageInfo<BlogArticleWebBaseDto> pageInfo = new PageInfo<>(articles);
+        pageDto.setPages(pageInfo.getPages());
+        pageDto.setEOFFlag(pageInfo.isIsLastPage());
+        pageDto.setTotal(pageInfo.getTotal());
+        pageDto.setList(articles);
+    }
+
 
 //    private  void articleBaseDtoTofill(List<BlogArticleBaseDto> baseDtos) {
 //        for (BlogArticleBaseDto baseDto: baseDtos) {
