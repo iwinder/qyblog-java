@@ -11,6 +11,7 @@ import com.windcoder.qycms.system.entity.CommentAgent;
 import com.windcoder.qycms.system.entity.CommentExample;
 import com.windcoder.qycms.system.entity.User;
 import com.windcoder.qycms.system.enums.CommentStatus;
+import com.windcoder.qycms.system.enums.CommentType;
 import com.windcoder.qycms.system.repository.mybatis.CommentMapper;
 
 import com.windcoder.qycms.system.repository.mybatis.MyCommentMapper;
@@ -148,7 +149,7 @@ public class CommentService {
 
            comment.setLastModifiedDate(now);
        }
-        commentMapper.insert(comment);
+        commentMapper.insertSelective(comment);
     }
 
     /**
@@ -276,6 +277,7 @@ public class CommentService {
         Date now = new Date();
         commentDto.setCreatedDate(now);
         commentDto.setLastModifiedDate(now);
+        commentDto.setType(CommentType.GENERAL.name());
         Comment comment =  save(commentDto);
         CommentWebDto commentwebDto = ModelMapperUtils.map(comment,CommentWebDto.class);
         checkAndEditCommentAgentName(targetName,agentTarget);
@@ -286,13 +288,14 @@ public class CommentService {
     public CommentWebDto addReply(Long agentTargetId,Long parentId, CommentDto commentDto, HttpServletResponse response) {
         CommentAgent agentTarget = checkAndGetCommentAgent(agentTargetId);
         Comment parent = findOne(parentId);
-        Long topParentId = (null == parent.getTopParentId()) ? parent.getId() : parent.getTopParentId();
+        Long topParentId = (null == parent.getTopParentId()||parent.getTopParentId().longValue()==0) ? parent.getId() : parent.getTopParentId();
         Integer level = parent.getDepth() + 1;
 
         commentDto.setTargetId(agentTarget.getId());
         commentDto.setParentId(parent.getId());
         commentDto.setTopParentId(topParentId);
         commentDto.setDepth(level);
+        commentDto.setType(CommentType.GENERAL.name());
 
         checkAndEditStatusIsENROLLED(commentDto);
 

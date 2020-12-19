@@ -83,7 +83,8 @@ logging:
 
 qy:
   token: o6lZQ
-
+  minaToken: "#$#werdfW$h"
+  xmlPath: "/wdata/qy-xml"
 
 
 

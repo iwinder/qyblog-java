@@ -1,6 +1,7 @@
 package com.windcoder.qycms.system.web.controller;
 
 import com.windcoder.qycms.dto.ResponseDto;
+import com.windcoder.qycms.system.annotation.BloomIpLimit;
 import com.windcoder.qycms.system.annotation.IpApiLimit;
 import com.windcoder.qycms.system.dto.CommentDto;
 import com.windcoder.qycms.system.dto.CommentPageDto;
@@ -23,7 +24,7 @@ public class CommentWebController {
     @Resource
     private CommentService commentService;
 
-    @IpApiLimit(limitType= IpApiLimit.LimitType.IP)
+    @BloomIpLimit
     @GetMapping(value = "")
     public ResponseDto list(@PathVariable("agentTargetId") Long agentTargetId,CommentPageDto pageDto) {
         commentService.findTopLevelComments(agentTargetId, pageDto);
@@ -31,7 +32,7 @@ public class CommentWebController {
         responseDto.setContent(pageDto);
         return responseDto;
     }
-
+    @BloomIpLimit
     @PostMapping(value = "/add")
     public ResponseDto add(@PathVariable("agentTargetId") Long agentTargetId,
                            @RequestBody CommentDto comment,
@@ -49,6 +50,7 @@ public class CommentWebController {
         return responseDto;
     }
 
+    @BloomIpLimit
     @GetMapping(value = "/{commentId}/replies")
     public ResponseDto replies(@PathVariable("agentTargetId") Long agentTargetId,
                                   @PathVariable("commentId") Long parentId,
@@ -59,6 +61,7 @@ public class CommentWebController {
         return responseDto;
     }
 
+    @BloomIpLimit
     @PostMapping(value = "/{commentId}/replies/add")
     public ResponseDto addReply(@PathVariable("agentTargetId") Long agentTargetId,
                                @PathVariable("commentId") Long parentId,
