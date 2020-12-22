@@ -43,7 +43,7 @@ public class MenusDto {
      * 菜单代理
      */
     private Long targetId;
-    private Integer targetType;
+    private Integer targetIdentifier;
 
     /**
      * 创建者
@@ -164,12 +164,12 @@ public class MenusDto {
         this.displayorder = displayorder;
     }
 
-    public Integer getTargetType() {
-        return targetType;
+    public Integer getTargetIdentifier() {
+        return targetIdentifier;
     }
 
-    public void setTargetType(Integer targetType) {
-        this.targetType = targetType;
+    public void setTargetIdentifier(Integer targetIdentifier) {
+        this.targetIdentifier = targetIdentifier;
     }
 
     @Override
