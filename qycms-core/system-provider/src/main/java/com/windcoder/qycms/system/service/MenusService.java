@@ -68,14 +68,14 @@ public class MenusService {
      * @param menusDto
      */
     public void save(MenusDto menusDto){
-        Integer type = menusDto.getTargetType();
+        Integer targetIdentifier = menusDto.getTargetIdentifier();
         Menus menus = ModelMapperUtils.map(menusDto, Menus.class);
         if (null == menus.getId()) {
             this.inster(menus);
         } else {
             this.update(menus);
         }
-        if (type.intValue() == 1 || type.intValue() == 2) {
+        if (targetIdentifier.intValue() == 1 || targetIdentifier.intValue() == 2) {
             initNowSiteMenus();
         }
 
