@@ -36,13 +36,13 @@
     <select id="findNowHeaderMenus" resultMap="MenusWebDtoMap">
         select sm.id,sm.name,sm.url,sm.parent_id,sm.blanked
             from sys_menus sm left join sys_menus_agent sma on sm.target_id = sma.id
-        where sma.type = 1 and parent_id is null
+        where sma.identifier = 1 and parent_id is null
           order by sm.display_order;
     </select>
     <select id="findNowFooterMenus" resultType="com.windcoder.qycms.system.dto.MenusWebDto">
         select sm.id,sm.name,sm.url,sm.parent_id,sm.blanked
         from sys_menus sm left join sys_menus_agent sma on sm.target_id = sma.id
-        where sma.type = 2 and parent_id is null
+        where sma.identifier = 2 and parent_id is null
         order by sm.display_order;
     </select>
 
