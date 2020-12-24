@@ -6,7 +6,8 @@ public class FileUploadProperties {
 
     public static final String IMAGESAVEPATH="/image";
 
-    public static final String CONTENTPATH = "/wdata/qy-content";
+//    public static final String CONTENTPATH = "/wdata/qy-content";
+    public static final String CONTENTPATH = "/qy-data/qy-content";
     public static final String VIRTUALPATH = "/qy-content";
     public static final String TEMPORARYDIR = "/tmp";
 }

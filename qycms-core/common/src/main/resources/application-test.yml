@@ -20,10 +20,10 @@ spring:
     type:  com.alibaba.druid.pool.DruidDataSource
     url: jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
     connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;"
-#    username: ENC(Sua21kW9AckGBtpW13LyF03e7aOjC2zE)
-#    password: ENC(f+2+aW4Po3YqeQkXaccinw==)
-#    username: winder
-#    password: 123456
+    #    username: ENC(Sua21kW9AckGBtpW13LyF03e7aOjC2zE)
+    #    password: ENC(f+2+aW4Po3YqeQkXaccinw==)
+    #    username: winder
+    #    password: 123456
     username: qycmsdev
     password: DCZehzmeAiM5wtrc
     initialSize: 5
@@ -84,7 +84,7 @@ logging:
 qy:
   token: o6lZQ
   minaToken: "#$#werdfW$h"
-  xmlPath: "/wdata/qy-xml"
+  xmlPath: "/www/wwwroot/test.windcoder.com/qy-web/static"
 
 
 

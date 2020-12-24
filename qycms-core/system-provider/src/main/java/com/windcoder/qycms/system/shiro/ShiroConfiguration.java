@@ -25,6 +25,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Lazy;
 
 import javax.servlet.Filter;
+import java.time.temporal.TemporalUnit;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -190,6 +191,7 @@ public class ShiroConfiguration {
     public RedisSessionDAO redisSessionDAO(RedisManager redisManager) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager);
+        redisSessionDAO.setExpire(1800);
         return redisSessionDAO;
     }
 
@@ -205,6 +207,7 @@ public class ShiroConfiguration {
         int num = (int) redisProperties.getTimeout().getSeconds();
         redisManager.setTimeout(num);
         redisManager.setPassword(redisProperties.getPassword());
+
         return redisManager;
     }
 
@@ -217,6 +220,7 @@ public class ShiroConfiguration {
     public CacheManager cacheManager(RedisManager redisManager) {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager);
+        redisCacheManager.setPrincipalIdFieldName("shiro:userId");
         return redisCacheManager;
     }
 
