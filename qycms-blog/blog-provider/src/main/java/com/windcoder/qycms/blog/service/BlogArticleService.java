@@ -102,11 +102,14 @@ public class BlogArticleService {
             updateCommentAgent(agent, article.getId());
             articleDto.setId(article.getId());
             articleDto.setCommentAgentId(agent.getId());
-            List<String> list = myCommonMapper.findAllBlogPostLink();
-            BloomCacheFilter.refresh(list);
+            refreshLink();
         } else {
             article.setViewCount(null);
+            article.setSummary(StringUtilZ.removeHtmlAndSubstring(article.getContentHtml()));
             this.update(article);
+            if(!articleDto.getOldUrl().equals(articleDto.getPermaLink())) {
+                refreshLink();
+            }
         }
 
         saveTags(article.getId(), tagsString);
@@ -404,6 +407,11 @@ public class BlogArticleService {
         pageDto.setEOFFlag(pageInfo.isIsLastPage());
         pageDto.setTotal(pageInfo.getTotal());
         pageDto.setList(articles);
+    }
+
+    public  void refreshLink() {
+        List<String> list = myCommonMapper.findAllBlogPostLink();
+        BloomCacheFilter.refresh(list);
     }
 
 

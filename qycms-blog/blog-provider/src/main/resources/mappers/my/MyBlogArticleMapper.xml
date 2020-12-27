@@ -216,7 +216,7 @@
         <include refid="listObj"></include>,
         (select count(*) from sns_comment where target_id = ba.comment_agent_id and status='ENROLLED' ) commentCount,
         bc.identifier categoryIdentifier,
-        ba.content,ba.type, ba.comment_agent_id
+        ba.content_html,ba.type, ba.comment_agent_id
         ,ca.enabled
         <include refid="findOneOfWebAndMinaCommon"></include>
     </select>

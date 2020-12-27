@@ -24,6 +24,7 @@ public class BlogArticleWebController {
     @GetMapping("")
     public ResponseDto allActivities(BlogArticlePageDto article, @CurrentUser UserWebDto user){
         article.setType(1);
+        article.setPublished(true);
         if (user!=null && user.getId()!=null && user.getId()>0) {
             article.setUserId(user.getId());
         }

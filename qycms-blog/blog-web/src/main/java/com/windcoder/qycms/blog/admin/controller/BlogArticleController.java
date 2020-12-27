@@ -78,4 +78,11 @@ public class BlogArticleController {
         ResponseDto responseDto = new ResponseDto();
         return responseDto;
     }
+
+    @PostMapping("/refreshLink")
+    public ResponseDto refreshLink() {
+        articleService.refreshLink();
+        ResponseDto responseDto = new ResponseDto();
+        return responseDto;
+    }
 }

@@ -11,6 +11,8 @@ public class BlogArticleDto extends BlogArticleBaseDto {
      */
     private String contentHtml;
 
+    private String oldUrl;
+
     public String getContent() {
         return content;
     }
@@ -27,4 +29,11 @@ public class BlogArticleDto extends BlogArticleBaseDto {
         this.contentHtml = contentHtml;
     }
 
+    public String getOldUrl() {
+        return oldUrl;
+    }
+
+    public void setOldUrl(String oldUrl) {
+        this.oldUrl = oldUrl;
+    }
 }
