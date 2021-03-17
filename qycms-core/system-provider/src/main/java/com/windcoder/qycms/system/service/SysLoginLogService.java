@@ -35,6 +35,7 @@ public class SysLoginLogService {
     public void list(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         SysLoginLogExample sysLoginLogExample = new SysLoginLogExample();
+        sysLoginLogExample.setOrderByClause("created_date desc");
         List<SysLoginLog> sysLoginLogs = sysLoginLogMapper.selectByExample(sysLoginLogExample);
         PageInfo<SysLoginLog> pageInfo = new PageInfo<>(sysLoginLogs);
         pageDto.setTotal(pageInfo.getTotal());

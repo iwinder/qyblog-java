@@ -38,6 +38,7 @@ public class ShortLinkService {
     public void list(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
         ShortLinkExample shortLinkExample = new ShortLinkExample();
+        shortLinkExample.setOrderByClause("created_date desc");
         List<ShortLink> shortLinks = shortLinkMapper.selectByExample(shortLinkExample);
         PageInfo<ShortLink> pageInfo = new PageInfo<>(shortLinks);
         pageDto.setTotal(pageInfo.getTotal());

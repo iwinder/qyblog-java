@@ -50,6 +50,7 @@ public class SysIpBlackService {
         if (StringUtils.isNotBlank(pageDto.getSearchText())) {
             criteria.andVisitorIpLike(pageDto.getSearchText());
         }
+        sysIpBlackExample.setOrderByClause("last_modified_date desc");
         List<SysIpBlack> sysIpBlacks = sysIpBlackMapper.selectByExample(sysIpBlackExample);
         PageInfo<SysIpBlack> pageInfo = new PageInfo<>(sysIpBlacks);
         pageDto.setTotal(pageInfo.getTotal());

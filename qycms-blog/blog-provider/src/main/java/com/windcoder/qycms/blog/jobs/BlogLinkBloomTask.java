@@ -6,8 +6,11 @@ import com.google.common.hash.Funnels;
 import com.windcoder.qycms.system.filters.BloomCacheFilter;
 import com.windcoder.qycms.system.repository.mybatis.MyCommonMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,7 +20,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class BlogLinkBloomTask {
+public class BlogLinkBloomTask  {
     @Autowired
     private MyCommonMapper myCommonMapper;
     //每天23点执行一次
@@ -28,4 +31,12 @@ public class BlogLinkBloomTask {
         BloomCacheFilter.refresh(list);
         log.info("初始化布隆缓存过滤结束");
     }
+
+//    @Override
+//    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+//        log.info("开始初始化布隆缓存过滤");
+//        List<String> list = myCommonMapper.findAllBlogPostLink();
+//        BloomCacheFilter.refresh(list);
+//        log.info("初始化布隆缓存过滤结束");
+//    }
 }

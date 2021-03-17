@@ -9,5 +9,7 @@ include 'qycms-file:file-provider'
 include 'qycms-file:file-web'
 include 'qycms-mina:mina-provider'
 include 'qycms-mina:mina-web'
+include 'qycms-quartz:quartz-provider'
+include 'qycms-quartz:quartz-web'
 include 'qycms-generator'
 

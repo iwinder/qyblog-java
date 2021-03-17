@@ -1,14 +1,10 @@
-package com.windcoder.qycms.quartz.dto;
+package com.windcoder.qycms.quartz.entity;
 
-import com.windcoder.qycms.dto.PageDto;
-import lombok.Data;
 import org.quartz.JobDataMap;
 
 import java.util.Date;
 
-
-
-public class QuartzBeanPageDto extends PageDto {
+public class QuartzBean {
     /** 任务id */
     private String id;
 
@@ -43,12 +39,14 @@ public class QuartzBeanPageDto extends PageDto {
     private Date endTime;
 
     /** 任务运行时间表达式 */
-    private String cronExpression; 
+    private String cronExpression;
+
+    private JobDataMap jobDataMap;
 
     private long startTimeLong;
     private long endTimeLong;
-    private Boolean cronFlag = false;
 
+    private Boolean cronFlag;
 
     public String getId() {
         return id;
@@ -133,6 +131,14 @@ public class QuartzBeanPageDto extends PageDto {
         }
     }
 
+    public JobDataMap getJobDataMap() {
+        return jobDataMap;
+    }
+
+    public void setJobDataMap(JobDataMap jobDataMap) {
+        this.jobDataMap = jobDataMap;
+    }
+
     public long getStartTimeLong() {
         return startTimeLong;
     }
@@ -155,12 +161,12 @@ public class QuartzBeanPageDto extends PageDto {
         }
     }
 
+
     public Boolean getCronFlag() {
         return cronFlag;
     }
 
     public void setCronFlag(Boolean cronFlag) {
         this.cronFlag = cronFlag;
-
     }
 }

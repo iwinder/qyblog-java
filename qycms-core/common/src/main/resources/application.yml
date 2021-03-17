@@ -18,10 +18,14 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type:  com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:MySQL://127.0.0.1:3306/qycmsblog?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    url: jdbc:MySQL://localhost:3306/qycmsdev?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
     connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;"
-    username: ENC(BWo944CV+CTg1tgYUUKW5x8Wy4MCYYUcZUYILyWBPriOHlORBCPXdL07LL6Fkh17)
-    password: ENC(7tfUDlUoYeZARZOcVBBjBED2k6sSXVgWQGnx3iGX9AvOQQlUCtiRqYMUtuJEnZQGRCZO4x+LL9jbN4yT8aFOeQ==)
+    #    username: ENC(Sua21kW9AckGBtpW13LyF03e7aOjC2zE)
+    #    password: ENC(f+2+aW4Po3YqeQkXaccinw==)
+    username: winder
+    password: 123456
+    #    username: qycmsdev
+    #    password: DCZehzmeAiM5wtrc
     initialSize: 5
     minIdle: 5
     maxActive: 20
@@ -36,10 +40,10 @@ spring:
     maxOpenPreparedStatements: 20
     asyncInit: true
   redis:
-    host: ENC(J3RLrcQUDH6wd8UvPDR3xRgMRa7YNGm6bwj8KJwS+zNOnTba326wesRMkRv9Y5Hw)
-    password: ENC(0GOZrQYj6325m4K9Tu5UfocFQA1qpeuLdVAusUi4FYLS+nCgCYe9OQXMDV8wg974PFD9XEcvw9Hr+jiHVSJ2og==)
+    host: ENC(pq5QVxGVGzg+y7PwM3Zd9VtP2wccfPBwcXNpofkv663Nh0dNyybWj1CDy2guRuud)
+    password: ENC(MuYdsqHjoTmzgNf8fQk8n6M+ykgXulg2eUlGWvBN4GrrZbTZl2Lg4PuauPXiaBBo)
     port: 6380
-    database: 8
+    database: 6
     timeout: 2000s
     Jedis:
       pool:
@@ -53,6 +57,28 @@ spring:
         max-active: 8
         max-wait: 60000
         min-idle: 3
+  quartz:
+    #相关属性配置
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: clusteredScheduler #调度器的实例名
+            instanceId: AUTO #调度器编号自动生成
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_ #数据库表名前缀
+            isClustered: true #开启分布式部署
+            clusterCheckinInterval: 10000   #分布式节点有效性检查时间间隔,单位:秒
+            useProperties: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool  #自带的线程池实现类
+            threadCount: 10  #开启10个线程
+            threadPriority: 5 #工作者线程的优先级
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    #数据库方式
+    job-store-type: jdbc
 
 # mybatis
 mybatis:
@@ -68,16 +94,16 @@ pagehelper:
 #配置数据源加密的密钥
 jasypt:
   encryptor:
-    password: qwindcoderyAdmin
+    password: windcoderAdmin
 #用于控制mybatis打印sql，生产环境应更改为ERROR级别
 logging:
   level:
-    root: error
+    root: info
     com:
       windcoder:
-        qycms: error
+        qycms: debug
 
 qy:
-  token: SAkSgsuN
-  minaToken: "#$#ywerdfqW$h"
-  xmlPath: "/www/wwwroot/windcoder.com/qy-web/static"
+  token: hW61c
+  minaToken: "#$#werdfW$h"
+  xmlPath: "/wdata/qy-xml"
