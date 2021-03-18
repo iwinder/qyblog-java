@@ -1,4 +1,4 @@
-package com.windocder.qycms.system.test;
+package com.windcoder.qycms.common.test;
 
 import com.windcoder.qycms.QycmsApplication;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class JasyptTest {
         String result2 = stringEncryptor.encrypt("nWAjHN8es4jn3TsH");
         System.out.println("结果:" + result +" , d: " + result2);
 
-        String result3   = stringEncryptor.encrypt("127.0.0.1");
+        String result3   = stringEncryptor.encrypt("114.116.87.84");
         String result4 = stringEncryptor.encrypt("Mkg7yFKvIXIHBh0I");
         System.out.println("结果:" + result3 +" , d: " + result4);
     }
