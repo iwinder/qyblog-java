@@ -71,5 +71,12 @@ public class SiteConfigController {
         return responseDto;
     }
 
+    @GetMapping("/getIpWhiltConfig")
+    public ResponseDto findIpWhilteConfigBykey() {
+        SiteConfigDto dto =  siteConfigService.findIpWhilteConfigBykey();
+        ResponseDto responseDto = new ResponseDto(dto);
+        return responseDto;
+    }
+
 
 }

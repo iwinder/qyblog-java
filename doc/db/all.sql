@@ -358,7 +358,9 @@ values('site_comment_flag','true','允许评论','站点评论总开关',2,@v_sy
 Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
 values('site_home_undisplay_cats','','不显示的分类ID列表','分类ID数字之间用英文逗号分隔, 如果留空将展示所有分类到文章',2,@v_system_user_id,@v_system_user_id);
 Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
-values('site_head_code','','页头自定义代码','页面头部加载的自定义代码，位于head标签结束前',2,@v_system_user_id,@v_system_user_id);
+values('site_head_style_code','','页头自定义CSS代码','页面头部加载的自定义代码，位于head标签结束前',2,@v_system_user_id,@v_system_user_id);
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_head_script_code','','页头自定义JavaScript代码','页面头部加载的自定义代码，位于head标签结束前',2,@v_system_user_id,@v_system_user_id);
 Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
 values('site_foot_code','','页脚自定义代码','页面底部加载的自定义代码，位于body标签结束前',2,@v_system_user_id,@v_system_user_id);
 Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
@@ -385,6 +387,9 @@ Insert into sys_site_config (config_key,config_value,config_name,config_tip,type
 values('site_alipay_pay_qr','','网站支付宝收款二维码','用于网站收集打赏等的支付宝收款二维码图片(赞助站长小工具等使用)',4,@v_system_user_id,@v_system_user_id);
 Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
 values('site_default_media_lib','1','文件保存位置','用于选择图片等上传到本地还是七牛等第三方平台',4,@v_system_user_id,@v_system_user_id);
+select min(id) into @v_system_user_id from sys_user;
+Insert into sys_site_config (config_key,config_value,config_name,config_tip,type,created_by,last_modified_by)
+values('site_safe_ip_whilte','','IP白名单','所有规则对白名单中的IP段无效,包括IP黑名单,IP白名单具备最高优先权',5,@v_system_user_id,@v_system_user_id);
 
 
 drop table if exists `sys_menus_agent`;
@@ -544,6 +549,8 @@ CREATE TABLE `file_meta` (
   `last_modified_date` datetime DEFAULT now() comment '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='文件信息表';
+
+
 
 
 commit;

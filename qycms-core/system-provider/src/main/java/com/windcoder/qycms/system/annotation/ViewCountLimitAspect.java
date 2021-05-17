@@ -4,6 +4,7 @@ import com.windcoder.qycms.exception.BusinessException;
 import com.windcoder.qycms.exception.LimitException;
 import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.enums.IpBlackType;
+import com.windcoder.qycms.system.utils.IpWhilteUtil;
 import com.windcoder.qycms.utils.AgentUserUtil;
 import com.windcoder.qycms.utils.Constants;
 import com.windcoder.qycms.utils.IpAddressUtil;
@@ -34,22 +35,23 @@ public class ViewCountLimitAspect {
         Object blogId = object[0];
         Object obj = null;
         try {
+            String ip = IpAddressUtil.getClientRealIp();
+            // ip白名单
+            if(IpWhilteUtil.isPermited(ip)) {
+                return joinPoint.proceed();
+            }
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String borderGroup = AgentUserUtil.getBorderGroup(request);
             String userAgent = AgentUserUtil.getUserAgent(request).toLowerCase();
             if (blogId==null||userAgent.contains("python")||userAgent.contains("zgrab")) {
                 // 爬虫类-非法访问
-                String ip = IpAddressUtil.getClientRealIp();
+
                 redisUtil.saveBlack(ip,AgentUserUtil.getUserAgent(), IpBlackType.ACCESSVIOLATION.name(), "非正常访问");
                 throw new LimitException("小同志，你访问的太频繁了");
             }
             if (!borderGroup.equalsIgnoreCase("Robot/Spider")) {
-                String value = IpAddressUtil.getClientRealIp();
-                if(value.equals("127.0.0.1")) {
-                    return joinPoint.proceed();
-                }
                 String key = new StringBuilder(redisUtil.POST_VIEW_COUNT).append(blogId).toString();
-                Long flag = redisUtil.addPostViewCount(key,value);
+                Long flag = redisUtil.addPostViewCount(key,ip);
                 if(flag.longValue()>0) {
                     obj = joinPoint.proceed();
                 }

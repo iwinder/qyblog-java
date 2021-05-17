@@ -114,4 +114,10 @@ public class SiteInfoWebController {
         ResponseDto responseDto = new ResponseDto(allShortWebDto);
         return responseDto;
     }
+
+    @GetMapping(value = "refreshIpWhilte")
+    public ResponseDto refreshIpWhilteList() {
+        siteConfigService.refreshIpWhilteList();
+        return new ResponseDto();
+    }
 }

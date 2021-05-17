@@ -7,6 +7,7 @@ import com.google.common.util.concurrent.RateLimiter;
 import com.windcoder.qycms.exception.LimitException;
 import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.enums.IpBlackType;
+import com.windcoder.qycms.system.utils.IpWhilteUtil;
 import com.windcoder.qycms.utils.AgentUserUtil;
 import com.windcoder.qycms.utils.Constants;
 import com.windcoder.qycms.utils.IpAddressUtil;
@@ -58,22 +59,21 @@ public class IpApiLimitAspect {
         IpApiLimit.LimitType limitType = limitAnnotation.limitType();
         String key = limitAnnotation.key();
         Object obj;
-        String ip = null;
-
+        String ip = IpAddressUtil.getClientRealIp();
+        // ip白名单
+        if(IpWhilteUtil.isPermited(ip)) {
+            return joinPoint.proceed();
+        }
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String userAgent = AgentUserUtil.getUserAgent(request).toLowerCase();
+
         if (userAgent.contains("python")||userAgent.contains("zgrab")) {
             // 爬虫类-非法访问
-            ip = IpAddressUtil.getClientRealIp();
             redisUtil.saveBlack(ip,AgentUserUtil.getUserAgent(),IpBlackType.ACCESSVIOLATION.name(), "非正常访问");
             throw new LimitException("小同志，你访问的太频繁了");
         }
 
         if(limitType.equals(IpApiLimit.LimitType.IP)){
-            ip = IpAddressUtil.getClientRealIp();
-            if(ip.equals("127.0.0.1")) {
-                return joinPoint.proceed();
-            }
             key = method.getName() + ":" + ip;
         }
         RateLimiter rateLimiter = caches.get(key);

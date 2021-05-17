@@ -64,14 +64,12 @@ public class RedisUtil {
 
         ops.leftPush(IPBLACK_TMP_INFO, tmpInfo.toString());
     }
-
-    public Long getOpsValue(String key) {
+    public void setOpsValue(String key,String value) {
+        redisTemplate.opsForValue().set(key,value);
+    }
+    public String getOpsValue(String key) {
         String tmp = redisTemplate.opsForValue().get(key);
-        if (StringUtils.isBlank(tmp)) {
-            tmp = String.valueOf(0);
-        }
-      return Long.valueOf(tmp);
-
+        return tmp;
     }
 
 

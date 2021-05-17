@@ -5,6 +5,7 @@ import com.windcoder.qycms.exception.NotFoundException;
 import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.filters.BloomCacheFilter;
 import com.windcoder.qycms.system.filters.BloomIpCacheFilter;
+import com.windcoder.qycms.system.utils.IpWhilteUtil;
 import com.windcoder.qycms.utils.AgentUserUtil;
 import com.windcoder.qycms.utils.Constants;
 import com.windcoder.qycms.utils.IpAddressUtil;
@@ -32,7 +33,9 @@ public class BloomIpLimitAspect {
         Object[] object = joinPoint.getArgs();
         Object obj;
         String key = IpAddressUtil.getClientRealIp();
-        if(key.equals("127.0.0.1")) {
+
+        // ip白名单
+        if(IpWhilteUtil.isPermited(key)) {
             return joinPoint.proceed();
         }
 

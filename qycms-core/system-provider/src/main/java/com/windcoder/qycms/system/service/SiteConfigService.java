@@ -4,7 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.windcoder.qycms.exception.BusinessException;
+import com.windcoder.qycms.system.config.RedisUtil;
 import com.windcoder.qycms.system.dto.SiteConfigWebDto;
+import com.windcoder.qycms.system.dto.UserInfoDto;
 import com.windcoder.qycms.system.entity.SiteConfig;
 import com.windcoder.qycms.system.entity.SiteConfigExample;
 import com.windcoder.qycms.system.dto.SiteConfigDto;
@@ -12,6 +14,8 @@ import com.windcoder.qycms.dto.PageDto;
 import com.windcoder.qycms.system.repository.mybatis.MySiteConfigMapper;
 import com.windcoder.qycms.system.repository.mybatis.SiteConfigMapper;
 
+import com.windcoder.qycms.system.utils.IpWhilteUtil;
+import com.windcoder.qycms.utils.Constants;
 import com.windcoder.qycms.utils.ModelMapperUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.TypeToken;
@@ -35,6 +39,8 @@ public class SiteConfigService {
     private StringRedisTemplate redisTemplate;
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 列表查询
@@ -62,6 +68,9 @@ public class SiteConfigService {
             this.inster(siteConfig);
         } else {
             this.update(siteConfig);
+        }
+        if(siteConfig.getConfigKey().equals(Constants.SITE_SYS_CONFIG_IP_WHILTE)) {
+            IpWhilteUtil.refresh(siteConfig.getConfigValue());
         }
     }
 
@@ -98,7 +107,7 @@ public class SiteConfigService {
     public SiteConfig findOneByKey(String key) {
         SiteConfigExample siteConfigExample = new SiteConfigExample();
         siteConfigExample.createCriteria().andConfigKeyEqualTo(key);
-        List<SiteConfig> siteConfigs = siteConfigMapper.selectByExample(siteConfigExample);
+        List<SiteConfig> siteConfigs = siteConfigMapper.selectByExampleWithBLOBs(siteConfigExample);
         if (siteConfigs.size()>0) {
             return siteConfigs.get(0);
         } else {
@@ -119,6 +128,23 @@ public class SiteConfigService {
         return value;
     }
 
+    /**
+     * 根据key值获取value
+     * @param key
+     * @return
+     */
+    public String findConfigValueByKey(String key) {
+        String value = redisUtil.getOpsValue(key);
+        if(StringUtils.isBlank(value)) {
+            SiteConfig oneByKey = findOneByKey(key);
+            if (StringUtils.isNoneBlank(oneByKey.getConfigValue())) {
+                redisUtil.setOpsValue(key, oneByKey.getConfigValue());
+            }
+            return oneByKey.getConfigValue();
+        }
+        return value;
+    }
+
 
 
     public List<SiteConfigDto> list(Integer configType,Boolean isWeb) {
@@ -130,9 +156,11 @@ public class SiteConfigService {
 
     public List<SiteConfig> list(Integer configType) {
         SiteConfigExample siteConfigExample = new SiteConfigExample();
+        SiteConfigExample.Criteria criteria = siteConfigExample.createCriteria();
         if (configType != null) {
-            siteConfigExample.createCriteria().andTypeEqualTo(configType);
+            criteria.andTypeEqualTo(configType);
         }
+        criteria.andTypeNotEqualTo(5);
         return siteConfigMapper.selectByExampleWithBLOBs(siteConfigExample);
     }
 
@@ -258,5 +286,22 @@ public class SiteConfigService {
                 key = "siteInfo:*";
         }
         return key;
+    }
+
+    public void refreshIpWhilteList() {
+        String listStr = findConfigValueByKey(Constants.SITE_SYS_CONFIG_IP_WHILTE);
+        IpWhilteUtil.refresh(listStr);
+    }
+
+    public SiteConfigDto findIpWhilteConfigBykey() {
+        SiteConfig oneByKey = findOneByKey(Constants.SITE_SYS_CONFIG_IP_WHILTE);
+        SiteConfigDto dto = null;
+        if(oneByKey!=null) {
+            dto = ModelMapperUtils.map(oneByKey, SiteConfigDto.class);
+            return dto;
+        }
+        dto = new SiteConfigDto();
+        dto.setConfigKey(Constants.SITE_SYS_CONFIG_IP_WHILTE);
+        return dto;
     }
 }

@@ -23,4 +23,6 @@ public class Constants {
      public static final String SITE_MAP_FILE_POST_NAME = "post-sitemap.xml";
      public static final String SITE_MAP_FILE_PAGE_NAME = "page-sitemap.xml";
      public static final String SITE_MAP_FILE_INDEX_NAME = "sitemap_index.xml";
+     // ip白名单key
+    public static final String SITE_SYS_CONFIG_IP_WHILTE = "site_safe_ip_whilte";
 }
