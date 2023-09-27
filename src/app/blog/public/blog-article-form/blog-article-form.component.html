@@ -1,0 +1,116 @@
+<form nz-form [formGroup]="validateForm" >
+  <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 8, xl: 8, xxl: 8 }">
+
+    <div nz-col [nzSpan]="8" [nzPush]="16"> 
+
+      <div ng-row>
+          <nz-collapse [nzBordered]="true">
+              <nz-collapse-panel  [nzHeader]="'信息'" [nzActive]="'true'" [nzDisabled]="'false'">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" >封面图</nz-form-label>
+                    <nz-form-control [nzSpan]="16" >
+                      <nz-upload
+                      nzAction="/api/upload/file"
+                      nzListType="picture-card"
+                      [(nzFileList)]="fileList"
+                      [nzShowButton]="fileList.length < 1"
+                      [nzPreview]="handlePreview" (nzChange)="uploadChange($event)">
+                        <i class="anticon anticon-plus"></i>
+                        <div class="ant-upload-text">Upload</div>
+                    </nz-upload>
+                    <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
+                      <ng-template #modalContent>
+                        <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+                      </ng-template>
+                    </nz-modal>
+                  </nz-form-control>
+                </nz-form-item>  
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="6" nzRequired>分类</nz-form-label>
+                    <nz-form-control [nzSpan]="16" nzHasFeedback>
+                        <nz-tree-select 
+                      nzPlaceHolder="Please select"
+                      formControlName="category"
+                      [nzDropdownMatchSelectWidth]="true"
+                      [nzDropdownStyle]="{ 'max-height': '300px' }"
+                      [nzNodes]="nodes">
+                    </nz-tree-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="6" >标签</nz-form-label>
+                  <nz-form-control [nzSpan]="16" >
+                      <nz-select nzMode="tags"  style="width: 100%;" nzPlaceHolder="Tag Mode" formControlName="tagStrings">
+                          <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">
+                          </nz-option>
+                        </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+                
+              </nz-collapse-panel>
+            </nz-collapse>
+      </div>
+
+      <div ng-row style="margin:16px 0;">
+        <nz-collapse>
+            <nz-collapse-panel  [nzHeader]="'发布状态'" [nzActive]="'true'" [nzDisabled]="'false'">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="4" >允许评论</nz-form-label>
+                <nz-form-control [nzSpan]="16" >
+                  <nz-switch  formControlName="commentAgent.isEnabled"></nz-switch>
+                </nz-form-control>
+              </nz-form-item>    
+              <nz-form-item>
+                  <nz-form-label [nzSpan]="4" >发布</nz-form-label>
+                  <nz-form-control [nzSpan]="16" >
+                    <nz-switch  formControlName="isPublished" (ngModelChange)="updateStatus($event)"></nz-switch>
+                  </nz-form-control>
+                </nz-form-item>  
+                <ng-container *ngIf="getFormControl('isPublished').value === true">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="4" >日期</nz-form-label>
+                        <nz-form-control [nzSpan]="16" >
+                          <nz-date-picker nzPlaceHolder="请选择发布时间" formControlName="publishedDate"  [nzFormat]="'YYYY-MM-DD HH:mm:ss'" nzShowTime></nz-date-picker>
+                        </nz-form-control>
+                      </nz-form-item>
+                </ng-container>
+              </nz-collapse-panel>
+        </nz-collapse>
+      </div>
+
+    </div>
+
+    <div  nz-col nzSpan="16" [nzPull]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="3" nzRequired>标题</nz-form-label>
+        <nz-form-control [nzSpan]="16" nzHasFeedback>
+          <input nz-input formControlName="title" ng-disabled="disabledValue" placeholder="文章的标题">
+          <nz-form-explain *ngIf="validateForm.get('title').dirty && validateForm.get('title').errors || validateForm.get('title').pending ">
+            <ng-container *ngIf="validateForm.get('title').hasError('required')">
+              请输入文章的标题!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
+
+
+
+        <nz-form-item>
+                <nz-form-label [nzSpan]="3" nzRequired>内容</nz-form-label>
+                <nz-form-control [nzSpan]="16" >
+                  <qy-editor-md formControlName="content" (getHtmlValue)="getHtmlValue($event)" ></qy-editor-md>
+                  <nz-form-explain *ngIf="validateForm.get('content').dirty&&validateForm.get('content').hasError('required')">Please input your comment !</nz-form-explain>
+                </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control [nzOffset]="7" [nzSpan]="12">
+            <!-- [disabled]="!validateForm.valid" -->
+            <button nz-button nzType="primary" (click)="submitForm($event,validateForm.value)" >保存</button>
+            <!-- <button nz-button (click)="resetForm($event)">Reset</button> -->
+          </nz-form-control>
+        </nz-form-item>
+    </div>
+  </div>
+</form>

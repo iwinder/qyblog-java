@@ -1,0 +1,40 @@
+<div nz-row>
+    <div nz-col [nzSpan]="12" [nzPush]="12">
+        <nz-table #nzTable [nzData]="categoryData">
+            <thead>
+              <tr>
+                <th nz-th>Title</th>
+                <th nz-th>KeyWord</th>
+                <th nz-th><span>操作</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-template ngFor let-data [ngForOf]="nzTable.data">
+                <ng-template ngFor let-item [ngForOf]="expandDataCache[data.key]">
+                  <tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
+                    <td [nzIndentSize]="item.level*20" [nzShowExpand]="!!item.hasChildren" [(nzExpand)]="item.expand" (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)">
+                      {{item.title}}
+                    </td>
+                    <td>{{item.keyWord}}</td>
+                    <td nz-td>
+                      <span>
+                        <a href="javascript:;" [routerLink]="['../', item.id, 'edit']" >编辑</a>
+                        <!-- <a href="#">编辑</a> -->
+                        <span nz-table-divider></span>
+                        <a href="#">删除</a>
+                      </span>
+                    </td>
+                  </tr>
+                </ng-template>
+              </ng-template>
+            </tbody>
+          </nz-table>
+    </div>
+
+    <div nz-col [nzSpan]="12" [nzPull]="12">
+        <qy-category-form #cateForm (save)="save($event)"></qy-category-form>
+    </div>
+</div>
+<nz-content>
+
+</nz-content>

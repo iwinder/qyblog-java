@@ -1,0 +1,28 @@
+<ng-container *ngFor="let item of navItems">
+
+    <!-- <ng-template> -->
+        <ng-container *ngTemplateOutlet="menuItem; context: {$implicit: item}"></ng-container>
+    <!-- </ng-template> -->
+</ng-container>
+
+<ng-template #menuItem let-item>
+    <li *ngIf="item.children ? item.children.length : item.children" nz-submenu>
+        <span title>
+            <i [ngClass]="'anticon anticon-'+item.icon"></i>
+            <span class="nav-text" [ngClass]="{'nav-text-root': !isSubMenu}">{{item.name}}</span>
+        </span>
+        <ul *ngIf="item.children.length">
+            <qy-nav-left [isCollapsed]="false" [navItems]="item.children" [isSubMenu]="true"></qy-nav-left>
+        </ul>
+    </li>
+    <li *ngIf="item.children ? !item.children.length : !item.children" nz-menu-item>
+        <a *ngIf="item.route" routerLinkActive="active" [routerLink]="['/'+item.route]">
+            <i [ngClass]="'anticon anticon-'+item.icon"></i>
+            <span class="nav-text" [ngClass]="{'nav-text-root': !isSubMenu}">{{item.name}}</span>
+        </a>
+        <span *ngIf="!item.route">
+            <i [ngClass]="'anticon anticon-'+item.icon"></i>
+            <span class="nav-text" [ngClass]="{'nav-text-root': !isSubMenu}">{{item.name}}</span>
+        </span>
+    </li>
+</ng-template>
