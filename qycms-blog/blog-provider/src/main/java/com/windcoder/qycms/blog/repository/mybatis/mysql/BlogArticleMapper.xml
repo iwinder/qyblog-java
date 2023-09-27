@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.windcoder.nightbook.core.system.repository.mybatis.UserBookMapper">
+
+    <sql id="SelectSQL">
+          id,
+          title,
+          contentHtml,
+          summary,
+          permaLink,
+          thumbnail,
+          publishedDate,
+          author.name,
+          category.name,
+
+
+    </sql>
+
+    <select id="findArticlenfo" resultType="com.windcoder.qycms.blog.entity.BlogArticle">
+        SELECT <include refid="SelectSQL"/>
+        FROM blog_article ba LEFT  JOIN sys_user  su ON ba.author_id = su.id
+        WHERE is_deleted= false and is_published = false
+        <if test="">
+            and
+        </if>
+    </select>
+</mapper>
