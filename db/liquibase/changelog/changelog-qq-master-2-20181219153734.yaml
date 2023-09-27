@@ -1,0 +1,119 @@
+databaseChangeLog:
+- changeSet:
+    id: 1545205060176-1
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_category
+        constraintName: FK18qsxukvf40pdippprno5eq5b
+- changeSet:
+    id: 1545205060176-2
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_privilege
+        constraintName: FK1nk6vdhuhcniyse9wik3pp5l7
+- changeSet:
+    id: 1545205060176-3
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_privilege
+        constraintName: FK7h567kbm8i2uteel1pwveyamj
+- changeSet:
+    id: 1545205060176-4
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_privilege
+        constraintName: FKhidmju68461bmv7st3pfkrhcu
+- changeSet:
+    id: 1545205060176-5
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: blog_article_tag
+        constraintName: FKjirukkkkhj5pkpn9i7x0gn83b
+- changeSet:
+    id: 1545205060176-6
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_privilege
+        constraintName: FKl0lymq83eg69a9awoqn9sp3pi
+- changeSet:
+    id: 1545205060176-7
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_role_privilege
+        constraintName: FKr3sw06rqbrufgrkfq2c8dxhvb
+- changeSet:
+    id: 1545205060176-8
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: blog_article_tag
+        constraintName: FKrrs2kus3wx0wfxgdn3qrinpt7
+- changeSet:
+    id: 1545205060176-9
+    author: zhangrucong (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: sys_role_privilege
+        constraintName: FKvf9lt66q9oyjludcg83nfinq
+- changeSet:
+    id: 1545205060176-10
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: blog_article
+- changeSet:
+    id: 1545205060176-11
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: blog_article_tag
+- changeSet:
+    id: 1545205060176-12
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: blog_tag
+- changeSet:
+    id: 1545205060176-13
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_category
+- changeSet:
+    id: 1545205060176-14
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_ldap_setting
+- changeSet:
+    id: 1545205060176-15
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_privilege
+- changeSet:
+    id: 1545205060176-16
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_role
+- changeSet:
+    id: 1545205060176-17
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_role_privilege
+- changeSet:
+    id: 1545205060176-18
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: sys_user
+

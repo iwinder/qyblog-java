@@ -1,0 +1,15 @@
+databaseChangeLog:
+- changeSet:
+    id: 1544777830125-1
+    author: zhangrucong (generated)
+    changes:
+    - dropTable:
+        tableName: test
+- changeSet:
+    id: 1544777830125-2
+    author: zhangrucong (generated)
+    changes:
+    - dropColumn:
+        columnName: article_type
+        tableName: blog_article
+

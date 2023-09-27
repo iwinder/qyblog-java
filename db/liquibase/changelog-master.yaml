@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: initData 
+      author: windcoder 
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: db/mysql/test1.sql
+  - include:
+      file: db/liquibase/mysql/changelog-mysql-master.yaml
