@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleMapper" >
+
+    <resultMap type="com.windcoder.qycms.blog.dto.BlogArticleBaseDto" id="BlogArticleBaseDtoMap">
+        <result column="id" property="id"/>
+        <result column="title" property="title" />
+        <result column="published" property="published" />
+        <result column="perma_link" property="permaLink" />
+        <result column="summary" property="summary" />
+        <result column="thumbnail" property="thumbnail" />
+        <result column="published_date" property="publishedDate" />
+        <result column="view_count" property="viewCount" />
+        <!--
+            collection定义关联集合类型的属性
+            ofType:指定集合里面元素的类型
+        -->
+        <association property="author" javaType="com.windcoder.qycms.system.dto.UserWebDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="authorId" property="id"/>
+            <result column="authorNickname" property="nickname" />
+            <result column="nicknameAvatar" property="avatar"/>
+        </association>
+        <association property="category" javaType="com.windcoder.qycms.blog.dto.BlogCategoryDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="categoryId" property="id"/>
+            <result column="categoryName" property="name" />
+            <result column="categoryNamePath" property="namePath"/>
+        </association>
+        <collection property="tagStrings"
+                    select="com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleTagMapper.findTagnameListByArticleId"
+                    column="{articleId=id}">
+        </collection>
+    </resultMap>
+
+    <resultMap type="com.windcoder.qycms.blog.dto.BlogArticleWebBaseDto" id="BlogArticleBaseWebDtoMap">
+        <result column="id" property="id"/>
+        <result column="title" property="title" />
+        <result column="perma_link" property="permaLink" />
+        <result column="summary" property="summary" />
+        <result column="thumbnail" property="thumbnail" />
+        <result column="published_date" property="publishedDate" />
+        <result column="view_count" property="viewCount" />
+        <result column="commentCount" property="commentCount" />
+        <result column="status" property="status" />
+        <!--
+            collection定义关联集合类型的属性
+            ofType:指定集合里面元素的类型
+        -->
+        <association property="author" javaType="com.windcoder.qycms.system.dto.UserWebDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="authorId" property="id"/>
+            <result column="authorNickname" property="nickname" />
+            <result column="nicknameAvatar" property="avatar"/>
+        </association>
+        <association property="category" javaType="com.windcoder.qycms.blog.dto.BlogCategoryWebDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="categoryId" property="id"/>
+            <result column="categoryName" property="name" />
+            <result column="categoryIdentifier" property="identifier"/>
+        </association>
+        <collection property="tags"
+                    select="com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleTagMapper.findTagWebListByArticleId"
+                    column="{articleId=id}">
+        </collection>
+    </resultMap>
+
+    <resultMap type="com.windcoder.qycms.blog.dto.BlogArticleWebDto" id="BlogArticleWebDtoMap">
+        <result column="id" property="id"/>
+        <result column="title" property="title" />
+        <result column="perma_link" property="permaLink" />
+        <result column="summary" property="summary" />
+        <result column="thumbnail" property="thumbnail" />
+        <result column="published_date" property="publishedDate" />
+        <result column="content_html" property="contentHtml" />
+        <result column="content" property="content" />
+        <result column="type" property="type" />
+        <result column="comment_agent_id" property="commentAgentId" />
+        <result column="view_count" property="viewCount" />
+        <result column="commentCount" property="commentCount" />
+        <result column="enabled" property="commentAgentFlag" />
+        <!--
+            collection定义关联集合类型的属性
+            ofType:指定集合里面元素的类型
+        -->
+        <association property="author" javaType="com.windcoder.qycms.system.dto.UserWebDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="authorId" property="id"/>
+            <result column="authorNickname" property="nickname" />
+            <result column="nicknameAvatar" property="avatar"/>
+        </association>
+        <association property="category" javaType="com.windcoder.qycms.blog.dto.BlogCategoryWebDto">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <result column="categoryId" property="id"/>
+            <result column="categoryName" property="name" />
+            <result column="categoryIdentifier" property="identifier"/>
+        </association>
+        <collection property="tags"
+                    select="com.windcoder.qycms.blog.repository.mybatis.MyBlogArticleTagMapper.findTagWebListByArticleId"
+                    column="{articleId=id}">
+        </collection>
+    </resultMap>
+
+
+    <sql id="listObj" >
+        ba.id, ba.title,  ba.perma_link, ba.summary, ba.thumbnail,
+        ba.published_date,  ba.deleted, ba.published, ba.view_count,
+        bc.id categoryId,bc.name categoryName,
+        su.id authorId, su.nickname authorNickname, su.avatar nicknameAvatar
+    </sql>
+    <sql id="commonWhere">
+        <if test="pageDto.published != null and pageDto.published != ''">
+            and ba.published = #{pageDto.published}
+        </if>
+        <if test="pageDto.type != null and pageDto.type != ''">
+            and ba.type = #{pageDto.type}
+        </if>
+        <if test="pageDto.searchText != null and pageDto.searchText != ''">
+            and  lower(ba.title) like  concat('%',lower(#{pageDto.searchText}),'%')
+        </if>
+        <if test="pageDto.categoryId != null and pageDto.categoryId != ''">
+            and bc.id = #{pageDto.categoryId}
+        </if>
+        <if test="pageDto.categoryName != null and pageDto.categoryName != ''">
+            and bc.identifier = #{pageDto.categoryName}
+        </if>
+    </sql>
+
+    <sql id="findOneOfWebAndMinaCommon">
+        from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
+        left join sys_user su on ba.author_id = su.id
+        left join sns_comment_agent  ca on ba.comment_agent_id = ca.id
+        <where>
+            ba.deleted = false
+            and ba.published = true
+            <if test="articleDto.id != null and articleDto.id != ''">
+                and ba.id = #{articleDto.id}
+            </if>
+            <if test="articleDto.permaLink !=null and articleDto.permaLink !=''">
+                and ba.perma_link = #{articleDto.permaLink}
+            </if>
+            <choose>
+                <when test="userId != null and userId !=''">
+                    and (ba.status='PUBLIC' or (ba.status = 'PRIVATE' and ba.author_id=#{userId} ) )
+                </when>
+                <otherwise>
+                    and ba.status='PUBLIC'
+                </otherwise>
+            </choose>
+        </where>
+        limit 1
+    </sql>
+
+    <select id="list" resultMap="BlogArticleBaseDtoMap">
+        select
+              <include refid="listObj"></include>,bc.name_path categoryNamePath
+        from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
+        left join sys_user su on ba.author_id = su.id
+        <where>
+            ba.deleted = false
+            <include refid="commonWhere"></include>
+        </where>
+        order by ba.created_date DESC,ba.id DESC
+    </select>
+
+
+    <select id="listWeb" resultMap="BlogArticleBaseWebDtoMap">
+        select
+        <include refid="listObj"></include>,
+        ba.status,
+        (select count(*) from sns_comment where target_id = ba.comment_agent_id and status='ENROLLED' ) commentCount,
+               bc.identifier categoryIdentifier
+        from `blog_article` ba left join blog_category bc on ba.category_id = bc.id
+        left join sys_user su on ba.author_id = su.id
+        <if test="pageDto.tagId != null or (pageDto.tagName !=null and pageDto.tagName !='')">
+            left join blog_article_tag bat on ba.id = bat.article_id
+        </if>
+        <if test="pageDto.tagName !=null and pageDto.tagName !=''">
+            left join blog_tag bt on bat.tag_id = bt.id
+        </if>
+        <where>
+            ba.deleted = false
+            <include refid="commonWhere"></include>
+            <if test="pageDto.tagId != null and pageDto.tagId != ''">
+                and bat.tag_id = #{pageDto.tagId}
+            </if>
+            <if test="pageDto.tagName !=null and pageDto.tagName !=''">
+                and bt.identifier = #{pageDto.tagName}
+            </if>
+            <choose>
+                <when test="pageDto.userId != null and pageDto.userId !=''">
+                    and (ba.status='PUBLIC' or (ba.status = 'PRIVATE' and ba.author_id=#{pageDto.userId} ) )
+                </when>
+                <otherwise>
+                    and ba.status='PUBLIC'
+                </otherwise>
+            </choose>
+        </where>
+        order by  ba.published_date DESC,ba.id DESC
+    </select>
+
+
+    <select id="findOneWeb"  resultMap="BlogArticleWebDtoMap">
+        select
+        <include refid="listObj"></include>,
+        (select count(*) from sns_comment where target_id = ba.comment_agent_id and status='ENROLLED' ) commentCount,
+        bc.identifier categoryIdentifier,
+        ba.content_html,ba.type, ba.comment_agent_id
+        ,ca.enabled
+        <include refid="findOneOfWebAndMinaCommon"></include>
+    </select>
+
+
+    <select id="findOneMina"  resultMap="BlogArticleWebDtoMap">
+        select
+        <include refid="listObj"></include>,
+        (select count(*) from sns_comment where target_id = ba.comment_agent_id and status='ENROLLED' ) commentCount,
+        bc.identifier categoryIdentifier,
+        ba.content_html,ba.type, ba.comment_agent_id
+        ,ca.enabled
+        <include refid="findOneOfWebAndMinaCommon"></include>
+    </select>
+
+    <update id="updateDeleted">
+        update blog_article ba set `deleted` = #{deletedStatus}
+        where ba.id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="countPermaLinkLike" resultType="java.lang.Integer">
+        select count(*) from blog_article
+            <where>
+                deleted = false
+                and lower(perma_link)  like concat(lower(#{permaLink}),'%')
+                <if test="notId != null" >
+                  and  id &lt;&gt; #{notId}
+                </if>
+            </where>
+
+    </select>
+    <select id="countPermaLinkEquals" resultType="java.lang.Integer">
+        select count(*) from blog_article
+            <where>
+                deleted = false and
+                lower(perma_link)   = lower(#{permaLink})
+                <if test="notId != null" >
+                    and   id &lt;&gt; #{notId}
+                </if>
+            </where>
+
+    </select>
+    <select id="finAllPublishedPermaLink" resultType="com.windcoder.qycms.blog.dto.BlogArticleWebBaseDto">
+        select ba.perma_link,ba.published_date from blog_article ba
+         where
+         ba.deleted = false
+         and ba.status='PUBLIC'
+        and ba.published = true
+        <if test="pageDto.type != null and pageDto.type != ''">
+            and ba.type = #{pageDto.type}
+        </if>
+          order by  ba.published_date DESC,ba.id DESC
+    </select>
+    <update id="updatePostViews" >
+        UPDATE blog_article SET view_count = view_count + #{viewCount}
+        WHERE id = #{aid};
+    </update>
+</mapper>

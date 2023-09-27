@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.windcoder.qycms.blog.repository.mybatis.MyBlogCategoryMapper" >
+
+
+
+    <update id="updatePathChildren">
+        update blog_category c
+        set
+            c.id_path = concat(#{parentIdPath}, c.id),
+            c.name_path = concat(#{parentNamePath}, c.name)
+        where c.parent_id = #{parentId}
+    </update>
+</mapper>

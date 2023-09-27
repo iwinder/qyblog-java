@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.windcoder.qycms.system.repository.mybatis.MySiteConfigMapper" >
+
+    <update id="updateBatch">
+        <foreach collection="siteConfigList" item="item" index="index" open="" close="" separator=";">
+            update sys_site_config
+            <set>
+                config_value =#{item.configValue}
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <!--    <resultMap id="BaseResultMap" type="com.windcoder.qycms.system.dto.PermissionDto">-->
+<!--        <id column="id" jdbcType="BIGINT" property="id" />-->
+<!--        <result column="created_by" jdbcType="BIGINT" property="createdBy" />-->
+<!--        <result column="last_modified_by" jdbcType="BIGINT" property="lastModifiedBy" />-->
+<!--        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />-->
+<!--        <result column="last_modified_date" jdbcType="TIMESTAMP" property="lastModifiedDate" />-->
+<!--        <association property="user" javaType="com.windcoder.qycms.system.dto.UserInfoDto">-->
+<!--            &lt;!&ndash; 定义这个集合中元素的封装规则 &ndash;&gt;-->
+<!--            <result column="userId" property="id"/>-->
+<!--            <result column="userNickname" property="nickname" />-->
+<!--            <result column="username" property="username" />-->
+<!--        </association>-->
+<!--        <association property="role" javaType="com.windcoder.qycms.system.dto.RoleDto">-->
+<!--            &lt;!&ndash; 定义这个集合中元素的封装规则 &ndash;&gt;-->
+<!--            <result column="roleId" property="id"/>-->
+<!--            <result column="roleName" property="name" />-->
+<!--        </association>-->
+<!--        <association property="privilege" javaType="com.windcoder.qycms.system.dto.PrivilegeDto">-->
+<!--            &lt;!&ndash; 定义这个集合中元素的封装规则 &ndash;&gt;-->
+<!--            <result column="privilegeId" property="id"/>-->
+<!--            <result column="privilegeName" property="name" />-->
+<!--        </association>-->
+<!--    </resultMap>-->
+
+</mapper>

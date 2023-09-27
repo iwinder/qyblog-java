@@ -1,0 +1,15 @@
+rootProject.name = 'qycms'
+
+include 'qycms-core:common'
+include 'qycms-core:system-provider'
+include 'qycms-core:system-web'
+include 'qycms-blog:blog-provider'
+include 'qycms-blog:blog-web'
+include 'qycms-file:file-provider'
+include 'qycms-file:file-web'
+include 'qycms-mina:mina-provider'
+include 'qycms-mina:mina-web'
+include 'qycms-quartz:quartz-provider'
+include 'qycms-quartz:quartz-web'
+include 'qycms-generator'
+

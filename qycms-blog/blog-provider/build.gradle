@@ -1,0 +1,11 @@
+apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
+
+dependencies {
+    compile project(':qycms-core:system-provider')
+    implementation "com.kotcrab.remark:remark:1.2.0"
+    // https://mvnrepository.com/artifact/cz.jiripinkas/jsitemapgenerator
+    compile group: 'cz.jiripinkas', name: 'jsitemapgenerator', version: '4.5'
+
+//    compile project(':qycms-core:common')
+}

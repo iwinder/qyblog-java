@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.windcoder.qycms.file.repository.mybatis.FileLibConfigMapper">
+  <resultMap id="BaseResultMap" type="com.windcoder.qycms.file.entity.FileLibConfig">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="access_Key" jdbcType="VARCHAR" property="accessKey" />
+    <result column="secret_Key" jdbcType="VARCHAR" property="secretKey" />
+    <result column="bucket" jdbcType="VARCHAR" property="bucket" />
+    <result column="Endpoint" jdbcType="VARCHAR" property="endpoint" />
+    <result column="prefix" jdbcType="VARCHAR" property="prefix" />
+    <result column="domain" jdbcType="VARCHAR" property="domain" />
+    <result column="type_id" jdbcType="BIGINT" property="typeId" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="last_modified_by" jdbcType="BIGINT" property="lastModifiedBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_modified_date" jdbcType="TIMESTAMP" property="lastModifiedDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, access_Key, secret_Key, bucket, Endpoint, `prefix`, `domain`, type_id, created_by, 
+    last_modified_by, created_date, last_modified_date
+  </sql>
+  <select id="selectByExample" parameterType="com.windcoder.qycms.file.entity.FileLibConfigExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from file_lib_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from file_lib_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from file_lib_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.windcoder.qycms.file.entity.FileLibConfigExample">
+    delete from file_lib_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.windcoder.qycms.file.entity.FileLibConfig">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into file_lib_config (access_Key, secret_Key, bucket, 
+      Endpoint, `prefix`, `domain`, 
+      type_id, created_by, last_modified_by, 
+      created_date, last_modified_date)
+    values (#{accessKey,jdbcType=VARCHAR}, #{secretKey,jdbcType=VARCHAR}, #{bucket,jdbcType=VARCHAR}, 
+      #{endpoint,jdbcType=VARCHAR}, #{prefix,jdbcType=VARCHAR}, #{domain,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=BIGINT}, #{createdBy,jdbcType=BIGINT}, #{lastModifiedBy,jdbcType=BIGINT}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.windcoder.qycms.file.entity.FileLibConfig">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into file_lib_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="accessKey != null">
+        access_Key,
+      </if>
+      <if test="secretKey != null">
+        secret_Key,
+      </if>
+      <if test="bucket != null">
+        bucket,
+      </if>
+      <if test="endpoint != null">
+        Endpoint,
+      </if>
+      <if test="prefix != null">
+        `prefix`,
+      </if>
+      <if test="domain != null">
+        `domain`,
+      </if>
+      <if test="typeId != null">
+        type_id,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="lastModifiedBy != null">
+        last_modified_by,
+      </if>
+      <if test="createdDate != null">
+        created_date,
+      </if>
+      <if test="lastModifiedDate != null">
+        last_modified_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="accessKey != null">
+        #{accessKey,jdbcType=VARCHAR},
+      </if>
+      <if test="secretKey != null">
+        #{secretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="bucket != null">
+        #{bucket,jdbcType=VARCHAR},
+      </if>
+      <if test="endpoint != null">
+        #{endpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="prefix != null">
+        #{prefix,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=BIGINT},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastModifiedBy != null">
+        #{lastModifiedBy,jdbcType=BIGINT},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.windcoder.qycms.file.entity.FileLibConfigExample" resultType="java.lang.Long">
+    select count(*) from file_lib_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update file_lib_config
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.accessKey != null">
+        access_Key = #{record.accessKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.secretKey != null">
+        secret_Key = #{record.secretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bucket != null">
+        bucket = #{record.bucket,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endpoint != null">
+        Endpoint = #{record.endpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prefix != null">
+        `prefix` = #{record.prefix,jdbcType=VARCHAR},
+      </if>
+      <if test="record.domain != null">
+        `domain` = #{record.domain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeId != null">
+        type_id = #{record.typeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createdBy != null">
+        created_by = #{record.createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastModifiedBy != null">
+        last_modified_by = #{record.lastModifiedBy,jdbcType=BIGINT},
+      </if>
+      <if test="record.createdDate != null">
+        created_date = #{record.createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastModifiedDate != null">
+        last_modified_date = #{record.lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update file_lib_config
+    set id = #{record.id,jdbcType=BIGINT},
+      access_Key = #{record.accessKey,jdbcType=VARCHAR},
+      secret_Key = #{record.secretKey,jdbcType=VARCHAR},
+      bucket = #{record.bucket,jdbcType=VARCHAR},
+      Endpoint = #{record.endpoint,jdbcType=VARCHAR},
+      `prefix` = #{record.prefix,jdbcType=VARCHAR},
+      `domain` = #{record.domain,jdbcType=VARCHAR},
+      type_id = #{record.typeId,jdbcType=BIGINT},
+      created_by = #{record.createdBy,jdbcType=BIGINT},
+      last_modified_by = #{record.lastModifiedBy,jdbcType=BIGINT},
+      created_date = #{record.createdDate,jdbcType=TIMESTAMP},
+      last_modified_date = #{record.lastModifiedDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.windcoder.qycms.file.entity.FileLibConfig">
+    update file_lib_config
+    <set>
+      <if test="accessKey != null">
+        access_Key = #{accessKey,jdbcType=VARCHAR},
+      </if>
+      <if test="secretKey != null">
+        secret_Key = #{secretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="bucket != null">
+        bucket = #{bucket,jdbcType=VARCHAR},
+      </if>
+      <if test="endpoint != null">
+        Endpoint = #{endpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="prefix != null">
+        `prefix` = #{prefix,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        `domain` = #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=BIGINT},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=BIGINT},
+      </if>
+      <if test="lastModifiedBy != null">
+        last_modified_by = #{lastModifiedBy,jdbcType=BIGINT},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedDate != null">
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.windcoder.qycms.file.entity.FileLibConfig">
+    update file_lib_config
+    set access_Key = #{accessKey,jdbcType=VARCHAR},
+      secret_Key = #{secretKey,jdbcType=VARCHAR},
+      bucket = #{bucket,jdbcType=VARCHAR},
+      Endpoint = #{endpoint,jdbcType=VARCHAR},
+      `prefix` = #{prefix,jdbcType=VARCHAR},
+      `domain` = #{domain,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=BIGINT},
+      created_by = #{createdBy,jdbcType=BIGINT},
+      last_modified_by = #{lastModifiedBy,jdbcType=BIGINT},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.windcoder.qycms.blog.repository.mybatis.BlogCategoryTreeMapper">
+  <resultMap id="BaseResultMap" type="com.windcoder.qycms.blog.entity.BlogCategoryTree">
+    <id column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <id column="child_id" jdbcType="BIGINT" property="childId" />
+    <result column="distance" jdbcType="INTEGER" property="distance" />
+    <result column="child_count" jdbcType="BIGINT" property="childCount" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    parent_id, child_id, distance, child_count
+  </sql>
+  <select id="selectByExample" parameterType="com.windcoder.qycms.blog.entity.BlogCategoryTreeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blog_category_tree
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from blog_category_tree
+    where parent_id = #{parentId,jdbcType=BIGINT}
+      and child_id = #{childId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from blog_category_tree
+    where parent_id = #{parentId,jdbcType=BIGINT}
+      and child_id = #{childId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.windcoder.qycms.blog.entity.BlogCategoryTreeExample">
+    delete from blog_category_tree
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.windcoder.qycms.blog.entity.BlogCategoryTree">
+    insert into blog_category_tree (parent_id, child_id, distance, 
+      child_count)
+    values (#{parentId,jdbcType=BIGINT}, #{childId,jdbcType=BIGINT}, #{distance,jdbcType=INTEGER}, 
+      #{childCount,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.windcoder.qycms.blog.entity.BlogCategoryTree">
+    insert into blog_category_tree
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="childId != null">
+        child_id,
+      </if>
+      <if test="distance != null">
+        distance,
+      </if>
+      <if test="childCount != null">
+        child_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="childId != null">
+        #{childId,jdbcType=BIGINT},
+      </if>
+      <if test="distance != null">
+        #{distance,jdbcType=INTEGER},
+      </if>
+      <if test="childCount != null">
+        #{childCount,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.windcoder.qycms.blog.entity.BlogCategoryTreeExample" resultType="java.lang.Long">
+    select count(*) from blog_category_tree
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update blog_category_tree
+    <set>
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.childId != null">
+        child_id = #{record.childId,jdbcType=BIGINT},
+      </if>
+      <if test="record.distance != null">
+        distance = #{record.distance,jdbcType=INTEGER},
+      </if>
+      <if test="record.childCount != null">
+        child_count = #{record.childCount,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update blog_category_tree
+    set parent_id = #{record.parentId,jdbcType=BIGINT},
+      child_id = #{record.childId,jdbcType=BIGINT},
+      distance = #{record.distance,jdbcType=INTEGER},
+      child_count = #{record.childCount,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.windcoder.qycms.blog.entity.BlogCategoryTree">
+    update blog_category_tree
+    <set>
+      <if test="distance != null">
+        distance = #{distance,jdbcType=INTEGER},
+      </if>
+      <if test="childCount != null">
+        child_count = #{childCount,jdbcType=BIGINT},
+      </if>
+    </set>
+    where parent_id = #{parentId,jdbcType=BIGINT}
+      and child_id = #{childId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.windcoder.qycms.blog.entity.BlogCategoryTree">
+    update blog_category_tree
+    set distance = #{distance,jdbcType=INTEGER},
+      child_count = #{childCount,jdbcType=BIGINT}
+    where parent_id = #{parentId,jdbcType=BIGINT}
+      and child_id = #{childId,jdbcType=BIGINT}
+  </update>
+</mapper>
