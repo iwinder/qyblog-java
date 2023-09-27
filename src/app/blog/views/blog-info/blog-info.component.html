@@ -1,0 +1,28 @@
+<div id="latest-posts" class="main block5">
+    <aside class="block5-widget" *ngIf="articlesData">
+        <div class="jumbotron jumbotron-fluid"  [ngStyle]="{'background-image': 'url(' + articlesData.thumbnail + ')'}" > 
+            <div class="container">
+                <div class="header-meta">
+                    <span class="meta-category"><a href="jacascript::void(0)" rel="category tag">{{articlesData.category?.title}}</a></span>
+                    <span class="separator" role="separator">·</span>
+                    <span class="meta-date"><time class="entry-date" datetime="getDateTime(articlesData.publishedDate)" [title]="getDateTime(articlesData.publishedDate)">1周前 ({{articlesData.publishedDate | date:'yyyy-MM-dd'}})</time></span>
+                </div>
+                <h1 class="display-4">{{articlesData.title}}</h1>
+            </div>
+        </div>
+        <div class="single-body">
+            <div class="article-header col">
+                <div class="post-tags" >
+                    <!-- *ngIf="articlesData&&articlesData.tags" -->
+                    <a href="jacascript::void(0)" class="badge badge-success" *ngFor="let tag of  articlesData.tags">{{tag.name}}</a>
+                </div>
+            </div>
+            <qy-posts-contents *ngIf="articlesData&&articlesData.contentHtml" [contentHtml]="articlesData.contentHtml" [contentMd]="articlesData.content" ></qy-posts-contents>
+        </div>
+    </aside>
+    <!-- <qy-comment-list [agent]="articlesData.commentAgent || null" > </qy-comment-list> -->
+</div>
+
+<div id="posts-comments" class="block5"  *ngIf="commentAgent">
+    <qy-comment-list [target]="commentAgent || null" > </qy-comment-list>
+</div>

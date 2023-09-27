@@ -1,0 +1,83 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'org.asciidoctor.convert'
+
+description "windcoder com cms Web Application."
+group = 'com.windcoder'
+archivesBaseName = 'qy-web'
+version = '0.1.1-SNAPSHOT'
+
+repositories {
+  
+    mavenCentral()
+    jcenter()
+}
+
+asciidoctor {
+    sourceDir = file('docs')
+    sources {
+        include 'index.adoc'//, 'another.adoc', 'third.adoc'
+    }
+    outputDir = file('build/docs')
+    
+    attributes  'toclevels': '3',
+                'sectnums': ''
+}
+
+task ngBuild(type: Exec, description: 'Build Application.') {
+   commandLine 'npm', 'run', 'build:jar'
+}
+
+task webjar(type: Jar, dependsOn: "jar") {
+    dependsOn = ['ngBuild'] 
+    from(fileTree(dir: "dist", include: "index.html")) {  
+        into "META-INF/resources/"
+    }
+
+    from(fileTree(dir: "dist", include: "assets/")) {  
+        into "META-INF/resources/"
+    }
+
+    from(fileTree(dir: "dist", exclude: "index.html")) {  
+        into "META-INF/resources/static"
+    }
+}
+
+uploadArchives {
+    dependsOn = ["webjar"]
+
+    repositories {
+        mavenDeployer {
+
+        }
+    }
+}
+
+// gradle webjar uploadArchives
+
+task publish() {
+    dependsOn = ["uploadArchives"]
+}
+
+task docsZip(type: Zip, dependsOn: 'asciidoctor') {
+    group = "Distribution"
+    baseName = "qy-console"
+    classifier = "docs"
+    description = "Builds -${classifier} archive containing api and reference " +
+        "for deployment at docs website."
+
+    from ("build/docs") {
+        into "reference"
+    }
+}
