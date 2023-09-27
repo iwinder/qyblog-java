@@ -1,0 +1,35 @@
+.page_not_found {
+    width: 100%;
+    // min-width: 1200px;
+    padding: 1px 0px;
+    height: 100%;
+    background-color: #f7f5f5;
+    .img_url {
+        width: 430px;
+        height: 200px;
+        margin: 0 auto;
+        margin-top: 52px;
+        img {
+            width: 100%;
+            max-height: 100%;
+        }
+    }
+    .prompting {
+        font-size: 28px;
+        margin-top: 12px;
+        text-align: center;
+    }
+    .prompting_ch {
+        font-size: 14px;
+        text-align: center;
+    }
+    .back {
+        margin: 6px 0px 20px;
+        text-align: center;
+    }
+    button {
+        a{
+            color: #fff;
+        }
+    }
+}

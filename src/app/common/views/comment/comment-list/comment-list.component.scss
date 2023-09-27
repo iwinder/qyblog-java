@@ -1,0 +1,93 @@
+:host ::ng-deep .comment-body {
+    margin-top: 50px;
+   
+    .comment-list {
+        margin-top: 20px;
+    }
+    .comment-list-col{
+        padding: 15px;
+    }
+    .comment-title{
+        color: #333;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border-left: 4px solid #f66;
+        // margin-left: -24px;
+        margin-bottom: 10px;
+        padding-left: 20px;
+    }
+    .comment-avatar{
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+    }
+    .media{
+        border-bottom: 1px dashed #ced4da;
+        padding: 10px;
+        .comment-time{
+            display: inline;
+            font-weight: normal;
+        }
+        span{
+            display: block;
+        }
+        h5{
+            font-size: 1rem;
+        }
+    }
+    .pagination-info{
+        text-align: center;
+        margin-top: 30px;
+    }
+    ngb-pagination {
+        display: -webkit-inline-box;
+    }
+
+    @media (max-width: 576px) {
+        body.home .content .main {
+            padding: 10px 15px;
+        }
+        .media {
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            .media-body{
+                width: 100%;
+            }
+        }
+        .replyShow{
+            width: 100%;
+        }
+        .entry-thumb {
+            float: none;
+            width: 100%;
+            margin-right: 0;
+        }
+        aside h2, .h2 {
+            margin-top: 2px;
+        }
+        .article .media-body h5{
+            margin-top: 0.35rem !important;
+            margin-bottom: 0.35rem !important;
+        }
+    }
+    .comment-reply-a{
+        // float: right;
+        float: right;
+        color: #fff;
+        font-size: 12px;
+        background: #bbb;
+        padding: 3px 6px;
+        line-height: 12px;
+        border-radius: 4px;
+        margin: 6px;
+        transition: all .3s ease-in-out;
+    }
+    .replyShow{
+        box-shadow: 5px 5px 5px 5px #888888;
+    }
+     
+
+}

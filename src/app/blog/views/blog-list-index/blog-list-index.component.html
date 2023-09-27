@@ -1,0 +1,27 @@
+<div id="latest-posts" class="block5">
+
+    <aside class="block5-widget">
+        <h2 class="widget-title">近期文章</h2>
+        
+        <ul class="list-unstyled">
+            <li class="media article" *ngFor="let data of articlesData?.content">
+                <div class="entry-thumb">
+                        <a target="_blank" [routerLink]="['/article/',data?.id]">
+                            <img class="mr-3" [src]="getNewUrl(data.thumbnail)" alt="Generic placeholder image" />
+                        </a>
+                </div>
+                <div class="media-body">
+                <a  [routerLink]="['/article/',data?.id]"><h5 class="mt-0 mb-1">{{data.title}}</h5></a>
+                {{data.summary || ""}}···
+                </div>
+            </li>
+        </ul>
+        
+        <div class="row" style="text-align: center;">
+            <div class="col">
+                <ngb-pagination  [collectionSize]="articlesData?.totalElements" [disabled]="loading" [pageSize]="articlesData?.size" [(page)]="pageIndex" [maxSize]="3" [rotate]="true" [directionLinks]="false" [boundaryLinks]="true" (pageChange)="loadData()"></ngb-pagination>
+            </div>
+        </div>
+    </aside>
+
+</div>
