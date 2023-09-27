@@ -1,7 +1,0 @@
-apply plugin: 'eclipse-wtp'
-apply plugin: 'idea'
-
-dependencies {
-    compile project(':qycms-blog:blog-provider')
-//    compile project(':qycms-core:system-provider')
-}

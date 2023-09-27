@@ -1,6 +1,0 @@
-apply plugin: 'eclipse-wtp'
-apply plugin: 'idea'
-
-dependencies {
-    compile project(':qycms-file:file-provider')
-}
