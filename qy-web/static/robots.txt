@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+Disallow: /qyA*/
+Sitemap: https://windcoder.com/sitemap_index.xml
